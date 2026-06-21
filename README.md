@@ -1,46 +1,93 @@
-# Astro Starter Kit: Basics
+# CS Vaulte
 
-```sh
-npm create astro@latest -- --template basics
-```
+CS Vaulte is a static, serverless educational repository for Computer Science university courses. It hosts student-focused subject summaries and interactive self-assessment practice quizzes.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Key Features
 
-## 🚀 Project Structure
+- **Static Site Generation:** Pre-rendered HTML paths built at compilation time using Astro.
+- **Client-Side Island Architecture:** Framework-free client components yielding zero client-side JavaScript framework overhead.
+- **Content Collections Data Layer:** Type-safe structured content validated via Zod schemas at build time.
+- **Minimalist Theme Support:** Responsive, clean dark and light UI theme system.
 
-Inside of your Astro project, you'll see the following folders and files:
+---
+
+## Project Structure
+
+Inside the repository, files are organized as follows:
 
 ```text
 /
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+├── public/                 # Static assets (favicons, manifests)
+├── src/
+│   ├── content/            # Git-based content collections (JSON/Markdown)
+│   │   ├── summaries/      # Subject markdown summary documents (e.g., cs101/2026/db-basics.md)
+│   │   └── quizzes/        # Subject quiz data files (e.g., cs101/2026/db-quiz.json)
+│   ├── components/         # Reusable UI widgets (e.g., QuizWidget.astro)
+│   ├── layouts/            # Global page shell wrappers (e.g., Layout.astro)
+│   ├── pages/              # Routing modules (Home, course dashboards, quiz routes)
+│   └── styles/             # Global Tailwind stylesheets
+├── package.json            # Project dependencies and script declarations
+├── tsconfig.json           # TypeScript configuration settings
+└── astro.config.mjs        # Astro engine configurations
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+## Adding Course Content
 
-All commands are run from the root of the project, from a terminal:
+Data is entirely file-based and loaded dynamically through Astro Content Collections:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### 1. Subject Summaries
+Summaries are written in Markdown and located under `src/content/summaries/[subject]/[year]/[filename].md`. Each file must declare frontmatter metadata:
 
-## 👀 Want to learn more?
+```markdown
+---
+title: "Introduction to Relational Databases"
+description: "A comprehensive summary covering database concepts and Entity-Relationship models."
+author: "Author Name"
+date: 2026-06-21
+subject_code: "CS101"
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+# Introduction to Relational Databases
+Content markdown goes here...
+```
+
+### 2. Practice Quizzes
+Quizzes are structured JSON documents located under `src/content/quizzes/[subject]/[year]/[filename].json`. The schema enforces strict validation:
+
+```json
+{
+  "title": "Relational Databases Fundamentals",
+  "subject": "Introduction to Databases",
+  "year": 2026,
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which of the following uniquely identifies a row in a relational database table?",
+      "code": "Optional raw code snippet block if required",
+      "options": [
+        "Foreign Key",
+        "Primary Key",
+        "Index Key",
+        "Super Key"
+      ],
+      "correctAnswer": "Primary Key",
+      "explanation": "A Primary Key is a minimal set of attributes that uniquely specifies a tuple in a relation."
+    }
+  ]
+}
+```
+
+---
+
+## Development Commands
+
+All commands should be executed from the root directory:
+
+| Command | Action |
+| :--- | :--- |
+| `npm install` | Install project dependencies |
+| `npm run dev` | Start the local development server at `localhost:4321` |
+| `npm run build` | Build the optimized production bundle to the `./dist/` directory |
+| `npm run preview` | Run a local preview server on the production build output |
