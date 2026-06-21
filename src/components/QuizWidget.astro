@@ -1,0 +1,397 @@
+---
+interface Question {
+  id: number;
+  question: string;
+  options: string[];
+  correctAnswer: string;
+  explanation?: string;
+}
+
+interface Props {
+  quiz: {
+    title: string;
+    subject: string;
+    year: number;
+    questions: Question[];
+  };
+}
+
+const { quiz } = Astro.props;
+---
+
+<div 
+  id="quiz-widget" 
+  class="w-full max-w-2xl mx-auto bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md shadow-xs overflow-hidden transition-all duration-300"
+  data-quiz={JSON.stringify(quiz)}
+>
+  <!-- 1. Start Screen -->
+  <div id="quiz-start-screen" class="p-8 text-center sm:p-12">
+    <div class="inline-flex p-2.5 rounded-sm bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 mb-6 border border-blue-200 dark:border-blue-900/50">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+      </svg>
+    </div>
+    
+    <div>
+      <span class="text-xs font-bold tracking-wider text-blue-600 dark:text-blue-400 uppercase bg-blue-100 dark:bg-blue-950/40 px-3 py-1 rounded-sm border border-blue-200 dark:border-blue-900/50">
+        {quiz.subject} • {quiz.year}
+      </span>
+    </div>
+    
+    <h2 class="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+      {quiz.title}
+    </h2>
+    
+    <p class="mt-3 text-base text-gray-500 dark:text-gray-400">
+      Test your knowledge on this subject. This quiz consists of <strong>{quiz.questions.length}</strong> questions.
+    </p>
+
+    <div class="mt-8 flex flex-col items-center justify-center gap-3">
+      <button 
+        id="start-quiz-btn"
+        class="w-full sm:w-auto px-6 py-3 bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 font-semibold rounded transition-all duration-150 cursor-pointer"
+      >
+        Start Quiz
+      </button>
+      <span class="text-xs text-gray-400">No time limit • Immediate feedback</span>
+    </div>
+  </div>
+
+  <!-- 2. Active Quiz Screen -->
+  <div id="quiz-active-screen" class="hidden p-6 sm:p-8">
+    <!-- Header info -->
+    <div class="flex items-center justify-between mb-4">
+      <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">
+        Question <span id="quiz-current-question-num">1</span> of <span id="quiz-total-questions-num">4</span>
+      </span>
+      <span id="quiz-timer" class="text-xs font-medium text-gray-400 bg-gray-100 dark:bg-zinc-800 px-2.5 py-1 rounded-sm border border-transparent dark:border-zinc-700">
+        Active Session
+      </span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="w-full h-1.5 bg-gray-100 dark:bg-zinc-800 rounded-xs mb-6 overflow-hidden">
+      <div id="quiz-progress-bar" class="h-full bg-blue-600 dark:bg-blue-500 w-0 transition-all duration-150"></div>
+    </div>
+
+    <!-- Question Text -->
+    <h3 id="quiz-question-text" class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-6">
+      Question loading...
+    </h3>
+
+    <!-- Question Code Snippet -->
+    <pre id="quiz-question-code" class="hidden p-4 mb-6 bg-zinc-950 text-zinc-100 rounded-md overflow-x-auto text-sm font-mono border border-gray-800 dark:border-zinc-800"></pre>
+
+    <!-- Options List -->
+    <div id="quiz-options-container" class="space-y-3.5">
+      <!-- Options will be injected here via JavaScript -->
+    </div>
+
+    <!-- Explanation Card -->
+    <div 
+      id="quiz-explanation-box" 
+      class="hidden mt-6 p-4 border border-blue-100 dark:border-blue-950/40 bg-blue-50/20 dark:bg-blue-950/10 rounded transition-all duration-150"
+    >
+      <div class="flex gap-3">
+        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364.364l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+        </svg>
+        <div>
+          <h4 class="font-bold text-sm text-blue-950 dark:text-blue-200">Explanation</h4>
+          <p id="quiz-explanation-text" class="mt-1 text-sm text-blue-900/90 dark:text-blue-300/80">
+            Explanation content...
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next / Submit Panel -->
+    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-zinc-800 flex justify-end">
+      <button 
+        id="quiz-next-btn"
+        disabled
+        class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-150 dark:disabled:bg-zinc-800 text-white disabled:text-gray-400 dark:disabled:text-zinc-500 font-semibold rounded cursor-pointer disabled:cursor-not-allowed transition-all duration-150"
+      >
+        Next Question
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. Result Screen -->
+  <div id="quiz-result-screen" class="hidden p-8 text-center sm:p-12">
+    <div class="inline-flex p-2.5 rounded-sm bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 mb-6 border border-emerald-200 dark:border-emerald-900/50">
+      <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+    </div>
+
+    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+      Quiz Completed!
+    </h2>
+    <p id="quiz-performance-desc" class="mt-3 text-base text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+      Here is your score breakdown:
+    </p>
+
+    <!-- Scorecard Panel -->
+    <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto my-8 border border-gray-200 dark:border-zinc-800 rounded-md bg-gray-50/50 dark:bg-zinc-900/30 p-4">
+      <div class="text-center p-3 border-r border-gray-200 dark:border-zinc-800">
+        <span class="block text-xs uppercase tracking-wider font-semibold text-gray-400 dark:text-zinc-500">Correct Answers</span>
+        <span id="quiz-score-ratio" class="block text-3xl font-extrabold text-gray-900 dark:text-white mt-1">0/0</span>
+      </div>
+      <div class="text-center p-3">
+        <span class="block text-xs uppercase tracking-wider font-semibold text-gray-400 dark:text-zinc-500">Percentage</span>
+        <span id="quiz-score-percentage" class="block text-3xl font-extrabold text-blue-600 dark:text-blue-400 mt-1">0%</span>
+      </div>
+    </div>
+
+    <!-- Retry Controls -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+      <button 
+        id="quiz-restart-btn"
+        class="w-full sm:w-auto px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 font-semibold rounded transition-all duration-150 cursor-pointer"
+      >
+        Retry Quiz
+      </button>
+      <a 
+        id="quiz-back-btn"
+        href="./"
+        class="w-full sm:w-auto px-6 py-3 border border-gray-200 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 font-semibold rounded transition-all duration-150"
+      >
+        Back to Subject
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface Question {
+    id: number;
+    question: string;
+    code?: string;
+    options: string[];
+    correctAnswer: string;
+    explanation?: string;
+  }
+
+  interface QuizData {
+    title: string;
+    subject: string;
+    year: number;
+    questions: Question[];
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const widget = document.getElementById('quiz-widget');
+    if (!widget) return;
+
+    // Parse Quiz Data
+    const rawData = widget.getAttribute('data-quiz');
+    if (!rawData) return;
+    const quiz: QuizData = JSON.parse(rawData);
+
+    // Get DOM Elements
+    const startScreen = document.getElementById('quiz-start-screen')!;
+    const activeScreen = document.getElementById('quiz-active-screen')!;
+    const resultScreen = document.getElementById('quiz-result-screen')!;
+    
+    const startBtn = document.getElementById('start-quiz-btn')!;
+    const nextBtn = document.getElementById('quiz-next-btn') as HTMLButtonElement;
+    const restartBtn = document.getElementById('quiz-restart-btn')!;
+    
+    const currentNumSpan = document.getElementById('quiz-current-question-num')!;
+    const totalNumSpan = document.getElementById('quiz-total-questions-num')!;
+    const progressBar = document.getElementById('quiz-progress-bar')!;
+    const questionText = document.getElementById('quiz-question-text')!;
+    const questionCode = document.getElementById('quiz-question-code')!;
+    const optionsContainer = document.getElementById('quiz-options-container')!;
+    
+    const explanationBox = document.getElementById('quiz-explanation-box')!;
+    const explanationText = document.getElementById('quiz-explanation-text')!;
+    
+    const scoreRatioSpan = document.getElementById('quiz-score-ratio')!;
+    const scorePercentageSpan = document.getElementById('quiz-score-percentage')!;
+    const performanceDesc = document.getElementById('quiz-performance-desc')!;
+
+    // Quiz State variables
+    let currentIndex = 0;
+    let score = 0;
+    let selectedOption: string | null = null;
+    let isAnswered = false;
+
+    // Start Quiz
+    startBtn.addEventListener('click', () => {
+      startScreen.classList.add('hidden');
+      activeScreen.classList.remove('hidden');
+      initQuiz();
+    });
+
+    // Initialize Quiz UI
+    const initQuiz = () => {
+      currentIndex = 0;
+      score = 0;
+      isAnswered = false;
+      selectedOption = null;
+      totalNumSpan.textContent = quiz.questions.length.toString();
+      renderQuestion();
+    };
+
+    // Render Question State
+    const renderQuestion = () => {
+      const q = quiz.questions[currentIndex];
+      isAnswered = false;
+      selectedOption = null;
+      
+      // Update Text & Numbers
+      currentNumSpan.textContent = (currentIndex + 1).toString();
+      questionText.textContent = q.question;
+      
+      // Render code block if present
+      if (q.code) {
+        questionCode.textContent = q.code;
+        questionCode.classList.remove('hidden');
+      } else {
+        questionCode.classList.add('hidden');
+      }
+      
+      // Update Progress Bar
+      const progressPercent = ((currentIndex) / quiz.questions.length) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Reset UI Elements
+      explanationBox.classList.add('hidden');
+      nextBtn.disabled = true;
+      nextBtn.textContent = currentIndex === quiz.questions.length - 1 ? 'Finish Quiz' : 'Next Question';
+      
+      // Render Options
+      optionsContainer.innerHTML = '';
+      q.options.forEach((option, index) => {
+        const optionLetter = String.fromCharCode(65 + index); // A, B, C, D...
+        
+        const optionBtn = document.createElement('button');
+        optionBtn.type = 'button';
+        optionBtn.className = 'w-full text-left p-4 rounded border border-gray-200 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 hover:bg-blue-50/10 dark:hover:bg-blue-950/5 transition-all duration-150 cursor-pointer flex items-center justify-between group';
+        optionBtn.setAttribute('data-option', option);
+
+        optionBtn.innerHTML = `
+          <div class="flex items-center space-x-3.5">
+            <span class="w-8 h-8 rounded-sm bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400 group-hover:bg-blue-100 group-hover:text-blue-600 dark:group-hover:bg-blue-950/40 dark:group-hover:text-blue-400 font-bold flex items-center justify-center text-sm transition-colors duration-150">
+              ${optionLetter}
+            </span>
+            <span class="font-medium text-gray-700 dark:text-zinc-200 text-sm sm:text-base">${option}</span>
+          </div>
+          <div class="quiz-option-status-icon text-gray-300 dark:text-zinc-700">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9"></circle>
+            </svg>
+          </div>
+        `;
+
+        optionBtn.addEventListener('click', () => handleOptionSelect(option, optionBtn));
+        optionsContainer.appendChild(optionBtn);
+      });
+    };
+
+    // Handle Option Selection
+    const handleOptionSelect = (option: string, clickedBtn: HTMLButtonElement) => {
+      if (isAnswered) return;
+      isAnswered = true;
+      selectedOption = option;
+
+      const q = quiz.questions[currentIndex];
+      const isCorrect = option === q.correctAnswer;
+
+      if (isCorrect) {
+        score++;
+      }
+
+      // Update styles of all buttons
+      const buttons = optionsContainer.querySelectorAll('button');
+      buttons.forEach((btn) => {
+        const btnOption = btn.getAttribute('data-option');
+        const iconDiv = btn.querySelector('.quiz-option-status-icon')!;
+        const letterSpan = btn.querySelector('span')!;
+        
+        // Disable pointer hover effects
+        btn.classList.remove('hover:border-blue-600', 'dark:hover:border-blue-500', 'hover:bg-blue-50/10', 'dark:hover:bg-blue-950/5', 'cursor-pointer');
+        btn.classList.add('cursor-default');
+
+        if (btnOption === q.correctAnswer) {
+          // Highlight correct answer
+          btn.classList.add('border-green-500', 'bg-green-50/30', 'dark:bg-green-950/10', 'text-green-700', 'dark:text-green-400');
+          letterSpan.classList.add('bg-green-100', 'text-green-700', 'dark:bg-green-950/40', 'dark:text-green-400');
+          iconDiv.innerHTML = `
+            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+            </svg>
+          `;
+        } else if (btnOption === option && !isCorrect) {
+          // Highlight selected wrong answer
+          btn.classList.add('border-red-500', 'bg-red-50/30', 'dark:bg-red-950/10', 'text-red-700', 'dark:text-red-400');
+          letterSpan.classList.add('bg-red-100', 'text-red-700', 'dark:bg-red-950/40', 'dark:text-red-400');
+          iconDiv.innerHTML = `
+            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          `;
+        } else {
+          // Dim other options
+          btn.classList.add('opacity-50');
+        }
+      });
+
+      // Display explanation if available
+      if (q.explanation) {
+        explanationText.textContent = q.explanation;
+        explanationBox.classList.remove('hidden');
+      }
+
+      // Enable next question button
+      nextBtn.disabled = false;
+    };
+
+    // Next Question or Finish Quiz Action
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex === quiz.questions.length - 1) {
+        // Last question - show result screen
+        activeScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+        renderResults();
+      } else {
+        // Go to next question
+        currentIndex++;
+        renderQuestion();
+      }
+    });
+
+    // Render Final Results
+    const renderResults = () => {
+      progressBar.style.width = `100%`;
+      
+      const total = quiz.questions.length;
+      const percentage = Math.round((score / total) * 100);
+      
+      scoreRatioSpan.textContent = `${score}/${total}`;
+      scorePercentageSpan.textContent = `${percentage}%`;
+
+      // Set performance message
+      let desc = '';
+      if (percentage === 100) {
+        desc = 'Perfect Score! You have mastered this module.';
+      } else if (percentage >= 80) {
+        desc = 'Excellent job! You have a solid grasp of the subject.';
+      } else if (percentage >= 50) {
+        desc = 'Good attempt. Review the explanations to reinforce your understanding.';
+      } else {
+        desc = 'Keep studying! Read the subject summaries and try again.';
+      }
+      performanceDesc.textContent = desc;
+    };
+
+    // Restart Quiz
+    restartBtn.addEventListener('click', () => {
+      resultScreen.classList.add('hidden');
+      activeScreen.classList.remove('hidden');
+      initQuiz();
+    });
+  });
+</script>

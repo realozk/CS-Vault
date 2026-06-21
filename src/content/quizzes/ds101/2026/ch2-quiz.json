@@ -1,0 +1,43 @@
+{
+  "title": "Ch 2 Practice Test",
+  "subject": "Data Structures",
+  "year": 2026,
+  "questions": [
+    {
+      "id": 1,
+      "question": "_____ is the organization of data in a computer's memory or in a disk file.",
+      "options": [
+        "Algorithm",
+        "Data structure",
+        "Variable",
+        "Compiler"
+      ],
+      "correctAnswer": "Data structure",
+      "explanation": "This is the standard textbook definition of a data structure (verified against course midterm)."
+    },
+    {
+      "id": 2,
+      "question": "Which of the following best describes a non-primitive data structure?",
+      "options": [
+        "Can store a set of homogeneous and heterogeneous elements",
+        "Is a built-in type",
+        "A relationship exists between its elements",
+        "Both 'can store homogeneous/heterogeneous elements' and 'a relationship exists between elements'"
+      ],
+      "correctAnswer": "Both 'can store homogeneous/heterogeneous elements' and 'a relationship exists between elements'",
+      "explanation": "Non-primitive structures are NOT built-in types (so option 2 alone is false); they can hold homogeneous/heterogeneous data AND have relationships between elements, so the combined answer is correct."
+    },
+    {
+      "id": 3,
+      "question": "_____ is the ability to use an implemented data structure again and again in different places.",
+      "options": [
+        "Reusability",
+        "Polymorphism",
+        "Encapsulation",
+        "Recursion"
+      ],
+      "correctAnswer": "Reusability",
+      "explanation": "Reusability is exactly this property — write a structure once, use it across many programs."
+    }
+  ]
+}

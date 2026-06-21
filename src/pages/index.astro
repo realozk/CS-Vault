@@ -1,0 +1,168 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+// Fetch all summaries and quizzes to discover available subject/year modules
+const summaries = await getCollection('summaries');
+const quizzes = await getCollection('quizzes');
+
+interface ModuleItem {
+  subject: string;
+  year: string;
+  summariesCount: number;
+  quizzesCount: number;
+}
+
+const modulesMap = new Map<string, ModuleItem>();
+
+// Process summaries
+summaries.forEach((s) => {
+  const parts = s.id.split('/');
+  if (parts.length >= 2) {
+    const subject = parts[0];
+    const year = parts[1];
+    const key = `${subject}/${year}`;
+    
+    const existing = modulesMap.get(key) || {
+      subject,
+      year,
+      summariesCount: 0,
+      quizzesCount: 0,
+    };
+    existing.summariesCount++;
+    modulesMap.set(key, existing);
+  }
+});
+
+// Process quizzes
+quizzes.forEach((q) => {
+  const parts = q.id.split('/');
+  if (parts.length >= 2) {
+    const subject = parts[0];
+    const year = parts[1];
+    const key = `${subject}/${year}`;
+    
+    const existing = modulesMap.get(key) || {
+      subject,
+      year,
+      summariesCount: 0,
+      quizzesCount: 0,
+    };
+    existing.quizzesCount++;
+    modulesMap.set(key, existing);
+  }
+});
+
+const modules = Array.from(modulesMap.values()).sort((a, b) => {
+  if (a.subject !== b.subject) {
+    return a.subject.localeCompare(b.subject);
+  }
+  return b.year.localeCompare(a.year); // Sort years descending
+});
+---
+
+<Layout title="Home - CS Course Center" description="Explore university course summaries, class notes, and interactive practice quizzes compiled by Computer Science students.">
+  <div class="space-y-12 py-4">
+    
+    <!-- Hero / Welcome Panel -->
+    <div class="relative overflow-hidden rounded-md bg-zinc-900 dark:bg-zinc-950/60 p-8 sm:p-12 text-white border border-zinc-800 shadow-xs">
+      <div class="relative max-w-2xl">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-zinc-800 border border-zinc-700 text-[10px] font-bold uppercase tracking-wider mb-6">
+          <span class="w-1.5 h-1.5 bg-emerald-500"></span>
+          Academic Repository
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+          Accelerate Your Computer Science Studies
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-zinc-300 font-light">
+          CS Vaulte is an open-source, community-driven space hosting clear, student-focused subject summaries and interactive self-assessment quizzes.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a 
+            href="#modules-directory" 
+            class="px-5 py-2.5 bg-white text-zinc-950 hover:bg-zinc-100 font-semibold rounded transition-all duration-150 shadow-xs"
+          >
+            Browse Modules
+          </a>
+          <a 
+            href="https://github.com/realozk/CS-Vault" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="px-5 py-2.5 border border-zinc-700 hover:border-zinc-500 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded transition-all duration-150"
+          >
+            Contribute on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modules Directory -->
+    <div id="modules-directory" class="space-y-6 scroll-mt-24">
+      <div class="flex items-center justify-between border-b border-gray-200 dark:border-zinc-800 pb-4">
+        <div>
+          <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+            Academic Course Modules
+          </h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            Select a subject to view its study notes and launch practice test widgets.
+          </p>
+        </div>
+      </div>
+
+      {modules.length === 0 ? (
+        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-12 text-center flex flex-col items-center justify-center">
+          <svg class="w-12 h-12 text-gray-400 dark:text-zinc-600 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+          </svg>
+          <h3 class="font-bold text-lg text-gray-700 dark:text-zinc-300">Repository is Empty</h3>
+          <p class="text-sm text-gray-400 mt-1">Create summaries in <code class="bg-gray-100 dark:bg-zinc-800 px-1 py-0.5 rounded-sm">src/content/summaries/</code> to see them listed here.</p>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {modules.map((m) => (
+            <a 
+              href={`/${m.subject}/${m.year}`}
+              class="group relative bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 rounded-md p-6 shadow-xs hover:shadow-sm transition-all duration-200 flex flex-col justify-between"
+            >
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-4">
+                  <span class="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400 border border-transparent dark:border-zinc-700">
+                    {m.year} Academic Year
+                  </span>
+                  <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
+                
+                <h3 class="text-lg font-extrabold text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  {m.subject.toUpperCase()}
+                </h3>
+                
+                <p class="text-xs text-gray-400 mt-1">
+                  Computer Science Course Syllabus
+                </p>
+              </div>
+
+              <!-- Metadata stats footer -->
+              <div class="mt-8 pt-4 border-t border-gray-100 dark:border-zinc-800 grid grid-cols-2 gap-4 text-xs font-semibold text-gray-500 dark:text-zinc-400">
+                <div class="flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                  </svg>
+                  <span>{m.summariesCount} Summaries</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                  </svg>
+                  <span>{m.quizzesCount} Quizzes</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+
+  </div>
+</Layout>

@@ -1,0 +1,55 @@
+{
+  "title": "Relational Databases Fundamentals",
+  "subject": "Introduction to Databases",
+  "year": 2026,
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which of the following uniquely identifies a row in a relational database table?",
+      "options": [
+        "Foreign Key",
+        "Primary Key",
+        "Index Key",
+        "Super Key"
+      ],
+      "correctAnswer": "Primary Key",
+      "explanation": "A Primary Key is a specific choice of a minimal set of attributes (columns) that uniquely specifies a tuple (row) in a relation."
+    },
+    {
+      "id": 2,
+      "question": "What type of relationship exists between Students and Courses (assuming a student can take multiple courses, and courses can have multiple students)?",
+      "options": [
+        "One-to-One (1:1)",
+        "One-to-Many (1:M)",
+        "Many-to-Many (M:N)",
+        "None of the above"
+      ],
+      "correctAnswer": "Many-to-Many (M:N)",
+      "explanation": "Since a student can enroll in multiple courses and a course can host multiple students, the relationship is Many-to-Many. In a relational database, this is implemented using a junction/bridge table."
+    },
+    {
+      "id": 3,
+      "question": "Which SQL clause is used to filter records based on a specific condition?",
+      "options": [
+        "GROUP BY",
+        "ORDER BY",
+        "WHERE",
+        "HAVING"
+      ],
+      "correctAnswer": "WHERE",
+      "explanation": "The WHERE clause is used to extract only those records that fulfill a specified search condition."
+    },
+    {
+      "id": 4,
+      "question": "What is a Foreign Key?",
+      "options": [
+        "A key that can only contain strings",
+        "A column that uniquely identifies a row in its own table",
+        "A column that links two tables together by referencing the primary key of another table",
+        "A key imported from an external database server"
+      ],
+      "correctAnswer": "A column that links two tables together by referencing the primary key of another table",
+      "explanation": "A Foreign Key is a field in one table that refers to the Primary Key in another table, establishing a relationship between the rows of the two tables."
+    }
+  ]
+}

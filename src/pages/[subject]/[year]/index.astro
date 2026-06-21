@@ -1,0 +1,292 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const summaries = await getCollection('summaries');
+  const quizzes = await getCollection('quizzes');
+  
+  const paths = new Map<string, { subject: string; year: string }>();
+  
+  // Parse subject and year from file paths (e.g. cs101/2026/db-basics.md)
+  summaries.forEach((entry) => {
+    const parts = entry.id.split('/');
+    if (parts.length >= 2) {
+      const subject = parts[0];
+      const year = parts[1];
+      paths.set(`${subject}/${year}`, { subject, year });
+    }
+  });
+
+  quizzes.forEach((entry) => {
+    const parts = entry.id.split('/');
+    if (parts.length >= 2) {
+      const subject = parts[0];
+      const year = parts[1];
+      paths.set(`${subject}/${year}`, { subject, year });
+    }
+  });
+
+  return Array.from(paths.values()).map((p) => ({
+    params: { subject: p.subject, year: p.year },
+  }));
+}
+
+const { subject, year } = Astro.params;
+
+// Fetch collection items filtering by current subject and year folder
+const rawSummaries = await getCollection('summaries', (entry) => {
+  const parts = entry.id.split('/');
+  return parts[0] === subject && parts[1] === year;
+});
+
+const rawQuizzes = await getCollection('quizzes', (entry) => {
+  const parts = entry.id.split('/');
+  return parts[0] === subject && parts[1] === year;
+});
+
+// Helper to get slug from file path (remove folder structure and extension)
+const getSlug = (id: string) => {
+  const parts = id.split('/');
+  return parts.slice(2).join('-').replace(/\.(md|json)$/, '');
+};
+
+// Render summary content at build time (SSG)
+const summaries = await Promise.all(
+  rawSummaries.map(async (entry) => {
+    const { Content } = await render(entry);
+    return {
+      entry,
+      Content,
+      slug: getSlug(entry.id)
+    };
+  })
+);
+
+const quizzes = rawQuizzes.map((entry) => ({
+  entry,
+  slug: getSlug(entry.id)
+}));
+
+// Determine title based on content
+const pageTitle = `${subject.toUpperCase()} (${year})`;
+---
+
+<Layout title={pageTitle} description={`Summaries and interactive quizzes for ${subject.toUpperCase()} - Academic Year ${year}`}>
+  <div class="space-y-6">
+    
+    <!-- Dashboard Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-zinc-800">
+      <div>
+        <nav class="flex items-center space-x-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+          <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Subjects</a>
+          <span>/</span>
+          <span class="text-gray-800 dark:text-gray-200">{subject}</span>
+          <span>/</span>
+          <span class="text-gray-800 dark:text-gray-200">{year}</span>
+        </nav>
+        <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight flex items-center gap-3">
+          <span>{subject.toUpperCase()}</span>
+          <span class="text-gray-300 dark:text-zinc-700">|</span>
+          <span class="text-lg font-medium text-gray-500 dark:text-gray-400">Academic Year {year}</span>
+        </h1>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left Panel: Sidebar Index of Content (Columns: 4) -->
+      <div class="lg:col-span-4 space-y-6">
+        
+        <!-- Summaries Section -->
+        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-5 shadow-xs">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500 mb-4 flex items-center justify-between">
+            <span>Subject Summaries</span>
+            <span class="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 text-xs px-2 py-0.5 rounded-sm">
+              {summaries.length}
+            </span>
+          </h2>
+          
+          {summaries.length === 0 ? (
+            <p class="text-sm text-gray-400 dark:text-zinc-500 italic py-2">No summaries uploaded yet.</p>
+          ) : (
+            <div class="space-y-2.5" id="summary-tabs">
+              {summaries.map((s, idx) => (
+                <button
+                  data-summary-slug={s.slug}
+                  class={`w-full text-left p-3.5 rounded border transition-all duration-150 cursor-pointer flex flex-col gap-1 text-sm summary-tab-btn ${
+                    idx === 0 
+                      ? 'border-blue-600 dark:border-blue-500 bg-blue-50/10 dark:bg-blue-950/10 text-blue-950 dark:text-blue-100 font-semibold shadow-xs' 
+                      : 'border-gray-100 dark:border-zinc-800 hover:border-gray-300 dark:hover:border-zinc-700 text-gray-600 dark:text-zinc-300'
+                  }`}
+                >
+                  <span class="font-bold block tracking-tight line-clamp-1">{s.entry.data.title}</span>
+                  <span class="text-xs text-gray-400 dark:text-zinc-500 line-clamp-1">{s.entry.data.description}</span>
+                  <span class="text-xs text-gray-400 dark:text-zinc-500 mt-1 flex items-center gap-1.5">
+                    <span>By {s.entry.data.author}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <!-- Quizzes Section -->
+        <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-5 shadow-xs">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500 mb-4 flex items-center justify-between">
+            <span>Practice Quizzes</span>
+            <span class="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 text-xs px-2 py-0.5 rounded-sm">
+              {quizzes.length}
+            </span>
+          </h2>
+          
+          {quizzes.length === 0 ? (
+            <p class="text-sm text-gray-400 dark:text-zinc-500 italic py-2">No quizzes available yet.</p>
+          ) : (
+            <div class="space-y-3">
+              {quizzes.map((q) => (
+                <a
+                  href={`/${subject}/${year}/quiz/${q.slug}`}
+                  class="group block p-4 rounded border border-gray-100 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 bg-gray-50/50 dark:bg-zinc-800/10 hover:bg-blue-50/5 dark:hover:bg-blue-950/5 transition-all duration-150"
+                >
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="font-bold text-sm tracking-tight text-gray-800 dark:text-zinc-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {q.entry.data.title}
+                    </span>
+                    <span class="text-xs text-gray-400 dark:text-zinc-500 flex-shrink-0">
+                      {q.entry.data.questions.length} Qs
+                    </span>
+                  </div>
+                  <span class="text-xs text-gray-400 dark:text-zinc-500 block mt-1 flex items-center gap-1">
+                    Click to launch interactive test 
+                    <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </span>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <!-- Right Panel: Reading Pane for Summaries (Columns: 8) -->
+      <div class="lg:col-span-8 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-6 sm:p-8 shadow-xs min-h-[500px]">
+        {summaries.length === 0 ? (
+          <div class="flex flex-col items-center justify-center py-20 text-center text-gray-400 dark:text-zinc-500">
+            <svg class="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+            <h3 class="font-bold text-lg text-gray-700 dark:text-zinc-300">Nothing to Read</h3>
+            <p class="text-sm mt-1">There are no academic summaries uploaded for this subject yet.</p>
+          </div>
+        ) : (
+          <div>
+            <!-- Rendered Summaries -->
+            {summaries.map((s, idx) => (
+              <div
+                id={`summary-content-${s.slug}`}
+                class={`summary-content-block ${idx === 0 ? '' : 'hidden'}`}
+              >
+                <!-- Summary Header -->
+                <div class="mb-6 pb-6 border-b border-gray-100 dark:border-zinc-800">
+                  <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                    {s.entry.data.title}
+                  </h2>
+                  <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-gray-500 dark:text-gray-400 font-medium">
+                    <span class="flex items-center gap-1.5">
+                      <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                      </svg>
+                      <span>Author:</span>
+                      <strong class="text-gray-800 dark:text-gray-200">{s.entry.data.author}</strong>
+                    </span>
+                    <span>•</span>
+                    <span class="flex items-center gap-1.5">
+                      <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                      </svg>
+                      <span>Published:</span>
+                      <strong class="text-gray-800 dark:text-gray-200">
+                        {s.entry.data.date.toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                      </strong>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Markdown Content Render -->
+                <article class="academic-prose max-w-none">
+                  <s.Content />
+                </article>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.summary-tab-btn');
+    const contents = document.querySelectorAll('.summary-content-block');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const targetSlug = tab.getAttribute('data-summary-slug');
+
+        // Update active tab styling
+        tabs.forEach((btn) => {
+          btn.classList.remove(
+            'border-blue-600',
+            'dark:border-blue-500',
+            'bg-blue-50/10',
+            'dark:bg-blue-950/10',
+            'text-blue-950',
+            'dark:text-blue-100',
+            'font-semibold',
+            'shadow-xs'
+          );
+          btn.classList.add(
+            'border-gray-100',
+            'dark:border-zinc-800',
+            'text-gray-600',
+            'dark:text-zinc-300'
+          );
+        });
+
+        tab.classList.add(
+          'border-blue-600',
+          'dark:border-blue-500',
+          'bg-blue-50/10',
+          'dark:bg-blue-950/10',
+          'text-blue-950',
+          'dark:text-blue-100',
+          'font-semibold',
+          'shadow-xs'
+        );
+        tab.classList.remove(
+          'border-gray-100',
+          'dark:border-zinc-800',
+          'text-gray-600',
+          'dark:text-zinc-300'
+        );
+
+        // Update active content block visibility
+        contents.forEach((content) => {
+          if (content.id === `summary-content-${targetSlug}`) {
+            content.classList.remove('hidden');
+          } else {
+            content.classList.add('hidden');
+          }
+        });
+      });
+    });
+  });
+</script>
