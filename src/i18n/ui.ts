@@ -161,8 +161,10 @@ export const ui = {
 } as const;
 
 export function getLangFromUrl(url: URL) {
-  const [, lang] = url.pathname.split('/');
-  if (lang in ui) return lang as keyof typeof ui;
+  const segments = url.pathname.split('/').filter(Boolean);
+  if (segments.includes('ar')) {
+    return 'ar';
+  }
   return defaultLang;
 }
 
@@ -173,9 +175,32 @@ export function useTranslations(lang: keyof typeof ui) {
 }
 
 export function getLocalizedPath(path: string, lang: keyof typeof ui) {
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const base = import.meta.env.BASE_URL; // E.g., '/CS-Vault/' or '/'
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   if (lang === defaultLang) {
-    return cleanPath;
+    return `${base}${cleanPath}`;
   }
-  return `/ar${cleanPath === '/' ? '' : cleanPath}`;
+  return `${base}ar/${cleanPath}`;
+}
+
+export function getLanguageSwitcherPath(pathname: string, currentLang: keyof typeof ui) {
+  const base = import.meta.env.BASE_URL; // E.g., '/CS-Vault/' or '/'
+  if (currentLang === 'ar') {
+    const searchPart = `${base}ar/`;
+    if (pathname.startsWith(searchPart)) {
+      return base + pathname.slice(searchPart.length);
+    }
+    if (pathname.startsWith('/ar/')) {
+      return '/' + pathname.slice(4);
+    }
+    if (pathname === '/ar') {
+      return '/';
+    }
+    return pathname;
+  } else {
+    if (pathname.startsWith(base)) {
+      return base + 'ar/' + pathname.slice(base.length);
+    }
+    return '/ar' + pathname;
+  }
 }

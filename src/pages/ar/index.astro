@@ -79,7 +79,7 @@ const searchIndex = [
       author: s.data.author,
       subjectCode: s.data.subject_code,
       year: parts[1],
-      url: `/ar/${parts[0]}/${parts[1]}`,
+      url: `${import.meta.env.BASE_URL}ar/${parts[0]}/${parts[1]}`,
       yearLevel: s.data.year_level,
       semester: s.data.semester
     };
@@ -94,7 +94,7 @@ const searchIndex = [
       author: 'System',
       subjectCode: q.data.subject,
       year: parts[1],
-      url: `/ar/${parts[0]}/${parts[1]}/quiz/${slug}`,
+      url: `${import.meta.env.BASE_URL}ar/${parts[0]}/${parts[1]}/quiz/${slug}`,
       yearLevel: q.data.year_level,
       semester: q.data.semester
     };

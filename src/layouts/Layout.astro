@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { getLangFromUrl, useTranslations, getLocalizedPath } from "../i18n/ui";
+import { getLangFromUrl, useTranslations, getLocalizedPath, getLanguageSwitcherPath } from "../i18n/ui";
 
 interface Props {
   title: string;
@@ -136,9 +136,7 @@ const dir = lang === "ar" ? "rtl" : "ltr";
 
           <!-- Language Selector -->
           <a
-            href={lang === "ar"
-              ? Astro.url.pathname.replace(/^\/ar/, "") || "/"
-              : `/ar${Astro.url.pathname}`}
+            href={getLanguageSwitcherPath(Astro.url.pathname, lang)}
             class="text-xs font-bold border border-gray-200 dark:border-zinc-800 px-2 py-1 rounded-sm hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-all duration-150 cursor-pointer"
           >
             {lang === "ar" ? "English" : "العربية "}

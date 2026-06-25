@@ -10,7 +10,7 @@ import Layout from '../layouts/Layout.astro';
       The page you are looking for doesn't exist or has been moved.
     </p>
     <a
-      href="/"
+      href={import.meta.env.BASE_URL}
       class="mt-6 px-5 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-semibold text-sm rounded hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors"
     >
       Back to Home
