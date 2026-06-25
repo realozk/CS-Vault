@@ -8,7 +8,7 @@ export default defineConfig({
   // TODO: Replace with your actual GitHub username, e.g., 'https://john-doe.github.io'
   site: 'https://realozk.github.io',
   // TODO: Replace with your actual GitHub repository name, e.g., '/my-repo-name'
-  base: '/CS-Vault',
+  base: '/CS-Vault/',
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'ar'],

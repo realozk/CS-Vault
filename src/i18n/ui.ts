@@ -175,7 +175,8 @@ export function useTranslations(lang: keyof typeof ui) {
 }
 
 export function getLocalizedPath(path: string, lang: keyof typeof ui) {
-  const base = import.meta.env.BASE_URL; // E.g., '/CS-Vault/' or '/'
+  const rawBase = import.meta.env.BASE_URL;
+  const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   if (lang === defaultLang) {
     return `${base}${cleanPath}`;
@@ -184,7 +185,8 @@ export function getLocalizedPath(path: string, lang: keyof typeof ui) {
 }
 
 export function getLanguageSwitcherPath(pathname: string, currentLang: keyof typeof ui) {
-  const base = import.meta.env.BASE_URL; // E.g., '/CS-Vault/' or '/'
+  const rawBase = import.meta.env.BASE_URL;
+  const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
   if (currentLang === 'ar') {
     const searchPart = `${base}ar/`;
     if (pathname.startsWith(searchPart)) {
