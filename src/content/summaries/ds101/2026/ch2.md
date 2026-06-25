@@ -4,6 +4,8 @@ description: "What a data structure is, ADTs, and how we classify them"
 author: "DS Faculty"
 date: 2026-06-21
 subject_code: "DS101"
+year_level: 2
+semester: 1
 ---
 
 # Ch 2: Introduction to Data Structures and Algorithms

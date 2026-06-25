@@ -14,9 +14,10 @@ interface Props {
     year: number;
     questions: Question[];
   };
+  backUrl?: string;
 }
 
-const { quiz } = Astro.props;
+const { quiz, backUrl = "../.." } = Astro.props;
 ---
 
 <div 
@@ -154,7 +155,7 @@ const { quiz } = Astro.props;
       </button>
       <a 
         id="quiz-back-btn"
-        href="./"
+        href={backUrl}
         class="w-full sm:w-auto px-6 py-3 border border-gray-200 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 font-semibold rounded transition-all duration-150"
       >
         Back to Subject

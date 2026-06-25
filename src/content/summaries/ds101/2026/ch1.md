@@ -4,6 +4,8 @@ description: "Arrays as the foundational data structure"
 author: "DS Faculty"
 date: 2026-06-21
 subject_code: "DS101"
+year_level: 2
+semester: 1
 ---
 
 # Ch 1: Course Overview & Introduction to Arrays

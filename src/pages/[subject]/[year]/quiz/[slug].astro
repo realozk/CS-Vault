@@ -47,7 +47,7 @@ const pageTitle = `${quiz.data.title} - Quiz`;
 
     <!-- Main Widget Container -->
     <div class="py-4">
-      <QuizWidget quiz={quiz.data} />
+      <QuizWidget quiz={quiz.data} backUrl={`/${subject}/${year}`} />
     </div>
   </div>
 </Layout>

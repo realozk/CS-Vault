@@ -4,6 +4,8 @@ description: "A comprehensive summary covering core database concepts, entity-re
 author: "Dr. Sarah Jenkins"
 date: 2026-06-21
 subject_code: "CS101"
+year_level: 1
+semester: 2
 ---
 
 # Introduction to Relational Databases

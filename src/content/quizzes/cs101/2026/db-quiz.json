@@ -2,6 +2,8 @@
   "title": "Relational Databases Fundamentals",
   "subject": "Introduction to Databases",
   "year": 2026,
+  "year_level": 1,
+  "semester": 2,
   "questions": [
     {
       "id": 1,

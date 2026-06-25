@@ -14,6 +14,8 @@ const summariesCollection = defineCollection({
     author: z.string().min(1, 'Author is required'),
     date: z.coerce.date(),
     subject_code: z.string().min(1, 'Subject code is required'),
+    year_level: z.coerce.number().int().min(1).max(4),
+    semester: z.coerce.number().int().min(1).max(2),
   }),
 });
 
@@ -28,6 +30,8 @@ const quizzesCollection = defineCollection({
     title: z.string().min(1, 'Quiz title is required'),
     subject: z.string().min(1, 'Subject name is required'),
     year: z.number().int().positive(),
+    year_level: z.coerce.number().int().min(1).max(4),
+    semester: z.coerce.number().int().min(1).max(2),
     questions: z.array(
       z.object({
         id: z.number().int(),

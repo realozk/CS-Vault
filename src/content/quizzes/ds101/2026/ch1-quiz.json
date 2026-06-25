@@ -2,6 +2,8 @@
   "title": "Ch 1 Practice Test",
   "subject": "Data Structures",
   "year": 2026,
+  "year_level": 2,
+  "semester": 1,
   "questions": [
     {
       "id": 1,

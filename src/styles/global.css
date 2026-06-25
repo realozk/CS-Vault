@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   
@@ -28,8 +30,9 @@ html {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-body {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+/* Buttery smooth theme toggling transitions */
+body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, h4, span, article {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, fill 0.25s ease, stroke 0.25s ease, opacity 0.25s ease;
 }
 
 /* Custom Glassmorphism Utilities */
@@ -172,4 +175,73 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1aa;
+}
+
+/* Spotlight Hover Card Effect */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(59, 130, 246, 0.05),
+    transparent 80%
+  );
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.dark .spotlight-card::before {
+  background: radial-gradient(
+    220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(16, 185, 129, 0.07),
+    transparent 80%
+  );
+}
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+/* Ensure card content renders above the hover glow */
+.spotlight-card > * {
+  position: relative;
+  z-index: 10;
+}
+
+/* Floating Copy Code Buttons */
+.academic-prose pre {
+  position: relative;
+}
+.copy-code-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.35rem;
+  background-color: rgba(39, 39, 42, 0.6);
+  border: 1px solid rgba(63, 63, 70, 0.4);
+  color: #a1a1aa;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+.academic-prose pre:hover .copy-code-btn {
+  opacity: 1;
+}
+.copy-code-btn:hover {
+  background-color: rgba(63, 63, 70, 0.8);
+  color: #f4f4f5;
+}
+.copy-code-btn.copied {
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.4);
+  background-color: rgba(16, 185, 129, 0.1);
 }
