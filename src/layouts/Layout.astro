@@ -24,6 +24,17 @@ const {
     <title>{title} | CS Vaulte</title>
     <meta name="title" content={`${title} | CS Vaulte`} />
     <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} | CS Vaulte`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="CS Vaulte" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${title} | CS Vaulte`} />
+    <meta name="twitter:description" content={description} />
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -105,12 +116,7 @@ const {
           <a href="https://github.com/realozk/CS-Vault" target="_blank" rel="noopener noreferrer" class="hover:text-gray-900 dark:hover:text-white transition-colors duration-200">
             GitHub
           </a>
-          <a href="#" class="hover:text-gray-900 dark:hover:text-white transition-colors duration-200">
-            Terms
-          </a>
-          <a href="#" class="hover:text-gray-900 dark:hover:text-white transition-colors duration-200">
-            Privacy Policy
-          </a>
+
         </div>
       </div>
     </footer>

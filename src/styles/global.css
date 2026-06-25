@@ -245,3 +245,34 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
   border-color: rgba(16, 185, 129, 0.4);
   background-color: rgba(16, 185, 129, 0.1);
 }
+
+/* Print Styles */
+@media print {
+  header, footer, nav, button, .copy-code-btn,
+  #quiz-widget, #subject-progress-card, #summary-tabs,
+  .spotlight-card::before {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .academic-prose {
+    font-size: 12pt;
+  }
+
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .lg\:col-span-4 {
+    display: none !important;
+  }
+
+  .lg\:col-span-8 {
+    grid-column: 1 / -1 !important;
+  }
+}

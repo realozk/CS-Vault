@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
+import Icon from '../../../components/Icon.astro';
 
 export async function getStaticPaths() {
   const summaries = await getCollection('summaries');
@@ -149,17 +150,17 @@ const pageTitle = `${subject.toUpperCase()} (${year})`;
                     <div class="flex-grow">
                       <span class="font-bold block tracking-tight line-clamp-1 summary-title-text">{s.entry.data.title}</span>
                       <span class="text-xs text-gray-400 dark:text-zinc-500 line-clamp-1">{s.entry.data.description}</span>
-                      <span class="text-xs text-gray-400 dark:text-zinc-500 mt-1 flex items-center gap-1.5">
+                      <div class="text-xs text-gray-400 dark:text-zinc-500 mt-1 flex items-center gap-1.5 flex-wrap">
                         <span>By {s.entry.data.author}</span>
-                      </span>
-                      <span>•</span>
-                      <span class="flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span>Reading Time:</span>
-                        <strong class="text-gray-800 dark:text-gray-200">{s.readingTime} min read</strong>
-                      </span>
+                        <span>•</span>
+                        <span class="flex items-center gap-1.5">
+                          <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                          <span>Reading Time:</span>
+                          <strong class="text-gray-800 dark:text-gray-200">{s.readingTime} min read</strong>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </button>
@@ -232,17 +233,13 @@ const pageTitle = `${subject.toUpperCase()} (${year})`;
                   </h2>
                   <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-gray-500 dark:text-gray-400 font-medium">
                     <span class="flex items-center gap-1.5">
-                      <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                      </svg>
+                      <Icon name="user" class="w-3.5 h-3.5 text-gray-400" />
                       <span>Author:</span>
                       <strong class="text-gray-800 dark:text-gray-200">{s.entry.data.author}</strong>
                     </span>
                     <span>•</span>
                     <span class="flex items-center gap-1.5">
-                      <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                      </svg>
+                      <Icon name="calendar" class="w-3.5 h-3.5 text-gray-400" />
                       <span>Published:</span>
                       <strong class="text-gray-800 dark:text-gray-200">
                         {s.entry.data.date.toLocaleDateString('en-US', {
@@ -254,9 +251,7 @@ const pageTitle = `${subject.toUpperCase()} (${year})`;
                     </span>
                     <span>•</span>
                     <span class="flex items-center gap-1.5">
-                      <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
+                      <Icon name="clock" class="w-3.5 h-3.5 text-gray-400" />
                       <span>Reading Time:</span>
                       <strong class="text-gray-800 dark:text-gray-200">{s.readingTime} min read</strong>
                     </span>
@@ -276,187 +271,4 @@ const pageTitle = `${subject.toUpperCase()} (${year})`;
   </div>
 </Layout>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const tabs = document.querySelectorAll('.summary-tab-btn');
-    const contents = document.querySelectorAll('.summary-content-block');
-    const checkboxes = document.querySelectorAll('.summary-checkbox') as NodeListOf<HTMLInputElement>;
-    const progressFill = document.getElementById('subject-progress-fill');
-    const progressPercentText = document.getElementById('progress-percentage-text');
-    const progressStatusDesc = document.getElementById('progress-status-desc');
-
-    // Retrieve storage key based on URL parameters
-    const pathParts = window.location.pathname.split('/').filter(Boolean);
-    const subject = pathParts[0] || 'unknown';
-    const year = pathParts[1] || 'unknown';
-    const storageKey = `cs-vault-progress-${subject}-${year}`;
-
-    // Load progress from localStorage
-    let completedSlugs: string[] = [];
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (stored) {
-        completedSlugs = JSON.parse(stored);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-
-    const updateProgressBar = () => {
-      const total = checkboxes.length;
-      if (total === 0) return;
-      const checkedCount = completedSlugs.length;
-      const percent = Math.round((checkedCount / total) * 100);
-
-      if (progressFill) progressFill.style.width = `${percent}%`;
-      if (progressPercentText) progressPercentText.textContent = `${percent}%`;
-      if (progressStatusDesc) {
-        progressStatusDesc.textContent = `${checkedCount} of ${total} summaries completed. ${
-          percent === 100 ? 'Perfect! You are fully prepared!' : 'Keep up the good work!'
-        }`;
-      }
-    };
-
-    // Initialize checklist checkbox states
-    checkboxes.forEach((cb) => {
-      const slug = cb.getAttribute('data-summary-check');
-      if (!slug) return;
-      const isChecked = completedSlugs.includes(slug);
-      cb.checked = isChecked;
-      
-      const titleSpan = cb.closest('button')?.querySelector('.summary-title-text');
-      if (isChecked) {
-        titleSpan?.classList.add('line-through', 'opacity-50');
-      }
-
-      // Handle checkbox change
-      cb.addEventListener('change', () => {
-        const checked = cb.checked;
-        if (checked) {
-          if (!completedSlugs.includes(slug)) {
-            completedSlugs.push(slug);
-          }
-          titleSpan?.classList.add('line-through', 'opacity-50');
-        } else {
-          completedSlugs = completedSlugs.filter(item => item !== slug);
-          titleSpan?.classList.remove('line-through', 'opacity-50');
-        }
-
-        localStorage.setItem(storageKey, JSON.stringify(completedSlugs));
-        updateProgressBar();
-      });
-
-      // Prevent checklist toggles from triggering tab navigation switches
-      cb.addEventListener('click', (e) => {
-        e.stopPropagation();
-      });
-    });
-
-    // Run initial progress calculation
-    updateProgressBar();
-
-    // Tab view switching
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const targetSlug = tab.getAttribute('data-summary-slug');
-
-        // Update active tab styling
-        tabs.forEach((btn) => {
-          btn.classList.remove(
-            'border-blue-600',
-            'dark:border-blue-500',
-            'bg-blue-50/10',
-            'dark:bg-blue-950/10',
-            'text-blue-950',
-            'dark:text-blue-100',
-            'font-semibold',
-            'shadow-xs'
-          );
-          btn.classList.add(
-            'border-gray-100',
-            'dark:border-zinc-800',
-            'text-gray-600',
-            'dark:text-zinc-300'
-          );
-        });
-
-        tab.classList.add(
-          'border-blue-600',
-          'dark:border-blue-500',
-          'bg-blue-50/10',
-          'dark:bg-blue-950/10',
-          'text-blue-950',
-          'dark:text-blue-100',
-          'font-semibold',
-          'shadow-xs'
-        );
-        tab.classList.remove(
-          'border-gray-100',
-          'dark:border-zinc-800',
-          'text-gray-600',
-          'dark:text-zinc-300'
-        );
-
-        // Update active content block visibility
-        contents.forEach((content) => {
-          if (content.id === `summary-content-${targetSlug}`) {
-            content.classList.remove('hidden');
-          } else {
-            content.classList.add('hidden');
-          }
-        });
-        initCopyButtons();
-      });
-    });
-
-    // 5. Code Block Copy Button Injector
-    const initCopyButtons = () => {
-      const preBlocks = document.querySelectorAll('.academic-prose pre');
-      preBlocks.forEach((pre) => {
-        if (pre.querySelector('.copy-code-btn')) return;
-
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'copy-code-btn';
-        button.ariaLabel = 'Copy code snippet';
-        button.innerHTML = `
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m-2 4h10m-5-5v10"></path>
-          </svg>
-        `;
-
-        button.addEventListener('click', async () => {
-          const codeElement = pre.querySelector('code');
-          const codeText = codeElement ? codeElement.innerText : '';
-          
-          try {
-             await navigator.clipboard.writeText(codeText);
-             
-             button.classList.add('copied');
-             button.innerHTML = `
-               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-               </svg>
-             `;
-             
-             setTimeout(() => {
-               button.classList.remove('copied');
-               button.innerHTML = `
-                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                   <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m-2 4h10m-5-5v10"></path>
-                 </svg>
-               `;
-             }, 1500);
-          } catch (err) {
-             console.error('Failed to copy text: ', err);
-          }
-        });
-
-        pre.appendChild(button);
-      });
-    };
-
-    // Run initial loaders
-    initCopyButtons();
-  });
-</script>
+<script src="../../../scripts/subject-dashboard.ts"></script>

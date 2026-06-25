@@ -1,20 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import SemesterSection from '../components/SemesterSection.astro';
+import type { ModuleItem } from '../types';
 
 // Fetch all summaries and quizzes to discover available subject/year modules
 const summaries = await getCollection('summaries');
 const quizzes = await getCollection('quizzes');
 
-interface ModuleItem {
-  subject: string; // folder name (e.g. cs101)
-  subjectName: string;
-  year: string;
-  yearLevel: number;
-  semester: number;
-  summariesCount: number;
-  quizzesCount: number;
-}
+
 
 const modulesMap = new Map<string, ModuleItem>();
 
@@ -68,6 +62,10 @@ const modules = Array.from(modulesMap.values()).sort((a, b) => {
   }
   return b.year.localeCompare(a.year);
 });
+
+// Auto-detect default year tab (first year with content)
+const availableYears = [...new Set(modules.map(m => m.yearLevel))].sort((a, b) => a - b);
+const defaultYear = availableYears.length > 0 ? availableYears[0] : 1;
 
 // Compile Client-Side Search Index
 const searchIndex = [
@@ -163,7 +161,7 @@ const searchIndex = [
     </div>
 
     <!-- Main Directory Block -->
-    <div id="directory-container" class="space-y-6 scroll-mt-24">
+    <div id="directory-container" class="space-y-6 scroll-mt-24" data-search-index={JSON.stringify(searchIndex)}>
       
       <!-- Search Results Pane (Initially Hidden) -->
       <div id="search-results-pane" class="hidden space-y-4">
@@ -188,7 +186,7 @@ const searchIndex = [
             <button
               data-year-tab={year}
               class={`px-5 py-3 border-b-2 font-bold text-sm tracking-tight transition-all duration-150 whitespace-nowrap cursor-pointer ${
-                year === 3 
+                year === defaultYear 
                   ? 'border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400' 
                   : 'border-transparent text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-200 dark:hover:border-zinc-800'
               }`}
@@ -203,7 +201,7 @@ const searchIndex = [
           const yearModules = modules.filter(m => m.yearLevel === yearNum);
           
           return (
-            <div data-year-content={yearNum} class={`space-y-10 ${yearNum === 3 ? '' : 'hidden'}`}>
+            <div data-year-content={yearNum} class={`space-y-10 ${yearNum === defaultYear ? '' : 'hidden'}`}>
               {yearModules.length === 0 ? (
                 <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-12 text-center flex flex-col items-center justify-center">
                   <svg class="w-12 h-12 text-gray-300 dark:text-zinc-700 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -222,79 +220,13 @@ const searchIndex = [
               ) : (
                 <div class="space-y-8">
                   
-                  <!-- Semester 1 Section -->
-                  <div class="space-y-4">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500 flex items-center gap-2">
-                      <span>Semester 1</span>
-                      <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                    </h3>
-                    
-                    {yearModules.filter(m => m.semester === 1).length === 0 ? (
-                      <p class="text-xs text-gray-400 dark:text-zinc-500 italic py-2">No subjects uploaded for this semester yet.</p>
-                    ) : (
-                      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {yearModules.filter(m => m.semester === 1).map((m) => (
-                          <a 
-                            href={`/${m.subject}/${m.year}`}
-                            class="group block spotlight-card bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 hover:border-blue-600 dark:hover:border-blue-500 rounded-md p-4 shadow-xs hover:shadow-md transition-all duration-200"
-                          >
-                            <div class="flex items-center justify-between gap-2 mb-2">
-                              <span class="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400 border border-transparent dark:border-zinc-700">
-                                {m.subjectName.toUpperCase()}
-                              </span>
-                              <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-150 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
-                              </svg>
-                            </div>
-                            <h4 class="text-sm font-extrabold text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                              {m.subject.toUpperCase().replace(/-/g, ' ')}
-                            </h4>
-                            <div class="mt-3 pt-2.5 border-t border-gray-100 dark:border-zinc-800 flex gap-3 text-[10px] font-semibold text-gray-500 dark:text-zinc-400">
-                              <span class="flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-blue-650 dark:bg-blue-400"></span> {m.summariesCount} summaries</span>
-                              <span class="flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-emerald-650 dark:bg-emerald-400"></span> {m.quizzesCount} quizzes</span>
-                            </div>
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <!-- Semester 2 Section -->
-                  <div class="space-y-4">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500 flex items-center gap-2">
-                      <span>Semester 2</span>
-                      <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-                    </h3>
-                    
-                    {yearModules.filter(m => m.semester === 2).length === 0 ? (
-                      <p class="text-xs text-gray-400 dark:text-zinc-500 italic py-2">No subjects uploaded for this semester yet.</p>
-                    ) : (
-                      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {yearModules.filter(m => m.semester === 2).map((m) => (
-                          <a 
-                            href={`/${m.subject}/${m.year}`}
-                            class="group block spotlight-card bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 hover:border-blue-600 dark:hover:border-blue-500 rounded-md p-4 shadow-xs hover:shadow-md transition-all duration-200"
-                          >
-                            <div class="flex items-center justify-between gap-2 mb-2">
-                              <span class="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-400 border border-transparent dark:border-zinc-700">
-                                {m.subjectName.toUpperCase()}
-                              </span>
-                              <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-150 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
-                              </svg>
-                            </div>
-                            <h4 class="text-sm font-extrabold text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                              {m.subject.toUpperCase().replace(/-/g, ' ')}
-                            </h4>
-                            <div class="mt-3 pt-2.5 border-t border-gray-100 dark:border-zinc-800 flex gap-3 text-[10px] font-semibold text-gray-500 dark:text-zinc-400">
-                              <span class="flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-blue-650 dark:bg-blue-400"></span> {m.summariesCount} summaries</span>
-                              <span class="flex items-center gap-1"><span class="w-1 h-1 rounded-full bg-emerald-650 dark:bg-emerald-400"></span> {m.quizzesCount} quizzes</span>
-                            </div>
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  {[1, 2].map((sem) => (
+                    <SemesterSection 
+                      semester={sem} 
+                      modules={yearModules.filter(m => m.semester === sem)}
+                      accentColor={sem === 1 ? 'blue' : 'indigo'}
+                    />
+                  ))}
 
                 </div>
               )}
@@ -307,202 +239,4 @@ const searchIndex = [
   </div>
 </Layout>
 
-<script define:vars={{ searchIndex }}>
-  // Run immediately to avoid DOMContentLoaded race condition with inline script execution
-  const initTabsAndSearch = () => {
-    // 1. Year tab filtering
-    const tabButtons = document.querySelectorAll('[data-year-tab]');
-    const contentBlocks = document.querySelectorAll('[data-year-content]');
-
-    tabButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const year = button.getAttribute('data-year-tab');
-
-        // Toggle active button styling
-        tabButtons.forEach(btn => {
-          btn.classList.remove('border-blue-600', 'dark:border-blue-500', 'text-blue-600', 'dark:text-blue-400');
-          btn.classList.add('border-transparent', 'text-gray-500', 'dark:text-zinc-400', 'hover:text-gray-900', 'dark:hover:text-white', 'hover:border-gray-200', 'dark:hover:border-zinc-800');
-        });
-        button.classList.add('border-blue-600', 'dark:border-blue-500', 'text-blue-600', 'dark:text-blue-400');
-        button.classList.remove('border-transparent', 'text-gray-500', 'dark:text-zinc-400', 'hover:text-gray-900', 'dark:hover:text-white', 'hover:border-gray-200', 'dark:hover:border-zinc-800');
-
-        // Toggle visibility of columns
-        contentBlocks.forEach(block => {
-          if (block.getAttribute('data-year-content') === year) {
-            block.classList.remove('hidden');
-          } else {
-            block.classList.add('hidden');
-          }
-        });
-      });
-    });
-
-    // 2. Global fuzzy search engine
-    const searchInput = document.getElementById('global-search-input');
-    const searchResultsPane = document.getElementById('search-results-pane');
-    const coreTabView = document.getElementById('core-tab-view');
-    const resultsGrid = document.getElementById('search-results-grid');
-    const resultsCount = document.getElementById('search-results-count');
-    const noResults = document.getElementById('search-no-results');
-
-    searchInput?.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-
-      if (query === '') {
-        // Show core tab view, hide search pane
-        searchResultsPane.classList.add('hidden');
-        coreTabView.classList.remove('hidden');
-        return;
-      }
-
-      // Hide tabs, show search pane
-      coreTabView.classList.add('hidden');
-      searchResultsPane.classList.remove('hidden');
-
-      // Filter index
-      const matched = searchIndex.filter(item => {
-        return (
-          item.title.toLowerCase().includes(query) ||
-          item.description.toLowerCase().includes(query) ||
-          item.subjectCode.toLowerCase().includes(query)
-        );
-      });
-
-      // Render search results
-      resultsGrid.innerHTML = '';
-      resultsCount.textContent = `${matched.length} match${matched.length === 1 ? '' : 'es'}`;
-
-      if (matched.length === 0) {
-        noResults.classList.remove('hidden');
-        return;
-      }
-      noResults.classList.add('hidden');
-
-      matched.forEach(item => {
-        const typeBadge = item.type === 'summary' 
-          ? '<span class="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-900">Summary</span>' 
-          : '<span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-900">Quiz</span>';
-
-        const resultCard = document.createElement('a');
-        resultCard.href = item.url;
-        resultCard.className = 'group spotlight-card p-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 rounded-md shadow-xs transition-all duration-150 flex flex-col justify-between';
-        resultCard.innerHTML = `
-          <div>
-            <div class="flex items-center gap-2 mb-2">
-              ${typeBadge}
-              <span class="font-mono text-xs font-semibold text-gray-500 dark:text-zinc-500">${item.subjectCode.toUpperCase()} (${item.year})</span>
-            </div>
-            <h4 class="font-bold text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors text-sm sm:text-base">${item.title}</h4>
-            <p class="text-xs text-gray-400 mt-1 line-clamp-2">${item.description}</p>
-          </div>
-          <div class="mt-4 pt-3 border-t border-gray-100 dark:border-zinc-800 text-[10px] text-gray-400 flex items-center justify-between">
-            <span>Year ${item.yearLevel} • Sem ${item.semester}</span>
-            <span class="font-semibold text-blue-600 dark:text-blue-400 group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-0.5">Read now →</span>
-          </div>
-        `;
-        resultsGrid.appendChild(resultCard);
-      });
-    });
-  };
-
-  // 3. Falling Binary Matrix Background Animation
-  const initBinaryBackground = () => {
-    const canvas = document.getElementById('binary-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    const fontSize = 14;
-    let columns = Math.floor(width / fontSize);
-    let drops = Array(columns).fill(0).map(() => Math.floor(Math.random() * -100));
-
-    const isDark = () => document.documentElement.classList.contains('dark');
-
-    const draw = () => {
-      // Very slight opacity fill to leave trails
-      ctx.fillStyle = isDark() ? 'rgba(9, 9, 11, 0.08)' : 'rgba(249, 250, 251, 0.08)';
-      ctx.fillRect(0, 0, width, height);
-
-      // Emerald green characters for dark theme, soft blue characters for light theme
-      ctx.fillStyle = isDark() ? 'rgba(16, 185, 129, 0.25)' : 'rgba(59, 130, 246, 0.15)';
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const char = Math.random() > 0.5 ? '1' : '0';
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-
-        ctx.fillText(char, x, y);
-
-        if (y > height && Math.random() > 0.985) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    };
-
-    let animationId;
-    const animate = () => {
-      draw();
-      animationId = requestAnimationFrame(animate);
-    };
-    animate();
-
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      columns = Math.floor(width / fontSize);
-      const oldDrops = [...drops];
-      drops = Array(columns).fill(0).map((_, idx) => oldDrops[idx] !== undefined ? oldDrops[idx] : Math.floor(Math.random() * -100));
-    };
-
-    window.addEventListener('resize', handleResize);
-  };
-
-  // 4. Spotlight Card Hover Effect Tracker
-  const initSpotlightCards = () => {
-    const handleMouseMove = (e) => {
-      const card = e.currentTarget;
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      card.style.setProperty('--mouse-x', x + 'px');
-      card.style.setProperty('--mouse-y', y + 'px');
-    };
-
-    const attachListeners = () => {
-      const cards = document.querySelectorAll('.spotlight-card');
-      cards.forEach(card => {
-        card.removeEventListener('mousemove', handleMouseMove);
-        card.addEventListener('mousemove', handleMouseMove);
-      });
-    };
-
-    attachListeners();
-
-    // Re-attach listeners when tabs are clicked
-    const tabButtons = document.querySelectorAll('[data-year-tab]');
-    tabButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        setTimeout(attachListeners, 50);
-      });
-    });
-
-    // Observe search grid for dynamic search results
-    const searchGrid = document.getElementById('search-results-grid');
-    if (searchGrid) {
-      const observer = new MutationObserver(() => {
-        attachListeners();
-      });
-      observer.observe(searchGrid, { childList: true });
-    }
-  };
-
-  initTabsAndSearch();
-  // Falling Binary matrix animation disabled as requested
-  // initBinaryBackground();
-  initSpotlightCards();
-</script>
+<script src="../scripts/home.ts"></script>
