@@ -9,6 +9,9 @@ export const ui = {
   en: {
     'nav.home': 'Home',
     'nav.brand': 'CS Vaulte',
+    'nav.previous': 'Previous',
+    'nav.next': 'Next',
+    'nav.finish': 'Finish',
     'footer.text': 'CS Vaulte. Open-Source Educational Repository.',
     'footer.github': 'GitHub',
 
@@ -37,6 +40,7 @@ export const ui = {
     'semester.1': 'First Semester',
     'semester.2': 'Second Semester',
     'semester.title': 'Semester {sem}',
+    'semester.empty': 'No subjects uploaded for this semester yet.',
 
     // Subject Dashboard
     'dashboard.breadcrumbs': 'Subjects',
@@ -81,8 +85,11 @@ export const ui = {
   ar: {
     'nav.home': 'الرئيسية',
     'nav.brand': 'قبو الحاسب',
+    'nav.previous': 'السابق',
+    'nav.next': 'التالي',
+    'nav.finish': 'إنهاء',
     'footer.text': 'قبو الحاسب. مستودع تعليمي مفتوح المصدر.',
-    'footer.github': 'ب',
+    'footer.github': 'github',
 
     // Home Hero
     'hero.badge': 'مركز الدراسة الأكاديمي',
@@ -109,6 +116,7 @@ export const ui = {
     'semester.1': 'الفصل الدراسي الأول',
     'semester.2': 'الفصل الدراسي الثاني',
     'semester.title': 'الفصل الدراسي {sem}',
+    'semester.empty': 'لم يتم رفع أي مواد لهذا الفصل الدراسي بعد.',
 
     // Subject Dashboard
     'dashboard.breadcrumbs': 'المواد الدراسية',

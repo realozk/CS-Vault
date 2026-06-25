@@ -5,6 +5,10 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  // TODO: Replace with your actual GitHub username, e.g., 'https://john-doe.github.io'
+  site: 'https://<YOUR_GITHUB_USERNAME>.github.io',
+  // TODO: Replace with your actual GitHub repository name, e.g., '/my-repo-name'
+  base: '/<YOUR_REPO_NAME>',
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'ar'],

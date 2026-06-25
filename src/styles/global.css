@@ -4,24 +4,25 @@
 
 @theme {
   --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
-  
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-200: #bfdbfe;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-900: #1e3a8a;
-  
-  --color-academic-50: #f0fdf4;
-  --color-academic-100: #dcfce7;
-  --color-academic-500: #22c55e;
-  --color-academic-600: #16a34a;
-  --color-academic-700: #15803d;
 
-  --color-dark-bg: #09090b;
-  --color-dark-card: #18181b;
-  --color-dark-border: #27272a;
+  /* Custom Void & Cyber Cyan Theme Accents (Mapping cyan colors to brand & blue classes) */
+  --color-brand-50: #ecfeff;
+  --color-brand-100: #cffafe;
+  --color-brand-200: #a5f3fc;
+  --color-brand-500: #22d3ee; /* Cyber Cyan accent */
+  --color-brand-600: #06b6d4;
+  --color-brand-700: #0891b2;
+  --color-brand-900: #164e63;
+
+  --color-blue-400: #22d3ee;
+  --color-blue-500: #06b6d4;
+  --color-blue-600: #0891b2;
+  --color-blue-900: #155e75;
+
+  /* Void & Developer Atmospheric Dark Surfaces */
+  --color-dark-bg: #050505;        /* Deep terminal Void */
+  --color-dark-card: #09090b;      /* Primary container/card base */
+  --color-dark-border: #17171a;    /* Cyber developer border */
 }
 
 /* Global Transitions & Reset */
@@ -36,7 +37,23 @@ html[dir="rtl"] {
 }
 
 /* Buttery smooth theme toggling transitions */
-body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, h4, span, article {
+body,
+header,
+footer,
+main,
+div,
+section,
+a,
+button,
+input,
+svg,
+p,
+h1,
+h2,
+h3,
+h4,
+span,
+article {
   transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, fill 0.25s ease, stroke 0.25s ease, opacity 0.25s ease;
 }
 
@@ -85,14 +102,23 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
   color: #374151;
 }
 
-.dark .academic-prose h1 { color: #f9fafb; }
-.dark .academic-prose h2 { color: #f3f4f6; }
-.dark .academic-prose h3 { color: #e5e7eb; }
+.dark .academic-prose h1 {
+  color: #f9fafb;
+}
+
+.dark .academic-prose h2 {
+  color: #f3f4f6;
+}
+
+.dark .academic-prose h3 {
+  color: #e5e7eb;
+}
 
 .academic-prose p {
   margin-bottom: 1.25rem;
   color: #374151;
 }
+
 .dark .academic-prose p {
   color: #d1d5db;
 }
@@ -107,6 +133,7 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
   margin-bottom: 0.5rem;
   color: #4b5563;
 }
+
 .dark .academic-prose li {
   color: #9ca3af;
 }
@@ -116,6 +143,7 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
   border: 0;
   border-top: 1px solid #e4e4e7;
 }
+
 .dark .academic-prose hr {
   border-top: 1px solid #27272a;
 }
@@ -130,22 +158,29 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
   padding-bottom: 0.5rem;
   border-radius: 0 0.25rem 0.25rem 0;
 }
+
 .dark .academic-prose blockquote {
   background-color: rgba(37, 99, 235, 0.1);
   border-left-color: #3b82f6;
 }
 
+/* Hide first H1 in Markdown rendering to avoid duplicate page title */
+.academic-prose > h1:first-child {
+  display: none;
+}
+
 .academic-prose code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.9em;
-  background-color: #f3f4f6;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.125rem;
-  color: #2563eb;
+  font-size: 0.85em;
+  background-color: rgba(243, 244, 246, 0.8);
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  color: #0891b2;
 }
+
 .dark .academic-prose code {
-  background-color: #18181b;
-  color: #60a5fa;
+  background-color: rgba(31, 41, 55, 0.65);
+  color: #22d3ee;
 }
 
 .academic-prose pre {
@@ -156,6 +191,7 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
   overflow-x: auto;
   margin-bottom: 1.25rem;
 }
+
 .academic-prose pre code {
   background-color: transparent;
   padding: 0;
@@ -168,16 +204,20 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #d4d4d8;
   border-radius: 2px;
 }
+
 .dark ::-webkit-scrollbar-thumb {
   background: #3f3f46;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1aa;
 }
@@ -187,32 +227,32 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
   position: relative;
   overflow: hidden;
 }
+
 .spotlight-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(59, 130, 246, 0.05),
-    transparent 80%
-  );
+  background: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+      rgba(59, 130, 246, 0.05),
+      transparent 80%);
   z-index: 0;
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
 }
+
 .dark .spotlight-card::before {
-  background: radial-gradient(
-    220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
-    rgba(16, 185, 129, 0.07),
-    transparent 80%
-  );
+  background: radial-gradient(220px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+      rgba(16, 185, 129, 0.07),
+      transparent 80%);
 }
+
 .spotlight-card:hover::before {
   opacity: 1;
 }
+
 /* Ensure card content renders above the hover glow */
-.spotlight-card > * {
+.spotlight-card>* {
   position: relative;
   z-index: 10;
 }
@@ -221,6 +261,7 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
 .academic-prose pre {
   position: relative;
 }
+
 .copy-code-btn {
   position: absolute;
   top: 0.5rem;
@@ -238,13 +279,16 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
   justify-content: center;
   z-index: 20;
 }
+
 .academic-prose pre:hover .copy-code-btn {
   opacity: 1;
 }
+
 .copy-code-btn:hover {
   background-color: rgba(63, 63, 70, 0.8);
   color: #f4f4f5;
 }
+
 .copy-code-btn.copied {
   color: #10b981;
   border-color: rgba(16, 185, 129, 0.4);
@@ -253,8 +297,15 @@ body, header, footer, main, div, section, a, button, input, svg, p, h1, h2, h3, 
 
 /* Print Styles */
 @media print {
-  header, footer, nav, button, .copy-code-btn,
-  #quiz-widget, #subject-progress-card, #summary-tabs,
+
+  header,
+  footer,
+  nav,
+  button,
+  .copy-code-btn,
+  #quiz-widget,
+  #subject-progress-card,
+  #summary-tabs,
   .spotlight-card::before {
     display: none !important;
   }

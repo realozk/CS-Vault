@@ -1,20 +1,20 @@
 ---
-import '../styles/global.css';
-import { getLangFromUrl, useTranslations, getLocalizedPath } from '../i18n/ui';
+import "../styles/global.css";
+import { getLangFromUrl, useTranslations, getLocalizedPath } from "../i18n/ui";
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { 
-  title, 
-  description = "An open-source educational platform for Computer Science university students providing summaries and interactive quizzes." 
+const {
+  title,
+  description = "An open-source educational platform for Computer Science university students providing summaries and interactive quizzes.",
 } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const dir = lang === 'ar' ? 'rtl' : 'ltr';
+const dir = lang === "ar" ? "rtl" : "ltr";
 ---
 
 <!doctype html>
@@ -24,7 +24,7 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    
+
     <!-- Primary Meta Tags -->
     <title>{title} | CS Vaulte</title>
     <meta name="title" content={`${title} | CS Vaulte`} />
@@ -40,77 +40,139 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={`${title} | CS Vaulte`} />
     <meta name="twitter:description" content={description} />
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Inline Script to prevent Theme Toggling Flash -->
     <script is:inline>
       const getThemePreference = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
+        if (
+          typeof localStorage !== "undefined" &&
+          localStorage.getItem("theme")
+        ) {
+          return localStorage.getItem("theme");
         }
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
       };
-      
+
       const theme = getThemePreference();
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
       } else {
-        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.remove("dark");
       }
     </script>
   </head>
-  <body 
-    class="bg-gray-50 text-gray-900 dark:bg-[#09090b] dark:text-gray-100 font-sans min-h-screen flex flex-col antialiased"
-    data-copy-translations={JSON.stringify({ copy: t('dashboard.copyCode'), copied: t('dashboard.copied') })}
+  <body
+    class="bg-gray-50 text-gray-900 dark:bg-dark-bg dark:text-gray-100 font-sans min-h-screen flex flex-col antialiased relative overflow-x-hidden"
+    data-copy-translations={JSON.stringify({
+      copy: t("dashboard.copyCode"),
+      copied: t("dashboard.copied"),
+    })}
   >
-    
+    <!-- Background Grid & Ambient Glow -->
+    <div class="absolute inset-0 -z-50 overflow-hidden pointer-events-none">
+      <!-- Glow effect at top -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.08),transparent_60%)] dark:bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_50%)]"></div>
+      <!-- Premium CSS developer grid pattern with radial mask -->
+      <div class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] dark:bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+    </div>
     <!-- Navigation Header -->
     <header class="glass-nav sticky top-0 z-50 transition-all duration-300">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        
+      <div
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      >
         <!-- Brand Logo -->
-        <a href={getLocalizedPath('/', lang)} class="flex items-center gap-2 focus:outline-hidden" id="nav-brand">
-          <svg class="w-5.5 h-5.5 text-zinc-900 dark:text-zinc-100" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479L12 20l-6.825-2.943a12.083 12.083 0 01.665-6.479L12 14z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2 9v5c0 2.21 3.582 4 8 4"></path>
+        <a
+          href={getLocalizedPath("/", lang)}
+          class="flex items-center gap-2 focus:outline-hidden"
+          id="nav-brand"
+        >
+          <svg
+            class="w-5.5 h-5.5 text-zinc-900 dark:text-zinc-100"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 14l9-5-9-5-9 5 9 5z"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479L12 20l-6.825-2.943a12.083 12.083 0 01.665-6.479L12 14z"
+            ></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2 9v5c0 2.21 3.582 4 8 4"></path>
           </svg>
-          <span class="font-extrabold text-lg tracking-tight text-zinc-900 dark:text-zinc-100">
-            {t('nav.brand')}
+          <span
+            class="font-extrabold text-lg tracking-tight text-zinc-900 dark:text-zinc-100"
+          >
+            {t("nav.brand")}
           </span>
         </a>
 
         <!-- Action Items (Links & Theme Toggle) -->
         <nav class="flex items-center gap-6" id="main-nav">
-          <a href={getLocalizedPath('/', lang)} class="text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
-            {t('nav.home')}
+          <a
+            href={getLocalizedPath("/", lang)}
+            class="text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
+          >
+            {t("nav.home")}
           </a>
 
           <!-- Language Selector -->
-          <a 
-            href={lang === 'ar' ? Astro.url.pathname.replace(/^\/ar/, '') || '/' : `/ar${Astro.url.pathname}`}
+          <a
+            href={lang === "ar"
+              ? Astro.url.pathname.replace(/^\/ar/, "") || "/"
+              : `/ar${Astro.url.pathname}`}
             class="text-xs font-bold border border-gray-200 dark:border-zinc-800 px-2 py-1 rounded-sm hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-all duration-150 cursor-pointer"
           >
-            {lang === 'ar' ? 'English' : 'العربية '}
+            {lang === "ar" ? "English" : "العربية "}
           </a>
-          
+
           <!-- Theme Toggle Button -->
-          <button 
-            id="theme-toggle" 
+          <button
+            id="theme-toggle"
             aria-label="Toggle Dark Mode"
             class="p-2 rounded border border-gray-200 dark:border-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-all duration-150 cursor-pointer"
           >
             <!-- Sun Icon (Visible in dark mode) -->
-            <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.41 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"></path>
+            <svg
+              id="theme-toggle-light-icon"
+              class="w-5 h-5 hidden"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.41 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"
+              ></path>
             </svg>
             <!-- Moon Icon (Visible in light mode) -->
-            <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            <svg
+              id="theme-toggle-dark-icon"
+              class="w-5 h-5 hidden"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+              ></path>
             </svg>
           </button>
         </nav>
@@ -123,35 +185,44 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#0c0c0e] py-8 mt-12 transition-all duration-300">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400">
+    <footer
+      class="border-t border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card py-8 mt-12 transition-all duration-300"
+    >
+      <div
+        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400"
+      >
         <div>
-          <p>© {new Date().getFullYear()} {t('footer.text')}</p>
+          <p>© {new Date().getFullYear()} {t("footer.text")}</p>
         </div>
         <div class="flex items-center gap-6">
-          <a href="https://github.com/realozk/CS-Vault" target="_blank" rel="noopener noreferrer" class="hover:text-gray-900 dark:hover:text-white transition-colors duration-200">
-            {t('footer.github')}
+          <a
+            href="https://github.com/realozk/CS-Vault"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
+          >
+            {t("footer.github")}
           </a>
-
         </div>
       </div>
     </footer>
 
     <!-- Client-Side Hydration Script for Theme Management -->
     <script>
-      const themeToggleBtn = document.getElementById('theme-toggle');
-      const darkIcon = document.getElementById('theme-toggle-dark-icon');
-      const lightIcon = document.getElementById('theme-toggle-light-icon');
+      const themeToggleBtn = document.getElementById("theme-toggle");
+      const darkIcon = document.getElementById("theme-toggle-dark-icon");
+      const lightIcon = document.getElementById("theme-toggle-light-icon");
 
-      const isDarkMode = () => document.documentElement.classList.contains('dark');
+      const isDarkMode = () =>
+        document.documentElement.classList.contains("dark");
 
       const updateToggleButtonState = () => {
         if (isDarkMode()) {
-          lightIcon?.classList.remove('hidden');
-          darkIcon?.classList.add('hidden');
+          lightIcon?.classList.remove("hidden");
+          darkIcon?.classList.add("hidden");
         } else {
-          lightIcon?.classList.add('hidden');
-          darkIcon?.classList.remove('hidden');
+          lightIcon?.classList.add("hidden");
+          darkIcon?.classList.remove("hidden");
         }
       };
 
@@ -159,13 +230,13 @@ const dir = lang === 'ar' ? 'rtl' : 'ltr';
       updateToggleButtonState();
 
       // Listen for click event
-      themeToggleBtn?.addEventListener('click', () => {
+      themeToggleBtn?.addEventListener("click", () => {
         if (isDarkMode()) {
-          document.documentElement.classList.remove('dark');
-          localStorage.setItem('theme', 'light');
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("theme", "light");
         } else {
-          document.documentElement.classList.add('dark');
-          localStorage.setItem('theme', 'dark');
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("theme", "dark");
         }
         updateToggleButtonState();
       });

@@ -1,6 +1,7 @@
 ---
 import type { ModuleItem } from '../types';
 import CourseCard from './CourseCard.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
 
 /**
  * SemesterSection.astro — Renders a semester header + module cards grid.
@@ -14,6 +15,9 @@ interface Props {
 
 const { semester, modules, accentColor = 'blue' } = Astro.props;
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const colorMap: Record<string, string> = {
   blue: 'bg-blue-500',
   indigo: 'bg-indigo-500',
@@ -23,12 +27,17 @@ const dotColor = colorMap[accentColor] || 'bg-blue-500';
 
 <div class="space-y-4">
   <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500 flex items-center gap-2">
-    <span>Semester {semester}</span>
+    <span>{t('semester.title').replace('{sem}', semester.toString())}</span>
     <span class={`w-1.5 h-1.5 rounded-full ${dotColor} animate-pulse`}></span>
   </h3>
   
   {modules.length === 0 ? (
-    <p class="text-xs text-gray-400 dark:text-zinc-500 italic py-2">No subjects uploaded for this semester yet.</p>
+    <div class="flex flex-col items-center justify-center py-8 px-4 border border-dashed border-gray-200 dark:border-zinc-800/80 rounded-md bg-gray-50/50 dark:bg-zinc-900/10 text-center">
+      <svg class="w-8 h-8 text-gray-300 dark:text-zinc-700 mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776" />
+      </svg>
+      <p class="text-xs text-gray-400 dark:text-zinc-500 italic font-medium">{t('semester.empty')}</p>
+    </div>
   ) : (
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {modules.map((m) => (

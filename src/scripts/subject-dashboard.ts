@@ -218,6 +218,50 @@ const initDashboard = () => {
     });
   });
 
+  // Handle Next, Previous, and Finish summary navigation buttons
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const prevBtn = target.closest('button[data-nav-prev]');
+    const nextBtn = target.closest('button[data-nav-next]');
+    const finishBtn = target.closest('button[data-nav-finish]');
+
+    if (prevBtn) {
+      const slug = prevBtn.getAttribute('data-nav-prev');
+      const tabToClick = document.querySelector(`.summary-tab-btn[data-summary-slug="${slug}"]`) as HTMLElement;
+      if (tabToClick) tabToClick.click();
+    } else if (nextBtn) {
+      const slug = nextBtn.getAttribute('data-nav-next');
+      const currentSlug = nextBtn.getAttribute('data-current-slug');
+
+      if (currentSlug) {
+        const checkbox = document.querySelector(`.summary-checkbox[data-summary-check="${currentSlug}"]`) as HTMLInputElement;
+        if (checkbox && !checkbox.checked) {
+          checkbox.checked = true;
+          checkbox.dispatchEvent(new Event('change'));
+        }
+      }
+
+      const tabToClick = document.querySelector(`.summary-tab-btn[data-summary-slug="${slug}"]`) as HTMLElement;
+      if (tabToClick) tabToClick.click();
+    } else if (finishBtn) {
+      const slug = finishBtn.getAttribute('data-nav-finish');
+      const checkbox = document.querySelector(`.summary-checkbox[data-summary-check="${slug}"]`) as HTMLInputElement;
+      if (checkbox && !checkbox.checked) {
+        checkbox.checked = true;
+        checkbox.dispatchEvent(new Event('change'));
+      }
+      
+      const progressCard = document.getElementById('subject-progress-card');
+      if (progressCard) {
+        progressCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        progressCard.classList.add('ring-2', 'ring-emerald-500', 'transition-all', 'duration-500');
+        setTimeout(() => {
+          progressCard.classList.remove('ring-2', 'ring-emerald-500');
+        }, 1500);
+      }
+    }
+  });
+
   // Run initial loaders
   initCopyButtons();
 };

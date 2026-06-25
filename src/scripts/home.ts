@@ -120,7 +120,7 @@ const initTabsAndSearch = () => {
 
       const resultCard = document.createElement('a');
       resultCard.href = item.url;
-      resultCard.className = 'group spotlight-card p-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 rounded-md shadow-xs transition-all duration-150 flex flex-col justify-between';
+      resultCard.className = 'group spotlight-card p-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 hover:border-blue-500 dark:hover:border-blue-500 rounded-md shadow-sm hover:shadow-lg hover:shadow-blue-500/10 dark:hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col justify-between';
       resultCard.innerHTML = `
         <div>
           <div class="flex items-center gap-2 mb-2">
