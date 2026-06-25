@@ -68,6 +68,8 @@ const modules = Array.from(modulesMap.values()).sort((a, b) => {
 const availableYears = [...new Set(modules.map(m => m.yearLevel))].sort((a, b) => a - b);
 const defaultYear = availableYears.length > 0 ? availableYears[0] : 1;
 
+const BASE_URL = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+
 // Compile Client-Side Search Index
 const searchIndex = [
   ...summaries.map(s => {
@@ -79,7 +81,7 @@ const searchIndex = [
       author: s.data.author,
       subjectCode: s.data.subject_code,
       year: parts[1],
-      url: `${import.meta.env.BASE_URL}ar/${parts[0]}/${parts[1]}`,
+      url: `${BASE_URL}ar/${parts[0]}/${parts[1]}`,
       yearLevel: s.data.year_level,
       semester: s.data.semester
     };
@@ -94,7 +96,7 @@ const searchIndex = [
       author: 'System',
       subjectCode: q.data.subject,
       year: parts[1],
-      url: `${import.meta.env.BASE_URL}ar/${parts[0]}/${parts[1]}/quiz/${slug}`,
+      url: `${BASE_URL}ar/${parts[0]}/${parts[1]}/quiz/${slug}`,
       yearLevel: q.data.year_level,
       semester: q.data.semester
     };

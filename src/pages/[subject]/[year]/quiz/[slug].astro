@@ -25,6 +25,7 @@ const { quiz } = Astro.props;
 const { subject, year } = Astro.params;
 
 const pageTitle = `${quiz.data.title} - Quiz`;
+const BASE_URL = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 ---
 
 <Layout title={pageTitle} description={`Take the interactive practice quiz: ${quiz.data.title} for ${subject.toUpperCase()} (${year})`}>
@@ -32,7 +33,7 @@ const pageTitle = `${quiz.data.title} - Quiz`;
     <!-- Quiz Nav Header -->
     <div class="max-w-2xl mx-auto flex items-center justify-between">
       <a 
-        href={`${import.meta.env.BASE_URL}${subject}/${year}`} 
+        href={`${BASE_URL}${subject}/${year}`} 
         class="inline-flex items-center text-sm font-semibold text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
       >
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -45,7 +46,7 @@ const pageTitle = `${quiz.data.title} - Quiz`;
 
     <!-- Main Widget Container -->
     <div class="py-4">
-      <QuizWidget quiz={quiz.data} backUrl={`${import.meta.env.BASE_URL}${subject}/${year}`} />
+      <QuizWidget quiz={quiz.data} backUrl={`${BASE_URL}${subject}/${year}`} />
     </div>
   </div>
 </Layout>

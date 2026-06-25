@@ -80,6 +80,8 @@ const trackerTranslations = JSON.stringify({
   progressKeepUp: t('dashboard.progressKeepUp'),
   progressStatus: t('dashboard.progressStatus'),
 });
+
+const BASE_URL = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 ---
 
 <Layout title={pageTitle} description={`ملخصات واختبارات تفاعلية لمادة ${subject.toUpperCase()} - السنة الدراسية ${year}`}>
@@ -89,7 +91,7 @@ const trackerTranslations = JSON.stringify({
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200 dark:border-zinc-800">
       <div>
         <nav class="flex items-center space-x-2 space-x-reverse text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-          <a href={`${import.meta.env.BASE_URL}ar`} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{t('dashboard.breadcrumbs')}</a>
+          <a href={`${BASE_URL}ar`} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{t('dashboard.breadcrumbs')}</a>
           <span>/</span>
           <span class="text-gray-800 dark:text-gray-200">{subject}</span>
           <span>/</span>
@@ -189,7 +191,7 @@ const trackerTranslations = JSON.stringify({
             <div class="space-y-3">
               {quizzes.map((q) => (
                 <a
-                  href={`${import.meta.env.BASE_URL}ar/${subject}/${year}/quiz/${q.slug}`}
+                  href={`${BASE_URL}ar/${subject}/${year}/quiz/${q.slug}`}
                   class="group block p-4 rounded border border-gray-100 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 bg-gray-50/50 dark:bg-zinc-800/10 hover:bg-blue-50/5 dark:hover:bg-blue-950/5 transition-all duration-150"
                 >
                   <div class="flex items-center justify-between gap-2">
