@@ -26,6 +26,17 @@ const initQuizWidget = () => {
     return;
   }
 
+  // Parse Translations
+  const rawTranslations = widget.getAttribute('data-translations');
+  let translations: Record<string, string> = {};
+  if (rawTranslations) {
+    try {
+      translations = JSON.parse(rawTranslations);
+    } catch (e) {
+      console.error('[QuizWidget] Failed to parse translations:', e);
+    }
+  }
+
   // Get DOM Elements (with descriptive error if missing)
   const getEl = (id: string): HTMLElement => {
     const el = document.getElementById(id);
@@ -141,7 +152,9 @@ const initQuizWidget = () => {
     // Reset UI Elements
     explanationBox.classList.add('hidden');
     nextBtn.disabled = true;
-    nextBtn.textContent = currentIndex === quiz.questions.length - 1 ? 'Finish Quiz' : 'Next Question';
+    nextBtn.textContent = currentIndex === quiz.questions.length - 1 
+      ? (translations.finish || 'Finish Quiz') 
+      : (translations.next || 'Next Question');
     
     // Render Options
     optionsContainer.innerHTML = '';
@@ -154,7 +167,7 @@ const initQuizWidget = () => {
       optionBtn.setAttribute('data-option', option);
 
       optionBtn.innerHTML = `
-        <div class="flex items-center space-x-3.5">
+        <div class="flex items-center gap-3.5">
           <span class="w-8 h-8 rounded-sm bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-400 group-hover:bg-blue-100 group-hover:text-blue-600 dark:group-hover:bg-blue-950/40 dark:group-hover:text-blue-400 font-bold flex items-center justify-center text-sm transition-colors duration-150">
             ${optionLetter}
           </span>
@@ -194,13 +207,13 @@ const initQuizWidget = () => {
     // Set performance message
     let desc = '';
     if (percentage === 100) {
-      desc = 'Perfect Score! You have mastered this module.';
+      desc = translations.score100 || 'Perfect Score! You have mastered this module.';
     } else if (percentage >= 80) {
-      desc = 'Excellent job! You have a solid grasp of the subject.';
+      desc = translations.score80 || 'Excellent job! You have a solid grasp of the subject.';
     } else if (percentage >= 50) {
-      desc = 'Good attempt. Review the explanations to reinforce your understanding.';
+      desc = translations.score50 || 'Good attempt. Review the explanations to reinforce your understanding.';
     } else {
-      desc = 'Keep studying! Read the subject summaries and try again.';
+      desc = translations.score0 || 'Keep studying! Read the subject summaries and try again.';
     }
     performanceDesc.textContent = desc;
   };

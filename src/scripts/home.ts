@@ -54,6 +54,16 @@ const initTabsAndSearch = () => {
     }
   }
 
+  const rawTranslations = directoryContainer.getAttribute('data-translations');
+  let translations: Record<string, string> = {};
+  if (rawTranslations) {
+    try {
+      translations = JSON.parse(rawTranslations);
+    } catch (e) {
+      console.error('[Home] Failed to parse translations:', e);
+    }
+  }
+
   const searchInput = document.getElementById('global-search-input');
   const searchResultsPane = document.getElementById('search-results-pane');
   const coreTabView = document.getElementById('core-tab-view');
@@ -92,7 +102,8 @@ const initTabsAndSearch = () => {
 
     // Render search results
     resultsGrid.innerHTML = '';
-    resultsCount.textContent = `${matched.length} match${matched.length === 1 ? '' : 'es'}`;
+    const matchesWord = translations.resultsCount || (matched.length === 1 ? 'match' : 'matches');
+    resultsCount.textContent = `${matched.length} ${matchesWord}`;
 
     if (matched.length === 0) {
       noResults.classList.remove('hidden');
@@ -101,9 +112,11 @@ const initTabsAndSearch = () => {
     noResults.classList.add('hidden');
 
     matched.forEach(item => {
+      const summaryBadgeText = translations.summaryBadge || 'Summary';
+      const quizBadgeText = translations.quizBadge || 'Quiz';
       const typeBadge = item.type === 'summary' 
-        ? '<span class="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-900">Summary</span>' 
-        : '<span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-900">Quiz</span>';
+        ? `<span class="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-900">${summaryBadgeText}</span>` 
+        : `<span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-900">${quizBadgeText}</span>`;
 
       const resultCard = document.createElement('a');
       resultCard.href = item.url;
@@ -118,8 +131,8 @@ const initTabsAndSearch = () => {
           <p class="text-xs text-gray-400 mt-1 line-clamp-2">${escapeHTML(item.description)}</p>
         </div>
         <div class="mt-4 pt-3 border-t border-gray-100 dark:border-zinc-800 text-[10px] text-gray-400 flex items-center justify-between">
-          <span>Year ${item.yearLevel} • Sem ${item.semester}</span>
-          <span class="font-semibold text-blue-600 dark:text-blue-400 group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-0.5">Read now →</span>
+          <span>${(translations.yearAndSem || 'Year {year} • Sem {sem}').replace('{year}', item.yearLevel.toString()).replace('{sem}', item.semester.toString())}</span>
+          <span class="font-semibold text-blue-600 dark:text-blue-400 group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-0.5">${translations.readNow || 'Read now →'}</span>
         </div>
       `;
       resultsGrid.appendChild(resultCard);

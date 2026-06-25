@@ -8,9 +8,28 @@ const initDashboard = () => {
 
   // Retrieve storage key based on URL parameters
   const pathParts = window.location.pathname.split('/').filter(Boolean);
-  const subject = pathParts[0] || 'unknown';
-  const year = pathParts[1] || 'unknown';
+  
+  // Handle Arabic path prefix: /ar/subject/year
+  const isAr = pathParts[0] === 'ar';
+  const subjectIndex = isAr ? 1 : 0;
+  const yearIndex = isAr ? 2 : 1;
+  const subject = pathParts[subjectIndex] || 'unknown';
+  const year = pathParts[yearIndex] || 'unknown';
   const storageKey = `cs-vault-progress-${subject}-${year}`;
+
+  // Parse progress translations
+  const progressCard = document.getElementById('subject-progress-card');
+  let translations: Record<string, string> = {};
+  if (progressCard) {
+    const rawTranslations = progressCard.getAttribute('data-translations');
+    if (rawTranslations) {
+      try {
+        translations = JSON.parse(rawTranslations);
+      } catch (e) {
+        console.error('[Dashboard] Failed to parse tracker translations:', e);
+      }
+    }
+  }
 
   // Load progress from localStorage
   let completedSlugs: string[] = [];
@@ -32,9 +51,14 @@ const initDashboard = () => {
     if (progressFill) progressFill.style.width = `${percent}%`;
     if (progressPercentText) progressPercentText.textContent = `${percent}%`;
     if (progressStatusDesc) {
-      progressStatusDesc.textContent = `${checkedCount} of ${total} summaries completed. ${
-        percent === 100 ? 'Perfect! You are fully prepared!' : 'Keep up the good work!'
-      }`;
+      const message = percent === 100 
+        ? (translations.progressPerfect || 'Perfect! You are fully prepared!') 
+        : (translations.progressKeepUp || 'Keep up the good work!');
+      const template = translations.progressStatus || '{checked} of {total} summaries completed. {message}';
+      progressStatusDesc.textContent = template
+        .replace('{checked}', checkedCount.toString())
+        .replace('{total}', total.toString())
+        .replace('{message}', message);
     }
   };
 
@@ -79,13 +103,27 @@ const initDashboard = () => {
   // 5. Code Block Copy Button Injector
   const initCopyButtons = () => {
     const preBlocks = document.querySelectorAll('.academic-prose pre');
+
+    // Parse copy translations from document body
+    const rawCopyTranslations = document.body.getAttribute('data-copy-translations');
+    let copyTranslations: Record<string, string> = {};
+    if (rawCopyTranslations) {
+      try {
+        copyTranslations = JSON.parse(rawCopyTranslations);
+      } catch (e) {
+        console.error('[Dashboard] Failed to parse copy translations:', e);
+      }
+    }
+    const labelCopy = copyTranslations.copy || 'Copy code snippet';
+    const labelCopied = copyTranslations.copied || 'Copied!';
+
     preBlocks.forEach((pre) => {
       if (pre.querySelector('.copy-code-btn')) return;
 
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'copy-code-btn';
-      button.ariaLabel = 'Copy code snippet';
+      button.ariaLabel = labelCopy;
       button.innerHTML = `
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m-2 4h10m-5-5v10"></path>
@@ -100,6 +138,7 @@ const initDashboard = () => {
            await navigator.clipboard.writeText(codeText);
            
            button.classList.add('copied');
+           button.ariaLabel = labelCopied;
            button.innerHTML = `
              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
@@ -108,6 +147,7 @@ const initDashboard = () => {
            
            setTimeout(() => {
              button.classList.remove('copied');
+             button.ariaLabel = labelCopy;
              button.innerHTML = `
                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m-2 4h10m-5-5v10"></path>

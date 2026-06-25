@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { getLangFromUrl, useTranslations, getLocalizedPath } from '../i18n/ui';
 
 interface Props {
   title: string;
@@ -10,10 +11,14 @@ const {
   title, 
   description = "An open-source educational platform for Computer Science university students providing summaries and interactive quizzes." 
 } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const dir = lang === 'ar' ? 'rtl' : 'ltr';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang} dir={dir}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,7 +44,7 @@ const {
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
     <!-- Inline Script to prevent Theme Toggling Flash -->
     <script is:inline>
@@ -58,28 +63,39 @@ const {
       }
     </script>
   </head>
-  <body class="bg-gray-50 text-gray-900 dark:bg-[#09090b] dark:text-gray-100 font-sans min-h-screen flex flex-col antialiased">
+  <body 
+    class="bg-gray-50 text-gray-900 dark:bg-[#09090b] dark:text-gray-100 font-sans min-h-screen flex flex-col antialiased"
+    data-copy-translations={JSON.stringify({ copy: t('dashboard.copyCode'), copied: t('dashboard.copied') })}
+  >
     
     <!-- Navigation Header -->
     <header class="glass-nav sticky top-0 z-50 transition-all duration-300">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
         <!-- Brand Logo -->
-        <a href="/" class="flex items-center space-x-2 focus:outline-hidden" id="nav-brand">
+        <a href={getLocalizedPath('/', lang)} class="flex items-center gap-2 focus:outline-hidden" id="nav-brand">
           <svg class="w-5.5 h-5.5 text-zinc-900 dark:text-zinc-100" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479L12 20l-6.825-2.943a12.083 12.083 0 01.665-6.479L12 14z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" d="M2 9v5c0 2.21 3.582 4 8 4"></path>
           </svg>
           <span class="font-extrabold text-lg tracking-tight text-zinc-900 dark:text-zinc-100">
-            CS Vaulte
+            {t('nav.brand')}
           </span>
         </a>
 
         <!-- Action Items (Links & Theme Toggle) -->
-        <nav class="flex items-center space-x-6" id="main-nav">
-          <a href="/" class="text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
-            Home
+        <nav class="flex items-center gap-6" id="main-nav">
+          <a href={getLocalizedPath('/', lang)} class="text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200">
+            {t('nav.home')}
+          </a>
+
+          <!-- Language Selector -->
+          <a 
+            href={lang === 'ar' ? Astro.url.pathname.replace(/^\/ar/, '') || '/' : `/ar${Astro.url.pathname}`}
+            class="text-xs font-bold border border-gray-200 dark:border-zinc-800 px-2 py-1 rounded-sm hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-all duration-150 cursor-pointer"
+          >
+            {lang === 'ar' ? 'English' : 'العربية '}
           </a>
           
           <!-- Theme Toggle Button -->
@@ -110,11 +126,11 @@ const {
     <footer class="border-t border-gray-200 dark:border-zinc-800 bg-white dark:bg-[#0c0c0e] py-8 mt-12 transition-all duration-300">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400">
         <div>
-          <p>© {new Date().getFullYear()} CS Vaulte. Open-Source Educational Repository.</p>
+          <p>© {new Date().getFullYear()} {t('footer.text')}</p>
         </div>
-        <div class="flex items-center space-x-6">
+        <div class="flex items-center gap-6">
           <a href="https://github.com/realozk/CS-Vault" target="_blank" rel="noopener noreferrer" class="hover:text-gray-900 dark:hover:text-white transition-colors duration-200">
-            GitHub
+            {t('footer.github')}
           </a>
 
         </div>

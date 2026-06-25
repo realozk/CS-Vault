@@ -16,6 +16,7 @@ const summariesCollection = defineCollection({
     subject_code: z.string().min(1, 'Subject code is required'),
     year_level: z.coerce.number().int().min(1).max(4),
     semester: z.coerce.number().int().min(1).max(2),
+    lang: z.enum(['en', 'ar']).default('en'),
   }),
 });
 
@@ -32,6 +33,7 @@ const quizzesCollection = defineCollection({
     year: z.number().int().positive(),
     year_level: z.coerce.number().int().min(1).max(4),
     semester: z.coerce.number().int().min(1).max(2),
+    lang: z.enum(['en', 'ar']).default('en'),
     questions: z.array(
       z.object({
         id: z.number().int(),
