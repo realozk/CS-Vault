@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# pipeline (local-only build tool)
+pipeline/.env
+pipeline/data/*
+pipeline/__pycache__/
+pipeline/.venv/
+!pipeline/data/.gitkeep
