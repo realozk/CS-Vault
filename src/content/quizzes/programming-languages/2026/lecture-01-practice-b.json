@@ -1,0 +1,312 @@
+{
+  "title": "Lecture 1 — Practice Exam B: Applications",
+  "subject": "Programming Languages",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "description": "Lecture 1 only. Original AI-generated practice questions based on the supplied handout; not an official exam or answer key.",
+  "source": "Lecture01-Single-Slide-Handout.pdf",
+  "questions": [
+    {
+      "id": 1,
+      "question": "A developer must choose a language for a new project. Which benefit of studying language concepts directly helps?",
+      "options": [
+        "A better basis for selecting an appropriate language",
+        "A guarantee that one language fits every project",
+        "The elimination of implementation trade-offs",
+        "The ability to ignore the application's domain"
+      ],
+      "correctAnswer": "A better basis for selecting an appropriate language",
+      "explanation": "The lecture lists improved background for choosing languages as a reason to study their concepts.",
+      "sourceSlide": 3,
+      "answerSource": "inferred",
+      "topic": "reasons-domains"
+    },
+    {
+      "id": 2,
+      "question": "A service runs continuously and must use computing resources efficiently. Which domain best fits the lecture's description?",
+      "options": [
+        "Markup authoring",
+        "Systems programming",
+        "Business reporting",
+        "Symbolic artificial intelligence"
+      ],
+      "correctAnswer": "Systems programming",
+      "explanation": "Systems programming emphasizes efficiency because the software is used continuously; C and C++ are examples.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "reasons-domains"
+    },
+    {
+      "id": 3,
+      "question": "Which domain is associated with symbol manipulation and linked lists in the lecture?",
+      "options": [
+        "Business reporting",
+        "Operating-system loading",
+        "Artificial intelligence",
+        "Scientific numerical computing"
+      ],
+      "correctAnswer": "Artificial intelligence",
+      "explanation": "The lecture associates AI with symbolic processing and lists LISP, Scheme, Prolog, and Python.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "reasons-domains"
+    },
+    {
+      "id": 4,
+      "question": "A language offers many different ways to increment one variable. Which readability concern does this illustrate?",
+      "options": [
+        "Exception handling",
+        "Portability",
+        "Linking",
+        "Feature multiplicity"
+      ],
+      "correctAnswer": "Feature multiplicity",
+      "explanation": "Several constructs for the same action increase the number of forms a reader must understand.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 5,
+      "question": "A team uses self-descriptive keywords instead of obscure symbols. Which criterion does this most directly support?",
+      "options": [
+        "Readability",
+        "Processor bandwidth",
+        "Run-time compilation",
+        "Executable loading"
+      ],
+      "correctAnswer": "Readability",
+      "explanation": "The lecture's syntax considerations include meaningful keywords and constructs whose form reflects their meaning.",
+      "sourceSlide": 8,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 6,
+      "question": "A library exposes a simple operation while hiding a complicated implementation. Which writability feature is demonstrated?",
+      "options": [
+        "Machine-code generation",
+        "Support for abstraction",
+        "Aliasing",
+        "Array-bounds checking"
+      ],
+      "correctAnswer": "Support for abstraction",
+      "explanation": "Users can express an operation without knowing all of its internal details.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 7,
+      "question": "A concise increment operator replaces a longer assignment expression. Which characteristic does the lecture use this to illustrate?",
+      "options": [
+        "Portability",
+        "The von Neumann bottleneck",
+        "Expressivity",
+        "Well-definedness"
+      ],
+      "correctAnswer": "Expressivity",
+      "explanation": "Expressivity includes convenient ways of specifying operations, such as a concise increment form.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 8,
+      "question": "A compiler reports an incompatible operand type before the program runs. Which reliability feature is involved?",
+      "options": [
+        "Macro inclusion",
+        "Instruction fetching",
+        "Operator multiplicity",
+        "Type checking"
+      ],
+      "correctAnswer": "Type checking",
+      "explanation": "Type checking detects type errors, preferably at compile time according to the lecture.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 9,
+      "question": "Changing data through one reference unexpectedly changes what another reference sees. What is the likely cause?",
+      "options": [
+        "Aliasing",
+        "Portability",
+        "Syntax analysis",
+        "Standardization"
+      ],
+      "correctAnswer": "Aliasing",
+      "explanation": "Both references may point to the same memory location, so a change through either affects the shared data.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 10,
+      "question": "Why can an unreliable language implementation increase total project cost?",
+      "options": [
+        "Run-time errors always reduce training costs",
+        "Defective software can cause losses and additional correction costs",
+        "Unreliable programs never need maintenance",
+        "Reliability affects only source-code length"
+      ],
+      "correctAnswer": "Defective software can cause losses and additional correction costs",
+      "explanation": "The lecture includes reliability-related losses and maintenance in the ultimate total cost.",
+      "sourceSlide": 11,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 11,
+      "question": "What language property most strongly supports portability according to the lecture?",
+      "options": [
+        "The number of operator symbols",
+        "The frequency of run-time checks",
+        "Standardization",
+        "The number of pointer operations"
+      ],
+      "correctAnswer": "Standardization",
+      "explanation": "Standardized definitions reduce differences between implementations and make movement easier.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 12,
+      "question": "A language is useful across many kinds of applications. Which evaluation property is this?",
+      "options": [
+        "Aliasing",
+        "Orthogonality",
+        "Load-module size",
+        "Generality"
+      ],
+      "correctAnswer": "Generality",
+      "explanation": "Generality means applicability to a wide range of applications.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 13,
+      "question": "Which two factors does the lecture identify as basic influences on language design?",
+      "options": [
+        "Computer architecture and program design methodologies",
+        "Monitor resolution and keyboard layout",
+        "Source-file size and screen brightness",
+        "Network addresses and file permissions"
+      ],
+      "correctAnswer": "Computer architecture and program design methodologies",
+      "explanation": "Architecture and software development methods shape language constructs and paradigms.",
+      "sourceSlide": 13,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 14,
+      "question": "A designer wants language constructs that mirror moving results back into memory. Which imperative construct fits?",
+      "options": [
+        "Compiler token names",
+        "Assignment statements",
+        "Logic rules",
+        "Markup tags"
+      ],
+      "correctAnswer": "Assignment statements",
+      "explanation": "In the lecture's architectural analogy, assignment statements model the movement of values to memory.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 15,
+      "question": "Which sequence matches the fetch-execute cycle shown in the lecture?",
+      "options": [
+        "Execute, decode, increment, fetch",
+        "Increment, execute, decode, fetch",
+        "Fetch, increment the counter, decode, execute",
+        "Decode, execute, fetch, initialize every time"
+      ],
+      "correctAnswer": "Fetch, increment the counter, decode, execute",
+      "explanation": "After initializing the program counter, the slide repeatedly fetches, increments, decodes, and executes.",
+      "sourceSlide": 16,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 16,
+      "question": "Which combination describes the object-oriented methodology in the lecture?",
+      "options": [
+        "Lexical analysis, linking, and loading",
+        "Variables, pointers, and macro expansion",
+        "Pure interpretation, bytecode, and JIT",
+        "Data abstraction, inheritance, and polymorphism"
+      ],
+      "correctAnswer": "Data abstraction, inheritance, and polymorphism",
+      "explanation": "The methodology slide describes object orientation as data abstraction plus inheritance and polymorphism.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 17,
+      "question": "A program expresses unordered rules rather than a sequence of assignments. Which category best fits?",
+      "options": [
+        "Logic",
+        "Imperative",
+        "Functional",
+        "Markup/programming hybrid"
+      ],
+      "correctAnswer": "Logic",
+      "explanation": "The lecture describes logic programming as rule-based and gives Prolog as its example.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 18,
+      "question": "A language's powerful symbols make programs compact but hard to understand. Which trade-off is illustrated?",
+      "options": [
+        "Generality versus well-definedness",
+        "Readability versus writability",
+        "Reliability versus execution cost",
+        "Portability versus standardization"
+      ],
+      "correctAnswer": "Readability versus writability",
+      "explanation": "APL is the lecture's example of concise expression at a readability cost.",
+      "sourceSlide": 19,
+      "answerSource": "inferred",
+      "topic": "design-tradeoffs"
+    },
+    {
+      "id": 19,
+      "question": "Which compiler phase builds a hierarchical representation of syntactic structure?",
+      "options": [
+        "Linking and loading",
+        "Macro expansion",
+        "Syntax analysis",
+        "Lexical analysis"
+      ],
+      "correctAnswer": "Syntax analysis",
+      "explanation": "Syntax analysis transforms lexical units into parse trees representing program structure.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 20,
+      "question": "A JIT system compiles a subprogram on its first call. What happens to that machine-code version afterward?",
+      "options": [
+        "It must be discarded before the second call",
+        "It becomes the original source text",
+        "It is turned into a markup document",
+        "It is kept for subsequent calls"
+      ],
+      "correctAnswer": "It is kept for subsequent calls",
+      "explanation": "JIT retains the compiled machine-code version so subsequent calls can reuse it.",
+      "sourceSlide": 30,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    }
+  ]
+}

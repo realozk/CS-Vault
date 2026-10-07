@@ -6,15 +6,9 @@ const initDashboard = () => {
   const progressPercentText = document.getElementById('progress-percentage-text');
   const progressStatusDesc = document.getElementById('progress-status-desc');
 
-  // Retrieve storage key based on URL parameters
-  const pathParts = window.location.pathname.split('/').filter(Boolean);
-  
-  // Handle Arabic path prefix: /ar/subject/year
-  const isAr = pathParts[0] === 'ar';
-  const subjectIndex = isAr ? 1 : 0;
-  const yearIndex = isAr ? 2 : 1;
-  const subject = pathParts[subjectIndex] || 'unknown';
-  const year = pathParts[yearIndex] || 'unknown';
+  const tracker = document.getElementById('subject-progress-card');
+  const subject = tracker?.dataset.subject || 'unknown';
+  const year = tracker?.dataset.year || 'unknown';
   const storageKey = `cs-vault-progress-${subject}-${year}`;
 
   // Parse progress translations
@@ -36,7 +30,12 @@ const initDashboard = () => {
   try {
     const stored = localStorage.getItem(storageKey);
     if (stored) {
-      completedSlugs = JSON.parse(stored);
+      const parsed: unknown = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        const available = new Set([...checkboxes].map(cb => cb.dataset.summaryCheck));
+        completedSlugs = [...new Set(parsed.filter((slug): slug is string =>
+          typeof slug === 'string' && available.has(slug)))];
+      }
     }
   } catch (e) {
     console.error(e);

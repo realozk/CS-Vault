@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import SemesterSection from '../components/SemesterSection.astro';
-import type { ModuleItem } from '../types';
+import { getModules } from '../lib/modules';
 
 // Fetch all summaries and quizzes to discover available subject/year modules
 const summaries = await getCollection('summaries');
@@ -10,58 +10,7 @@ const quizzes = await getCollection('quizzes');
 
 
 
-const modulesMap = new Map<string, ModuleItem>();
-
-// Process summaries
-summaries.forEach((s) => {
-  const parts = s.id.split('/');
-  if (parts.length >= 2) {
-    const subject = parts[0];
-    const year = parts[1];
-    const key = `${subject}/${year}`;
-    
-    const existing = modulesMap.get(key) || {
-      subject,
-      subjectName: s.data.subject_code,
-      year,
-      yearLevel: s.data.year_level,
-      semester: s.data.semester,
-      summariesCount: 0,
-      quizzesCount: 0,
-    };
-    existing.summariesCount++;
-    modulesMap.set(key, existing);
-  }
-});
-
-// Process quizzes
-quizzes.forEach((q) => {
-  const parts = q.id.split('/');
-  if (parts.length >= 2) {
-    const subject = parts[0];
-    const year = parts[1];
-    const key = `${subject}/${year}`;
-    
-    const existing = modulesMap.get(key) || {
-      subject,
-      subjectName: q.data.subject,
-      year,
-      yearLevel: q.data.year_level,
-      semester: q.data.semester,
-      summariesCount: 0,
-      quizzesCount: 0,
-    };
-    existing.quizzesCount++;
-    modulesMap.set(key, existing);
-  }
-});
-
-const modules = Array.from(modulesMap.values()).sort((a, b) => {
-  if (a.subjectName !== b.subjectName) {
-    return a.subjectName.localeCompare(b.subjectName);
-  }
-  return b.year.localeCompare(a.year);
-});
+const modules = await getModules();
 
 // Auto-detect default year tab (first year with content)
 const availableYears = [...new Set(modules.map(m => m.yearLevel))].sort((a, b) => a - b);
@@ -71,6 +20,12 @@ const BASE_URL = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_U
 
 // Compile Client-Side Search Index
 const searchIndex = [
+  ...modules.map(m => ({
+    type: 'subject', title: m.subjectName, description: 'Semester ' + m.semester,
+    author: '', subjectCode: m.subject, year: m.year,
+    url: `${BASE_URL}${m.subject}/${m.year}`,
+    yearLevel: m.yearLevel, semester: m.semester
+  })),
   ...summaries.map(s => {
     const parts = s.id.split('/');
     return {
@@ -157,7 +112,7 @@ const searchIndex = [
         type="text" 
         id="global-search-input"
         placeholder="Search summaries, subjects, quizzes..." 
-        class="block w-full pl-10 pr-4 py-3 border border-gray-300/80 dark:border-zinc-700/65 rounded-md bg-white dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-hidden focus:ring-2 focus:ring-blue-500/80 focus:border-blue-500 focus:shadow-md focus:shadow-blue-500/5 text-sm shadow-xs transition-all duration-150"
+        class="block w-full pl-10 pr-4 py-3 border border-gray-300/80 dark:border-zinc-700/65 rounded-md bg-white dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-hidden focus:ring-2 focus:ring-blue-500/80 focus:border-blue-500 text-sm shadow-xs transition-all duration-150"
       />
     </div>
 

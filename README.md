@@ -35,6 +35,25 @@ Inside the repository, files are organized as follows:
 
 ## Adding Course Content
 
+### Course catalog
+
+Register courses in `src/data/subjects.json`. Each entry has a URL-safe
+`slug`, display `name`, calendar `year`, academic `year_level` (1–4), and
+`semester` (1–2). Courses appear in the directory and get dashboards even
+before material is uploaded. Content folders must match the slug/year,
+and content year-level/semester metadata must match the catalog.
+
+The current catalog contains the six third-year, first-semester courses
+for 2026. Programming Languages has a Lecture 1 revision guide and three
+20-question practice exams. The remaining courses await study material.
+Practice questions are generated study aids based on the supplied lecture,
+not official past exams or an instructor-approved answer key.
+
+Keep one JSON file per exam: the static site embeds only that exam's
+questions on its quiz page. The home search index contains metadata,
+not the full question bank. No backend or additional frontend framework
+is required.
+
 Data is entirely file-based and loaded dynamically through Astro Content Collections:
 
 ### 1. Subject Summaries
@@ -47,6 +66,9 @@ description: "A comprehensive summary covering database concepts and Entity-Rela
 author: "Author Name"
 date: 2026-06-21
 subject_code: "CS101"
+year_level: 3
+semester: 1
+lang: "en"
 ---
 
 # Introduction to Relational Databases
@@ -61,6 +83,9 @@ Quizzes are structured JSON documents located under `src/content/quizzes/[subjec
   "title": "Relational Databases Fundamentals",
   "subject": "Introduction to Databases",
   "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
   "questions": [
     {
       "id": 1,
@@ -79,6 +104,16 @@ Quizzes are structured JSON documents located under `src/content/quizzes/[subjec
 }
 ```
 
+Optional quiz fields: `description` (scope/instructions), `source` (source
+document name). Optional question fields: `sourceSlide` (one-based source
+slide number), `answerSource` (`manual`, `marked`, or `inferred`; default
+`manual`). Answers inferred by AI must use `inferred`; the widget shows
+a verification warning with the explanation. Options must be distinct,
+question IDs must be unique, and quizzes must not be empty.
+
+The Arabic route translates the interface; the current study material
+is English, matching the lecture and exam terminology.
+
 ---
 
 ## Development Commands
@@ -91,3 +126,38 @@ All commands should be executed from the root directory:
 | `npm run dev` | Start the local development server at `localhost:4321` |
 | `npm run build` | Build the optimized production bundle to the `./dist/` directory |
 | `npm run preview` | Run a local preview server on the production build output |
+
+## Quiz modes and student review
+
+Practice mode gives immediate feedback with no timer. Exam mode allows
+previous/next navigation and answer changes, hides feedback until submission,
+and optionally uses a configurable 1–180 minute timer (20 minutes by default).
+Unanswered questions count as incorrect; an expired timer submits current answers.
+The timer uses an absolute deadline, including time spent in a background tab.
+
+Results show missed/unanswered questions with explanations, provenance and
+source slides, plus per-topic totals. Questions may have an optional `topic`
+string; questions without one use the General category. The current Lecture 1
+questions use `reasons-domains`, `evaluation`, `architecture-paradigms`,
+`design-tradeoffs`, and `implementation-tools`. New topic strings work without
+additional code; translated display labels can be added to `src/i18n/ui.ts`.
+
+Saved mistakes and due dates use localStorage, keyed by the content entry ID
+(shared between interface languages). No accounts, network requests, or new
+runtime dependencies are involved. Short revision selects up to five questions
+from the current exam, prioritizing the earliest review dates. Correct scheduled
+reviews move from tomorrow to three days later, then seven days later; the third
+scheduled success removes the question. A mistake resets the schedule. Early
+practice does not advance it. Invalid/obsolete saved entries are ignored, and
+changed question text, code, choices or answers invalidate saved reviews.
+
+Storage failures leave the current session usable. Active attempts are not
+restored after a page reload; only submitted review data is saved. The timer is
+for self-assessment, not proctoring. The 20-minute default is not an official
+midterm duration.
+
+Run focused state tests with Node >=22.12:
+
+```sh
+node --experimental-strip-types --test tests/quiz-state.test.mjs
+```

@@ -1,31 +1,29 @@
 ---
-import type { Question, QuizData } from '../types';
-import { getLangFromUrl, useTranslations } from '../i18n/ui';
+import type { QuizData } from '../types';
+import { getLangFromUrl, useTranslations, ui } from '../i18n/ui';
 
 interface Props {
   quiz: QuizData;
+  quizId?: string;
   backUrl?: string;
 }
 
-const { quiz, backUrl = "../.." } = Astro.props;
+const { quiz, quizId = `${quiz.subject}/${quiz.year}/${quiz.title}`, backUrl = "../.." } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const serializedTranslations = JSON.stringify({
-  next: t('quiz.next'),
-  finish: t('quiz.finish'),
-  score100: t('quiz.score.100'),
-  score80: t('quiz.score.80'),
-  score50: t('quiz.score.50'),
-  score0: t('quiz.score.0'),
-});
+const serializedTranslations = JSON.stringify(Object.fromEntries(
+  (Object.keys(ui.en) as (keyof typeof ui.en)[])
+    .filter(key => key.startsWith('quiz.')).map(key => [key.slice(5), t(key)])
+));
 ---
 
 <div 
   id="quiz-widget" 
   class="w-full max-w-2xl mx-auto bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md shadow-xs overflow-hidden transition-all duration-300"
   data-quiz={JSON.stringify(quiz)}
+  data-quiz-id={quizId}
   data-translations={serializedTranslations}
 >
   <!-- 1. Start Screen -->
@@ -47,6 +45,25 @@ const serializedTranslations = JSON.stringify({
     </h2>
     
     <p class="mt-3 text-base text-gray-500 dark:text-gray-400" set:html={t('quiz.questionsCount').replace('{count}', quiz.questions.length.toString())} />
+    {quiz.description && <p class="mt-3 text-sm text-gray-600 dark:text-gray-300" dir="auto">{quiz.description}</p>}
+    {quiz.source && <p class="mt-2 text-xs text-gray-500 dark:text-gray-400" dir="ltr">{t('quiz.source')}: {quiz.source}</p>}
+
+    <fieldset class="mt-6 text-start border border-gray-200 dark:border-zinc-800 rounded-md p-4 space-y-3">
+      <legend class="px-2 text-sm font-semibold">{t('quiz.settings')}</legend>
+      <div class="flex flex-wrap gap-5">
+        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz-mode" value="practice" checked />{t('quiz.practice')}</label>
+        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="quiz-mode" value="exam" />{t('quiz.exam')}</label>
+      </div>
+      <p id="quiz-mode-help" class="text-sm text-gray-500 dark:text-gray-400">{t('quiz.practiceHelp')}</p>
+      <div id="quiz-timer-settings" class="hidden space-y-3">
+        <label class="flex items-center gap-2"><input id="quiz-use-timer" type="checkbox" checked />{t('quiz.useTimer')}</label>
+        <label class="flex flex-wrap items-center gap-3" for="quiz-minutes">
+          {t('quiz.minutes')}
+          <input id="quiz-minutes" type="number" min="1" max="180" step="1" value="20" required class="w-24 border border-gray-300 dark:border-zinc-700 rounded bg-white dark:bg-zinc-900 px-3 py-2" />
+        </label>
+      </div>
+    </fieldset>
+    <p id="quiz-inferred-notice" class="mt-3 text-sm text-amber-800 dark:text-amber-300">{quiz.questions.some(q => q.answerSource === 'inferred') && t('quiz.inferredExam')}</p>
 
     <div class="mt-8 flex flex-col items-center justify-center gap-3">
       <button 
@@ -55,7 +72,16 @@ const serializedTranslations = JSON.stringify({
       >
         {t('quiz.start')}
       </button>
-      <span class="text-xs text-gray-400">{t('quiz.subtext')}</span>
+      <span id="quiz-mode-subtext" class="text-xs text-gray-400">{t('quiz.subtext')}</span>
+    </div>
+    <div class="mt-6 border-t border-gray-200 dark:border-zinc-800 pt-4 text-start space-y-3">
+      <h3 class="font-semibold">{t('quiz.savedReview')}</h3>
+      <p id="quiz-review-count" class="text-sm text-gray-500 dark:text-gray-400" aria-live="polite" />
+      <p class="text-xs text-gray-500 dark:text-gray-400">{t('quiz.reviewHelp')}</p>
+      <div class="flex flex-wrap gap-3">
+        <button id="quiz-saved-review-btn" class="hidden px-4 py-2 border border-gray-300 dark:border-zinc-700 rounded font-semibold text-sm cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-800">{t('quiz.savedReview')}</button>
+        <button id="quiz-clear-review-btn" class="hidden px-4 py-2 text-sm underline cursor-pointer">{t('quiz.clearSaved')}</button>
+      </div>
     </div>
   </div>
 
@@ -66,7 +92,7 @@ const serializedTranslations = JSON.stringify({
       <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">
         <span id="quiz-counter-wrapper" set:html={t('quiz.currentQuestion').replace('{current}', '<span id="quiz-current-question-num">1</span>').replace('{total}', `<span id="quiz-total-questions-num">${quiz.questions.length}</span>`)} />
       </span>
-      <span id="quiz-timer" class="text-xs font-medium text-gray-400 bg-gray-100 dark:bg-zinc-800 px-2.5 py-1 rounded-sm border border-transparent dark:border-zinc-700">
+      <span id="quiz-timer" role="timer" aria-label={t('quiz.timeRemaining')} class="text-xs font-medium text-gray-400 bg-gray-100 dark:bg-zinc-800 px-2.5 py-1 rounded-sm border border-transparent dark:border-zinc-700">
         {t('quiz.active')}
       </span>
     </div>
@@ -79,7 +105,7 @@ const serializedTranslations = JSON.stringify({
     <!-- Question container (Forced to LTR and English Font) -->
     <div dir="ltr" class="font-sans text-start">
       <!-- Question Text -->
-      <h3 id="quiz-question-text" class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-6">
+      <h3 id="quiz-question-text" tabindex="-1" class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-6">
         Question loading...
       </h3>
 
@@ -91,6 +117,8 @@ const serializedTranslations = JSON.stringify({
         <!-- Options will be injected here via JavaScript -->
       </div>
     </div>
+
+    <p id="quiz-answer-status" class="mt-4 text-sm text-gray-600 dark:text-gray-300" role="status" />
 
     <!-- Explanation Card -->
     <div 
@@ -106,12 +134,16 @@ const serializedTranslations = JSON.stringify({
           <p id="quiz-explanation-text" class="mt-1 text-sm text-blue-900/90 dark:text-blue-300/80">
             Explanation content...
           </p>
+          <p id="quiz-source-slide" class="mt-2 text-xs text-blue-800 dark:text-blue-300" />
+          <p id="quiz-answer-warning" class="mt-2 text-xs text-amber-800 dark:text-amber-300" />
         </div>
       </div>
     </div>
 
     <!-- Next / Submit Panel -->
-    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-zinc-800 flex justify-end">
+    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-zinc-800 flex flex-wrap justify-between gap-3">
+      <button id="quiz-previous-btn" class="hidden px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded disabled:opacity-50 cursor-pointer">{t('quiz.previous')}</button>
+      <button id="quiz-submit-btn" class="hidden px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded cursor-pointer">{t('quiz.submit')}</button>
       <button 
         id="quiz-next-btn"
         disabled
@@ -130,12 +162,15 @@ const serializedTranslations = JSON.stringify({
       </svg>
     </div>
 
-    <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+    <h2 id="quiz-result-title" tabindex="-1" class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
       {t('quiz.completed')}
     </h2>
     <p id="quiz-performance-desc" class="mt-3 text-base text-gray-500 dark:text-gray-400 max-w-md mx-auto">
       {t('quiz.breakdown')}
     </p>
+
+    <p id="quiz-expired-message" class="hidden mt-3 text-sm text-amber-800 dark:text-amber-300" role="status">{t('quiz.expired')}</p>
+    <p class="mt-2 text-xs text-gray-500">{t('quiz.sessionScore')}</p>
 
     <!-- Scorecard Panel -->
     <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto my-8 border border-gray-200 dark:border-zinc-800 rounded-md bg-gray-50/50 dark:bg-zinc-900/30 p-4">
@@ -149,15 +184,29 @@ const serializedTranslations = JSON.stringify({
       </div>
     </div>
 
+    <section class="mb-6 text-start space-y-3" aria-labelledby="quiz-topic-title">
+      <h3 id="quiz-topic-title" class="text-lg font-bold">{t('quiz.topics')}</h3>
+      <div class="overflow-x-auto"><table class="w-full text-sm">
+        <thead><tr class="border-b border-gray-200 dark:border-zinc-800"><th scope="col" class="text-start py-2">{t('quiz.topicLabel')}</th><th scope="col" class="text-start py-2">{t('quiz.topicScore')}</th></tr></thead>
+        <tbody id="quiz-topic-results" />
+      </table></div>
+    </section>
+    <section class="mb-6 text-start space-y-3" aria-labelledby="quiz-review-title">
+      <h3 id="quiz-review-title" class="text-lg font-bold">{t('quiz.mistakes')}</h3>
+      <div id="quiz-mistake-list" class="space-y-4" />
+      <button id="quiz-retry-missed-btn" class="hidden w-full px-4 py-3 border border-gray-300 dark:border-zinc-700 rounded font-semibold cursor-pointer hover:bg-gray-50 dark:hover:bg-zinc-800">{t('quiz.retryMissed')}</button>
+    </section>
+
     <!-- Retry Controls -->
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
       <button 
         id="quiz-restart-btn"
         class="w-full sm:w-auto px-6 py-3 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 font-semibold rounded transition-all duration-150 cursor-pointer"
       >
-        {t('quiz.retry')}
+        {t('quiz.fullRetry')}
       </button>
-      <a 
+      <button id="quiz-settings-btn" class="w-full sm:w-auto px-4 py-3 border border-gray-200 dark:border-zinc-800 rounded font-semibold cursor-pointer">{t('quiz.settings')}</button>
+      <a
         id="quiz-back-btn"
         href={backUrl}
         class="w-full sm:w-auto px-6 py-3 border border-gray-200 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-800 text-gray-700 dark:text-gray-300 font-semibold rounded transition-all duration-150"
@@ -166,6 +215,7 @@ const serializedTranslations = JSON.stringify({
       </a>
     </div>
   </div>
+  <p id="quiz-storage-status" class="px-6 pb-3 text-sm text-gray-500 dark:text-gray-400" role="status" />
 </div>
 
 <script src="../scripts/quiz.ts"></script>

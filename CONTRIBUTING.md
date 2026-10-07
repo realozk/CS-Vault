@@ -28,6 +28,11 @@ To keep the platform reliable, fast, and free, we use a static, type-safe data-l
 
 ##  1. Adding Course Summaries
 
+First register the course in `src/data/subjects.json` with `slug`, `name`,
+`year`, `year_level`, and `semester`. The slug/year must match its content
+folder. Academic year level and semester must match all content entries.
+Catalog entries may exist without material; the dashboard shows an empty state.
+
 Course summaries are written in **Markdown** and located under `src/content/summaries/[subject_code]/[year]/[filename].md`.
 
 - Example Path: `src/content/summaries/cs101/2026/db-basics.md`
@@ -40,6 +45,9 @@ description: "A comprehensive summary covering database concepts and Entity-Rela
 author: "Your Name"
 date: 2026-06-21
 subject_code: "CS101"
+year_level: 3
+semester: 1
+lang: "en"
 ---
 
 # Introduction to Relational Databases
@@ -71,6 +79,9 @@ Quizzes are **JSON** documents located under `src/content/quizzes/[subject_code]
   "title": "Database Fundamentals",
   "subject": "Introduction to Databases",
   "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
   "questions": [
     {
       "id": 1,

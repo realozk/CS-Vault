@@ -1,0 +1,312 @@
+{
+  "title": "Lecture 1 — Practice Exam A: Foundations",
+  "subject": "Programming Languages",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "description": "Lecture 1 only. Original AI-generated practice questions based on the supplied handout; not an official exam or answer key.",
+  "source": "Lecture01-Single-Slide-Handout.pdf",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Why does studying programming language concepts make learning a new language easier?",
+      "options": [
+        "You can recognize familiar concepts behind unfamiliar syntax",
+        "It eliminates the need to learn syntax",
+        "It makes all languages behave identically",
+        "It guarantees every program is correct"
+      ],
+      "correctAnswer": "You can recognize familiar concepts behind unfamiliar syntax",
+      "explanation": "Conceptual knowledge transfers between languages; the lecture lists easier language learning as a benefit.",
+      "sourceSlide": 3,
+      "answerSource": "inferred",
+      "topic": "reasons-domains"
+    },
+    {
+      "id": 2,
+      "question": "Which domain in the lecture emphasizes floating-point computations and arrays?",
+      "options": [
+        "Markup processing",
+        "Scientific applications",
+        "Business applications",
+        "Systems programming"
+      ],
+      "correctAnswer": "Scientific applications",
+      "explanation": "Scientific programs often perform numerical calculations on arrays; Fortran is the lecture's example.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "reasons-domains"
+    },
+    {
+      "id": 3,
+      "question": "Which language is associated with reports, decimal numbers, and character data in the lecture?",
+      "options": [
+        "Prolog",
+        "Scheme",
+        "COBOL",
+        "Fortran"
+      ],
+      "correctAnswer": "COBOL",
+      "explanation": "The lecture associates COBOL with business applications and their reporting and decimal-data needs.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "reasons-domains"
+    },
+    {
+      "id": 4,
+      "question": "What does readability measure?",
+      "options": [
+        "How quickly machine code executes",
+        "How many languages a developer knows",
+        "How small the compiler executable is",
+        "How easily a program can be read and understood"
+      ],
+      "correctAnswer": "How easily a program can be read and understood",
+      "explanation": "Readability concerns understanding a program, rather than execution speed or tool size.",
+      "sourceSlide": 6,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 5,
+      "question": "What does writability measure?",
+      "options": [
+        "How easily a language can be used to create programs",
+        "How easily source files can be moved between computers",
+        "How closely a program follows its specification",
+        "How quickly the CPU fetches instructions"
+      ],
+      "correctAnswer": "How easily a language can be used to create programs",
+      "explanation": "Writability is the ease of expressing programs in a language.",
+      "sourceSlide": 6,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 6,
+      "question": "A program is reliable when it does what?",
+      "options": [
+        "Runs without a compiler",
+        "Conforms to its specifications",
+        "Uses the fewest possible characters",
+        "Avoids all abstraction"
+      ],
+      "correctAnswer": "Conforms to its specifications",
+      "explanation": "The lecture defines reliability as performing according to specifications.",
+      "sourceSlide": 6,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 7,
+      "question": "What is feature multiplicity?",
+      "options": [
+        "Using several source files in a project",
+        "Checking several array indices at once",
+        "Having several ways to accomplish the same operation",
+        "Having many processors in one computer"
+      ],
+      "correctAnswer": "Having several ways to accomplish the same operation",
+      "explanation": "Multiple ways to express the same operation can complicate a language and its readability.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 8,
+      "question": "Which description best matches orthogonality?",
+      "options": [
+        "Every construct needs a unique exception to the rules",
+        "Every program must use exactly one data type",
+        "Every operator has exactly one character",
+        "Primitive constructs combine according to a small, consistent set of rules"
+      ],
+      "correctAnswer": "Primitive constructs combine according to a small, consistent set of rules",
+      "explanation": "Orthogonality supports predictable combinations of a relatively small set of primitives.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 9,
+      "question": "Why is a Boolean value helpful for representing a timeout flag?",
+      "options": [
+        "It makes the intended true-or-false meaning clearer",
+        "It removes the need for all conditions",
+        "It guarantees faster execution on every computer",
+        "It prevents the program from ever timing out"
+      ],
+      "correctAnswer": "It makes the intended true-or-false meaning clearer",
+      "explanation": "The lecture contrasts a numeric flag with a Boolean flag to illustrate the readability benefit of suitable data types.",
+      "sourceSlide": 8,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 10,
+      "question": "What does support for abstraction allow?",
+      "options": [
+        "Skipping type checking in every language",
+        "Using complex structures or operations while ignoring internal details",
+        "Removing every variable from a program",
+        "Replacing all syntax with machine code"
+      ],
+      "correctAnswer": "Using complex structures or operations while ignoring internal details",
+      "explanation": "Abstraction hides details behind structures or operations, making programs easier to express.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 11,
+      "question": "Which reliability feature can intercept a run-time error and take corrective action?",
+      "options": [
+        "Lexical analysis",
+        "Macro expansion",
+        "Exception handling",
+        "Operator overloading"
+      ],
+      "correctAnswer": "Exception handling",
+      "explanation": "Exception handling provides a way to respond to run-time errors.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 12,
+      "question": "What is aliasing?",
+      "options": [
+        "Two variables stored in unrelated memory locations",
+        "Two programs compiled by the same compiler",
+        "Two names for different programming domains",
+        "Two or more distinct ways to reference the same memory location"
+      ],
+      "correctAnswer": "Two or more distinct ways to reference the same memory location",
+      "explanation": "Aliasing means different references can access the same location, making changes harder to track.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 13,
+      "question": "Which cost is especially affected by program readability?",
+      "options": [
+        "Maintenance cost",
+        "Monitor purchase cost",
+        "Network subscription cost",
+        "CPU manufacturing cost"
+      ],
+      "correctAnswer": "Maintenance cost",
+      "explanation": "Maintenance includes correcting and extending programs, which requires understanding existing code.",
+      "sourceSlide": 11,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 14,
+      "question": "What is portability?",
+      "options": [
+        "The ability to catch every error before execution",
+        "The ease of moving programs from one implementation to another",
+        "The ability to express an operation in fewer symbols",
+        "The precision of a language definition"
+      ],
+      "correctAnswer": "The ease of moving programs from one implementation to another",
+      "explanation": "The lecture ties portability especially to language standardization.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 15,
+      "question": "In the lecture's model, what do imperative-language variables represent?",
+      "options": [
+        "Grammar rules",
+        "Input devices",
+        "Memory cells",
+        "Compiler phases"
+      ],
+      "correctAnswer": "Memory cells",
+      "explanation": "Imperative languages reflect von Neumann architecture: variables model memory cells.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 16,
+      "question": "Which language category computes primarily by applying functions to parameters?",
+      "options": [
+        "Logic",
+        "Markup/programming hybrid",
+        "Imperative",
+        "Functional"
+      ],
+      "correctAnswer": "Functional",
+      "explanation": "Function application is the central computation mechanism in the functional category.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 17,
+      "question": "Java array-bounds checks illustrate which design trade-off in the lecture?",
+      "options": [
+        "Reliability versus execution cost",
+        "Portability versus well-definedness",
+        "Generality versus abstraction",
+        "Readability versus identifier length"
+      ],
+      "correctAnswer": "Reliability versus execution cost",
+      "explanation": "Bounds checks improve safety but add work during execution.",
+      "sourceSlide": 19,
+      "answerSource": "inferred",
+      "topic": "design-tradeoffs"
+    },
+    {
+      "id": 18,
+      "question": "What is the output of lexical analysis?",
+      "options": [
+        "Final machine code",
+        "Lexical units",
+        "Parse trees",
+        "A linked executable image"
+      ],
+      "correctAnswer": "Lexical units",
+      "explanation": "Lexical analysis converts source characters into lexical units, often called tokens.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 19,
+      "question": "What is the key idea of a hybrid implementation?",
+      "options": [
+        "Translate all code directly to final machine code before execution",
+        "Use markup to replace the operating system",
+        "Translate source to an intermediate language, then interpret that form",
+        "Execute source with no intermediate translation stage"
+      ],
+      "correctAnswer": "Translate source to an intermediate language, then interpret that form",
+      "explanation": "Hybrid systems combine translation with interpretation of an intermediate representation.",
+      "sourceSlide": 28,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 20,
+      "question": "When does a preprocessor expand embedded macros?",
+      "options": [
+        "Only after the program finishes",
+        "Only when an exception occurs",
+        "After every machine instruction",
+        "Before the program is compiled"
+      ],
+      "correctAnswer": "Before the program is compiled",
+      "explanation": "The lecture describes macro processing immediately before compilation, including C include and define directives.",
+      "sourceSlide": 31,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    }
+  ]
+}

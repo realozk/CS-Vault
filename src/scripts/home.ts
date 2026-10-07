@@ -1,7 +1,7 @@
 import { escapeHTML } from './utils';
 
 interface SearchItem {
-  type: 'summary' | 'quiz';
+  type: 'subject' | 'summary' | 'quiz';
   title: string;
   description: string;
   author: string;
@@ -114,13 +114,13 @@ const initTabsAndSearch = () => {
     matched.forEach(item => {
       const summaryBadgeText = translations.summaryBadge || 'Summary';
       const quizBadgeText = translations.quizBadge || 'Quiz';
-      const typeBadge = item.type === 'summary' 
+      const typeBadge = item.type === 'subject' ? `<span class="text-xs text-gray-500">${translations.subjectBadge || 'Subject'}</span>` : item.type === 'summary'
         ? `<span class="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-900">${summaryBadgeText}</span>` 
         : `<span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-900">${quizBadgeText}</span>`;
 
       const resultCard = document.createElement('a');
       resultCard.href = item.url;
-      resultCard.className = 'group spotlight-card p-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 hover:border-blue-500 dark:hover:border-blue-500 rounded-md shadow-sm hover:shadow-lg hover:shadow-blue-500/10 dark:hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col justify-between';
+      resultCard.className = 'group p-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 hover:border-blue-500 dark:hover:border-blue-500 rounded-md shadow-sm hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col justify-between';
       resultCard.innerHTML = `
         <div>
           <div class="flex items-center gap-2 mb-2">
@@ -141,44 +141,4 @@ const initTabsAndSearch = () => {
   });
 };
 
-const initSpotlightCards = () => {
-  const handleMouseMove = (e: Event) => {
-    const mouseEvent = e as MouseEvent;
-    const card = mouseEvent.currentTarget as HTMLElement;
-    const rect = card.getBoundingClientRect();
-    const x = mouseEvent.clientX - rect.left;
-    const y = mouseEvent.clientY - rect.top;
-    card.style.setProperty('--mouse-x', x + 'px');
-    card.style.setProperty('--mouse-y', y + 'px');
-  };
-
-  const attachListeners = () => {
-    const cards = document.querySelectorAll('.spotlight-card');
-    cards.forEach(card => {
-      card.removeEventListener('mousemove', handleMouseMove);
-      card.addEventListener('mousemove', handleMouseMove);
-    });
-  };
-
-  attachListeners();
-
-  // Re-attach listeners when tabs are clicked
-  const tabButtons = document.querySelectorAll('[data-year-tab]');
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      setTimeout(attachListeners, 50);
-    });
-  });
-
-  // Observe search grid for dynamic search results
-  const searchGrid = document.getElementById('search-results-grid');
-  if (searchGrid) {
-    const observer = new MutationObserver(() => {
-      attachListeners();
-    });
-    observer.observe(searchGrid, { childList: true });
-  }
-};
-
 initTabsAndSearch();
-initSpotlightCards();

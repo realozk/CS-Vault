@@ -1,0 +1,312 @@
+{
+  "title": "Lecture 1 — Practice Exam C: Mixed Review",
+  "subject": "Programming Languages",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "description": "Lecture 1 only. Original AI-generated practice questions based on the supplied handout; not an official exam or answer key.",
+  "source": "Lecture01-Single-Slide-Handout.pdf",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which statement is NOT a benefit of studying programming language concepts listed in the lecture?",
+      "options": [
+        "It removes the need to learn different languages",
+        "It increases the ability to express ideas",
+        "It improves use of already-known languages",
+        "It improves understanding of implementation"
+      ],
+      "correctAnswer": "It removes the need to learn different languages",
+      "explanation": "The lecture says developers must be prepared to learn different languages; conceptual study supports learning rather than eliminating it.",
+      "sourceSlide": 3,
+      "answerSource": "inferred",
+      "topic": "reasons-domains"
+    },
+    {
+      "id": 2,
+      "question": "Which collection best matches the lecture's web-software domain?",
+      "options": [
+        "Only scientific numerical languages",
+        "Markup, scripting, and general-purpose languages",
+        "Only machine languages",
+        "Only logic languages"
+      ],
+      "correctAnswer": "Markup, scripting, and general-purpose languages",
+      "explanation": "The lecture describes web software as an eclectic collection including HTML, PHP, and Java examples.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "reasons-domains"
+    },
+    {
+      "id": 3,
+      "question": "An operator means numeric addition in one context and combining objects in another. Which readability issue does this illustrate?",
+      "options": [
+        "Fetch-execute sequencing",
+        "Executable loading",
+        "Operator overloading",
+        "Program portability"
+      ],
+      "correctAnswer": "Operator overloading",
+      "explanation": "Operator overloading gives one symbol different meanings, which can increase what the reader must infer.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 4,
+      "question": "A language requires exceptions to many rules for combining otherwise simple features. Which characteristic is weakened?",
+      "options": [
+        "The number of available environments",
+        "Run-time error display",
+        "The size of source files",
+        "Orthogonality"
+      ],
+      "correctAnswer": "Orthogonality",
+      "explanation": "Orthogonality depends on consistent combinations; numerous exceptions reduce predictability.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 5,
+      "question": "Which pair contains characteristics that contribute to writability in the lecture?",
+      "options": [
+        "Abstraction and expressivity",
+        "Aliasing and memory bandwidth",
+        "Linking and loading",
+        "Program counters and input devices"
+      ],
+      "correctAnswer": "Abstraction and expressivity",
+      "explanation": "The lecture names simplicity/orthogonality, abstraction, and expressivity as writability characteristics.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 6,
+      "question": "Why does the lecture prefer type checking at compile time when possible?",
+      "options": [
+        "Compile-time checks make syntax analysis unnecessary",
+        "Run-time type checks add execution cost",
+        "Compile-time checks eliminate all logical errors",
+        "Run-time checks are impossible in every language"
+      ],
+      "correctAnswer": "Run-time type checks add execution cost",
+      "explanation": "Checking before execution can avoid the cost of repeatedly checking during execution; it does not prove full correctness.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 7,
+      "question": "A language forces programmers to express an algorithm in unnatural ways. What consequence does the lecture identify?",
+      "options": [
+        "Automatic optimization",
+        "Elimination of maintenance costs",
+        "Reduced reliability",
+        "Guaranteed portability"
+      ],
+      "correctAnswer": "Reduced reliability",
+      "explanation": "Poor readability and writability can make programs less reliable by forcing awkward approaches.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 8,
+      "question": "Which statement best describes the lecture's cost criterion?",
+      "options": [
+        "Consider only how much the compiler costs to buy",
+        "Consider only how many lines the program contains",
+        "Consider only the speed of compilation",
+        "Consider total costs including training, development, execution, reliability, and maintenance"
+      ],
+      "correctAnswer": "Consider total costs including training, development, execution, reliability, and maintenance",
+      "explanation": "The cost criterion concerns the ultimate total cost throughout development and use.",
+      "sourceSlide": 11,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 9,
+      "question": "A language's official definition is complete and precise. Which property does this demonstrate?",
+      "options": [
+        "Well-definedness",
+        "Generality",
+        "Aliasing",
+        "Expressivity"
+      ],
+      "correctAnswer": "Well-definedness",
+      "explanation": "Well-definedness concerns completeness and precision of the official language definition.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "evaluation"
+    },
+    {
+      "id": 10,
+      "question": "In the von Neumann architecture shown, where are program instructions and data stored?",
+      "options": [
+        "In separate programming environments rather than memory",
+        "In memory, separate from the CPU",
+        "Only in input devices",
+        "Only in the control unit"
+      ],
+      "correctAnswer": "In memory, separate from the CPU",
+      "explanation": "The lecture shows both instructions and data in memory, with transfers to and from the CPU.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 11,
+      "question": "What limited resource causes the von Neumann bottleneck described in the lecture?",
+      "options": [
+        "The number of source-code comments",
+        "The variety of predefined functions",
+        "The speed of the connection between memory and processor",
+        "The number of programming language keywords"
+      ],
+      "correctAnswer": "The speed of the connection between memory and processor",
+      "explanation": "Instructions may execute faster than they can be supplied through the memory-processor connection.",
+      "sourceSlide": 25,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 12,
+      "question": "Which methodological shift does the lecture associate with the late 1960s?",
+      "options": [
+        "The first adoption of JIT compilation for all software",
+        "The replacement of abstraction with machine-only coding",
+        "The start of object orientation through inheritance and polymorphism",
+        "Greater emphasis on people efficiency, readability, and structured programming"
+      ],
+      "correctAnswer": "Greater emphasis on people efficiency, readability, and structured programming",
+      "explanation": "The late-1960s slide emphasizes people efficiency, improved control structures, and structured programming.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 13,
+      "question": "Which pair consists of functional-language examples in the lecture?",
+      "options": [
+        "Scheme and ML",
+        "C and JavaScript",
+        "Prolog and COBOL",
+        "JSTL and XSLT"
+      ],
+      "correctAnswer": "Scheme and ML",
+      "explanation": "Scheme and ML appear in the functional category, where computation uses function application.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 14,
+      "question": "Why are object-oriented languages included within the lecture's imperative category?",
+      "options": [
+        "Every object-oriented language is a markup extension",
+        "They can still use variables, assignments, and iteration",
+        "Object orientation eliminates all mutable state",
+        "Inheritance requires pure interpretation"
+      ],
+      "correctAnswer": "They can still use variables, assignments, and iteration",
+      "explanation": "The lecture's imperative category includes languages supporting object orientation as well as scripting and visual languages.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 15,
+      "question": "C++ pointers illustrate a trade-off between which properties?",
+      "options": [
+        "Readability and compiler speed",
+        "Generality and language standardization",
+        "Writability or flexibility and reliability",
+        "Portability and well-definedness"
+      ],
+      "correctAnswer": "Writability or flexibility and reliability",
+      "explanation": "Pointers provide flexibility but can make reliable programming harder; this is the lecture's third trade-off.",
+      "sourceSlide": 19,
+      "answerSource": "inferred",
+      "topic": "design-tradeoffs"
+    },
+    {
+      "id": 16,
+      "question": "Which sequence matches the main compiler phases listed in the lecture?",
+      "options": [
+        "Code generation, lexical analysis, loading, syntax analysis",
+        "Loading, macro expansion, execution, lexical analysis",
+        "Syntax analysis, execution, lexical analysis, interpretation",
+        "Lexical analysis, syntax analysis, semantic analysis, code generation"
+      ],
+      "correctAnswer": "Lexical analysis, syntax analysis, semantic analysis, code generation",
+      "explanation": "The compilation slide lists these four phases in order, ending with machine-code generation.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 17,
+      "question": "What is a load module, also called an executable image, in the lecture?",
+      "options": [
+        "User code and system code together",
+        "Only the original source characters",
+        "Only a parse tree",
+        "Only a list of preprocessor macros"
+      ],
+      "correctAnswer": "User code and system code together",
+      "explanation": "The lecture defines the executable image as the combined user and system code.",
+      "sourceSlide": 24,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 18,
+      "question": "Which statement best describes pure interpretation in the lecture's implementation model?",
+      "options": [
+        "The source program is permanently replaced by an executable image",
+        "An interpreter executes the source program without first producing a separate compiled machine-code program",
+        "All source code must be compiled to native code before execution",
+        "Only a linker can execute the program"
+      ],
+      "correctAnswer": "An interpreter executes the source program without first producing a separate compiled machine-code program",
+      "explanation": "The pure interpretation model passes source and input to an interpreter, without a separate compilation stage.",
+      "sourceSlide": 26,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 19,
+      "question": "Why did the lecture's early Java hybrid implementation support portability?",
+      "options": [
+        "Java programs needed no run-time system",
+        "Every computer used the same operating system",
+        "Bytecode could run wherever a suitable JVM was available",
+        "Bytecode was identical to every CPU's native instruction set"
+      ],
+      "correctAnswer": "Bytecode could run wherever a suitable JVM was available",
+      "explanation": "The lecture describes the JVM as a bytecode interpreter and run-time system supporting execution across machines.",
+      "sourceSlide": 28,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 20,
+      "question": "What is a programming environment?",
+      "options": [
+        "A single rule for type checking",
+        "The final output of lexical analysis",
+        "A memory cell modeled by a variable",
+        "A collection of tools used in software development"
+      ],
+      "correctAnswer": "A collection of tools used in software development",
+      "explanation": "Programming environments collect development tools; the lecture gives UNIX, Visual Studio .NET, and NetBeans examples.",
+      "sourceSlide": 32,
+      "answerSource": "inferred",
+      "topic": "implementation-tools"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # CS-Vault pipeline
 
 Local-only batch extractor. Turns past-exam PDFs and photos from Google
-Drive into quiz JSON under `src/content/quizzes/`. Build-time tool, not a
+Drive (manually curated into a local inbox) into quiz JSON under `src/content/quizzes/`. Build-time tool, not a
 service — the site never calls it and nothing here is imported by `src/`.
 
 See `docs/plan.md` (slice order) and `docs/schema.md` (data model) at the
@@ -18,6 +18,13 @@ cp .env.example .env             # then fill in the values
 ```
 
 ## Run
+
+```sh
+python -m pipeline.migrate
+python -m pipeline.ingest
+```
+
+Later slices will add extraction and export:
 
 ```sh
 python -m pipeline.run --limit 20

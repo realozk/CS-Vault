@@ -7,7 +7,7 @@ Two halves, one repo:
 - `src/` — Astro static site, already built, deployed to GitHub Pages
 - `pipeline/` — Python batch extractor, **runs locally only**, new
 
-The pipeline turns past-exam PDFs and photos from Google Drive into
+The pipeline turns past-exam PDFs and photos curated in a local inbox into
 quiz JSON that lands in `src/content/quizzes/`. It is a build-time
 tool, not a service. The site never calls it and has no runtime.
 
@@ -29,8 +29,15 @@ Progress and slice order: `docs/plan.md`. Data model: `docs/schema.md`.
 
 - `npm run dev` / `npm run build` / `npm run preview`
 - No lint or test script defined.
-- `cd pipeline && python -m pipeline.run --limit 20`
-- `cd pipeline && python -m pipeline.export`
+- `cd pipeline && python -m pipeline.migrate`
+- `cd pipeline && python -m pipeline.ingest`
+- `pipeline.run` and `pipeline.export` are planned, not implemented.
+
+Current study content: six courses in `src/data/subjects.json`, third year,
+first semester 2026. Programming Languages has a Lecture 1 revision guide
+and three 20-question practice exams. Other courses have empty dashboards.
+`src/lib/modules.ts` validates the catalog and content metadata at build
+time. Register future courses in the catalog before adding their content.
 
 ## Hard rules — do not violate these
 

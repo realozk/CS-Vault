@@ -46,7 +46,7 @@ const BASE_URL = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_U
 
     <!-- Main Widget Container -->
     <div class="py-4">
-      <QuizWidget quiz={quiz.data} backUrl={`${BASE_URL}${subject}/${year}`} />
+      <QuizWidget quizId={quiz.id} quiz={quiz.data} backUrl={`${BASE_URL}${subject}/${year}`} />
     </div>
   </div>
 </Layout>

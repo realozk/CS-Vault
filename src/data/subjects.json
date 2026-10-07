@@ -1,0 +1,8 @@
+[
+  {"slug":"algorithm-analysis","name":"Algorithm Analysis","year":2026,"year_level":3,"semester":1},
+  {"slug":"computer-networks","name":"Computer Networks","year":2026,"year_level":3,"semester":1},
+  {"slug":"engineering-software-products","name":"Engineering Software Products","year":2026,"year_level":3,"semester":1},
+  {"slug":"operating-systems","name":"Operating Systems","year":2026,"year_level":3,"semester":1},
+  {"slug":"programming-languages","name":"Programming Languages","year":2026,"year_level":3,"semester":1},
+  {"slug":"web-development","name":"Web Development","year":2026,"year_level":3,"semester":1}
+]

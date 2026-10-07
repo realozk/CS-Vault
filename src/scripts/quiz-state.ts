@@ -1,0 +1,72 @@
+import type { Question } from '../types';
+
+export const DAY_MS = 86_400_000;
+export interface ReviewItem {
+  id: number;
+  signature: string;
+  dueAt: number;
+  streak: number;
+}
+export interface TopicResult { topic: string; correct: number; total: number }
+
+// A content edit invalidates an old saved answer, even when its ID stays the same.
+export const questionSignature = (q: Question): string =>
+  JSON.stringify([q.question, q.code || '', [...q.options].sort(), q.correctAnswer]);
+
+export function readReview(raw: string | null, questions: Question[]): ReviewItem[] {
+  if (!raw) return [];
+  try {
+    const value: unknown = JSON.parse(raw);
+    if (!Array.isArray(value)) return [];
+    const valid = new Map(questions.map(q => [q.id, questionSignature(q)]));
+    const items = new Map<number, ReviewItem>();
+    for (const entry of value) {
+      if (!entry || typeof entry !== 'object') continue;
+      if (!valid.has(entry.id) || valid.get(entry.id) !== entry.signature || !Number.isFinite(entry.dueAt)
+        || entry.dueAt < 0 || !Number.isInteger(entry.streak) || entry.streak < 0 || entry.streak > 2) continue;
+      items.set(entry.id, { id: entry.id, signature: entry.signature, dueAt: entry.dueAt, streak: entry.streak });
+    }
+    return [...items.values()];
+  } catch { return []; }
+}
+
+export function updateReview(
+  previous: ReviewItem[], questions: Question[], answers: ReadonlyMap<number, string>, now: number,
+): ReviewItem[] {
+  const items = new Map(previous.map(item => [item.id, { ...item }]));
+  for (const q of questions) {
+    if (answers.get(q.id) !== q.correctAnswer) {
+      items.set(q.id, { id: q.id, signature: questionSignature(q), streak: 0, dueAt: now + DAY_MS });
+    } else {
+      const saved = items.get(q.id);
+      // Early practice is welcome, but does not count as a spaced review.
+      if (!saved || saved.dueAt > now) continue;
+      const streak = saved.streak + 1;
+      if (streak >= 3) items.delete(q.id);
+      else items.set(q.id, { ...saved, streak, dueAt: now + (streak === 1 ? 3 : 7) * DAY_MS });
+    }
+  }
+  return [...items.values()].sort((a, b) => a.dueAt - b.dueAt || a.id - b.id);
+}
+
+export function shortReview(questions: Question[], items: ReviewItem[], limit = 5): Question[] {
+  const byId = new Map(questions.map(q => [q.id, q]));
+  return [...items].sort((a, b) => a.dueAt - b.dueAt || a.id - b.id)
+    .flatMap(item => byId.has(item.id) ? [byId.get(item.id)!] : []).slice(0, limit);
+}
+
+export function topicResults(questions: Question[], answers: ReadonlyMap<number, string>): TopicResult[] {
+  const topics = new Map<string, TopicResult>();
+  for (const q of questions) {
+    const topic = q.topic || 'general';
+    const result = topics.get(topic) || { topic, correct: 0, total: 0 };
+    result.total++;
+    if (answers.get(q.id) === q.correctAnswer) result.correct++;
+    topics.set(topic, result);
+  }
+  return [...topics.values()];
+}
+
+export function secondsRemaining(deadline: number, now: number): number {
+  return Math.max(0, Math.ceil((deadline - now) / 1000));
+}

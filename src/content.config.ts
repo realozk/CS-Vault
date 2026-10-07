@@ -5,7 +5,7 @@ import { glob } from 'astro/loaders';
 // Uses glob loader to scan src/content/summaries recursively
 const summariesCollection = defineCollection({
   loader: glob({ 
-    pattern: '**/[^_]*.md', 
+    pattern: '**/[^._]*.md',
     base: './src/content/summaries' 
   }),
   schema: z.object({
@@ -24,11 +24,13 @@ const summariesCollection = defineCollection({
 // Uses glob loader to scan src/content/quizzes recursively
 const quizzesCollection = defineCollection({
   loader: glob({ 
-    pattern: '**/[^_]*.json', 
+    pattern: '**/[^._]*.json',
     base: './src/content/quizzes' 
   }),
   schema: z.object({
     title: z.string().min(1, 'Quiz title is required'),
+    description: z.string().optional(),
+    source: z.string().optional(),
     subject: z.string().min(1, 'Subject name is required'),
     year: z.number().int().positive(),
     year_level: z.coerce.number().int().min(1).max(4),
@@ -39,10 +41,17 @@ const quizzesCollection = defineCollection({
         id: z.number().int(),
         question: z.string().min(1, 'Question text is required'),
         code: z.string().optional(),
-        options: z.array(z.string()).min(2, 'At least 2 options are required'),
+        options: z.array(z.string().min(1)).min(2, 'At least 2 options are required')
+          .refine(options => new Set(options).size === options.length, 'Options must be distinct'),
         correctAnswer: z.string(),
         explanation: z.string().optional(),
+        topic: z.string().min(1).optional(),
+        sourceSlide: z.number().int().positive().optional(),
+        answerSource: z.enum(['marked', 'inferred', 'manual']).default('manual'),
       })
+    ).min(1, 'A quiz must contain questions').refine(
+      questions => new Set(questions.map(q => q.id)).size === questions.length,
+      'Question IDs must be unique within a quiz'
     ).refine(
       (questions) => {
         // Enforce that correctAnswer must be one of the options

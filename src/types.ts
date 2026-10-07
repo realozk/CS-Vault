@@ -10,6 +10,9 @@ export interface Question {
   options: string[];
   correctAnswer: string;
   explanation?: string;
+  sourceSlide?: number;
+  topic?: string;
+  answerSource?: 'marked' | 'inferred' | 'manual';
 }
 
 export interface QuizData {
@@ -17,6 +20,8 @@ export interface QuizData {
   subject: string;
   year: number;
   questions: Question[];
+  description?: string;
+  source?: string;
 }
 
 export interface ModuleItem {

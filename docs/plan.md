@@ -141,13 +141,25 @@ Plan mode first — show me the approach before writing code.
 
 ## Open decisions
 
+Midterm preparation (2026-10-07): replaced sample CS101/DS101 material
+with a six-course catalog and Programming Languages Lecture 1 study aids
+(three practice exams, 60 questions, one revision guide). Question answer
+provenance warnings and source-slide references now exist in the site.
+Student quiz improvements (2026-10-08): practice/exam modes, optional timer,
+missed-answer review, optional topic metadata, and per-exam local spaced-review
+sessions are implemented. Tests cover the client state functions. No pipeline
+slices were added by these frontend changes.
+
+This does not complete slice 8: repetition badges and figure rendering
+remain pending, as does the extraction pipeline starting at slice 3.
+
 - [ ] Exact Gemini model + pricing — check the current lineup, tiers moved
 - [ ] Embedding model — verify retrieval quality before committing
       (content is English-only)
 - [ ] Standard choice count per subject (a validator depends on it)
 - [ ] Figure questions: exported, or held for manual handling?
-- [ ] Subject slugs — pipeline output must match the site's existing
-      `cs101` / `ds101` naming, not invent new ones
+- [ ] Subject slugs — pipeline output must match `src/data/subjects.json`,
+      including `programming-languages`; do not invent unregistered slugs
 - [ ] Academic clearance. The site is already world-readable on GitHub
       Pages, so this is live now rather than at launch. Write down who
       confirmed it and when — or write it down as your inference. Same
