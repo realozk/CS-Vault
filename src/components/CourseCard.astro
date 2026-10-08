@@ -14,6 +14,11 @@ const { module: m } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const href = getLocalizedPath(`/${m.subject}/${m.year}`, lang);
+const alertKey = m.subject === 'programming-languages'
+  ? 'courseAlert.programmingLanguages'
+  : m.subject === 'operating-systems'
+    ? 'courseAlert.operatingSystems'
+    : undefined;
 ---
 
 <a 
@@ -21,9 +26,16 @@ const href = getLocalizedPath(`/${m.subject}/${m.year}`, lang);
   class="group block bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border hover:border-brand-500 dark:hover:border-brand-500 rounded-md p-4 shadow-sm hover:-translate-y-1 transition-all duration-300 ease-out"
 >
   <div class="flex items-center justify-between gap-2 mb-2">
+    <div class="flex items-center gap-1.5 min-w-0">
     <span class="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-gray-100 dark:bg-zinc-800/40 text-gray-600 dark:text-zinc-400 border border-transparent dark:border-dark-border">
-      {m.year}
+      {m.subjectCode}
     </span>
+    {alertKey && (
+      <span class="truncate rounded bg-amber-50 px-1.5 py-0.5 text-[9px] font-semibold leading-tight text-amber-700 dark:bg-amber-950/30 dark:text-amber-300">
+        {t(alertKey)}
+      </span>
+    )}
+    </div>
     <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 transition-transform duration-150 text-gray-400 group-hover:text-brand-500 dark:group-hover:text-brand-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
     </svg>

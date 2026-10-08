@@ -5,6 +5,7 @@ import type { ModuleItem } from '../types';
 const subjects = z.array(z.object({
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   name: z.string().min(1),
+  subject_code: z.string().min(1),
   name_ar: z.string().min(1).optional(),
   year: z.number().int().positive(),
   year_level: z.number().int().min(1).max(4),
@@ -23,7 +24,8 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
     const key = `${subject.slug}/${subject.year}`;
     if (modules.has(key)) throw new Error(`Duplicate subject: ${key}`);
     modules.set(key, {
-      subject: subject.slug, subjectName: getSubjectName(subject.slug, lang), year: String(subject.year),
+      subject: subject.slug, subjectName: getSubjectName(subject.slug, lang), subjectCode: subject.subject_code,
+      year: String(subject.year),
       yearLevel: subject.year_level, semester: subject.semester,
       summariesCount: 0, quizzesCount: 0,
     });

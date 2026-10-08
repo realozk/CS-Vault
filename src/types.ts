@@ -32,6 +32,7 @@ export interface QuizData {
 export interface ModuleItem {
   subject: string;
   subjectName: string;
+  subjectCode: string;
   year: string;
   yearLevel: number;
   semester: number;

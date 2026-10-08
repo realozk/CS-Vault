@@ -2,6 +2,7 @@
   {
     "slug": "algorithm-analysis",
     "name": "Algorithm Analysis",
+    "subject_code": "CS2107",
     "year": 2026,
     "year_level": 3,
     "semester": 1,
@@ -10,6 +11,7 @@
   {
     "slug": "computer-networks",
     "name": "Computer Networks",
+    "subject_code": "CEN3011",
     "year": 2026,
     "year_level": 3,
     "semester": 1,
@@ -18,6 +20,7 @@
   {
     "slug": "engineering-software-products",
     "name": "Engineering Software Products",
+    "subject_code": "CS3809",
     "year": 2026,
     "year_level": 3,
     "semester": 1,
@@ -26,6 +29,7 @@
   {
     "slug": "operating-systems",
     "name": "Operating Systems",
+    "subject_code": "CS3608",
     "year": 2026,
     "year_level": 3,
     "semester": 1,
@@ -34,6 +38,7 @@
   {
     "slug": "programming-languages",
     "name": "Programming Languages",
+    "subject_code": "CS3713",
     "year": 2026,
     "year_level": 3,
     "semester": 1,
@@ -42,6 +47,7 @@
   {
     "slug": "web-development",
     "name": "Web Development",
+    "subject_code": "CS3810",
     "year": 2026,
     "year_level": 3,
     "semester": 1,

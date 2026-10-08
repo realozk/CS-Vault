@@ -28,6 +28,14 @@ const dotColor = colorMap[accentColor] || 'bg-blue-500';
 <div class="space-y-4">
   <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500 flex items-center gap-2">
     <span>{t('semester.title').replace('{sem}', semester.toString())}</span>
+    {semester === 1 && (
+      <span
+        class="text-[10px] font-semibold normal-case tracking-normal text-gray-500 dark:text-zinc-400"
+        data-academic-week
+        data-week-start="2026-08-22"
+        data-week-template={t('semester.week')}
+      ></span>
+    )}
     <span class={`w-1.5 h-1.5 rounded-full ${dotColor} animate-pulse`}></span>
   </h3>
   
@@ -46,3 +54,18 @@ const dotColor = colorMap[accentColor] || 'bg-blue-500';
     </div>
   )}
 </div>
+
+<script>
+  import { getAcademicWeekNumber } from '../lib/academic-week';
+
+  document.querySelectorAll<HTMLElement>('[data-academic-week]').forEach((element) => {
+    const weekStart = element.dataset.weekStart;
+    const template = element.dataset.weekTemplate;
+    if (!weekStart || !template) {
+      throw new Error('Academic week label is missing its start date or translation.');
+    }
+
+    const week = getAcademicWeekNumber(new Date(), weekStart);
+    element.textContent = template.replace('{n}', String(week));
+  });
+</script>

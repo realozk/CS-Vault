@@ -63,6 +63,8 @@ export const ui = {
     'quiz.shawarma': 'A little shawarma break',
     'quiz.topic.general': 'General',
     'course.comingSoon': 'Study material coming soon',
+    'courseAlert.programmingLanguages': 'Midterm Chapter 1',
+    'courseAlert.operatingSystems': 'Quiz Ch1-2 Week 8',
     'quiz.featured': 'Likely exam practice',
     'quiz.providedNotice': '20 Lecture 1 questions from the uploaded quiz/midterm collection. Marked answers were transcribed; explanations and missing choices were added for practice. Highlighted for revision, with no guarantee these questions will appear in your exam.',
     'quiz.sourcePage': 'Source PDF page {page}',
@@ -102,6 +104,7 @@ export const ui = {
     'semester.1': 'First Semester',
     'semester.2': 'Second Semester',
     'semester.title': 'Semester {sem}',
+    'semester.week': 'Week {n}',
     'semester.empty': 'No subjects uploaded for this semester yet.',
 
     // Subject Dashboard
@@ -200,6 +203,8 @@ export const ui = {
     'quiz.shawarma': 'استراحة شاورما صغيرة',
     'quiz.topic.general': 'عام',
     'course.comingSoon': 'المحتوى الدراسي قريباً',
+    'courseAlert.programmingLanguages': 'ميدتيرم شابتر 1',
+    'courseAlert.operatingSystems': 'كويز شابتر 1-2 الأسبوع 8',
     'quiz.featured': 'أسئلة متوقعة للمراجعة',
     'quiz.providedNotice': '٢٠ سؤالاً من المحاضرة الأولى من ملف تجميع الأسئلة. نُقلت الإجابات المحددة في المصدر، وأُضيفت الشروح والخيارات الناقصة للتدريب. مميز للمراجعة، دون ضمان ورود هذه الأسئلة في اختبارك.',
     'quiz.sourcePage': 'صفحة {page} في ملف المصدر',
@@ -239,6 +244,7 @@ export const ui = {
     'semester.1': 'الفصل الدراسي الأول',
     'semester.2': 'الفصل الدراسي الثاني',
     'semester.title': 'الفصل الدراسي {sem}',
+    'semester.week': 'الأسبوع {n}',
     'semester.empty': 'لم يتم رفع أي مواد لهذا الفصل الدراسي بعد.',
 
     // Subject Dashboard
