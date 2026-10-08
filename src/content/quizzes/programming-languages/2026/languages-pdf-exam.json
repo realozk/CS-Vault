@@ -1,0 +1,330 @@
+{
+  "title": "Lecture 1 — Languages PDF Exam",
+  "subject": "Programming Languages",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "languages.pdf",
+  "sourceKind": "provided",
+  "featured": true,
+  "description": "20 unique Lecture 1 questions adapted from the uploaded quiz/midterm collection. Grammar and variable-binding questions are outside the confirmed Lecture 1 scope and are omitted. Correct answers follow visible source markings; explanations and three sets of missing choices were added for practice. The highlight is a study priority, not a confirmed prediction of the next exam.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "The ease with which programs can be read and understood is:",
+      "options": [
+        "Readability",
+        "Writability",
+        "Reliability",
+        "Cost"
+      ],
+      "correctAnswer": "Readability",
+      "explanation": "Readability concerns how easily people understand a program. The PDF marks Readability.",
+      "sourcePage": 10,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "evaluation"
+    },
+    {
+      "id": 2,
+      "question": "A language implementation method that does not translate the entire program into machine code, and generally has slower execution, is:",
+      "options": [
+        "Compilation",
+        "Interpretation",
+        "Hybrid implementation",
+        "Just-in-time compilation"
+      ],
+      "correctAnswer": "Interpretation",
+      "explanation": "The PDF marks Interpretation. Pure interpretation executes through an interpreter rather than first producing a complete machine-code program.",
+      "sourcePage": 10,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 3,
+      "question": "Exception handling and type checking increase which language evaluation criterion?",
+      "options": [
+        "Readability",
+        "Writability",
+        "Reliability",
+        "Cost"
+      ],
+      "correctAnswer": "Reliability",
+      "explanation": "Type checking detects type errors; exception handling supports responses to exceptional conditions. The PDF marks Reliability.",
+      "sourcePage": 10,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "evaluation"
+    },
+    {
+      "id": 4,
+      "question": "The process of collecting system program units and linking them to a user program is called:",
+      "options": [
+        "Linking and loading",
+        "Preprocessing",
+        "Code loading",
+        "Translation"
+      ],
+      "correctAnswer": "Linking and loading",
+      "explanation": "The source calls this Linking and loading: needed program units are combined with the user program to prepare execution.",
+      "sourcePage": 11,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 5,
+      "question": "A collection of tools used in software development is called:",
+      "options": [
+        "Compilers",
+        "Preprocessors",
+        "Interpreters",
+        "Programming environments"
+      ],
+      "correctAnswer": "Programming environments",
+      "explanation": "A programming environment is a collection of development tools, rather than just one compiler or interpreter.",
+      "sourcePage": 11,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 6,
+      "question": "Which language category became dominant under the influence of von Neumann computer architecture?",
+      "options": [
+        "Imperative",
+        "Functional",
+        "Logic",
+        "Dynamic"
+      ],
+      "correctAnswer": "Imperative",
+      "explanation": "Imperative variables, assignments and iteration closely match the memory and execution model of von Neumann architecture.",
+      "sourcePage": 11,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "architecture-paradigms"
+    },
+    {
+      "id": 7,
+      "question": "The ease with which programs can be moved from one implementation to another is:",
+      "options": [
+        "Portability",
+        "Generality",
+        "Reliability",
+        "Readability"
+      ],
+      "correctAnswer": "Portability",
+      "explanation": "Portability concerns moving a program between implementations or platforms.",
+      "sourcePage": 12,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "evaluation"
+    },
+    {
+      "id": 8,
+      "question": "APL is highly expressive but difficult to read. Which design trade-off does this illustrate?",
+      "options": [
+        "Reliability vs. execution cost",
+        "Writability vs. reliability",
+        "Writability vs. cost",
+        "Writability vs. readability"
+      ],
+      "correctAnswer": "Writability vs. readability",
+      "explanation": "Compact expressive notation can help writing while making reading harder. The graded screenshot marks Writability vs. readability; the earlier copy on page 6 has conflicting grading.",
+      "sourcePage": 12,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "design-tradeoffs"
+    },
+    {
+      "id": 9,
+      "question": "The ease with which a language can be used to create programs is:",
+      "options": [
+        "Readability",
+        "Writability",
+        "Reliability",
+        "Cost"
+      ],
+      "correctAnswer": "Writability",
+      "explanation": "Writability concerns the ease of expressing and creating programs.",
+      "sourcePage": 15,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "evaluation"
+    },
+    {
+      "id": 10,
+      "question": "Programs produced by compilers generally execute faster than programs run through pure interpreters.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "The source marks True for its conventional compilation versus pure-interpretation comparison. This is about execution speed, not translation time; it is not a universal benchmark for every implementation.",
+      "sourcePage": 16,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 11,
+      "question": "In the compilation model used by the source, which phase generates intermediate code?",
+      "options": [
+        "Lexical analysis",
+        "Syntax analysis",
+        "Semantic analysis",
+        "Code generation"
+      ],
+      "correctAnswer": "Semantic analysis",
+      "explanation": "The PDF marks Semantic analysis. In this course model, semantic analysis and intermediate-code work precede machine-code generation.",
+      "sourcePage": 16,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 12,
+      "question": "A relatively small set of primitive constructs, combined in a relatively small number of ways, improves which criterion?",
+      "options": [
+        "Readability",
+        "Writability",
+        "Reliability",
+        "Cost"
+      ],
+      "correctAnswer": "Readability",
+      "explanation": "The source marks Readability. Overall simplicity and consistent feature combinations help readers understand programs.",
+      "sourcePage": 17,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "evaluation"
+    },
+    {
+      "id": 13,
+      "question": "Which implementation method does the source describe as rarely used for traditional high-level languages?",
+      "options": [
+        "Compiler",
+        "Pure interpreter",
+        "Hybrid implementation system",
+        "Just-in-time implementation"
+      ],
+      "correctAnswer": "Pure interpreter",
+      "explanation": "The PDF marks Pure interpreter. Treat this as the source's historical implementation comparison, rather than a claim about every modern language.",
+      "sourcePage": 18,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 14,
+      "question": "Which tool handles directives that include code from other files before compilation?",
+      "options": [
+        "Linker and loader",
+        "Preprocessor",
+        "Code loader",
+        "Translator"
+      ],
+      "correctAnswer": "Preprocessor",
+      "explanation": "Preprocessing handles directives such as includes and macros before the main compilation stages.",
+      "sourcePage": 19,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 15,
+      "question": "Which compilation phase transforms lexical units into parse trees?",
+      "options": [
+        "Lexical analysis",
+        "Syntax analysis",
+        "Semantic analysis",
+        "Code generation"
+      ],
+      "correctAnswer": "Syntax analysis",
+      "explanation": "Syntax analysis organizes tokens into a grammatical structure such as a parse tree.",
+      "sourcePage": 20,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 16,
+      "question": "Powerful C++ pointers allow access to hardware but can reduce reliability. Which trade-off is marked in the source?",
+      "options": [
+        "Reliability vs. execution cost",
+        "Writability vs. reliability",
+        "Writability vs. cost",
+        "Writability vs. readability"
+      ],
+      "correctAnswer": "Writability vs. reliability",
+      "explanation": "The source marks Writability vs. reliability. The Lecture 1 handout describes the same pointer example as flexibility versus reliability; this item preserves the PDF's terminology.",
+      "sourcePage": 20,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "design-tradeoffs"
+    },
+    {
+      "id": 17,
+      "question": "Compilers are necessarily much faster than pure interpreters in the translation process.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "The PDF marks False. Translation time and program execution time are different comparisons; faster compiled execution does not imply this claim about translation time.",
+      "sourcePage": 21,
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 18,
+      "question": "Which implementation method translates programs into an intermediate language that is then executed by an interpreter?",
+      "options": [
+        "Compilation",
+        "Interpretation",
+        "Hybrid implementation",
+        "Just-in-time compilation"
+      ],
+      "correctAnswer": "Hybrid implementation",
+      "explanation": "Hybrid implementation separates translation into an intermediate representation from execution by an interpreter. The source provides only the selected answer; the other choices were added for practice.",
+      "sourcePage": 2,
+      "answerSource": "marked",
+      "optionsSource": "generated",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 19,
+      "question": "Which implementation method translates programs into machine-language code before execution?",
+      "options": [
+        "Compiler",
+        "Pure interpreter",
+        "Hybrid interpreter",
+        "Preprocessor"
+      ],
+      "correctAnswer": "Compiler",
+      "explanation": "A compiler translates source to machine code in the model used here. The source provides only the selected answer; the other choices were added for practice.",
+      "sourcePage": 4,
+      "answerSource": "marked",
+      "optionsSource": "generated",
+      "topic": "implementation-tools"
+    },
+    {
+      "id": 20,
+      "question": "Java array-index checks improve safety but increase execution time. Which trade-off does this illustrate?",
+      "options": [
+        "Reliability vs. execution cost",
+        "Writability vs. reliability",
+        "Writability vs. cost",
+        "Writability vs. readability"
+      ],
+      "correctAnswer": "Reliability vs. execution cost",
+      "explanation": "Bounds checks improve reliability while adding runtime work. The source provides only the selected answer; the other choices were added for practice.",
+      "sourcePage": 9,
+      "answerSource": "marked",
+      "optionsSource": "generated",
+      "topic": "design-tradeoffs"
+    }
+  ]
+}

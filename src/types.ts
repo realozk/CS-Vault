@@ -11,17 +11,22 @@ export interface Question {
   correctAnswer: string;
   explanation?: string;
   sourceSlide?: number;
+  sourcePage?: number;
+  optionsSource?: 'provided' | 'generated';
   topic?: string;
   answerSource?: 'marked' | 'inferred' | 'manual';
 }
 
 export interface QuizData {
+  lang?: 'en' | 'ar';
   title: string;
   subject: string;
   year: number;
   questions: Question[];
   description?: string;
   source?: string;
+  sourceKind?: 'generated' | 'provided';
+  featured?: boolean;
 }
 
 export interface ModuleItem {

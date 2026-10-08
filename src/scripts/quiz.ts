@@ -71,11 +71,13 @@ const initQuizWidget = () => {
   };
   const startTimer = () => { stopTimer(); if (deadline !== null && running) { tick(); if (running) timer = setInterval(tick, 1000); } };
 
+  const sourceReference = (q: Question) => q.sourcePage ? t('sourcePage').replace('{page}', String(q.sourcePage)) : q.sourceSlide ? t('sourceSlide').replace('{slide}', String(q.sourceSlide)) : '';
+  const answerNotice = (q: Question) => [q.answerSource === 'inferred' ? t('inferred') : '', q.optionsSource === 'generated' ? t('generatedOptions') : ''].filter(Boolean).join(' ');
   const showExplanation = (q: Question) => {
     el('explanation-text').textContent = q.explanation || '';
-    el('source-slide').textContent = q.sourceSlide ? t('sourceSlide').replace('{slide}', String(q.sourceSlide)) : '';
-    el('answer-warning').textContent = q.answerSource === 'inferred' ? t('inferred') : '';
-    el('explanation-box').classList.toggle('hidden', !q.explanation && !q.sourceSlide && q.answerSource !== 'inferred');
+    el('source-slide').textContent = sourceReference(q);
+    el('answer-warning').textContent = answerNotice(q);
+    el('explanation-box').classList.toggle('hidden', !q.explanation && !sourceReference(q) && !answerNotice(q));
   };
   const paintOptions = () => {
     const q = questions[currentIndex];
@@ -191,8 +193,8 @@ const initQuizWidget = () => {
       card.append(paragraph(`${t('yourAnswer')}: ${answers.get(q.id) || t('unanswered')}`, 'text-sm text-red-700 dark:text-red-300'));
       card.append(paragraph(`${t('correctAnswer')}: ${q.correctAnswer}`, 'text-sm text-green-700 dark:text-green-300'));
       if (q.explanation) card.append(paragraph(q.explanation, 'text-sm text-gray-600 dark:text-gray-300'));
-      if (q.sourceSlide) card.append(paragraph(t('sourceSlide').replace('{slide}', String(q.sourceSlide)), 'text-xs text-gray-500'));
-      if (q.answerSource === 'inferred') card.append(paragraph(t('inferred'), 'text-xs text-amber-800 dark:text-amber-300'));
+      if (sourceReference(q)) card.append(paragraph(sourceReference(q), 'text-xs text-gray-500'));
+      if (answerNotice(q)) card.append(paragraph(answerNotice(q), 'text-xs text-amber-800 dark:text-amber-300'));
       el('mistake-list').append(card);
     }
     button('retry-missed-btn').classList.toggle('hidden', !missed.length);

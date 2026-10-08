@@ -45,9 +45,13 @@ and content year-level/semester metadata must match the catalog.
 
 The current catalog contains the six third-year, first-semester courses
 for 2026. Programming Languages has a Lecture 1 revision guide and three
-20-question practice exams. The remaining courses await study material.
+20-question practice exams, plus a highlighted 20-question Lecture 1 exam
+transcribed from `languages.pdf`. The remaining courses await study material.
 Practice questions are generated study aids based on the supplied lecture,
-not official past exams or an instructor-approved answer key.
+not official past exams or an instructor-approved answer key. The PDF exam
+uses visible answer markings; duplicate questions and topics beyond Lecture 1
+are omitted. Its likely-exam highlight is a revision priority, not a verified
+prediction. Three missing choice sets and explanations were added for practice.
 
 Keep one JSON file per exam: the static site embeds only that exam's
 questions on its quiz page. The home search index contains metadata,
@@ -105,7 +109,10 @@ Quizzes are structured JSON documents located under `src/content/quizzes/[subjec
 ```
 
 Optional quiz fields: `description` (scope/instructions), `source` (source
-document name). Optional question fields: `sourceSlide` (one-based source
+document name), `sourceKind` (`generated` or `provided`), and `featured`
+(default false; highlighted and listed first on subject pages). Optional
+question fields: `sourcePage` (one-based PDF page), `optionsSource`
+(`provided` or `generated`), `sourceSlide` (one-based source
 slide number), `answerSource` (`manual`, `marked`, or `inferred`; default
 `manual`). Answers inferred by AI must use `inferred`; the widget shows
 a verification warning with the explanation. Options must be distinct,

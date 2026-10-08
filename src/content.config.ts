@@ -31,6 +31,8 @@ const quizzesCollection = defineCollection({
     title: z.string().min(1, 'Quiz title is required'),
     description: z.string().optional(),
     source: z.string().optional(),
+    sourceKind: z.enum(['generated', 'provided']).default('generated'),
+    featured: z.boolean().default(false),
     subject: z.string().min(1, 'Subject name is required'),
     year: z.number().int().positive(),
     year_level: z.coerce.number().int().min(1).max(4),
@@ -47,6 +49,8 @@ const quizzesCollection = defineCollection({
         explanation: z.string().optional(),
         topic: z.string().min(1).optional(),
         sourceSlide: z.number().int().positive().optional(),
+        sourcePage: z.number().int().positive().optional(),
+        optionsSource: z.enum(['provided', 'generated']).optional(),
         answerSource: z.enum(['marked', 'inferred', 'manual']).default('manual'),
       })
     ).min(1, 'A quiz must contain questions').refine(

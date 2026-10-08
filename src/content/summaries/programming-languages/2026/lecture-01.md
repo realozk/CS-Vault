@@ -13,6 +13,8 @@ lang: "en"
 
 **Third year, first semester. Lecture 1 only:** *Preliminaries to the Concepts of Programming Languages*. These notes and the three practice exams are original study aids based on `Lecture01-Single-Slide-Handout.pdf`, not official exam questions or an instructor-approved answer key. Check the referenced slides when reviewing an answer.
 
+A separate **Languages PDF Exam** contains 20 Lecture 1 questions adapted from the uploaded quiz/midterm collection in `languages.pdf`. Its highlight marks it as a revision priority, not a confirmed prediction. Questions about grammar and variable binding in that PDF are outside the confirmed Lecture 1 scope and are omitted.
+
 ## A practical study routine
 
 1. Read the handout, then take **Exam A: Foundations** without notes.

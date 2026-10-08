@@ -47,7 +47,7 @@ const summaries = await Promise.all(
   })
 );
 
-const quizzes = rawQuizzes.map((entry) => ({
+const quizzes = [...rawQuizzes].sort((a, b) => Number(b.data.featured) - Number(a.data.featured)).map((entry) => ({
   entry,
   slug: getSlug(entry.id)
 }));
@@ -150,8 +150,9 @@ const BASE_URL = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_U
               {quizzes.map((q) => (
                 <a
                   href={`${BASE_URL}ar/${subject}/${year}/quiz/${q.slug}`}
-                  class="group block p-4 rounded border border-gray-100 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 bg-gray-50/50 dark:bg-zinc-800/10 hover:bg-blue-50/5 dark:hover:bg-blue-950/5 transition-all duration-150"
+                  class:list={["group block p-4 rounded border border-gray-100 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 bg-gray-50/50 dark:bg-zinc-800/10 hover:bg-blue-50/5 dark:hover:bg-blue-950/5 transition-all duration-150", { "featured-exam": q.entry.data.featured }]}
                 >
+                  {q.entry.data.featured && <span class="exam-priority-label">{t('quiz.featured')}</span>}
                   <div class="flex items-center justify-between gap-2">
                     <span lang={q.entry.data.lang} dir="auto" class="font-bold text-sm tracking-tight text-gray-800 dark:text-zinc-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {q.entry.data.title}

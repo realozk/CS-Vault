@@ -336,3 +336,8 @@ html[dir="rtl"] [lang="en"] {
 .subject-reading .academic-prose[dir="ltr"] { margin-left: 0; margin-right: auto; text-align: left; }
 .subject-reading .academic-prose[dir="rtl"] { margin-right: 0; margin-left: auto; text-align: right; }
 .academic-prose ol { list-style-type: decimal; padding-inline-start: 1.5rem; margin-bottom: 1.25rem; }
+
+.featured-exam { border-color: #a78b45; background: rgba(167, 139, 69, .07); }
+.dark .featured-exam { border-color: #a78b45; background: rgba(167, 139, 69, .07); }
+.exam-priority-label { display: block; margin-bottom: .6rem; font-size: .75rem; font-weight: 600; color: #806016; }
+.dark .exam-priority-label { color: #e2c47e; }
