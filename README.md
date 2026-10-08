@@ -4,8 +4,8 @@ A small study site made by students for Computer Science students. Browse course
 notes and practice quizzes in an English or Arabic interface. Study material
 currently follows the English lecture terminology.
 
-Built with Astro, TypeScript, and Tailwind. Pages are static and hosted on
-[GitHub Pages](https://realozk.github.io/CS-Vault/). No backend or accounts are needed.
+Built with Astro Pages are static and hosted on
+[GitHub Pages](https://realozk.github.io/CS-Vault/).
 
 ## Run locally
 
@@ -50,20 +50,10 @@ ignored by Git. They are created automatically when installing or building.
 
 ## Study material
 
-The catalog contains six third-year, first-semester courses. Programming
-Languages includes Lecture 1 notes, three generated practice exams, and a
-highlighted practice exam transcribed from `languages.pdf`. Operating Systems
-includes notes and three practice quizzes for Chapters 1 and 2.
-
 Generated questions are study aids, not official exams or approved answer keys.
 Explanations identify inferred answers and reference source slides or PDF pages.
 The highlighted exam is a revision priority, not a confirmed exam prediction.
 
-Practice mode gives immediate feedback. Exam mode reveals answers on submission
-and supports an optional timer (20 minutes by default, adjustable or disabled).
-Questions and choices shuffle between attempts. Results include explanations,
-missed questions, and topic totals. Saved mistakes and reading progress stay in
-the student's browser; active attempts are not restored after a reload.
 
 For content formats and contribution steps, see [CONTRIBUTING.md](CONTRIBUTING.md).
 For the optional local tool, see [pipeline/README.md](pipeline/README.md).
