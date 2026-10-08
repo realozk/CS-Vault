@@ -1,0 +1,312 @@
+{
+  "title": "Chapters 1 & 2 — Mixed Review",
+  "subject": "Operating Systems",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter1_And_2 (1).pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Several applications request the same limited resource. Which OS role handles this conflict?",
+      "options": [
+        "Resource allocator",
+        "Word processor",
+        "Source-code parser",
+        "Physical memory chip"
+      ],
+      "correctAnswer": "Resource allocator",
+      "explanation": "The OS manages conflicting resource requests for efficient and fair use.",
+      "sourcePage": 4,
+      "answerSource": "inferred",
+      "topic": "os-foundations"
+    },
+    {
+      "id": 2,
+      "question": "Which software category provides frameworks such as multimedia and database services to application developers?",
+      "options": [
+        "Middleware",
+        "Interrupt vector",
+        "Disk platter",
+        "Mode bit"
+      ],
+      "correctAnswer": "Middleware",
+      "explanation": "The lecture describes middleware as frameworks providing services beyond the kernel.",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "topic": "os-foundations"
+    },
+    {
+      "id": 3,
+      "question": "A device finishes a transfer while the CPU executes another task. What should signal the event?",
+      "options": [
+        "A hardware interrupt",
+        "A compulsory reboot",
+        "A new compiler",
+        "Deletion of the active program"
+      ],
+      "correctAnswer": "A hardware interrupt",
+      "explanation": "The controller interrupts the CPU to indicate completion or a need for attention.",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "topic": "interrupts-io"
+    },
+    {
+      "id": 4,
+      "question": "An arithmetic error such as division by zero generates which kind of event in the lecture?",
+      "options": [
+        "A software exception or trap",
+        "A new disk sector",
+        "A GUI icon",
+        "A physical replacement of the CPU"
+      ],
+      "correctAnswer": "A software exception or trap",
+      "explanation": "The lecture distinguishes software-generated exceptions or traps from device-generated interrupts.",
+      "sourcePage": 15,
+      "answerSource": "inferred",
+      "topic": "interrupts-io"
+    },
+    {
+      "id": 5,
+      "question": "A requested item is absent from the cache. What happens next in the lecture's model?",
+      "options": [
+        "Obtain it from slower storage and copy it to the cache",
+        "Declare the program permanently invalid",
+        "Remove the CPU's registers",
+        "Treat the cache as infinitely large"
+      ],
+      "correctAnswer": "Obtain it from slower storage and copy it to the cache",
+      "explanation": "A cache miss requires fetching the information from the slower level before using it through the cache.",
+      "sourcePage": 12,
+      "answerSource": "inferred",
+      "topic": "storage-caching"
+    },
+    {
+      "id": 6,
+      "question": "Why is DMA preferable for large transfers compared with an interrupt for every byte?",
+      "options": [
+        "It reduces CPU involvement and interrupt overhead",
+        "It makes all devices volatile",
+        "It removes the need to set up a transfer",
+        "It prevents the CPU from doing other work"
+      ],
+      "correctAnswer": "It reduces CPU involvement and interrupt overhead",
+      "explanation": "DMA transfers blocks directly and signals completion per block rather than requiring per-byte CPU work.",
+      "sourcePage": 13,
+      "answerSource": "inferred",
+      "topic": "interrupts-io"
+    },
+    {
+      "id": 7,
+      "question": "A job blocks on disk I/O and another ready job runs. Which principle is illustrated?",
+      "options": [
+        "Multiprogramming",
+        "Single-task execution without switching",
+        "Disabling the scheduler",
+        "Replacing main memory with a GUI"
+      ],
+      "correctAnswer": "Multiprogramming",
+      "explanation": "Multiprogramming maintains useful CPU work while another job waits.",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 8,
+      "question": "What is a program executing in memory called in the lecture?",
+      "options": [
+        "A process",
+        "A sector",
+        "An API definition",
+        "A device controller"
+      ],
+      "correctAnswer": "A process",
+      "explanation": "The slides identify an executing program in memory as a process.",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 9,
+      "question": "In the shown dual-mode model, a user program issues a system call. What transition occurs?",
+      "options": [
+        "User mode to kernel mode",
+        "Kernel mode to firmware permanently",
+        "User mode to no execution mode",
+        "No mode change can ever occur"
+      ],
+      "correctAnswer": "User mode to kernel mode",
+      "explanation": "A system call transfers execution to the kernel; returning restores user mode.",
+      "sourcePage": 16,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 10,
+      "question": "In the shown dual-mode model, what happens before control returns to a user program?",
+      "options": [
+        "The mode bit is set to 1 for user mode",
+        "Every privileged instruction becomes unrestricted",
+        "The mode bit remains 0 forever",
+        "All interrupts are erased"
+      ],
+      "correctAnswer": "The mode bit is set to 1 for user mode",
+      "explanation": "The lecture's convention resets the mode bit to 1 before resuming user code.",
+      "sourcePage": 16,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 11,
+      "question": "A process enters an infinite loop. Which mechanism lets the OS recover CPU control?",
+      "options": [
+        "Timer interrupt",
+        "A bigger application icon",
+        "Removal of secondary storage",
+        "An unlimited cache"
+      ],
+      "correctAnswer": "Timer interrupt",
+      "explanation": "The timer is configured to interrupt after a period, preventing indefinite CPU monopolization.",
+      "sourcePage": 17,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 12,
+      "question": "A printer runs out of paper. Which OS service detects and responds to this problem?",
+      "options": [
+        "Error detection",
+        "Program compilation",
+        "Desktop rendering only",
+        "Kernel linking only"
+      ],
+      "correctAnswer": "Error detection",
+      "explanation": "The error-detection service covers hardware, I/O device, and user-program errors.",
+      "sourcePage": 18,
+      "answerSource": "inferred",
+      "topic": "os-services"
+    },
+    {
+      "id": 13,
+      "question": "Why can a programmer call a documented API without knowing the kernel implementation?",
+      "options": [
+        "The API and runtime support hide interface details",
+        "The OS never executes code",
+        "All API functions are hardware circuits",
+        "No parameters or return values exist"
+      ],
+      "correctAnswer": "The API and runtime support hide interface details",
+      "explanation": "The caller follows the API contract while the interface invokes the kernel operation and returns status or values.",
+      "sourcePage": 24,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 14,
+      "question": "There are more system-call parameters than available registers. Which method described can be used?",
+      "options": [
+        "Store parameters in a memory block and pass its address in a register",
+        "Discard every parameter beyond the first",
+        "Change every parameter into a device",
+        "Disable the API"
+      ],
+      "correctAnswer": "Store parameters in a memory block and pass its address in a register",
+      "explanation": "A block or table keeps parameter data in memory, while a register carries its address.",
+      "sourcePage": 25,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 15,
+      "question": "In the FreeBSD example, what is exec() used for?",
+      "options": [
+        "Load a program into a process",
+        "Create a second process by itself",
+        "Close every device",
+        "Set the mode bit permanently to user mode"
+      ],
+      "correctAnswer": "Load a program into a process",
+      "explanation": "The example uses fork() for process creation and exec() for loading a program into the process.",
+      "sourcePage": 27,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 16,
+      "question": "Why are system programs important to most users' view of the OS?",
+      "options": [
+        "They provide convenient development and execution environments",
+        "They replace physical hardware",
+        "They are all identical to system calls",
+        "They always run as CPU microcode"
+      ],
+      "correctAnswer": "They provide convenient development and execution environments",
+      "explanation": "Users commonly interact with system programs rather than directly with low-level system calls.",
+      "sourcePage": 31,
+      "answerSource": "inferred",
+      "topic": "os-services"
+    },
+    {
+      "id": 17,
+      "question": "Which is a user goal rather than an internal system-design goal in the slides?",
+      "options": [
+        "Convenient to use and easy to learn",
+        "Easy for developers to implement internally",
+        "Flexible internal maintenance",
+        "Simple kernel code organization"
+      ],
+      "correctAnswer": "Convenient to use and easy to learn",
+      "explanation": "User goals concern convenience, learning, safety, reliability, and speed; system goals include implementation and maintenance.",
+      "sourcePage": 33,
+      "answerSource": "inferred",
+      "topic": "os-structures"
+    },
+    {
+      "id": 18,
+      "question": "Why did poorly separated MS-DOS functionality present a risk in the lecture?",
+      "options": [
+        "Applications could access basic I/O routines and malicious programs could crash the system",
+        "Every program was isolated in a separate microkernel",
+        "All commands required message passing",
+        "Its interfaces were rigorously layered"
+      ],
+      "correctAnswer": "Applications could access basic I/O routines and malicious programs could crash the system",
+      "explanation": "The MS-DOS example emphasizes weak separation and direct application access to basic I/O functionality.",
+      "sourcePage": 34,
+      "answerSource": "inferred",
+      "topic": "os-structures"
+    },
+    {
+      "id": 19,
+      "question": "What disadvantage of microkernels is identified in the lecture?",
+      "options": [
+        "Overhead of communication between user space and kernel space",
+        "No possibility of extension",
+        "All services must share one binary",
+        "Mandatory absence of security"
+      ],
+      "correctAnswer": "Overhead of communication between user space and kernel space",
+      "explanation": "Moving services to user space can improve separation but adds communication overhead.",
+      "sourcePage": 37,
+      "answerSource": "inferred",
+      "topic": "os-structures"
+    },
+    {
+      "id": 20,
+      "question": "Why do hybrid operating systems combine design approaches?",
+      "options": [
+        "To address performance, security, and usability needs together",
+        "To guarantee no kernel is needed",
+        "To remove all module interfaces",
+        "To make every service an interrupt vector"
+      ],
+      "correctAnswer": "To address performance, security, and usability needs together",
+      "explanation": "Hybrid systems combine structural techniques rather than adhering to one pure model.",
+      "sourcePage": 39,
+      "answerSource": "inferred",
+      "topic": "os-structures"
+    }
+  ]
+}

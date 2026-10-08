@@ -1,40 +1,22 @@
-# CS-Vault pipeline
+# Optional local content tool
 
-Local-only batch extractor. Turns past-exam PDFs and photos from Google
-Drive (manually curated into a local inbox) into quiz JSON under `src/content/quizzes/`. Build-time tool, not a
-service — the site never calls it and nothing here is imported by `src/`.
+This Python tool is separate from the website. It currently creates a SQLite
+working database and registers PDFs/images placed in `data/inbox/`.
+It does not yet extract questions or export quiz JSON.
 
-See `docs/plan.md` (slice order) and `docs/schema.md` (data model) at the
-repo root.
+Python 3.11 or later is sufficient; the current scripts use only the standard
+library. No API keys, virtual environment, or pip installation are required.
 
-## Setup
-
-```sh
-cd pipeline
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env             # then fill in the values
-```
-
-## Run
+From this directory:
 
 ```sh
 python -m pipeline.migrate
 python -m pipeline.ingest
 ```
 
-Later slices will add extraction and export:
+The database and inbox stay local and are ignored by Git. Ingesting files does
+not move or delete them. Repeated imports of the same bytes do not add duplicates.
 
-```sh
-python -m pipeline.run --limit 20
-python -m pipeline.export
-```
-
-(Those entry points arrive in later slices.)
-
-## Rules
-
-`.env`, `data/`, `__pycache__/`, and `.venv/` are gitignored. No secrets
-in the repo, no inbound endpoint, nothing under `pipeline/` imported by
-the site.
+[Data model and proposed extraction design](docs/schema.md) documents the working
+database and future work. The site continues to read Markdown and JSON from
+`src/content/`; it never imports this tool or queries its database.

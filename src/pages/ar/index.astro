@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SemesterSection from '../../components/SemesterSection.astro';
-import { getModules } from '../../lib/modules';
+import { getModules, getSubjectName } from '../../lib/modules';
 import { useTranslations, getLocalizedPath } from '../../i18n/ui';
 
 const t = useTranslations('ar');
@@ -11,7 +11,7 @@ const t = useTranslations('ar');
 const summaries = await getCollection('summaries');
 const quizzes = await getCollection('quizzes');
 
-const modules = await getModules();
+const modules = await getModules('ar');
 
 // Auto-detect default year tab (first year with content)
 const availableYears = [...new Set(modules.map(m => m.yearLevel))].sort((a, b) => a - b);
@@ -22,8 +22,8 @@ const BASE_URL = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_U
 // Compile Client-Side Search Index
 const searchIndex = [
   ...modules.map(m => ({
-    type: 'subject', title: m.subjectName, description: 'Semester ' + m.semester,
-    author: '', subjectCode: m.subject, year: m.year,
+    type: 'subject', title: m.subjectName, description: t('semester.title').replace('{sem}', String(m.semester)),
+    author: '', subjectCode: getSubjectName(m.subject, 'en'), year: m.year,
     url: `${BASE_URL}ar/${m.subject}/${m.year}`,
     yearLevel: m.yearLevel, semester: m.semester
   })),
@@ -34,7 +34,7 @@ const searchIndex = [
       title: s.data.title,
       description: s.data.description,
       author: s.data.author,
-      subjectCode: s.data.subject_code,
+      subjectCode: getSubjectName(s.data.subject_code, 'ar'),
       year: parts[1],
       url: `${BASE_URL}ar/${parts[0]}/${parts[1]}`,
       yearLevel: s.data.year_level,
@@ -47,9 +47,9 @@ const searchIndex = [
     return {
       type: 'quiz',
       title: q.data.title,
-      description: `Interactive test for ${q.data.subject}`,
+      description: `اختبار تدريبي لمادة ${getSubjectName(q.data.subject, 'ar')}`,
       author: 'System',
-      subjectCode: q.data.subject,
+      subjectCode: getSubjectName(q.data.subject, 'ar'),
       year: parts[1],
       url: `${BASE_URL}ar/${parts[0]}/${parts[1]}/quiz/${slug}`,
       yearLevel: q.data.year_level,
@@ -70,7 +70,7 @@ const searchIndexTranslations = JSON.stringify({
 
 <Layout title="الرئيسية" description={t('hero.desc')}>
   <div class="home-layout space-y-6 py-2">
-    
+
     <!-- Hero / Welcome Panel -->
     <div class="home-welcome relative overflow-hidden rounded-md bg-linear-to-r from-zinc-900 to-zinc-950 dark:from-zinc-950/80 dark:to-zinc-900/40 py-8 px-6 sm:py-10 sm:px-10 text-white border border-zinc-800 shadow-sm">
       <div class="relative max-w-2xl z-10">
@@ -81,16 +81,16 @@ const searchIndexTranslations = JSON.stringify({
           {t('hero.desc')}
         </p>
         <div class="mt-6 flex flex-wrap gap-4">
-          <a 
-            href="#directory-container" 
+          <a
+            href="#directory-container"
             class="px-4 py-2 bg-white text-zinc-950 hover:bg-zinc-100 text-sm font-semibold rounded transition-all duration-150 shadow-xs"
           >
             {t('hero.browse')}
           </a>
-          <a 
-            href="https://github.com/realozk/CS-Vault" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <a
+            href="https://github.com/realozk/CS-Vault"
+            target="_blank"
+            rel="noopener noreferrer"
             class="px-4 py-2 border border-zinc-700 hover:border-zinc-500 bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-semibold rounded transition-all duration-150"
           >
             {t('hero.contribute')}
@@ -112,17 +112,17 @@ const searchIndexTranslations = JSON.stringify({
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
       </div>
-      <input 
-        type="text" 
+      <input
+        type="text"
         id="global-search-input"
-        placeholder={t('search.placeholder')} 
+        placeholder={t('search.placeholder')}
         class="block w-full ps-10 pe-4 py-3 border border-gray-300/80 dark:border-zinc-700/65 rounded-md bg-white dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-zinc-500 focus:outline-hidden focus:ring-2 focus:ring-blue-500/80 focus:border-blue-500 text-sm shadow-xs transition-all duration-150"
       />
     </div>
 
     <!-- Main Directory Block -->
     <div id="directory-container" class="space-y-6 scroll-mt-24" data-search-index={JSON.stringify(searchIndex)} data-translations={searchIndexTranslations}>
-      
+
       <!-- Search Results Pane (Initially Hidden) -->
       <div id="search-results-pane" class="hidden space-y-4">
         <h2 class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
@@ -142,15 +142,15 @@ const searchIndexTranslations = JSON.stringify({
 
       <!-- Core Tab View (Hidden during active search) -->
       <div id="core-tab-view" class="directory-layout">
-        
+
         <!-- Year Selection Tabs -->
         <div class="year-sidebar flex border-b border-gray-200 dark:border-zinc-800 overflow-x-auto pb-px gap-1" id="year-tabs-nav">
           {[1, 2, 3, 4].map((year) => (
             <button
               data-year-tab={year}
               class={`px-5 py-3 border-b-2 font-bold text-sm tracking-tight transition-all duration-150 whitespace-nowrap cursor-pointer ${
-                year === defaultYear 
-                  ? 'border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400' 
+                year === defaultYear
+                  ? 'border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400'
                   : 'border-transparent text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-200 dark:hover:border-zinc-800'
               }`}
             >
@@ -162,7 +162,7 @@ const searchIndexTranslations = JSON.stringify({
         <!-- Course Lists organized by Semester -->
         {[1, 2, 3, 4].map((yearNum) => {
           const yearModules = modules.filter(m => m.yearLevel === yearNum);
-          
+
           return (
             <div data-year-content={yearNum} class={`year-material space-y-10 ${yearNum === defaultYear ? '' : 'hidden'}`}>
               {yearModules.length === 0 ? (
@@ -172,9 +172,9 @@ const searchIndexTranslations = JSON.stringify({
                   </svg>
                   <h3 class="font-bold text-lg text-gray-700 dark:text-zinc-300">{t('year.empty').replace('{year}', yearNum.toString())}</h3>
                   <p class="text-sm text-gray-400 mt-1 max-w-sm">{t('year.emptyDesc').replace('{year}', yearNum.toString())}</p>
-                  <a 
-                    href="https://github.com/realozk/CS-Vault" 
-                    target="_blank" 
+                  <a
+                    href="https://github.com/realozk/CS-Vault"
+                    target="_blank"
                     class="mt-4 px-4 py-2 border border-gray-250 dark:border-zinc-700 hover:border-zinc-500 rounded bg-gray-50 dark:bg-zinc-800 text-xs font-semibold"
                   >
                     {t('year.contributeGuidelines')}
@@ -182,10 +182,10 @@ const searchIndexTranslations = JSON.stringify({
                 </div>
               ) : (
                 <div class="space-y-8">
-                  
+
                   {[1, 2].filter(sem => yearModules.some(m => m.semester === sem)).map((sem) => (
-                    <SemesterSection 
-                      semester={sem} 
+                    <SemesterSection
+                      semester={sem}
                       modules={yearModules.filter(m => m.semester === sem)}
                       accentColor={sem === 1 ? 'blue' : 'indigo'}
                     />
@@ -197,7 +197,7 @@ const searchIndexTranslations = JSON.stringify({
           );
         })}
       </div>
-      
+
     </div>
   </div>
 </Layout>

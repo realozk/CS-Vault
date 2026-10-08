@@ -1,5 +1,8 @@
 # Data model
 
+The SQLite schema is implemented. Extraction, review, and export below describe
+future work; use `src/content.config.ts` for the current website content contract.
+
 Two layers, and keeping them separate is the whole design:
 
 - **Working DB** — `pipeline/data/pipeline.db`, SQLite, local only,

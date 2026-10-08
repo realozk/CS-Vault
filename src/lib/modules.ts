@@ -5,19 +5,25 @@ import type { ModuleItem } from '../types';
 const subjects = z.array(z.object({
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   name: z.string().min(1),
+  name_ar: z.string().min(1).optional(),
   year: z.number().int().positive(),
   year_level: z.number().int().min(1).max(4),
   semester: z.number().int().min(1).max(2),
 })).parse(catalog);
 
 // Build-time only: courses exist even before their study material is uploaded.
-export async function getModules(): Promise<ModuleItem[]> {
+export function getSubjectName(nameOrSlug: string, lang: 'en' | 'ar' = 'en') {
+  const subject = subjects.find(s => s.slug === nameOrSlug || s.name === nameOrSlug || s.name_ar === nameOrSlug);
+  return subject ? (lang === 'ar' ? subject.name_ar || subject.name : subject.name) : nameOrSlug;
+}
+
+export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]> {
   const modules = new Map<string, ModuleItem>();
   for (const subject of subjects) {
     const key = `${subject.slug}/${subject.year}`;
     if (modules.has(key)) throw new Error(`Duplicate subject: ${key}`);
     modules.set(key, {
-      subject: subject.slug, subjectName: subject.name, year: String(subject.year),
+      subject: subject.slug, subjectName: getSubjectName(subject.slug, lang), year: String(subject.year),
       yearLevel: subject.year_level, semester: subject.semester,
       summariesCount: 0, quizzesCount: 0,
     });

@@ -341,3 +341,10 @@ html[dir="rtl"] [lang="en"] {
 .dark .featured-exam { border-color: #a78b45; background: rgba(167, 139, 69, .07); }
 .exam-priority-label { display: block; margin-bottom: .6rem; font-size: .75rem; font-weight: 600; color: #806016; }
 .dark .exam-priority-label { color: #e2c47e; }
+
+#quiz-widget[data-os-dinosaur="true"] { padding-bottom: 60px; }
+.quiz-dinosaur { position: absolute; inset-inline-end: 16px; bottom: 12px; width: 60px; line-height: 0; }
+.quiz-dinosaur img { width: 60px; height: auto; border-radius: 2px; }
+
+.quiz-shawarma { position: absolute; inset-inline-start: 16px; bottom: 0; width: 60px; line-height: 0; }
+.quiz-shawarma img { width: 60px; height: 60px; object-fit: contain; }

@@ -1,129 +1,91 @@
-# Contributing to CS Vaulte
+# Contributing
 
-Thank you for contributing to CS Vaulte! This repository is designed to help Computer Science students collaborate and share study summaries and interactive practice quizzes.
+You can add lecture notes, practice quizzes, or corrections. Fork the repository,
+install dependencies with `npm ci`, and work on a branch.
 
-To keep the platform reliable, fast, and free, we use a static, type-safe data-loading structure.
+## Register a course
 
----
+Add it to `src/data/subjects.json` before adding material:
 
-##  Getting Started
+```json
+{
+  "slug": "operating-systems",
+  "name": "Operating Systems",
+  "name_ar": "نظم التشغيل",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1
+}
+```
 
-1. **Fork the Repository** on GitHub.
-2. **Clone** your fork locally:
-   ```bash
-   git clone https://github.com/your-username/CS-Vault.git
-   cd CS-Vault
-   ```
-3. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-4. **Start the Local Development Server**:
-   ```bash
-   npm run dev
-   ```
-   Open `http://localhost:4321` in your browser.
+Use a URL-safe slug. Content folders and academic metadata must match the catalog.
+Courses may be registered before any material is available.
 
----
+## Add notes
 
-##  1. Adding Course Summaries
-
-First register the course in `src/data/subjects.json` with `slug`, `name`,
-`year`, `year_level`, and `semester`. The slug/year must match its content
-folder. Academic year level and semester must match all content entries.
-Catalog entries may exist without material; the dashboard shows an empty state.
-
-Course summaries are written in **Markdown** and located under `src/content/summaries/[subject_code]/[year]/[filename].md`.
-
-- Example Path: `src/content/summaries/cs101/2026/db-basics.md`
-- **Frontmatter Requirements:** Every markdown file must begin with frontmatter (metadata) enclosed in `---` lines:
+Create `src/content/summaries/<subject>/<year>/<filename>.md`:
 
 ```markdown
 ---
-title: "Introduction to Relational Databases"
-description: "A comprehensive summary covering database concepts and Entity-Relationship models."
-author: "Your Name"
-date: 2026-06-21
-subject_code: "CS101"
+title: "Lecture 1 — Introduction"
+description: "Main concepts from Lecture 1."
+author: "Your name"
+date: 2026-10-08
+subject_code: "OS"
 year_level: 3
 semester: 1
 lang: "en"
 ---
 
-# Introduction to Relational Databases
-Your content goes here...
+Lecture notes go here.
 ```
 
----
+## Add a quiz
 
-##  2. Adding Practice Quizzes
+Create `src/content/quizzes/<subject>/<year>/<filename>.json`:
 
-Quizzes are **JSON** documents located under `src/content/quizzes/[subject_code]/[year]/[filename].json`.
-
-- Example Path: `src/content/quizzes/cs101/2026/db-quiz.json`
-- **Zod Schema Requirements:**
-  - `title` (String): The title of the quiz.
-  - `subject` (String): The human-readable subject name.
-  - `year` (Number): The academic year (e.g. `2026`).
-  - `questions` (Array):
-    - `id` (Number): A unique ID starting at 1.
-    - `question` (String): The question text.
-    - `code` (String, Optional): A raw code block to display alongside the question.
-    - `options` (Array of Strings): At least 2 options.
-    - `correctAnswer` (String): **Must exactly match** one of the options.
-    - `explanation` (String, Optional): An explanation displayed once the user answers.
-
-### Example Quiz JSON:
 ```json
 {
-  "title": "Database Fundamentals",
-  "subject": "Introduction to Databases",
+  "title": "Lecture 1 — Practice",
+  "subject": "Operating Systems",
   "year": 2026,
   "year_level": 3,
   "semester": 1,
   "lang": "en",
+  "source": "Lecture1.pdf",
+  "sourceKind": "generated",
   "questions": [
     {
       "id": 1,
-      "question": "Which of the following uniquely identifies a row in a table?",
-      "options": [
-        "Foreign Key",
-        "Primary Key",
-        "Index Key",
-        "Super Key"
-      ],
-      "correctAnswer": "Primary Key",
-      "explanation": "A Primary Key is a minimal set of attributes that uniquely specifies a tuple in a relation."
+      "question": "Which component manages hardware resources?",
+      "options": ["Operating system", "Text editor", "Browser", "Spreadsheet"],
+      "correctAnswer": "Operating system",
+      "explanation": "The operating system manages hardware resources.",
+      "answerSource": "inferred",
+      "sourcePage": 2
     }
   ]
 }
 ```
 
----
+Keep question IDs unique and choices distinct. `correctAnswer` must exactly match
+one choice. Check every answer against the source before submitting.
 
-##  3. Verifying Your Changes
+Optional quiz fields include `description` and `featured` (default false).
+`sourceKind` is `generated` or `provided`. Optional question fields include
+`code`, `topic`, `sourceSlide`, `sourcePage`, and `optionsSource`
+(`provided` or `generated`). Source page/slide numbers start at 1.
+`answerSource` is `manual`, `marked`, or `inferred`; AI-inferred answers must use
+`inferred`. See `src/content.config.ts` for the complete validation rules.
 
-Before you commit and open a Pull Request, you **must run a build test**. This ensures TypeScript compiles correctly and Zod validates all your JSON and markdown frontmatter correctly:
+## Check and submit
 
-```bash
-npm run build
+Run `npm run build` to validate content and generate the site. For quiz behavior
+changes, also run:
+
+```sh
+node --experimental-strip-types --test tests/quiz-state.test.mjs
 ```
 
-If the build succeeds without error, your formatting is perfect and ready to be merged!
-
----
-
-##  4. Proposing Your Changes (Pull Requests)
-
-1. Commit your changes to a new branch:
-   ```bash
-   git checkout -b feature/add-cs302-notes
-   git add .
-   git commit -m "Add CS302 Chapter 1 summary and quiz"
-   ```
-2. Push the branch to your fork:
-   ```bash
-   git push origin feature/add-cs302-notes
-   ```
-3. Open a **Pull Request** on GitHub against the main repository.
-4. Once you open the PR, our automated GitHub Action will run the build tests. If they pass, the maintainer will review and merge it.
+Check the affected pages in both English and Arabic, including mobile layout.
+Open a pull request with a short description of the material or correction.

@@ -1,0 +1,312 @@
+{
+  "title": "Chapter 1 — Introduction",
+  "subject": "Operating Systems",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter1_And_2 (1).pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the operating system's main role between users and hardware?",
+      "options": [
+        "Act as an intermediary and manage hardware use",
+        "Replace all application programs",
+        "Eliminate the need for memory",
+        "Execute only web browsers"
+      ],
+      "correctAnswer": "Act as an intermediary and manage hardware use",
+      "explanation": "The OS provides a usable environment while managing hardware and hiding unnecessary hardware complexity.",
+      "sourcePage": 2,
+      "answerSource": "inferred",
+      "topic": "os-foundations"
+    },
+    {
+      "id": 2,
+      "question": "Which list contains the four components of a computer system in the lecture?",
+      "options": [
+        "Hardware, operating system, applications, users",
+        "CPU, cache, disk, printer",
+        "Kernel, shell, compiler, driver",
+        "API, GUI, CLI, firmware"
+      ],
+      "correctAnswer": "Hardware, operating system, applications, users",
+      "explanation": "The lecture separates physical resources, their coordinator, application programs, and users.",
+      "sourcePage": 3,
+      "answerSource": "inferred",
+      "topic": "os-foundations"
+    },
+    {
+      "id": 3,
+      "question": "From the system view, why is the OS a resource allocator?",
+      "options": [
+        "It resolves competing requests for efficient and fair resource use",
+        "It gives every process unlimited memory",
+        "It removes all I/O devices",
+        "It ensures only one user ever logs in"
+      ],
+      "correctAnswer": "It resolves competing requests for efficient and fair resource use",
+      "explanation": "CPU time, memory, storage, and I/O devices are finite resources the OS must allocate.",
+      "sourcePage": 4,
+      "answerSource": "inferred",
+      "topic": "os-foundations"
+    },
+    {
+      "id": 4,
+      "question": "What is the kernel in the lecture's definition?",
+      "options": [
+        "The program running at all times and forming the OS core",
+        "Every application supplied by a vendor",
+        "Only the graphical desktop",
+        "Only the command interpreter"
+      ],
+      "correctAnswer": "The program running at all times and forming the OS core",
+      "explanation": "The kernel is part of the operating system; system programs and applications are separate categories.",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "topic": "os-foundations"
+    },
+    {
+      "id": 5,
+      "question": "Which component is hardware that manages a particular kind of I/O device?",
+      "options": [
+        "Device controller",
+        "Device driver",
+        "Command interpreter",
+        "Text editor"
+      ],
+      "correctAnswer": "Device controller",
+      "explanation": "A controller is hardware with registers and a local buffer; a driver is OS software that manages it.",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "topic": "interrupts-io"
+    },
+    {
+      "id": 6,
+      "question": "What does a device driver provide to the rest of the operating system?",
+      "options": [
+        "A uniform interface to a device controller",
+        "A physical disk platter",
+        "An unlimited local buffer",
+        "A replacement for all interrupts"
+      ],
+      "correctAnswer": "A uniform interface to a device controller",
+      "explanation": "The driver understands the controller and hides device-specific details behind a uniform interface.",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "topic": "interrupts-io"
+    },
+    {
+      "id": 7,
+      "question": "How can a controller notify the CPU that an I/O operation has finished?",
+      "options": [
+        "Generate an interrupt",
+        "Delete the running process",
+        "Disable main memory",
+        "Rewrite the operating system"
+      ],
+      "correctAnswer": "Generate an interrupt",
+      "explanation": "An interrupt signals completion or another event needing CPU attention.",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "topic": "interrupts-io"
+    },
+    {
+      "id": 8,
+      "question": "What does the interrupt vector contain?",
+      "options": [
+        "Addresses of interrupt service routines",
+        "All user passwords",
+        "Every disk sector's contents",
+        "Only application source code"
+      ],
+      "correctAnswer": "Addresses of interrupt service routines",
+      "explanation": "The vector is a table of pointers used to select the handler for an interrupt.",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "topic": "interrupts-io"
+    },
+    {
+      "id": 9,
+      "question": "Why are CPU registers and the program counter saved during interrupt handling?",
+      "options": [
+        "So interrupted computation can resume correctly",
+        "So all caches become nonvolatile",
+        "So the interrupted program must restart",
+        "So the device becomes an application"
+      ],
+      "correctAnswer": "So interrupted computation can resume correctly",
+      "explanation": "Preserving CPU state allows the handler to return to the interrupted computation.",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "topic": "interrupts-io"
+    },
+    {
+      "id": 10,
+      "question": "Which description matches main memory in the lecture?",
+      "options": [
+        "Directly accessible by the CPU and typically volatile",
+        "Always nonvolatile and slower than all disks",
+        "A set of magnetic disk platters",
+        "Storage accessible only through a web browser"
+      ],
+      "correctAnswer": "Directly accessible by the CPU and typically volatile",
+      "explanation": "Main memory is typically DRAM and loses its contents without power.",
+      "sourcePage": 9,
+      "answerSource": "inferred",
+      "topic": "storage-caching"
+    },
+    {
+      "id": 11,
+      "question": "What is a key purpose of secondary storage?",
+      "options": [
+        "Provide large nonvolatile storage capacity",
+        "Replace CPU registers with faster registers",
+        "Store only interrupt vectors",
+        "Guarantee faster access than main memory"
+      ],
+      "correctAnswer": "Provide large nonvolatile storage capacity",
+      "explanation": "Secondary storage retains data and is generally larger but slower than main memory.",
+      "sourcePage": 10,
+      "answerSource": "inferred",
+      "topic": "storage-caching"
+    },
+    {
+      "id": 12,
+      "question": "What is the basic idea of caching?",
+      "options": [
+        "Temporarily copy information from slower storage to faster storage",
+        "Always read the slowest storage first",
+        "Make every storage level equally large",
+        "Convert volatile memory into magnetic disks"
+      ],
+      "correctAnswer": "Temporarily copy information from slower storage to faster storage",
+      "explanation": "The faster cache is checked first; a miss requires obtaining the data from the slower level.",
+      "sourcePage": 12,
+      "answerSource": "inferred",
+      "topic": "storage-caching"
+    },
+    {
+      "id": 13,
+      "question": "After DMA setup, who transfers a block between the device buffer and main memory?",
+      "options": [
+        "The device controller without CPU intervention for each transfer",
+        "The user manually",
+        "A text editor for each byte",
+        "Only the command shell"
+      ],
+      "correctAnswer": "The device controller without CPU intervention for each transfer",
+      "explanation": "DMA allows bulk transfer while the CPU performs other work; completion is signaled per block.",
+      "sourcePage": 13,
+      "answerSource": "inferred",
+      "topic": "interrupts-io"
+    },
+    {
+      "id": 14,
+      "question": "Why does multiprogramming switch jobs when one waits for I/O?",
+      "options": [
+        "To keep the CPU useful by running another job",
+        "To ensure every program runs to completion without waiting",
+        "To prevent more than one job residing in memory",
+        "To remove the need for scheduling"
+      ],
+      "correctAnswer": "To keep the CPU useful by running another job",
+      "explanation": "Keeping multiple jobs available reduces CPU idle time when one job waits.",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 15,
+      "question": "What distinguishes time sharing from a basic batch multiprogramming system?",
+      "options": [
+        "Frequent switches support interactive use",
+        "It requires every process to finish before the next starts",
+        "It eliminates all I/O waiting",
+        "It keeps all programs outside memory"
+      ],
+      "correctAnswer": "Frequent switches support interactive use",
+      "explanation": "Time sharing extends multiprogramming with frequent CPU switches and short response times.",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 16,
+      "question": "What does virtual memory allow in the lecture?",
+      "options": [
+        "Execution of processes not completely in main memory",
+        "Removal of every storage device",
+        "Execution without any address space",
+        "Permanent prevention of interrupts"
+      ],
+      "correctAnswer": "Execution of processes not completely in main memory",
+      "explanation": "Virtual memory permits a process to execute even when not all of it is resident in memory.",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "topic": "storage-caching"
+    },
+    {
+      "id": 17,
+      "question": "What is the bootstrap program responsible for?",
+      "options": [
+        "Initialize the system and load the kernel",
+        "Translate every user's source program",
+        "Manage only window icons",
+        "Replace all device controllers"
+      ],
+      "correctAnswer": "Initialize the system and load the kernel",
+      "explanation": "Firmware bootstrap code initializes system components and starts the OS kernel.",
+      "sourcePage": 15,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 18,
+      "question": "In the mode-bit convention shown in these slides, which value represents kernel mode?",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "The slides assign no value"
+      ],
+      "correctAnswer": "0",
+      "explanation": "The lecture uses 0 for kernel mode and 1 for user mode; this is the convention of the shown model.",
+      "sourcePage": 16,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 19,
+      "question": "Where may privileged instructions execute?",
+      "options": [
+        "Kernel mode",
+        "Only user mode",
+        "Only inside a GUI",
+        "Only inside a text file"
+      ],
+      "correctAnswer": "Kernel mode",
+      "explanation": "Dual-mode operation protects the OS by restricting privileged operations to kernel mode.",
+      "sourcePage": 16,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    },
+    {
+      "id": 20,
+      "question": "Why does the OS configure a timer before scheduling a process?",
+      "options": [
+        "To regain control if the process runs too long",
+        "To guarantee the process never waits for I/O",
+        "To store all file permissions",
+        "To make user programs privileged"
+      ],
+      "correctAnswer": "To regain control if the process runs too long",
+      "explanation": "A timer interrupt prevents a process from monopolizing the CPU indefinitely.",
+      "sourcePage": 17,
+      "answerSource": "inferred",
+      "topic": "scheduling-modes"
+    }
+  ]
+}

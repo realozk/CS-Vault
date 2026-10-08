@@ -1,0 +1,312 @@
+{
+  "title": "Chapter 2 — Services and Structures",
+  "subject": "Operating Systems",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter1_And_2 (1).pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which OS service loads a program into memory, runs it, and handles its termination?",
+      "options": [
+        "Program execution",
+        "Caching only",
+        "Interrupt-vector indexing only",
+        "Source-code formatting only"
+      ],
+      "correctAnswer": "Program execution",
+      "explanation": "Program execution includes loading, running, and ending programs normally or abnormally.",
+      "sourcePage": 18,
+      "answerSource": "inferred",
+      "topic": "os-services"
+    },
+    {
+      "id": 2,
+      "question": "Which two communication models are listed for processes?",
+      "options": [
+        "Shared memory and message passing",
+        "Polling and compiling",
+        "Caching and formatting",
+        "Booting and linking"
+      ],
+      "correctAnswer": "Shared memory and message passing",
+      "explanation": "Processes can exchange data through a shared memory region or messages.",
+      "sourcePage": 18,
+      "answerSource": "inferred",
+      "topic": "os-services"
+    },
+    {
+      "id": 3,
+      "question": "Which service tracks how much and what kinds of resources users consume?",
+      "options": [
+        "Logging",
+        "DMA",
+        "Lexical analysis",
+        "Bootstrapping"
+      ],
+      "correctAnswer": "Logging",
+      "explanation": "Logging records resource usage for accounting or statistics.",
+      "sourcePage": 19,
+      "answerSource": "inferred",
+      "topic": "os-services"
+    },
+    {
+      "id": 4,
+      "question": "What is protection concerned with in the lecture?",
+      "options": [
+        "Controlling access to system resources",
+        "Giving every user kernel access",
+        "Eliminating authentication",
+        "Preventing all program execution"
+      ],
+      "correctAnswer": "Controlling access to system resources",
+      "explanation": "Protection controls resource access; security also addresses threats and authentication.",
+      "sourcePage": 19,
+      "answerSource": "inferred",
+      "topic": "os-services"
+    },
+    {
+      "id": 5,
+      "question": "If a shell executes commands as separate programs, how can new commands be added?",
+      "options": [
+        "Create new command programs without modifying the shell",
+        "Replace the entire kernel for each command",
+        "Add a physical controller for each command",
+        "Disable the system-call interface"
+      ],
+      "correctAnswer": "Create new command programs without modifying the shell",
+      "explanation": "An external-command shell can run new programs without containing their implementation itself.",
+      "sourcePage": 20,
+      "answerSource": "inferred",
+      "topic": "os-services"
+    },
+    {
+      "id": 6,
+      "question": "What do system calls provide?",
+      "options": [
+        "A programming interface to OS services",
+        "A replacement for all hardware",
+        "Only a graphical user interface",
+        "A list of lecture topics"
+      ],
+      "correctAnswer": "A programming interface to OS services",
+      "explanation": "System calls allow programs to request services supplied by the operating system.",
+      "sourcePage": 22,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 7,
+      "question": "Why do programmers commonly use an API instead of direct system calls?",
+      "options": [
+        "Portability and simpler interfaces",
+        "It guarantees no OS service is used",
+        "It removes all parameters",
+        "It forces all code into assembly"
+      ],
+      "correctAnswer": "Portability and simpler interfaces",
+      "explanation": "An API can hide details and support systems implementing the same interface.",
+      "sourcePage": 24,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 8,
+      "question": "How does the system-call interface identify a requested call in the lecture?",
+      "options": [
+        "Use a call number to index a table",
+        "Search every source file alphabetically",
+        "Inspect the desktop wallpaper",
+        "Select a random controller"
+      ],
+      "correctAnswer": "Use a call number to index a table",
+      "explanation": "A number identifies the call, and the interface invokes the appropriate kernel implementation.",
+      "sourcePage": 24,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 9,
+      "question": "Which set lists the three parameter-passing methods described?",
+      "options": [
+        "Registers, memory block with its address, stack",
+        "Printer, monitor, keyboard",
+        "GUI, CLI, touchscreen",
+        "Compiler, loader, editor"
+      ],
+      "correctAnswer": "Registers, memory block with its address, stack",
+      "explanation": "Parameters can be passed directly in registers, through a memory block, or on a stack.",
+      "sourcePage": 25,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 10,
+      "question": "Which system-call category includes creating and terminating processes?",
+      "options": [
+        "Process control",
+        "File modification",
+        "Device display",
+        "Cache replacement"
+      ],
+      "correctAnswer": "Process control",
+      "explanation": "Process control includes creation, termination, execution, waiting, and related operations.",
+      "sourcePage": 26,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 11,
+      "question": "In the FreeBSD example, what is fork() used for?",
+      "options": [
+        "Create a process",
+        "Load a new program into an existing process",
+        "Set a file permission",
+        "Read the clock"
+      ],
+      "correctAnswer": "Create a process",
+      "explanation": "The shell uses fork() to create a process and exec() to load a program into a process.",
+      "sourcePage": 27,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 12,
+      "question": "Which system-call category includes opening, closing, and repositioning files?",
+      "options": [
+        "File management",
+        "Protection only",
+        "CPU mode switching only",
+        "Kernel module loading only"
+      ],
+      "correctAnswer": "File management",
+      "explanation": "File-management calls handle files and their attributes and operations.",
+      "sourcePage": 28,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 13,
+      "question": "Which category includes getting or setting the time and date?",
+      "options": [
+        "Information maintenance",
+        "Process termination",
+        "Memory caching",
+        "Device interrupts"
+      ],
+      "correctAnswer": "Information maintenance",
+      "explanation": "Information maintenance obtains or changes system data and attributes.",
+      "sourcePage": 28,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 14,
+      "question": "Which category includes allowing or denying user access and setting permissions?",
+      "options": [
+        "Protection",
+        "Program loading",
+        "Device buffering",
+        "Command parsing"
+      ],
+      "correctAnswer": "Protection",
+      "explanation": "Protection calls control access to resources through permissions and related settings.",
+      "sourcePage": 29,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 15,
+      "question": "In the C-library example, printf() eventually invokes which system call?",
+      "options": [
+        "write()",
+        "fork()",
+        "exec()",
+        "wait()"
+      ],
+      "correctAnswer": "write()",
+      "explanation": "The example distinguishes a library function from the write() system call it uses for output.",
+      "sourcePage": 30,
+      "answerSource": "inferred",
+      "topic": "system-calls"
+    },
+    {
+      "id": 16,
+      "question": "In what context do the background services described in the slides run?",
+      "options": [
+        "User context",
+        "Always inside an interrupt vector",
+        "Only in CPU firmware",
+        "Only as hardware controllers"
+      ],
+      "correctAnswer": "User context",
+      "explanation": "The lecture's system services and daemons run in user context, distinct from kernel code.",
+      "sourcePage": 32,
+      "answerSource": "inferred",
+      "topic": "os-services"
+    },
+    {
+      "id": 17,
+      "question": "What characterizes a monolithic kernel in the lecture?",
+      "options": [
+        "Kernel functionality in a single binary and address space",
+        "All services run as separate user-space programs",
+        "No kernel exists",
+        "Every function must reside in an independent physical computer"
+      ],
+      "correctAnswer": "Kernel functionality in a single binary and address space",
+      "explanation": "The monolithic model combines many kernel functions in one address space, enabling fast internal communication.",
+      "sourcePage": 35,
+      "answerSource": "inferred",
+      "topic": "os-structures"
+    },
+    {
+      "id": 18,
+      "question": "In the layered approach, which layer is at the bottom?",
+      "options": [
+        "Hardware",
+        "User interface",
+        "Application editor",
+        "Network browser"
+      ],
+      "correctAnswer": "Hardware",
+      "explanation": "Layer 0 is hardware; the highest layer is the user interface, and layers use lower-level services.",
+      "sourcePage": 36,
+      "answerSource": "inferred",
+      "topic": "os-structures"
+    },
+    {
+      "id": 19,
+      "question": "What is a central design idea of a microkernel?",
+      "options": [
+        "Move nonessential services out of the kernel into user space",
+        "Move every application into kernel mode",
+        "Remove message passing",
+        "Eliminate protection boundaries"
+      ],
+      "correctAnswer": "Move nonessential services out of the kernel into user space",
+      "explanation": "A microkernel minimizes kernel components and uses user-level services, often communicating by messages.",
+      "sourcePage": 37,
+      "answerSource": "inferred",
+      "topic": "os-structures"
+    },
+    {
+      "id": 20,
+      "question": "What are loadable kernel modules designed to support?",
+      "options": [
+        "Adding separate components to the kernel as needed through known interfaces",
+        "Running every program without an OS",
+        "Making all components permanently inseparable",
+        "Removing all kernel functionality"
+      ],
+      "correctAnswer": "Adding separate components to the kernel as needed through known interfaces",
+      "explanation": "Modules separate core components and allow loading as needed while retaining kernel execution.",
+      "sourcePage": 38,
+      "answerSource": "inferred",
+      "topic": "os-structures"
+    }
+  ]
+}

@@ -8,7 +8,7 @@ import { useTranslations, getLocalizedPath } from '../../../../i18n/ui';
 const t = useTranslations('ar');
 
 export async function getStaticPaths() {
-  return (await getModules()).map(m => ({
+  return (await getModules('ar')).map(m => ({
     params: { subject: m.subject, year: m.year },
   }));
 }
@@ -52,7 +52,7 @@ const quizzes = [...rawQuizzes].sort((a, b) => Number(b.data.featured) - Number(
   slug: getSlug(entry.id)
 }));
 
-const module = (await getModules()).find(m => m.subject === subject && m.year === year)!;
+const module = (await getModules('ar')).find(m => m.subject === subject && m.year === year)!;
 const subjectName = module.subjectName;
 const pageTitle = `${subjectName} (${year})`;
 const trackerTranslations = JSON.stringify({
@@ -76,7 +76,7 @@ const BASE_URL = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_U
           <span class="text-gray-800 dark:text-gray-200">{year}</span>
         </nav>
         <h1 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight flex items-center gap-3">
-          <span lang="en" dir="ltr">{subjectName}</span>
+          <span lang="ar" dir="rtl">{subjectName}</span>
           <span class="text-gray-300 dark:text-zinc-700">|</span>
           <span class="text-lg font-medium text-gray-500 dark:text-gray-400">{t('dashboard.academicYear').replace('{year}', year)}</span>
         </h1>

@@ -21,12 +21,14 @@ pnpm-debug.log*
 .DS_Store
 ._*
 
-# jetbrains setting folder
+# local editor settings
 .idea/
+.vscode/
 
 # pipeline (local-only build tool)
 pipeline/.env
 pipeline/data/*
-pipeline/__pycache__/
+__pycache__/
+*.py[cod]
 pipeline/.venv/
 !pipeline/data/.gitkeep
