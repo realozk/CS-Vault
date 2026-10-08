@@ -58,14 +58,30 @@ const dotColor = colorMap[accentColor] || 'bg-blue-500';
 <script>
   import { getAcademicWeekNumber } from '../lib/academic-week';
 
-  document.querySelectorAll<HTMLElement>('[data-academic-week]').forEach((element) => {
-    const weekStart = element.dataset.weekStart;
-    const template = element.dataset.weekTemplate;
-    if (!weekStart || !template) {
-      throw new Error('Academic week label is missing its start date or translation.');
+  declare global {
+    interface Window {
+      currentAcademicWeek: number;
+    }
+  }
+
+  const weekElement = document.querySelector<HTMLElement>('[data-academic-week]');
+  if (!weekElement) throw new Error('Academic week label is missing.');
+
+  const weekStart = weekElement.dataset.weekStart;
+  const template = weekElement.dataset.weekTemplate;
+  if (!weekStart || !template) {
+    throw new Error('Academic week label is missing its start date or translation.');
+  }
+
+  window.currentAcademicWeek = getAcademicWeekNumber(new Date(), weekStart);
+  weekElement.textContent = template.replace('{n}', String(window.currentAcademicWeek));
+
+  document.querySelectorAll<HTMLElement>('[data-academic-week-alert]').forEach((element) => {
+    const targetWeek = Number(element.dataset.targetWeek);
+    if (!Number.isInteger(targetWeek) || targetWeek < 1) {
+      throw new Error('Academic week alert is missing a valid target week.');
     }
 
-    const week = getAcademicWeekNumber(new Date(), weekStart);
-    element.textContent = template.replace('{n}', String(week));
+    element.hidden = window.currentAcademicWeek > targetWeek;
   });
 </script>

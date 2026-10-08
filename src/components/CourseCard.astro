@@ -31,7 +31,12 @@ const alertKey = m.subject === 'programming-languages'
       {m.subjectCode}
     </span>
     {alertKey && (
-      <span class="truncate rounded bg-amber-50 px-1.5 py-0.5 text-[9px] font-semibold leading-tight text-amber-700 dark:bg-amber-950/30 dark:text-amber-300">
+      <span
+        class="truncate rounded bg-amber-50 px-1.5 py-0.5 text-[9px] font-semibold leading-tight text-amber-700 dark:bg-amber-950/30 dark:text-amber-300"
+        data-academic-week-alert
+        data-target-week="8"
+        hidden
+      >
         {t(alertKey)}
       </span>
     )}
