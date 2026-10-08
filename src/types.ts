@@ -1,5 +1,5 @@
 /**
- * Shared type definitions for the CS Vaulte application.
+ * Shared type definitions for the CS Vault application.
  * Single source of truth — used by both Astro components and client scripts.
  */
 
