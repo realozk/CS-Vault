@@ -80,8 +80,7 @@ export const ui = {
 
     // Home Hero
     'hero.title': 'Let’s study together',
-    'hero.desc': 'I put this together with a few CS students to share our notes and practice questions. Find what helps you study, and feel free to share your notes too.',
-    'hero.browse': 'Browse subjects',
+    'hero.desc': 'We made this small project to help CS students pass their exams in the easiest way. Made with love.',
     'hero.contribute': 'Share your notes on GitHub',
 
     // Search
@@ -218,8 +217,7 @@ export const ui = {
 
     // Home Hero
     'hero.title': 'خلّنا نذاكر مع بعض',
-    'hero.desc': 'أنا وبعض طلاب الحاسب جمعنا هنا ملخصاتنا وأسئلة تدريب تساعدنا نذاكر. خذ اللي يفيدك، وإذا عندك ملخص، حياك تشاركه معنا.',
-    'hero.browse': 'تصفح المواد',
+    'hero.desc': 'سوّينا هذا المشروع البسيط عشان نساعد طلاب الحاسب يجتازون اختباراتهم بأسهل طريقة. صنعناه بكل حب.',
     'hero.contribute': 'شارك ملخصك على GitHub',
 
     // Search
