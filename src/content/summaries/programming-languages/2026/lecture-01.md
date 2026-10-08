@@ -22,9 +22,7 @@ lang: "en"
 
 Each exam has **20 distinct multiple-choice questions**. Questions and options shuffle on each attempt. Choose **Practice** for immediate feedback without a time limit, or **Exam mode** to reveal answers after submission. The optional exam timer defaults to 20 minutes; this is a practice setting, not an official midterm duration. You can change it or turn it off.
 
-After each attempt, review missed answers and source slides, then check the topic results. A **short revision session** uses up to five saved mistakes from the current exam. Suggestions are scheduled for tomorrow and then after successful reviews three and seven days later. Practicing early does not advance the schedule. Three correct reviews at their scheduled times clear a question from the saved list.
-
-Saved mistakes stay in this browser on this device and are shared between the English and Arabic interface for the same exam. Other devices do not receive them. The clear-review control removes this exam's saved list.
+After each attempt, review missed answers and source slides, then check the topic results. You can retry up to five missed questions from your current attempt.
 
 ## Reasons and application domains — slides 3–5
 

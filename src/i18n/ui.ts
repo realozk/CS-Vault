@@ -41,6 +41,7 @@ export const ui = {
     'quiz.clearSaved': 'Clear saved review',
     'quiz.examSubtext': 'Optional timer · Feedback after submission',
     'quiz.practiceHelp': 'No time limit. Answers and explanations appear immediately.',
+    'quiz.aiDisclaimer': 'This practice exam was generated with AI from the lecture handout because no past exams or question bank were available for this lecture. It is not an official exam or answer key; check answers against the lecture.',
     'quiz.inferredExam': 'Practice answers are AI-suggested, not an official answer key. Verify them against the lecture after submitting.',
     'quiz.inferredShort': 'AI-suggested answer; verify against the lecture.',
     'quiz.sessionScore': 'This session only',
@@ -64,11 +65,10 @@ export const ui = {
     'footer.github': 'GitHub',
 
     // Home Hero
-    'hero.badge': 'Academic Study Center',
-    'hero.title': 'Accelerate Your Computer Science Studies',
-    'hero.desc': 'CS Vaulte is an open-source, community-driven space hosting clear, student-focused subject summaries and interactive self-assessment quizzes.',
-    'hero.browse': 'Browse Years & Semesters',
-    'hero.contribute': 'Contribute on GitHub',
+    'hero.title': 'Let’s study together',
+    'hero.desc': 'I put this together with a few CS students to share our notes and practice questions. Find what helps you study, and feel free to share your notes too.',
+    'hero.browse': 'Browse subjects',
+    'hero.contribute': 'Share your notes on GitHub',
 
     // Search
     'search.placeholder': 'Search summaries, subjects, quizzes...',
@@ -103,9 +103,8 @@ export const ui = {
     'dashboard.emptySummaries': 'No summaries available for this module yet.',
     'dashboard.emptyQuizzes': 'No quizzes available for this module yet.',
     'dashboard.author': 'By {author}',
-    'dashboard.progressStatus': '{checked} of {total} summaries completed. {message}',
-    'dashboard.progressPerfect': 'Perfect! You are fully prepared!',
-    'dashboard.progressKeepUp': 'Keep up the good work!',
+    'dashboard.markReviewed': 'Mark as reviewed',
+    'dashboard.progressStatus': '{checked} of {total} summaries completed.',
     'dashboard.copyCode': 'Copy code snippet',
     'dashboard.copied': 'Copied!',
 
@@ -126,10 +125,10 @@ export const ui = {
     'quiz.back': 'Back to Subject',
 
     // Quiz Scores
-    'quiz.score.100': 'All answers correct in this attempt. Keep reviewing to retain the concepts.',
-    'quiz.score.80': 'Excellent job! You have a solid grasp of the subject.',
-    'quiz.score.50': 'Good attempt. Review the explanations to reinforce your understanding.',
-    'quiz.score.0': 'Keep studying! Read the subject summaries and try again.',
+    'quiz.score.100': 'All answers correct in this attempt.',
+    'quiz.score.80': 'Review the questions you missed.',
+    'quiz.score.50': 'Review the explanations for the questions you missed.',
+    'quiz.score.0': 'Read the subject summaries and review the explanations.',
   },
   ar: {
     'quiz.practice': 'تدريب',
@@ -166,6 +165,7 @@ export const ui = {
     'quiz.clearSaved': 'مسح المراجعة المحفوظة',
     'quiz.examSubtext': 'مؤقت اختياري · تقييم بعد التسليم',
     'quiz.practiceHelp': 'دون حد زمني. تظهر الإجابات والشروح مباشرة.',
+    'quiz.aiDisclaimer': 'تم توليد هذا الاختبار التدريبي بالذكاء الاصطناعي بالاعتماد على ملف المحاضرة، لعدم توفر اختبارات سابقة أو بنك أسئلة لهذه المحاضرة. هذا ليس اختباراً رسمياً أو نموذج إجابة معتمداً؛ تحقق من الإجابات بالرجوع إلى المحاضرة.',
     'quiz.inferredExam': 'الإجابات مقترحة بالذكاء الاصطناعي وليست نموذجاً رسمياً. تحقق منها في المحاضرة بعد التسليم.',
     'quiz.inferredShort': 'إجابة مقترحة بالذكاء الاصطناعي؛ تحقق منها في المحاضرة.',
     'quiz.sessionScore': 'هذه الجلسة فقط',
@@ -189,11 +189,10 @@ export const ui = {
     'footer.github': 'github',
 
     // Home Hero
-    'hero.badge': 'مركز الدراسة الأكاديمي',
-    'hero.title': 'سرّع دراستك لعلوم الحاسب',
-    'hero.desc': 'منصة مفتوحة المصدر وتشاركية تحتوي على ملخصات واضحة للمواد واختبارات تفاعلية لتقييم الذات، موجهة لطلاب علوم الحاسب.',
-    'hero.browse': 'تصفح السنوات والفصول الدراسية',
-    'hero.contribute': 'ساهم على GitHub',
+    'hero.title': 'خلّنا نذاكر مع بعض',
+    'hero.desc': 'أنا وبعض طلاب الحاسب جمعنا هنا ملخصاتنا وأسئلة تدريب تساعدنا نذاكر. خذ اللي يفيدك، وإذا عندك ملخص، حياك تشاركه معنا.',
+    'hero.browse': 'تصفح المواد',
+    'hero.contribute': 'شارك ملخصك على GitHub',
 
     // Search
     'search.placeholder': 'ابحث عن الملخصات، المواد، الاختبارات...',
@@ -228,9 +227,8 @@ export const ui = {
     'dashboard.emptySummaries': 'لا تتوفر ملخصات لهذه المادة حالياً.',
     'dashboard.emptyQuizzes': 'لا تتوفر اختبارات لهذه المادة حالياً.',
     'dashboard.author': 'بواسطة {author}',
-    'dashboard.progressStatus': 'تم إنجاز {checked} من أصل {total} ملخصات. {message}',
-    'dashboard.progressPerfect': 'ممتاز! أنت مستعد تماماً!',
-    'dashboard.progressKeepUp': 'واصل العمل الرائع!',
+    'dashboard.markReviewed': 'تحديد كمُراجع',
+    'dashboard.progressStatus': 'تم إنجاز {checked} من أصل {total} ملخصات.',
     'dashboard.copyCode': 'نسخ الكود البرمجي',
     'dashboard.copied': 'تم النسخ!',
 
@@ -251,9 +249,9 @@ export const ui = {
     'quiz.back': 'العودة للمادة',
 
     // Quiz Scores
-    'quiz.score.100': 'كل الإجابات صحيحة في هذه المحاولة. واصل المراجعة لتثبيت المفاهيم.',
-    'quiz.score.80': 'نتيجة ممتازة. راجع الأسئلة التي أخطأت فيها.',
-    'quiz.score.50': 'بداية جيدة. راجع الشروح ثم حاول مجدداً.',
+    'quiz.score.100': 'كل الإجابات صحيحة في هذه المحاولة.',
+    'quiz.score.80': 'راجع الأسئلة التي أخطأت فيها.',
+    'quiz.score.50': 'راجع الشروح للأسئلة التي أخطأت فيها.',
     'quiz.score.0': 'راجع المحاضرة والشروح، ثم حاول مجدداً.',
   },
 } as const;

@@ -1,5 +1,5 @@
 import type { Question, QuizData } from '../types';
-import { readReview, updateReview, shortReview, topicResults, secondsRemaining, type ReviewItem } from './quiz-state';
+import { readReview, updateReview, topicResults, secondsRemaining, type ReviewItem } from './quiz-state';
 
 const shuffle = <T>(values: T[]): T[] => {
   const result = [...values];
@@ -34,22 +34,13 @@ const initQuizWidget = () => {
     try { localStorage.setItem(storageKey, JSON.stringify(saved)); }
     catch { storageWarning(); }
   };
-  const refreshSaved = () => {
-    const due = saved.filter(item => item.dueAt <= Date.now()).length;
-    el('review-count').textContent = saved.length
-      ? t('reviewCount').replace('{saved}', String(saved.length)).replace('{due}', String(due)) : t('noSaved');
-    button('saved-review-btn').classList.toggle('hidden', !saved.length);
-    button('clear-review-btn').classList.toggle('hidden', !saved.length);
-  };
   loadSaved();
-  refreshSaved();
 
   const selectedMode = () => (widget.querySelector('input[name="quiz-mode"]:checked') as HTMLInputElement).value;
   const updateSettings = () => {
     const exam = selectedMode() === 'exam';
     el('timer-settings').classList.toggle('hidden', !exam);
     el('mode-help').textContent = t(exam ? 'examHelp' : 'practiceHelp');
-    el('inferred-notice').textContent = quiz.questions.some(q => q.answerSource === 'inferred') ? t(exam ? 'inferredExam' : 'inferred') : '';
     (el('minutes') as HTMLInputElement).disabled = !(el('use-timer') as HTMLInputElement).checked;
     el('mode-subtext').textContent = t(exam ? 'examSubtext' : 'subtext');
   };
@@ -207,7 +198,7 @@ const initQuizWidget = () => {
     button('retry-missed-btn').classList.toggle('hidden', !missed.length);
     loadSaved();
     saved = updateReview(saved, questions, answers, Date.now());
-    save(); refreshSaved();
+    save();
     show('results');
     el('result-title').focus({ preventScroll: false });
   }
@@ -225,9 +216,7 @@ const initQuizWidget = () => {
   button('submit-btn').addEventListener('click', () => { if (!checkExpiry()) finish(); });
   button('restart-btn').addEventListener('click', () => begin(quiz.questions));
   button('retry-missed-btn').addEventListener('click', () => begin(shuffle(missed).slice(0, 5), true));
-  button('settings-btn').addEventListener('click', () => { loadSaved(); refreshSaved(); show('setup'); document.getElementById('start-quiz-btn')!.focus(); });
-  button('saved-review-btn').addEventListener('click', () => { loadSaved(); refreshSaved(); begin(shortReview(quiz.questions, saved), true); });
-  button('clear-review-btn').addEventListener('click', () => { saved = []; save(); refreshSaved(); });
+  button('settings-btn').addEventListener('click', () => { show('setup'); document.getElementById('start-quiz-btn')!.focus(); });
   document.addEventListener('visibilitychange', tick);
   window.addEventListener('pagehide', stopTimer);
   window.addEventListener('pageshow', () => { if (running) startTimer(); });

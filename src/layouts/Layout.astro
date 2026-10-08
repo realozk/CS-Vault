@@ -86,7 +86,7 @@ const dir = lang === "ar" ? "rtl" : "ltr";
     <!-- Navigation Header -->
     <header class="glass-nav sticky top-0 z-50 transition-all duration-300">
       <div
-        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+        class="site-width mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
       >
         <!-- Brand Logo -->
         <a
@@ -176,7 +176,7 @@ const dir = lang === "ar" ? "rtl" : "ltr";
     </header>
 
     <!-- Main Content Area -->
-    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="site-width flex-grow w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <slot />
     </main>
 
@@ -185,7 +185,7 @@ const dir = lang === "ar" ? "rtl" : "ltr";
       class="border-t border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card py-8 mt-12 transition-all duration-300"
     >
       <div
-        class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400"
+        class="site-width mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400"
       >
         <div>
           <p>© {new Date().getFullYear()} {t("footer.text")}</p>

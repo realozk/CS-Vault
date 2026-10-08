@@ -296,3 +296,43 @@ article {
     grid-column: 1 / -1 !important;
   }
 }
+/* Give navigation its own space while keeping the existing visual style. */
+.site-width { max-width: 1440px; }
+.home-welcome { padding-block: 1.75rem; }
+.home-welcome h1 { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+.home-welcome > div:first-child { max-width: 56rem; }
+.home-welcome p { max-width: 52rem; }
+.home-search { width: 100%; }
+.home-search input { font-size: 1rem; }
+.year-sidebar button { text-align: start; }
+.subject-reading { min-width: 0; }
+.subject-reading .academic-prose { max-width: 78ch; }
+@media (min-width: 1024px) {
+  .directory-layout:not(.hidden) { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 2rem; align-items: start; }
+  .year-sidebar { flex-direction: column; border-bottom: 0; border-inline-end: 1px solid #d4d4d8; padding-inline-end: 1rem; padding-bottom: 0; overflow: visible; position: sticky; top: 88px; }
+  .dark .year-sidebar { border-color: #27272a; }
+  .year-sidebar button { border-bottom-width: 0; border-inline-start-width: 2px; padding: .9rem 1rem; }
+  .year-material { min-width: 0; }
+  .subject-layout { grid-template-columns: 320px minmax(0, 1fr); gap: 2rem; }
+  .subject-sidebar, .subject-reading { grid-column: auto; }
+  .subject-sidebar { position: sticky; top: 88px; max-height: calc(100dvh - 112px); overflow-y: auto; scrollbar-width: thin; }
+}
+@media (max-width: 639px) {
+  .home-welcome { padding: 1.25rem; }
+  .home-welcome h1 { font-size: 1.5rem; }
+  .year-sidebar button { padding-inline: .8rem; }
+}
+
+@media (max-width: 639px) {
+  .subject-page h1 { flex-direction: column; align-items: flex-start; gap: .5rem; }
+  .subject-page h1 > span:nth-child(2) { display: none; }
+}
+
+/* Material keeps its own typography when the interface language changes. */
+html[dir="rtl"] [lang="en"] {
+  --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
+}
+.subject-reading .academic-prose[dir="ltr"] { margin-left: 0; margin-right: auto; text-align: left; }
+.subject-reading .academic-prose[dir="rtl"] { margin-right: 0; margin-left: auto; text-align: right; }
+.academic-prose ol { list-style-type: decimal; padding-inline-start: 1.5rem; margin-bottom: 1.25rem; }

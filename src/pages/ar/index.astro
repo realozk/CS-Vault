@@ -68,16 +68,12 @@ const searchIndexTranslations = JSON.stringify({
 });
 ---
 
-<Layout title="الرئيسية - مركز المواد الأكاديمية" description={t('hero.desc')}>
-  <div class="space-y-10 py-2">
+<Layout title="الرئيسية" description={t('hero.desc')}>
+  <div class="home-layout space-y-6 py-2">
     
     <!-- Hero / Welcome Panel -->
-    <div class="relative overflow-hidden rounded-md bg-linear-to-r from-zinc-900 to-zinc-950 dark:from-zinc-950/80 dark:to-zinc-900/40 py-8 px-6 sm:py-10 sm:px-10 text-white border border-zinc-800 shadow-sm">
+    <div class="home-welcome relative overflow-hidden rounded-md bg-linear-to-r from-zinc-900 to-zinc-950 dark:from-zinc-950/80 dark:to-zinc-900/40 py-8 px-6 sm:py-10 sm:px-10 text-white border border-zinc-800 shadow-sm">
       <div class="relative max-w-2xl z-10">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-zinc-800 border border-zinc-700 text-[10px] font-bold uppercase tracking-wider mb-4">
-          <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-          {t('hero.badge')}
-        </span>
         <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight bg-linear-to-r from-white via-zinc-100 to-blue-400 bg-clip-text text-transparent">
           {t('hero.title')}
         </h1>
@@ -110,7 +106,7 @@ const searchIndexTranslations = JSON.stringify({
     </div>
 
     <!-- Search Engine Section -->
-    <div class="relative max-w-xl mx-auto">
+    <div class="home-search relative">
       <div class="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
         <svg class="h-5 w-5 text-gray-400 dark:text-zinc-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -145,10 +141,10 @@ const searchIndexTranslations = JSON.stringify({
       </div>
 
       <!-- Core Tab View (Hidden during active search) -->
-      <div id="core-tab-view" class="space-y-6">
+      <div id="core-tab-view" class="directory-layout">
         
         <!-- Year Selection Tabs -->
-        <div class="flex border-b border-gray-200 dark:border-zinc-800 overflow-x-auto pb-px gap-1" id="year-tabs-nav">
+        <div class="year-sidebar flex border-b border-gray-200 dark:border-zinc-800 overflow-x-auto pb-px gap-1" id="year-tabs-nav">
           {[1, 2, 3, 4].map((year) => (
             <button
               data-year-tab={year}
@@ -168,7 +164,7 @@ const searchIndexTranslations = JSON.stringify({
           const yearModules = modules.filter(m => m.yearLevel === yearNum);
           
           return (
-            <div data-year-content={yearNum} class={`space-y-10 ${yearNum === defaultYear ? '' : 'hidden'}`}>
+            <div data-year-content={yearNum} class={`year-material space-y-10 ${yearNum === defaultYear ? '' : 'hidden'}`}>
               {yearModules.length === 0 ? (
                 <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-12 text-center flex flex-col items-center justify-center">
                   <svg class="w-12 h-12 text-gray-300 dark:text-zinc-700 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -187,7 +183,7 @@ const searchIndexTranslations = JSON.stringify({
               ) : (
                 <div class="space-y-8">
                   
-                  {[1, 2].map((sem) => (
+                  {[1, 2].filter(sem => yearModules.some(m => m.semester === sem)).map((sem) => (
                     <SemesterSection 
                       semester={sem} 
                       modules={yearModules.filter(m => m.semester === sem)}

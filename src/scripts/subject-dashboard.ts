@@ -50,14 +50,10 @@ const initDashboard = () => {
     if (progressFill) progressFill.style.width = `${percent}%`;
     if (progressPercentText) progressPercentText.textContent = `${percent}%`;
     if (progressStatusDesc) {
-      const message = percent === 100 
-        ? (translations.progressPerfect || 'Perfect! You are fully prepared!') 
-        : (translations.progressKeepUp || 'Keep up the good work!');
-      const template = translations.progressStatus || '{checked} of {total} summaries completed. {message}';
+      const template = translations.progressStatus || '{checked} of {total} summaries completed.';
       progressStatusDesc.textContent = template
         .replace('{checked}', checkedCount.toString())
-        .replace('{total}', total.toString())
-        .replace('{message}', message);
+        .replace('{total}', total.toString());
     }
   };
 

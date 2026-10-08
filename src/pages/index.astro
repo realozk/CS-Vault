@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import SemesterSection from '../components/SemesterSection.astro';
 import { getModules } from '../lib/modules';
+import { useTranslations } from '../i18n/ui';
+const t = useTranslations('en');
 
 // Fetch all summaries and quizzes to discover available subject/year modules
 const summaries = await getCollection('summaries');
@@ -58,30 +60,26 @@ const searchIndex = [
 ];
 ---
 
-<Layout title="Home - CS Course Center" description="Explore university course summaries, class notes, and interactive practice quizzes compiled by Computer Science students.">
+<Layout title="Home" description={t('hero.desc')}>
   <!-- Falling Binary background disabled -->
 
-  <div class="space-y-10 py-2">
+  <div class="home-layout space-y-6 py-2">
     
     <!-- Hero / Welcome Panel -->
-    <div class="relative overflow-hidden rounded-md bg-linear-to-r from-zinc-900 to-zinc-950 dark:from-zinc-950/80 dark:to-zinc-900/40 py-8 px-6 sm:py-10 sm:px-10 text-white border border-zinc-800 shadow-sm">
+    <div class="home-welcome relative overflow-hidden rounded-md bg-linear-to-r from-zinc-900 to-zinc-950 dark:from-zinc-950/80 dark:to-zinc-900/40 py-8 px-6 sm:py-10 sm:px-10 text-white border border-zinc-800 shadow-sm">
       <div class="relative max-w-2xl z-10">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-sm bg-zinc-800 border border-zinc-700 text-[10px] font-bold uppercase tracking-wider mb-4">
-          <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-          Academic Study Center
-        </span>
         <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight bg-linear-to-r from-white via-zinc-100 to-blue-400 bg-clip-text text-transparent">
-          Accelerate Your Computer Science Studies
+          {t('hero.title')}
         </h1>
         <p class="mt-3 text-sm sm:text-base text-zinc-300 font-light">
-          CS Vaulte is an open-source, community-driven space hosting clear, student-focused subject summaries and interactive self-assessment quizzes.
+          {t('hero.desc')}
         </p>
         <div class="mt-6 flex flex-wrap gap-4">
           <a 
             href="#directory-container" 
             class="px-4 py-2 bg-white text-zinc-950 hover:bg-zinc-100 text-sm font-semibold rounded transition-all duration-150 shadow-xs"
           >
-            Browse Years & Semesters
+            {t('hero.browse')}
           </a>
           <a 
             href="https://github.com/realozk/CS-Vault" 
@@ -89,7 +87,7 @@ const searchIndex = [
             rel="noopener noreferrer" 
             class="px-4 py-2 border border-zinc-700 hover:border-zinc-500 bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-semibold rounded transition-all duration-150"
           >
-            Contribute on GitHub
+            {t('hero.contribute')}
           </a>
         </div>
       </div>
@@ -102,7 +100,7 @@ const searchIndex = [
     </div>
 
     <!-- Search Engine Section -->
-    <div class="relative max-w-xl mx-auto">
+    <div class="home-search relative">
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
         <svg class="h-5 w-5 text-gray-400 dark:text-zinc-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -137,10 +135,10 @@ const searchIndex = [
       </div>
 
       <!-- Core Tab View (Hidden during active search) -->
-      <div id="core-tab-view" class="space-y-6">
+      <div id="core-tab-view" class="directory-layout">
         
         <!-- Year Selection Tabs -->
-        <div class="flex border-b border-gray-200 dark:border-zinc-800 overflow-x-auto pb-px gap-1" id="year-tabs-nav">
+        <div class="year-sidebar flex border-b border-gray-200 dark:border-zinc-800 overflow-x-auto pb-px gap-1" id="year-tabs-nav">
           {[1, 2, 3, 4].map((year) => (
             <button
               data-year-tab={year}
@@ -160,7 +158,7 @@ const searchIndex = [
           const yearModules = modules.filter(m => m.yearLevel === yearNum);
           
           return (
-            <div data-year-content={yearNum} class={`space-y-10 ${yearNum === defaultYear ? '' : 'hidden'}`}>
+            <div data-year-content={yearNum} class={`year-material space-y-10 ${yearNum === defaultYear ? '' : 'hidden'}`}>
               {yearModules.length === 0 ? (
                 <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-12 text-center flex flex-col items-center justify-center">
                   <svg class="w-12 h-12 text-gray-300 dark:text-zinc-700 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -179,7 +177,7 @@ const searchIndex = [
               ) : (
                 <div class="space-y-8">
                   
-                  {[1, 2].map((sem) => (
+                  {[1, 2].filter(sem => yearModules.some(m => m.semester === sem)).map((sem) => (
                     <SemesterSection 
                       semester={sem} 
                       modules={yearModules.filter(m => m.semester === sem)}
