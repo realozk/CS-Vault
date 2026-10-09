@@ -120,9 +120,15 @@ const initQuizWidget = () => {
     el('question-code').classList.toggle('hidden', !q.code);
     el('progress-bar').style.width = `${currentIndex / questions.length * 100}%`;
     el('explanation-box').classList.add('hidden');
-    el('answer-status').textContent = examMode && answers.has(q.id) ? t('answerSaved') : '';
+    const selected = answers.get(q.id);
+    el('answer-status').textContent = selected === undefined
+      ? ''
+      : examMode
+        ? t('answerSaved')
+        : t(selected === q.correctAnswer ? 'correctFeedback' : 'incorrectFeedback');
+    if (!examMode && selected !== undefined) showExplanation(q);
     button('next-btn').textContent = t(currentIndex === questions.length - 1 ? (examMode ? 'submit' : 'finish') : 'next');
-    button('previous-btn').classList.toggle('hidden', !examMode);
+    button('previous-btn').classList.toggle('hidden', currentIndex === 0);
     button('previous-btn').disabled = currentIndex === 0;
     button('submit-btn').classList.toggle('hidden', !examMode || currentIndex === questions.length - 1);
     el('options-container').replaceChildren();
@@ -212,7 +218,7 @@ const initQuizWidget = () => {
     else { currentIndex++; renderQuestion(); }
   });
   button('previous-btn').addEventListener('click', () => {
-    if (!running || checkExpiry() || !examMode || currentIndex === 0) return;
+    if (!running || checkExpiry() || currentIndex === 0) return;
     currentIndex--; renderQuestion();
   });
   button('submit-btn').addEventListener('click', () => { if (!checkExpiry()) finish(); });
