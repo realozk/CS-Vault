@@ -30,13 +30,42 @@ After each attempt, review missed answers and source slides, then check the topi
 
 Studying language concepts helps you express ideas, choose suitable languages, learn unfamiliar languages, understand implementation, and use known languages better.
 
-| Domain | Typical concern | Lecture examples |
-| --- | --- | --- |
-| Scientific | Numerical work, floating-point values, arrays | Fortran |
-| Business | Reports, decimal values, character data | COBOL |
-| AI | Symbolic processing, linked lists | LISP, Scheme, Prolog, Python |
-| Systems | Efficiency in continuously used software | C, C++ |
-| Web | A mixture of markup, scripting, and general-purpose tools | HTML, PHP, Java |
+<table style="width: 100%; border-collapse: collapse; margin: 1.25rem 0; line-height: 1.6;">
+  <thead>
+    <tr>
+      <th style="padding: 0.75rem; border: 1px solid #52525b; text-align: left;">Domain</th>
+      <th style="padding: 0.75rem; border: 1px solid #52525b; text-align: left;">Typical concern</th>
+      <th style="padding: 0.75rem; border: 1px solid #52525b; text-align: left;">Lecture examples</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Scientific</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Numerical work, floating-point values, and arrays</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Fortran</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Business</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Reports, decimal values, and character data</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">COBOL</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">AI</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Symbolic processing and linked lists</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">LISP, Scheme, Prolog, and Python</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Systems</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Efficiency in continuously used software</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">C and C++</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Web</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">A mixture of markup, scripting, and general-purpose tools</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">HTML, PHP, and Java</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Evaluation criteria — slides 6–12
 
@@ -54,12 +83,37 @@ In the lecture's von Neumann model, memory holds both instructions and data sepa
 
 Methodologies shifted from machine efficiency toward people efficiency and structured programming, then data abstraction, then object orientation with inheritance and polymorphism.
 
-| Category | Main idea | Examples |
-| --- | --- | --- |
-| Imperative | Variables, assignment, iteration | C, Java, JavaScript |
-| Functional | Applying functions to arguments | LISP, Scheme, ML, F# |
-| Logic | Rules | Prolog |
-| Markup/programming hybrid | Programming extensions to markup | JSTL, XSLT |
+<table style="width: 100%; border-collapse: collapse; margin: 1.25rem 0; line-height: 1.6;">
+  <thead>
+    <tr>
+      <th style="padding: 0.75rem; border: 1px solid #52525b; text-align: left;">Category</th>
+      <th style="padding: 0.75rem; border: 1px solid #52525b; text-align: left;">Main idea</th>
+      <th style="padding: 0.75rem; border: 1px solid #52525b; text-align: left;">Examples</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Imperative</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Variables, assignment, and iteration</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">C, Java, and JavaScript</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Functional</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Applying functions to arguments</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">LISP, Scheme, ML, and F#</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Logic</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Rules</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Prolog</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Markup/programming hybrid</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">Programming extensions to markup</td>
+      <td style="padding: 0.75rem; border: 1px solid #52525b;">JSTL and XSLT</td>
+    </tr>
+  </tbody>
+</table>
 
 Object orientation can coexist with imperative programming. A language category and an implementation method are different concepts.
 
