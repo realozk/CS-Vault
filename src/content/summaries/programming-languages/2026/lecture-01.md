@@ -13,7 +13,7 @@ lang: "en"
 
 **Third year, first semester. Lecture 1 only:** *Preliminaries to the Concepts of Programming Languages*. These notes and the three practice exams are original study aids based on `Lecture01-Single-Slide-Handout.pdf`, not official exam questions or an instructor-approved answer key. Check the referenced slides when reviewing an answer.
 
-A separate **Languages PDF Exam** contains 20 Lecture 1 questions adapted from the uploaded quiz/midterm collection in `languages.pdf`. Its highlight marks it as a revision priority, not a confirmed prediction. Questions about grammar and variable binding in that PDF are outside the confirmed Lecture 1 scope and are omitted.
+A separate **Languages PDF Exam** contains 20 Lecture 1 questions adapted from the uploaded quiz/midterm collection in `languages.pdf`. It is labelled as collected material, not a confirmed exam prediction. Questions about grammar and variable binding in that PDF are outside the confirmed Lecture 1 scope and are omitted.
 
 ## A practical study routine
 
@@ -130,3 +130,7 @@ Java bounds checks illustrate reliability versus execution cost. APL's compact o
 The **von Neumann bottleneck** concerns transfers between memory and processor. A **preprocessor** expands directives such as C includes and macros before compilation. A **programming environment** is a development tool collection, such as UNIX tools, Visual Studio .NET, or NetBeans.
 
 The handout contains historical language examples and performance comparisons. Learn its conceptual distinctions without treating historical rankings or speed ratios as universal facts about current implementations.
+
+The separate **Lecture 1 — Instructor Tutorial** contains all 29 questions and
+marked answers from the Blackboard tutorial. Its red label identifies instructor
+material. Question 22 preserves the supplied key and includes a clarification note.

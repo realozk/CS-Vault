@@ -52,7 +52,9 @@ ignored by Git. They are created automatically when installing or building.
 
 Generated questions are study aids, not official exams or approved answer keys.
 Explanations identify inferred answers and reference source slides or PDF pages.
-The highlighted exam is a revision priority, not a confirmed exam prediction.
+Quiz labels identify the source in both languages: red for instructor material,
+orange for collected/older questions, and regular styling for AI-generated
+practice. Source categories do not predict what will appear in an exam.
 
 
 For content formats and contribution steps, see [CONTRIBUTING.md](CONTRIBUTING.md).

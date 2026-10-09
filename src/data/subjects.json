@@ -42,7 +42,8 @@
     "year": 2026,
     "year_level": 3,
     "semester": 1,
-    "name_ar": "لغات البرمجة"
+    "name_ar": "لغات البرمجة",
+    "is_new": true
   },
   {
     "slug": "web-development",

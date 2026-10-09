@@ -25,7 +25,7 @@ export interface QuizData {
   questions: Question[];
   description?: string;
   source?: string;
-  sourceKind?: 'generated' | 'provided';
+  sourceKind?: 'generated' | 'provided' | 'instructor';
   featured?: boolean;
 }
 
@@ -33,6 +33,7 @@ export interface ModuleItem {
   subject: string;
   subjectName: string;
   subjectCode: string;
+  isNew: boolean;
   year: string;
   yearLevel: number;
   semester: number;

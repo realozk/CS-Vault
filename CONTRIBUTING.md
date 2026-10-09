@@ -19,7 +19,9 @@ Add it to `src/data/subjects.json` before adding material:
 ```
 
 Use a URL-safe slug. Content folders and academic metadata must match the catalog.
-Courses may be registered before any material is available.
+Courses may be registered before any material is available. Set optional
+`is_new: true` on a catalog entry to show a New/جديد tag after adding material;
+remove it or set it to false when the update is no longer new.
 
 ## Add notes
 
@@ -72,7 +74,10 @@ Keep question IDs unique and choices distinct. `correctAnswer` must exactly matc
 one choice. Check every answer against the source before submitting.
 
 Optional quiz fields include `description` and `featured` (default false).
-`sourceKind` is `generated` or `provided`. Optional question fields include
+`sourceKind` is `instructor` (red: instructor/Blackboard), `provided` (orange:
+collected or older material), or `generated` (regular: fully AI-generated).
+Classify by the origin of the questions; keep `answerSource` separate to identify
+how each answer was determined. Optional question fields include
 `code`, `topic`, `sourceSlide`, `sourcePage`, and `optionsSource`
 (`provided` or `generated`). Source page/slide numbers start at 1.
 `answerSource` is `manual`, `marked`, or `inferred`; AI-inferred answers must use

@@ -1,0 +1,448 @@
+{
+  "title": "Lecture 1 — Instructor Tutorial",
+  "subject": "Programming Languages",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Lecture-1-Tutorial.pdf · Blackboard",
+  "sourceKind": "instructor",
+  "description": "29 questions and answers transcribed from the instructor tutorial shared on Blackboard. Source wording and marked answers are preserved; the source key for question 22 needs clarification.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Why is it useful for a programmer to have some background in language design, even though they may never design a programming language?",
+      "options": [
+        "It allows them to bypass the need for an operating system.",
+        "It eliminates the need to compile high-level source code.",
+        "It helps them understand the significance of implementation and learn new languages more easily.",
+        "It completely replaces the study of algorithm analysis and data structures."
+      ],
+      "correctAnswer": "It helps them understand the significance of implementation and learn new languages more easily.",
+      "explanation": "The tutorial answer key selects C: It helps them understand the significance of implementation and learn new languages more easily.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 1
+    },
+    {
+      "id": 2,
+      "question": "How can knowledge of programming language characteristics benefit the computing community as a whole?",
+      "options": [
+        "It ensures that only one universal programming language will ever be developed.",
+        "It helps informed decision-makers choose better languages that can eventually displace poorer ones.",
+        "It guarantees hardware prices will drop steadily each year.",
+        "It eliminates the need for software maintenance across all applications."
+      ],
+      "correctAnswer": "It helps informed decision-makers choose better languages that can eventually displace poorer ones.",
+      "explanation": "The tutorial answer key selects B: It helps informed decision-makers choose better languages that can eventually displace poorer ones.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 1
+    },
+    {
+      "id": 3,
+      "question": "Which programming language has dominated scientific computing over the past 60 years?",
+      "options": [
+        "Fortran",
+        "COBOL",
+        "Lisp",
+        "Prolog"
+      ],
+      "correctAnswer": "Fortran",
+      "explanation": "The tutorial answer key selects A: Fortran",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 1
+    },
+    {
+      "id": 4,
+      "question": "Which programming language has dominated business applications over the past 60 years?",
+      "options": [
+        "ALGOL 60",
+        "COBOL",
+        "Smalltalk",
+        "APL"
+      ],
+      "correctAnswer": "COBOL",
+      "explanation": "The tutorial answer key selects B: COBOL",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 1
+    },
+    {
+      "id": 5,
+      "question": "Which programming language dominated artificial intelligence applications developed prior to 1990?",
+      "options": [
+        "Ada",
+        "C",
+        "Lisp",
+        "Visual Basic"
+      ],
+      "correctAnswer": "Lisp",
+      "explanation": "The tutorial answer key selects C: Lisp",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 1
+    },
+    {
+      "id": 6,
+      "question": "In what programming language is most of the UNIX operating system written?",
+      "options": [
+        "Fortran",
+        "C",
+        "Java",
+        "Perl"
+      ],
+      "correctAnswer": "C",
+      "explanation": "The tutorial answer key selects B: C",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 1
+    },
+    {
+      "id": 7,
+      "question": "What is a primary disadvantage of having too many basic features in a programming language?",
+      "options": [
+        "Code readability is impaired because different programmers often learn and use different feature subsets.",
+        "Programs will automatically fail to link with standard system libraries.",
+        "The language becomes unusable on modern von Neumann machines.",
+        "Pure interpreters become completely impossible to implement."
+      ],
+      "correctAnswer": "Code readability is impaired because different programmers often learn and use different feature subsets.",
+      "explanation": "The tutorial answer key selects A: Code readability is impaired because different programmers often learn and use different feature subsets.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 8,
+      "question": "How can user-defined operator overloading harm the readability of a program?",
+      "options": [
+        "It causes the source file to take up more physical disk space.",
+        "It converts compiled code back into machine instructions automatically.",
+        "It can lead to confusion if operators are given unusual meanings that conflict with common conventions.",
+        "It prevents variables from being defined inside subroutines."
+      ],
+      "correctAnswer": "It can lead to confusion if operators are given unusual meanings that conflict with common conventions.",
+      "explanation": "The tutorial answer key selects C: It can lead to confusion if operators are given unusual meanings that conflict with common conventions.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 9,
+      "question": "Which of the following illustrates a lack of orthogonality in the design of C?",
+      "options": [
+        "Variables can hold both positive and negative integers.",
+        "Structs can be returned from functions, but arrays cannot.",
+        "Subprograms can take zero or more parameters.",
+        "Loops can be created using both while and for statements."
+      ],
+      "correctAnswer": "Structs can be returned from functions, but arrays cannot.",
+      "explanation": "The tutorial answer key selects B: Structs can be returned from functions, but arrays cannot.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 10,
+      "question": "Which programming language used orthogonality as a primary design criterion?",
+      "options": [
+        "ALGOL 68",
+        "Fortran",
+        "C++",
+        "Java"
+      ],
+      "correctAnswer": "ALGOL 68",
+      "explanation": "The tutorial answer key selects A: ALGOL 68",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 11,
+      "question": "What primitive control statement was historically used to build more complicated control structures in languages that lacked them?",
+      "options": [
+        "switch",
+        "goto",
+        "try-catch",
+        "yield"
+      ],
+      "correctAnswer": "goto",
+      "explanation": "The tutorial answer key selects B: goto",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 12,
+      "question": "What does it mean for a program to be reliable?",
+      "options": [
+        "It executes using the least possible amount of main memory.",
+        "It performs according to its specifications under all conditions.",
+        "It has been translated purely through a Just-in-Time compiler.",
+        "It can be executed on non-von Neumann computer architectures without modification."
+      ],
+      "correctAnswer": "It performs according to its specifications under all conditions.",
+      "explanation": "The tutorial answer key selects B: It performs according to its specifications under all conditions.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 13,
+      "question": "Why is type checking the parameters of a subprogram important?",
+      "options": [
+        "It automatically speeds up macro expansion in preprocessors.",
+        "It ensures that variable bit representations match what the receiving subprogram expects, avoiding subtle errors.",
+        "It prevents the computer from requiring a program counter.",
+        "It converts all formal parameters to pointers at compile time."
+      ],
+      "correctAnswer": "It ensures that variable bit representations match what the receiving subprogram expects, avoiding subtle errors.",
+      "explanation": "The tutorial answer key selects B: It ensures that variable bit representations match what the receiving subprogram expects, avoiding subtle errors.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 14,
+      "question": "What is aliasing?",
+      "options": [
+        "Using two or more distinct names in a program to access the same memory cell.",
+        "Assigning multiple types to a variable simultaneously at runtime.",
+        "Defining functions that accept varying numbers of arguments.",
+        "The automatic optimization of machine code by a compiler."
+      ],
+      "correctAnswer": "Using two or more distinct names in a program to access the same memory cell.",
+      "explanation": "The tutorial answer key selects A: Using two or more distinct names in a program to access the same memory cell.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 15,
+      "question": "What is exception handling?",
+      "options": [
+        "An instruction set feature that increases the physical memory bus width.",
+        "The ability of a program to intercept runtime errors, take corrective measures, and continue.",
+        "The process of replacing symbolic assembly with intermediate bytecode.",
+        "A mechanism that prohibits functions from using recursion."
+      ],
+      "correctAnswer": "The ability of a program to intercept runtime errors, take corrective measures, and continue.",
+      "explanation": "The tutorial answer key selects B: The ability of a program to intercept runtime errors, take corrective measures, and continue.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 16,
+      "question": "Why is readability important to writability?",
+      "options": [
+        "Because programmers spend time reading documentation rather than writing code.",
+        "Because writing code requires programmers to frequently reread parts of the code already written.",
+        "Because modern compilers cannot optimize programs that are hard to read.",
+        "Because pure interpreters require comments in order to parse statements."
+      ],
+      "correctAnswer": "Because writing code requires programmers to frequently reread parts of the code already written.",
+      "explanation": "The tutorial answer key selects B: Because writing code requires programmers to frequently reread parts of the code already written.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 17,
+      "question": "How is the cost of compilers for a given language related to the design of that language?",
+      "options": [
+        "Simpler, more orthogonal languages typically require less effort and cost to implement compilers for than complex languages.",
+        "Languages that enforce strong typing do not require any compiler design costs.",
+        "Interpreted languages always cost more to compile than compiled languages.",
+        "The number of comments allowed in a language determines the hardware costs of the compiler."
+      ],
+      "correctAnswer": "Simpler, more orthogonal languages typically require less effort and cost to implement compilers for than complex languages.",
+      "explanation": "The tutorial answer key selects A: Simpler, more orthogonal languages typically require less effort and cost to implement compilers for than complex languages.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 18,
+      "question": "What have been the two strongest influences on programming language design over the past 60 years?",
+      "options": [
+        "Cloud infrastructure and database normalization",
+        "Computer architecture and software design methodologies",
+        "Hardware peripherals and network protocols",
+        "Artificial neural networks and graphics processors"
+      ],
+      "correctAnswer": "Computer architecture and software design methodologies",
+      "explanation": "The tutorial answer key selects B: Computer architecture and software design methodologies",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 19,
+      "question": "What is the name of the category of programming languages whose structure is dictated by the von Neumann computer architecture?",
+      "options": [
+        "Functional languages",
+        "Logic languages",
+        "Rule-based languages",
+        "Imperative languages"
+      ],
+      "correctAnswer": "Imperative languages",
+      "explanation": "The tutorial answer key selects D: Imperative languages",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 20,
+      "question": "What two programming language deficiencies were identified as a result of research into software development in the 1970s?",
+      "options": [
+        "Incompleteness of type checking and inadequacy of control statements",
+        "Lack of markup integration and excess of dynamic arrays",
+        "Too much functional recursion and excessive operator overloading",
+        "Absence of bytecode engines and poor disk access speeds"
+      ],
+      "correctAnswer": "Incompleteness of type checking and inadequacy of control statements",
+      "explanation": "The tutorial answer key selects A: Incompleteness of type checking and inadequacy of control statements",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 21,
+      "question": "What are the three fundamental features of an object-oriented programming language?",
+      "options": [
+        "Recursion, pointers, and memory stacks",
+        "Data abstraction, inheritance, and dynamic method binding",
+        "Feature multiplicity, orthogonality, and aliasing",
+        "Compilation, pure interpretation, and preprocessor directives"
+      ],
+      "correctAnswer": "Data abstraction, inheritance, and dynamic method binding",
+      "explanation": "The tutorial answer key selects B: Data abstraction, inheritance, and dynamic method binding",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 22,
+      "question": "Which language was the first to support the fundamental features of object-oriented programming?",
+      "options": [
+        "Smalltalk",
+        "SIMULA 67",
+        "C++",
+        "Java"
+      ],
+      "correctAnswer": "Smalltalk",
+      "explanation": "The tutorial answer key selects A: Smalltalk This is the supplied key’s answer. The wording is worth checking with the instructor: SIMULA 67 predates Smalltalk and is commonly credited as the first object-oriented language.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 23,
+      "question": "Which of the following represents a conflict between two language design criteria?",
+      "options": [
+        "Expressivity versus symbol availability",
+        "Software reliability versus execution cost (e.g., array index bound checking)",
+        "Lexical parsing versus syntax analysis",
+        "Static typing versus symbol table lookups"
+      ],
+      "correctAnswer": "Software reliability versus execution cost (e.g., array index bound checking)",
+      "explanation": "The tutorial answer key selects B: Software reliability versus execution cost (e.g., array index bound checking)",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 24,
+      "question": "What are the three general methods of implementing a programming language?",
+      "options": [
+        "Assembly, microprogramming, and macroprogramming",
+        "Scripting, markup, and database mapping",
+        "Compilation, pure interpretation, and hybrid implementation systems",
+        "Static linking, dynamic linking, and loading"
+      ],
+      "correctAnswer": "Compilation, pure interpretation, and hybrid implementation systems",
+      "explanation": "The tutorial answer key selects C: Compilation, pure interpretation, and hybrid implementation systems",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 25,
+      "question": "Which produces faster program execution, a compiler or a pure interpreter?",
+      "options": [
+        "A pure interpreter",
+        "A compiler",
+        "Both produce identical execution speeds",
+        "Neither; only preprocessors produce machine instructions"
+      ],
+      "correctAnswer": "A compiler",
+      "explanation": "The tutorial answer key selects B: A compiler",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 26,
+      "question": "What primary role does the symbol table play during the compilation process?",
+      "options": [
+        "It serves as a database storing type and attribute information of user-defined names.",
+        "It converts intermediate code directly into assembly language comments.",
+        "It tracks execution speed during runtime to optimize CPU registers.",
+        "It contains pre-written machine instructions for external hardware devices."
+      ],
+      "correctAnswer": "It serves as a database storing type and attribute information of user-defined names.",
+      "explanation": "The tutorial answer key selects A: It serves as a database storing type and attribute information of user-defined names.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 27,
+      "question": "What is the role of a linker?",
+      "options": [
+        "It parses raw source code characters into lexical units.",
+        "It connects a user program to system programs and library code to produce an executable image.",
+        "It performs runtime array bound checks on memory cells.",
+        "It expands macro definitions like #define and #include."
+      ],
+      "correctAnswer": "It connects a user program to system programs and library code to produce an executable image.",
+      "explanation": "The tutorial answer key selects B: It connects a user program to system programs and library code to produce an executable image.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 5
+    },
+    {
+      "id": 28,
+      "question": "Why is the von Neumann bottleneck important?",
+      "options": [
+        "It causes syntax errors when high-level programs use too many loops.",
+        "The connection speed between memory and CPU is the primary limiting factor in computer speed.",
+        "It prevents hybrid systems from using Just-in-Time compilation.",
+        "It forces all programming languages to be dynamically typed."
+      ],
+      "correctAnswer": "The connection speed between memory and CPU is the primary limiting factor in computer speed.",
+      "explanation": "The tutorial answer key selects B: The connection speed between memory and CPU is the primary limiting factor in computer speed.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 5
+    },
+    {
+      "id": 29,
+      "question": "What is an advantage of implementing a language using a pure interpreter?",
+      "options": [
+        "Programs execute 10 to 100 times faster than compiled systems.",
+        "Source-level debugging and runtime error reporting are easy to implement.",
+        "Code takes significantly less space in memory during runtime.",
+        "There is no need for a symbol table or lexical analysis."
+      ],
+      "correctAnswer": "Source-level debugging and runtime error reporting are easy to implement.",
+      "explanation": "The tutorial answer key selects B: Source-level debugging and runtime error reporting are easy to implement.",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 5
+    }
+  ]
+}

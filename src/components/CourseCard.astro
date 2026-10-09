@@ -30,6 +30,7 @@ const alertKey = m.subject === 'programming-languages'
     <span class="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-gray-100 dark:bg-zinc-800/40 text-gray-600 dark:text-zinc-400 border border-transparent dark:border-dark-border">
       {m.subjectCode}
     </span>
+    {m.isNew && <span class="rounded border border-emerald-200 bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300">{t('course.new')}</span>}
     {alertKey && (
       <span
         class="truncate rounded bg-amber-50 px-1.5 py-0.5 text-[9px] font-semibold leading-tight text-amber-700 dark:bg-amber-950/30 dark:text-amber-300"

@@ -10,6 +10,7 @@ const subjects = z.array(z.object({
   year: z.number().int().positive(),
   year_level: z.number().int().min(1).max(4),
   semester: z.number().int().min(1).max(2),
+  is_new: z.boolean().default(false),
 })).parse(catalog);
 
 // Build-time only: courses exist even before their study material is uploaded.
@@ -27,7 +28,7 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
       subject: subject.slug, subjectName: getSubjectName(subject.slug, lang), subjectCode: subject.subject_code,
       year: String(subject.year),
       yearLevel: subject.year_level, semester: subject.semester,
-      summariesCount: 0, quizzesCount: 0,
+      summariesCount: 0, quizzesCount: 0, isNew: subject.is_new,
     });
   }
   const [summaries, quizzes] = await Promise.all([

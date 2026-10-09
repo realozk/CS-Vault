@@ -31,7 +31,7 @@ const quizzesCollection = defineCollection({
     title: z.string().min(1, 'Quiz title is required'),
     description: z.string().optional(),
     source: z.string().optional(),
-    sourceKind: z.enum(['generated', 'provided']).default('generated'),
+    sourceKind: z.enum(['generated', 'provided', 'instructor']).default('generated'),
     featured: z.boolean().default(false),
     subject: z.string().min(1, 'Subject name is required'),
     year: z.number().int().positive(),

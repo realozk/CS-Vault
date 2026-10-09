@@ -1,0 +1,7 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
+interface Props { sourceKind?: 'generated' | 'provided' | 'instructor'; }
+const { sourceKind = 'generated' } = Astro.props;
+const t = useTranslations(getLangFromUrl(Astro.url));
+---
+<span class:list={["quiz-source-label", `quiz-source-${sourceKind}`]}>{t(`quiz.source.${sourceKind}`)}</span>
