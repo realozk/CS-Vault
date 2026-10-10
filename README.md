@@ -1,10 +1,10 @@
 # CS-Vault
 
 A small study site made by students for Computer Science students. Browse course
-notes and practice quizzes in an English or Arabic interface. Study material
+practice exams, review explanations, and use course notes as reference in an English or Arabic interface. Study material
 currently follows the English lecture terminology.
 
-Built with Astro Pages are static and hosted on
+Built with Astro. Pages are static and hosted on
 [GitHub Pages](https://realozk.github.io/CS-Vault/).
 
 ## Run locally
@@ -21,7 +21,7 @@ Open `http://localhost:4321/CS-Vault/`.
 ```sh
 npm run build    # Validate content and generate dist/
 npm run preview  # Preview the production build
-node --experimental-strip-types --test tests/quiz-state.test.mjs
+npm run validate # Type check, tests, build, local links/assets
 ```
 
 ## Where things live
@@ -37,13 +37,26 @@ node --experimental-strip-types --test tests/quiz-state.test.mjs
 | `src/scripts/` | Search, progress, and quiz behavior |
 | `src/i18n/ui.ts` | English/Arabic interface text |
 | `src/styles/`, `public/` | Styles and static assets |
-| `tests/` | Quiz state tests |
+| `tests/` | Quiz state, content metadata and link checker tests |
 | `pipeline/` | Optional local Python tool; separate from the website |
 
 `astro.config.mjs` sets the GitHub Pages URL/base path, language routing, and
 Tailwind integration. `tsconfig.json` enables strict TypeScript checks.
 `package-lock.json` pins dependencies for reproducible installations.
-`.github/workflows/deploy.yml` builds and deploys pushes to `main`.
+`.github/workflows/checks.yml` runs validation on pull requests and pushes to `tests`.
+`.github/workflows/deploy.yml` validates and deploys pushes to `main`.
+To enforce checks before merging, configure GitHub branch protection to require
+`Site checks / validate`.
+
+English and Arabic routes use shared page components in `src/components/pages/`.
+Translate interface text in `src/i18n/ui.ts`; preserve lecture questions, choices,
+explanations, code and notes in their original language. Language switching
+preserves the current quiz in this browser tab. Reading progress and saved mistake
+review stay on this device; controls still work when browser storage is blocked.
+
+The build rejects content whose subject, year or academic placement disagrees
+with its folder and catalog entry. The link checker checks generated local links,
+anchors and assets under `/CS-Vault/`; external URLs are not fetched.
 
 Generated folders (`node_modules/`, `dist/`, `.astro/`) and local caches are
 ignored by Git. They are created automatically when installing or building.

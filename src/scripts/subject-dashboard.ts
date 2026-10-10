@@ -25,6 +25,14 @@ const initDashboard = () => {
     }
   }
 
+  const showStorageNotice = () => {
+    const status = document.getElementById('progress-storage-status');
+    if (status) {
+      status.textContent = translations.storageUnavailable || 'Progress cannot be saved in this browser.';
+      status.classList.remove('hidden');
+    }
+  };
+
   // Load progress from localStorage
   let completedSlugs: string[] = [];
   try {
@@ -37,8 +45,8 @@ const initDashboard = () => {
           typeof slug === 'string' && available.has(slug)))];
       }
     }
-  } catch (e) {
-    console.error(e);
+  } catch {
+    showStorageNotice();
   }
 
   const updateProgressBar = () => {
@@ -64,7 +72,7 @@ const initDashboard = () => {
     const isChecked = completedSlugs.includes(slug);
     cb.checked = isChecked;
     
-    const titleSpan = cb.closest('button')?.querySelector('.summary-title-text');
+    const titleSpan = [...tabs].find(tab => tab.getAttribute('data-summary-slug') === slug)?.querySelector('.summary-title-text');
     if (isChecked) {
       titleSpan?.classList.add('line-through', 'opacity-50');
     }
@@ -82,8 +90,12 @@ const initDashboard = () => {
         titleSpan?.classList.remove('line-through', 'opacity-50');
       }
 
-      localStorage.setItem(storageKey, JSON.stringify(completedSlugs));
       updateProgressBar();
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(completedSlugs));
+      } catch {
+        showStorageNotice();
+      }
     });
 
     // Prevent checklist toggles from triggering tab navigation switches
@@ -158,6 +170,8 @@ const initDashboard = () => {
     });
   };
 
+  const scrollBehavior = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' as const : 'smooth' as const;
+
   // Tab view switching
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -165,6 +179,7 @@ const initDashboard = () => {
 
       // Update active tab styling
       tabs.forEach((btn) => {
+        btn.setAttribute('aria-pressed', 'false');
         btn.classList.remove(
           'border-blue-600',
           'dark:border-blue-500',
@@ -183,6 +198,7 @@ const initDashboard = () => {
         );
       });
 
+      tab.setAttribute('aria-pressed', 'true');
       tab.classList.add(
         'border-blue-600',
         'dark:border-blue-500',
@@ -204,7 +220,7 @@ const initDashboard = () => {
       contents.forEach((content) => {
         if (content.id === `summary-content-${targetSlug}`) {
           content.classList.remove('hidden');
-          content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          content.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
         } else {
           content.classList.add('hidden');
         }
@@ -248,7 +264,7 @@ const initDashboard = () => {
       
       const progressCard = document.getElementById('subject-progress-card');
       if (progressCard) {
-        progressCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        progressCard.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
         progressCard.classList.add('ring-2', 'ring-emerald-500', 'transition-all', 'duration-500');
         setTimeout(() => {
           progressCard.classList.remove('ring-2', 'ring-emerald-500');

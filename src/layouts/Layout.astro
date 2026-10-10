@@ -41,23 +41,13 @@ const dir = lang === "ar" ? "rtl" : "ltr";
     <meta name="twitter:title" content={`${title} | CS Vault`} />
     <meta name="twitter:description" content={description} />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-
     <!-- Inline Script to prevent Theme Toggling Flash -->
     <script is:inline>
       const getThemePreference = () => {
-        if (
-          typeof localStorage !== "undefined" &&
-          localStorage.getItem("theme")
-        ) {
-          return localStorage.getItem("theme");
-        }
+        try {
+          const saved = localStorage.getItem("theme");
+          if (saved === "dark" || saved === "light") return saved;
+        } catch { /* Use the system preference when storage is blocked. */ }
         return window.matchMedia("(prefers-color-scheme: dark)").matches
           ? "dark"
           : "light";
@@ -78,11 +68,7 @@ const dir = lang === "ar" ? "rtl" : "ltr";
       copied: t("dashboard.copied"),
     })}
   >
-    <!-- Background Grid -->
-    <div class="absolute inset-0 -z-50 overflow-hidden pointer-events-none">
-      <!-- Premium CSS developer grid pattern with radial mask -->
-      <div class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] dark:bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
-    </div>
+    <a href="#main-content" class="skip-link">{t("nav.skip")}</a>
     <!-- Navigation Header -->
     <header class="glass-nav sticky top-0 z-50 transition-all duration-300">
       <div
@@ -91,7 +77,7 @@ const dir = lang === "ar" ? "rtl" : "ltr";
         <!-- Brand Logo -->
         <a
           href={getLocalizedPath("/", lang)}
-          class="flex items-center gap-2 focus:outline-hidden"
+          class="flex items-center gap-2 min-h-11"
           id="nav-brand"
         >
           <svg
@@ -124,10 +110,10 @@ const dir = lang === "ar" ? "rtl" : "ltr";
         </a>
 
         <!-- Action Items (Links & Theme Toggle) -->
-        <nav class="flex items-center gap-6" id="main-nav">
+        <nav class="flex items-center gap-2 sm:gap-4" id="main-nav">
           <a
             href={getLocalizedPath("/", lang)}
-            class="text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
+            class="inline-flex min-h-11 items-center px-2 text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
           >
             {t("nav.home")}
           </a>
@@ -135,7 +121,7 @@ const dir = lang === "ar" ? "rtl" : "ltr";
           <!-- Language Selector -->
           <a
             href={getLanguageSwitcherPath(Astro.url.pathname, lang)}
-            class="text-xs font-bold border border-gray-200 dark:border-zinc-800 px-2 py-1 rounded-sm hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-all duration-150 cursor-pointer"
+            class="inline-flex min-h-11 items-center text-sm font-medium border border-gray-200 dark:border-zinc-700 px-3 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-600 dark:text-zinc-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-150"
           >
             {lang === "ar" ? "English" : "العربية "}
           </a>
@@ -143,8 +129,8 @@ const dir = lang === "ar" ? "rtl" : "ltr";
           <!-- Theme Toggle Button -->
           <button
             id="theme-toggle"
-            aria-label="Toggle Dark Mode"
-            class="p-2 rounded border border-gray-200 dark:border-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-all duration-150 cursor-pointer"
+            aria-label={t("nav.theme")}
+            class="w-11 h-11 flex items-center justify-center rounded-md border border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-600 dark:text-zinc-300 transition-colors duration-150 cursor-pointer"
           >
             <!-- Sun Icon (Visible in dark mode) -->
             <svg
@@ -176,7 +162,7 @@ const dir = lang === "ar" ? "rtl" : "ltr";
     </header>
 
     <!-- Main Content Area -->
-    <main class="site-width flex-grow w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main id="main-content" tabindex="-1" class="site-width flex-grow w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <slot />
     </main>
 
@@ -185,21 +171,25 @@ const dir = lang === "ar" ? "rtl" : "ltr";
       class="border-t border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card py-8 mt-12 transition-all duration-300"
     >
       <div
-        class="site-width mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400"
+        class="site-width mx-auto px-4 sm:px-6 lg:px-8 text-sm text-gray-600 dark:text-gray-300"
       >
-        <div>
-          <p>© {new Date().getFullYear()} {t("footer.text")}</p>
-        </div>
-        <div class="flex items-center gap-6">
+        <section id="contribute" aria-labelledby="contribute-title" class="max-w-3xl scroll-mt-24">
+          <h2 id="contribute-title" class="text-base font-semibold text-gray-900 dark:text-white">{t("contribute.title")}</h2>
+          <p class="mt-3 leading-relaxed">{t("contribute.materials")}</p>
+          <p class="mt-2 leading-relaxed">{t("contribute.website")}</p>
+          <div class="mt-3 flex flex-wrap gap-x-6 gap-y-2">
           <a
             href="https://github.com/realozk/CS-Vault"
             target="_blank"
             rel="noopener noreferrer"
-            class="hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
+            class="inline-flex min-h-11 items-center font-medium text-brand-700 dark:text-brand-500 underline underline-offset-4 hover:no-underline"
           >
-            {t("footer.github")}
+            {t("contribute.github")}
           </a>
-        </div>
+          <a href="mailto:r3al0zk@gmail.com" class="inline-flex min-h-11 items-center font-medium text-brand-700 dark:text-brand-500 underline underline-offset-4 hover:no-underline">{t("contribute.email")}</a>
+          </div>
+        </section>
+        <p class="mt-6 pt-4 border-t border-gray-200 dark:border-dark-border text-gray-500 dark:text-gray-400">© {new Date().getFullYear()} {t("footer.text")}</p>
       </div>
     </footer>
 
@@ -213,6 +203,7 @@ const dir = lang === "ar" ? "rtl" : "ltr";
         document.documentElement.classList.contains("dark");
 
       const updateToggleButtonState = () => {
+        themeToggleBtn?.setAttribute("aria-pressed", String(isDarkMode()));
         if (isDarkMode()) {
           lightIcon?.classList.remove("hidden");
           darkIcon?.classList.add("hidden");
@@ -229,12 +220,15 @@ const dir = lang === "ar" ? "rtl" : "ltr";
       themeToggleBtn?.addEventListener("click", () => {
         if (isDarkMode()) {
           document.documentElement.classList.remove("dark");
-          localStorage.setItem("theme", "light");
+
         } else {
           document.documentElement.classList.add("dark");
-          localStorage.setItem("theme", "dark");
+
         }
         updateToggleButtonState();
+        try {
+          localStorage.setItem("theme", isDarkMode() ? "dark" : "light");
+        } catch { /* Theme still works for this visit. */ }
       });
     </script>
   </body>

@@ -53,6 +53,8 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
     {quiz.sourceKind === 'provided' && <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">{t('quiz.providedNotice')}</p>}
     {(!quiz.sourceKind || quiz.sourceKind === 'generated') && quiz.questions.some(q => q.answerSource === 'inferred') && <p class="mt-4 text-sm text-amber-800 dark:text-amber-300">{t(quiz.subject === 'Operating Systems' ? 'quiz.aiLectureNotice' : 'quiz.aiDisclaimer')}</p>}
 
+    <p class="mt-4 text-sm text-gray-600 dark:text-zinc-300">{t("quiz.languageNote")}</p>
+
     <fieldset class="mt-6 text-start border border-gray-200 dark:border-zinc-800 rounded-md p-4 space-y-3">
       <legend class="px-2 text-sm font-semibold">{t('quiz.settings')}</legend>
       <div class="flex flex-wrap gap-5">
@@ -137,16 +139,18 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
     </div>
 
     <!-- Next / Submit Panel -->
-    <div class="mt-8 pt-6 border-t border-gray-100 dark:border-zinc-800 flex flex-wrap justify-between gap-3">
+    <div id="quiz-controls" class="quiz-controls" role="group" aria-label={t('quiz.navigation')}>
+      <div class="quiz-controls-inner">
       <button id="quiz-previous-btn" class="hidden px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded disabled:opacity-50 cursor-pointer">{t('quiz.previous')}</button>
       <button id="quiz-submit-btn" class="hidden px-4 py-2.5 border border-gray-300 dark:border-zinc-700 rounded cursor-pointer">{t('quiz.submit')}</button>
       <button 
         id="quiz-next-btn"
         disabled
-        class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-150 dark:disabled:bg-zinc-800 text-white disabled:text-gray-400 dark:disabled:text-zinc-500 font-semibold rounded cursor-pointer disabled:cursor-not-allowed transition-all duration-150"
+        class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 dark:disabled:bg-zinc-800 text-white disabled:text-gray-500 dark:disabled:text-zinc-400 font-semibold rounded cursor-pointer disabled:cursor-not-allowed transition-all duration-150"
       >
         {t('quiz.next')}
       </button>
+      </div>
     </div>
   </div>
 

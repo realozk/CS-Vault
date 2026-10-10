@@ -18,40 +18,44 @@ const alertKey = m.subject === 'programming-languages'
   ? 'courseAlert.programmingLanguages'
   : m.subject === 'operating-systems'
     ? 'courseAlert.operatingSystems'
+    : m.subject === 'web-development'
+    ? 'courseAlert.webdevelopment'
     : undefined;
 ---
 
 <a 
   href={href}
-  class="group block bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border hover:border-brand-500 dark:hover:border-brand-500 rounded-md p-4 shadow-sm hover:-translate-y-1 transition-all duration-300 ease-out"
+  class="course-card group flex flex-col bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border hover:border-brand-700 dark:hover:border-brand-500 rounded-lg p-5 transition-colors duration-150"
 >
   <div class="flex items-center justify-between gap-2 mb-2">
-    <div class="flex items-center gap-1.5 min-w-0">
-    <span class="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-gray-100 dark:bg-zinc-800/40 text-gray-600 dark:text-zinc-400 border border-transparent dark:border-dark-border">
+    <div class="flex flex-wrap items-center gap-2 min-w-0">
+    <span class="font-mono text-xs font-medium px-2 py-1 rounded bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-zinc-300">
       {m.subjectCode}
     </span>
-    {m.isNew && <span class="rounded border border-emerald-200 bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300">{t('course.new')}</span>}
+    {m.isNew && <span class="rounded bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300">{t('course.new')}</span>}
     {alertKey && (
       <span
-        class="truncate rounded bg-amber-50 px-1.5 py-0.5 text-[9px] font-semibold leading-tight text-amber-700 dark:bg-amber-950/30 dark:text-amber-300"
+        class="rounded bg-amber-50 px-2 py-1 text-xs font-medium leading-relaxed text-amber-800 dark:bg-amber-950/30 dark:text-amber-300"
         data-academic-week-alert
-        data-target-week="8"
+        data-target-week={m.subject === 'web-development' ? 9 : 8}
         hidden
       >
         {t(alertKey)}
       </span>
     )}
     </div>
-    <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 transition-transform duration-150 text-gray-400 group-hover:text-brand-500 dark:group-hover:text-brand-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+    <svg aria-hidden="true" class="w-4 h-4 shrink-0 rtl:rotate-180 text-gray-500 dark:text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
     </svg>
   </div>
-  <h4 class="text-sm font-extrabold text-gray-900 dark:text-gray-100 tracking-tight group-hover:text-brand-500 dark:group-hover:text-brand-500 transition-colors">
+  <h4 class="text-base font-semibold leading-relaxed text-gray-900 dark:text-gray-100 group-hover:text-brand-700 dark:group-hover:text-brand-500 transition-colors">
     {m.subjectName}
   </h4>
   {m.summariesCount + m.quizzesCount === 0 && <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">{t('course.comingSoon')}</p>}
-  <div class="mt-3 pt-2.5 border-t border-gray-100 dark:border-dark-border flex gap-3 text-[10px] font-semibold text-gray-500 dark:text-gray-400">
-    <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> {m.summariesCount} {t('dashboard.summaries').toLowerCase()}</span>
-    <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> {m.quizzesCount} {t('dashboard.quizzes').toLowerCase()}</span>
+  <div class="mt-auto pt-4">
+    <div class="pt-3 border-t border-gray-100 dark:border-dark-border flex flex-wrap gap-x-4 gap-y-1 text-xs leading-relaxed text-gray-600 dark:text-gray-400">
+      <span>{m.quizzesCount} {t('dashboard.quizzes').toLowerCase()}</span>
+      <span>{m.summariesCount} {t('dashboard.summaries').toLowerCase()}</span>
+    </div>
   </div>
 </a>

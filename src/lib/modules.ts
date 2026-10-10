@@ -1,4 +1,6 @@
-import { getCollection, z } from 'astro:content';
+import { z } from 'astro/zod';
+import { getCollection } from 'astro:content';
+import { validateContentMetadata } from './content-metadata';
 import catalog from '../data/subjects.json';
 import type { ModuleItem } from '../types';
 
@@ -15,7 +17,7 @@ const subjects = z.array(z.object({
 
 // Build-time only: courses exist even before their study material is uploaded.
 export function getSubjectName(nameOrSlug: string, lang: 'en' | 'ar' = 'en') {
-  const subject = subjects.find(s => s.slug === nameOrSlug || s.name === nameOrSlug || s.name_ar === nameOrSlug);
+  const subject = subjects.find(s => s.slug === nameOrSlug || s.name === nameOrSlug || s.name_ar === nameOrSlug || s.subject_code === nameOrSlug);
   return subject ? (lang === 'ar' ? subject.name_ar || subject.name : subject.name) : nameOrSlug;
 }
 
@@ -41,9 +43,8 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
       const [subject, year] = entry.id.split('/');
       const module = modules.get(`${subject}/${year}`);
       if (!module) throw new Error(`Register ${subject}/${year} in src/data/subjects.json first`);
-      if (entry.data.year_level !== module.yearLevel || entry.data.semester !== module.semester) {
-        throw new Error(`Course metadata mismatch: ${entry.id}`);
-      }
+      const course = subjects.find(s => s.slug === subject && String(s.year) === year)!;
+      validateContentMetadata(entry.id, entry.data, course);
       module[count]++;
     }
   }

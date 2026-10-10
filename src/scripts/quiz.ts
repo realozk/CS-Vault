@@ -1,5 +1,5 @@
 import type { Question, QuizData } from '../types';
-import { readReview, updateReview, topicResults, secondsRemaining, type ReviewItem } from './quiz-state';
+import { readReview, updateReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
 
 const shuffle = <T>(values: T[]): T[] => {
   const result = [...values];
@@ -22,8 +22,10 @@ const initQuizWidget = () => {
   const screens = { setup: el('start-screen'), active: el('active-screen'), results: el('result-screen') };
   const show = (name: keyof typeof screens) => {
     for (const [key, screen] of Object.entries(screens)) screen.classList.toggle('hidden', key !== name);
+    document.body.classList.toggle('quiz-running', name === 'active');
   };
   const storageKey = `cs-vault-review-v1:${widget.dataset.quizId}`;
+  const attemptKey = `cs-vault-attempt-v1:${widget.dataset.quizId}`;
   let saved: ReviewItem[] = [];
   const storageWarning = () => { el('storage-status').textContent = t('storageUnavailable'); };
   const loadSaved = () => {
@@ -56,6 +58,16 @@ const initQuizWidget = () => {
   let deadline: number | null = null;
   let timer: ReturnType<typeof setInterval> | undefined;
   let missed: Question[] = [];
+  let shortSession = false;
+  const persistAttempt = (phase: QuizAttempt['phase'] = 'active', expired = false) => {
+    const attempt: QuizAttempt = {
+      version: 1, phase, examMode, short: shortSession, currentIndex, deadline, expired,
+      questions: questions.map(q => ({ id: q.id, signature: questionSignature(q), options: q.options })),
+      answers: [...answers],
+    };
+    try { sessionStorage.setItem(attemptKey, JSON.stringify(attempt)); }
+    catch { storageWarning(); }
+  };
   const stopTimer = () => { if (timer !== undefined) clearInterval(timer); timer = undefined; };
   const checkExpiry = () => {
     if (running && deadline !== null && secondsRemaining(deadline, Date.now()) === 0) {
@@ -111,6 +123,7 @@ const initQuizWidget = () => {
       el('answer-status').textContent = t(option === q.correctAnswer ? 'correctFeedback' : 'incorrectFeedback');
       showExplanation(q);
     }
+    persistAttempt();
   };
   const renderQuestion = () => {
     const q = questions[currentIndex];
@@ -132,7 +145,7 @@ const initQuizWidget = () => {
     button('previous-btn').disabled = currentIndex === 0;
     button('submit-btn').classList.toggle('hidden', !examMode || currentIndex === questions.length - 1);
     el('options-container').replaceChildren();
-    shuffle(q.options).forEach((option, index) => {
+    q.options.forEach((option, index) => {
       const choice = document.createElement('button');
       choice.type = 'button';
       choice.dataset.option = option;
@@ -142,16 +155,19 @@ const initQuizWidget = () => {
       el('options-container').append(choice);
     });
     paintOptions();
+    persistAttempt();
+    el('active-screen').scrollIntoView({ behavior: 'instant', block: 'start' });
     el('question-text').focus({ preventScroll: true });
   };
 
   function begin(source: Question[], short = false) {
     stopTimer();
-    questions = shuffle(source);
+    questions = shuffle(source).map(q => ({ ...q, options: shuffle(q.options) }));
     if (!questions.length) return;
     answers = new Map();
     currentIndex = 0;
     examMode = !short && selectedMode() === 'exam';
+    shortSession = short;
     const minutes = el('minutes') as HTMLInputElement;
     const timed = examMode && (el('use-timer') as HTMLInputElement).checked;
     if (timed && !minutes.reportValidity()) { show('setup'); return; }
@@ -168,7 +184,7 @@ const initQuizWidget = () => {
   const paragraph = (text: string, classes = '') => {
     const p = document.createElement('p'); p.textContent = text; p.className = classes; return p;
   };
-  function finish(expired = false) {
+  function finish(expired = false, restoring = false) {
     if (!running) return;
     running = false;
     stopTimer();
@@ -204,9 +220,12 @@ const initQuizWidget = () => {
       el('mistake-list').append(card);
     }
     button('retry-missed-btn').classList.toggle('hidden', !missed.length);
-    loadSaved();
-    saved = updateReview(saved, questions, answers, Date.now());
-    save();
+    if (!restoring) {
+      loadSaved();
+      saved = updateReview(saved, questions, answers, Date.now());
+      save();
+    }
+    persistAttempt('results', expired);
     show('results');
     el('result-title').focus({ preventScroll: false });
   }
@@ -224,7 +243,10 @@ const initQuizWidget = () => {
   button('submit-btn').addEventListener('click', () => { if (!checkExpiry()) finish(); });
   button('restart-btn').addEventListener('click', () => begin(quiz.questions));
   button('retry-missed-btn').addEventListener('click', () => begin(shuffle(missed).slice(0, 5), true));
-  button('settings-btn').addEventListener('click', () => { show('setup'); document.getElementById('start-quiz-btn')!.focus(); });
+  button('settings-btn').addEventListener('click', () => {
+    try { sessionStorage.removeItem(attemptKey); } catch { storageWarning(); }
+    show('setup'); document.getElementById('start-quiz-btn')!.focus();
+  });
   document.addEventListener('visibilitychange', tick);
   window.addEventListener('pagehide', stopTimer);
   window.addEventListener('pageshow', () => { if (running) startTimer(); });
@@ -239,6 +261,42 @@ const initQuizWidget = () => {
     } else if (key === 'ENTER' && target.tagName !== 'BUTTON' && !button('next-btn').disabled) {
       event.preventDefault(); button('next-btn').click();
     }
+  });
+
+  const restoreAttempt = () => {
+    let attempt: QuizAttempt | null = null;
+    try { attempt = readAttempt(sessionStorage.getItem(attemptKey), quiz.questions); }
+    catch { storageWarning(); }
+    if (!attempt) {
+      running = false;
+      show('setup');
+      return;
+    }
+    const byId = new Map(quiz.questions.map(q => [q.id, q]));
+    questions = attempt.questions.map(item => ({ ...byId.get(item.id)!, options: item.options }));
+    answers = new Map(attempt.answers);
+    currentIndex = attempt.currentIndex;
+    examMode = attempt.examMode;
+    shortSession = attempt.short;
+    deadline = attempt.deadline;
+    running = true;
+    (widget.querySelector(`input[name="quiz-mode"][value="${examMode ? 'exam' : 'practice'}"]`) as HTMLInputElement).checked = true;
+    (el('use-timer') as HTMLInputElement).checked = deadline !== null;
+    updateSettings();
+    el('total-questions-num').textContent = String(questions.length);
+    el('timer').textContent = t(shortSession ? 'shortActive' : examMode ? 'exam' : 'active');
+    if (attempt.phase === 'results') finish(attempt.expired, true);
+    else if (!checkExpiry()) {
+      show('active');
+      renderQuestion();
+      startTimer();
+    }
+  };
+  restoreAttempt();
+  // A browser Back navigation may revive an older page from the back/forward
+  // cache; reconcile it with the attempt saved by the other language route.
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) { stopTimer(); restoreAttempt(); }
   });
 };
 
