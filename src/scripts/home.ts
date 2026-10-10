@@ -23,10 +23,12 @@ const initTabsAndSearch = () => {
 
       // Toggle active button styling
       tabButtons.forEach(btn => {
+        btn.setAttribute('aria-pressed', 'false');
         btn.classList.remove('border-blue-600', 'dark:border-blue-500', 'text-blue-600', 'dark:text-blue-400');
         btn.classList.add('border-transparent', 'text-gray-500', 'dark:text-zinc-400', 'hover:text-gray-900', 'dark:hover:text-white', 'hover:border-gray-200', 'dark:hover:border-zinc-800');
       });
       button.classList.add('border-blue-600', 'dark:border-blue-500', 'text-blue-600', 'dark:text-blue-400');
+      button.setAttribute('aria-pressed', 'true');
       button.classList.remove('border-transparent', 'text-gray-500', 'dark:text-zinc-400', 'hover:text-gray-900', 'dark:hover:text-white', 'hover:border-gray-200', 'dark:hover:border-zinc-800');
 
       // Toggle visibility of columns
@@ -115,22 +117,22 @@ const initTabsAndSearch = () => {
       const summaryBadgeText = translations.summaryBadge || 'Summary';
       const quizBadgeText = translations.quizBadge || 'Quiz';
       const typeBadge = item.type === 'subject' ? `<span class="text-xs text-gray-500">${translations.subjectBadge || 'Subject'}</span>` : item.type === 'summary'
-        ? `<span class="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-900">${summaryBadgeText}</span>` 
-        : `<span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-900">${quizBadgeText}</span>`;
+        ? `<span class="bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 text-xs font-medium px-1.5 py-0.5 rounded border border-blue-200 dark:border-blue-900">${summaryBadgeText}</span>`
+        : `<span class="bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-xs font-medium px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-900">${quizBadgeText}</span>`;
 
       const resultCard = document.createElement('a');
       resultCard.href = item.url;
-      resultCard.className = 'group p-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-850 hover:border-blue-500 dark:hover:border-blue-500 rounded-md shadow-sm hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col justify-between';
+      resultCard.className = 'group p-5 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border hover:border-blue-600 dark:hover:border-blue-400 rounded-lg transition-colors duration-150 flex flex-col justify-between';
       resultCard.innerHTML = `
         <div>
           <div class="flex items-center gap-2 mb-2">
             ${typeBadge}
-            <span class="font-mono text-xs font-semibold text-gray-500 dark:text-zinc-500">${escapeHTML(item.subjectCode.toUpperCase())} (${escapeHTML(item.year)})</span>
+            <span class="font-mono text-xs font-semibold text-gray-500 dark:text-zinc-400">${escapeHTML(item.subjectCode.toUpperCase())} (${escapeHTML(item.year)})</span>
           </div>
-          <h4 class="font-bold text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors text-sm sm:text-base">${escapeHTML(item.title)}</h4>
-          <p class="text-xs text-gray-400 mt-1 line-clamp-2">${escapeHTML(item.description)}</p>
+          <h3 class="font-semibold text-gray-900 dark:text-white tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors text-sm sm:text-base">${escapeHTML(item.title)}</h3>
+          <p class="text-sm leading-relaxed text-gray-600 dark:text-zinc-400 mt-2 line-clamp-2">${escapeHTML(item.description)}</p>
         </div>
-        <div class="mt-4 pt-3 border-t border-gray-100 dark:border-zinc-800 text-[10px] text-gray-400 flex items-center justify-between">
+        <div class="mt-4 pt-3 border-t border-gray-100 dark:border-zinc-800 text-xs text-gray-600 dark:text-zinc-400 flex flex-wrap gap-2 items-center justify-between">
           <span>${(translations.yearAndSem || 'Year {year} • Sem {sem}').replace('{year}', item.yearLevel.toString()).replace('{sem}', item.semester.toString())}</span>
           <span class="font-semibold text-blue-600 dark:text-blue-400 group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-0.5">${translations.readNow || 'Read now →'}</span>
         </div>

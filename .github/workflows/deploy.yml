@@ -25,10 +25,20 @@ jobs:
       - name: Checkout your repository
         uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         with:
           node-version: 22
+
+      - run: npm run check:links
 
   deploy:
     needs: build

@@ -10,33 +10,26 @@ import { getLangFromUrl, useTranslations } from '../i18n/ui';
 interface Props {
   semester: number;
   modules: ModuleItem[];
-  accentColor?: string;
 }
 
-const { semester, modules, accentColor = 'blue' } = Astro.props;
+const { semester, modules } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const colorMap: Record<string, string> = {
-  blue: 'bg-blue-500',
-  indigo: 'bg-indigo-500',
-};
-const dotColor = colorMap[accentColor] || 'bg-blue-500';
 ---
 
 <div class="space-y-4">
-  <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-zinc-500 flex items-center gap-2">
+  <h3 class="text-lg font-semibold text-gray-800 dark:text-zinc-200 flex flex-wrap items-center gap-3">
     <span>{t('semester.title').replace('{sem}', semester.toString())}</span>
     {semester === 1 && (
       <span
-        class="text-[10px] font-semibold normal-case tracking-normal text-gray-500 dark:text-zinc-400"
+        class="text-xs font-normal text-gray-600 dark:text-zinc-400"
         data-academic-week
         data-week-start="2026-08-22"
         data-week-template={t('semester.week')}
       ></span>
     )}
-    <span class={`w-1.5 h-1.5 rounded-full ${dotColor} animate-pulse`}></span>
   </h3>
   
   {modules.length === 0 ? (

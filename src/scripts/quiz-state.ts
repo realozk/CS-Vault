@@ -9,6 +9,52 @@ export interface ReviewItem {
 }
 export interface TopicResult { topic: string; correct: number; total: number }
 
+export interface QuizAttempt {
+  version: 1;
+  phase: 'active' | 'results';
+  examMode: boolean;
+  short: boolean;
+  currentIndex: number;
+  deadline: number | null;
+  expired: boolean;
+  questions: { id: number; signature: string; options: string[] }[];
+  answers: [number, string][];
+}
+
+// Both language routes use the same quiz ID. Reject stale content or malformed
+// storage rather than restoring answers into a different question bank.
+export function readAttempt(raw: string | null, bank: Question[]): QuizAttempt | null {
+  if (!raw) return null;
+  try {
+    const value = JSON.parse(raw);
+    if (!value || value.version !== 1 || !['active', 'results'].includes(value.phase)
+      || typeof value.examMode !== 'boolean' || typeof value.short !== 'boolean'
+      || typeof value.expired !== 'boolean' || (value.short && value.examMode)
+      || (value.deadline !== null && (!value.examMode || !Number.isFinite(value.deadline) || value.deadline < 0))
+      || !Array.isArray(value.questions) || !value.questions.length
+      || (value.short ? value.questions.length > 5 : value.questions.length !== bank.length)
+      || !Number.isInteger(value.currentIndex) || value.currentIndex < 0 || value.currentIndex >= value.questions.length
+      || !Array.isArray(value.answers)) return null;
+    const byId = new Map(bank.map(q => [q.id, q]));
+    const ids = new Set<number>();
+    for (const item of value.questions) {
+      if (!item || ids.has(item.id)) return null;
+      const q = byId.get(item.id);
+      if (!q || item.signature !== questionSignature(q) || !Array.isArray(item.options)
+        || item.options.some((option: unknown) => typeof option !== 'string')
+        || JSON.stringify([...item.options].sort()) !== JSON.stringify([...q.options].sort())) return null;
+      ids.add(item.id);
+    }
+    const answerIds = new Set<number>();
+    for (const answer of value.answers) {
+      if (!Array.isArray(answer) || answer.length !== 2 || !ids.has(answer[0]) || answerIds.has(answer[0])
+        || !byId.get(answer[0])!.options.includes(answer[1])) return null;
+      answerIds.add(answer[0]);
+    }
+    return value as QuizAttempt;
+  } catch { return null; }
+}
+
 // A content edit invalidates an old saved answer, even when its ID stays the same.
 export const questionSignature = (q: Question): string =>
   JSON.stringify([q.question, q.code || '', [...q.options].sort(), q.correctAnswer]);
