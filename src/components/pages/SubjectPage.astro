@@ -5,6 +5,7 @@ import { getModules } from '../../lib/modules';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
+import { createAllQuestionsQuiz } from '../../lib/quiz-routes';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -44,10 +45,52 @@ const summaries = await Promise.all(
   })
 );
 
-const quizzes = [...rawQuizzes].sort((a, b) => ({ instructor: 2, provided: 1, generated: 0 }[b.data.sourceKind] - { instructor: 2, provided: 1, generated: 0 }[a.data.sourceKind]) || Number(b.data.featured) - Number(a.data.featured)).map((entry) => ({
+const quizOrder = [
+  'lecture-01-foundations',
+  'lecture-01-applications',
+  'lecture-02-foundations',
+  'lecture-02-applications',
+];
+const quizzes = [...rawQuizzes].sort((a, b) => {
+  const sourcePriority = { instructor: 2, provided: 1, generated: 0 };
+  const bySource = sourcePriority[b.data.sourceKind] - sourcePriority[a.data.sourceKind];
+  if (bySource !== 0) return bySource;
+
+  const byFeatured = Number(b.data.featured) - Number(a.data.featured);
+  if (byFeatured !== 0) return byFeatured;
+
+  const orderOf = (entry: typeof a) => {
+    const index = quizOrder.indexOf(getSlug(entry.id));
+    return index === -1 ? quizOrder.length : index;
+  };
+  return orderOf(a) - orderOf(b);
+}).map((entry) => ({
   entry,
   slug: getSlug(entry.id)
 }));
+if (quizzes.length > 0) {
+  quizzes.push({ entry: createAllQuestionsQuiz(rawQuizzes), slug: 'all-questions' });
+}
+const quizGroupsByKey = new Map<string, { key: string; sectionNumber?: string; sectionType?: 'lecture' | 'chapter'; quizzes: typeof quizzes }>();
+for (const quiz of quizzes) {
+  const sectionMatch = quiz.entry.data.title.match(/^(Lecture|Chapter)\s+(\d+)/i);
+  const sectionType = sectionMatch?.[1].toLowerCase() as 'lecture' | 'chapter' | undefined;
+  const sectionNumber = sectionMatch?.[2];
+  const isMixed = quiz.slug === 'all-questions' || /mixed-review/i.test(quiz.slug) || !sectionMatch;
+  const key = isMixed ? 'mixed' : `${sectionType}-${sectionNumber}`;
+  const group = quizGroupsByKey.get(key);
+  if (group) {
+    group.quizzes.push(quiz);
+  } else {
+    quizGroupsByKey.set(key, {
+      key,
+      sectionNumber: isMixed ? undefined : sectionNumber,
+      sectionType: isMixed ? undefined : sectionType,
+      quizzes: [quiz],
+    });
+  }
+}
+const quizGroups = [...quizGroupsByKey.values()].sort((a, b) => Number(a.key === 'mixed') - Number(b.key === 'mixed'));
 
 const module = (await getModules(lang)).find(m => m.subject === subject && m.year === year)!;
 const subjectName = module.subjectName;
@@ -101,28 +144,39 @@ const trackerTranslations = JSON.stringify({
           {quizzes.length === 0 ? (
             <p class="text-sm text-gray-600 dark:text-zinc-400 italic py-2">{t('dashboard.emptyQuizzes')}</p>
           ) : (
-            <div class="space-y-3">
-              {quizzes.map((q) => (
-                <a
-                  href={getLocalizedPath(`/${subject}/${year}/quiz/${q.slug}`, lang)}
-                  class:list={["group block p-4 rounded border border-gray-100 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 bg-gray-50/50 dark:bg-zinc-800/10 hover:bg-blue-50/5 dark:hover:bg-blue-950/5 transition-all duration-150", { "quiz-card-instructor": q.entry.data.sourceKind === "instructor", "quiz-card-provided": q.entry.data.sourceKind === "provided" }]}
-                >
-                  <QuizSourceLabel sourceKind={q.entry.data.sourceKind} />
-                  <div class="flex items-center justify-between gap-2">
-                    <span lang={q.entry.data.lang} dir="auto" class="font-bold text-sm tracking-tight text-gray-800 dark:text-zinc-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                      {q.entry.data.title}
-                    </span>
-                    <span class="text-xs text-gray-600 dark:text-zinc-400 flex-shrink-0">
-                      {q.entry.data.questions.length} {t("quiz.questions")}
-                    </span>
-                  </div>
-                  <span class="text-xs text-gray-600 dark:text-zinc-400 flex items-center gap-1 mt-1">
-                    <span>{t('dashboard.practice')}</span>
-                    <svg class="w-3 h-3 group-hover:-translate-x-0.5 transition-transform duration-150 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                  </span>
-                </a>
+            <div class="space-y-5">
+              {quizGroups.map((group) => (
+                <section class="space-y-3">
+                  {(group.sectionNumber || group.key === 'mixed') && (
+                    <h3 class="border-b border-gray-200 dark:border-zinc-800 pb-2 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                      {group.sectionNumber && group.sectionType
+                        ? t(group.sectionType === 'lecture' ? 'quiz.lectureGroup' : 'quiz.chapterGroup').replace('{number}', group.sectionNumber)
+                        : t('quiz.mixedGroup')}
+                    </h3>
+                  )}
+                  {group.quizzes.map((q) => (
+                    <a
+                      href={getLocalizedPath(`/${subject}/${year}/quiz/${q.slug}`, lang)}
+                      class:list={["group block p-4 rounded border border-gray-100 dark:border-zinc-800 hover:border-blue-600 dark:hover:border-blue-500 bg-gray-50/50 dark:bg-zinc-800/10 hover:bg-blue-50/5 dark:hover:bg-blue-950/5 transition-all duration-150", { "quiz-card-instructor": q.entry.data.sourceKind === "instructor", "quiz-card-provided": q.entry.data.sourceKind === "provided" }]}
+                    >
+                      <QuizSourceLabel sourceKind={q.entry.data.sourceKind} />
+                      <div class="flex items-center justify-between gap-2">
+                        <span lang={q.entry.data.lang} dir="auto" class="font-bold text-sm tracking-tight text-gray-800 dark:text-zinc-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                          {q.entry.data.title}
+                        </span>
+                        <span class="text-xs text-gray-600 dark:text-zinc-400 flex-shrink-0">
+                          {q.entry.data.questions.length} {t("quiz.questions")}
+                        </span>
+                      </div>
+                      <span class="text-xs text-gray-600 dark:text-zinc-400 flex items-center gap-1 mt-1">
+                        <span>{t('dashboard.practice')}</span>
+                        <svg class="w-3 h-3 group-hover:-translate-x-0.5 transition-transform duration-150 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                      </span>
+                    </a>
+                  ))}
+                </section>
               ))}
             </div>
           )}

@@ -1,0 +1,208 @@
+{
+  "title": "Lecture 2 — Applications",
+  "description": "Apply HTML document, accessibility, text, list, entity, semantic, and link concepts to coding scenarios.",
+  "subject": "Web Development",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "lecture_2_exam.md",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "You are starting a brand new HTML5 document. After writing the DTD, what is the best way to write your opening HTML tag to indicate the document is in English?",
+      "options": ["<html>", "<html english>", "<html lang=\"en\">", "<html lang=\"english\">"],
+      "correctAnswer": "<html lang=\"en\">",
+      "explanation": "The html element's lang attribute identifies the document language using a language tag such as en.",
+      "answerSource": "marked",
+      "topic": "document-structure"
+    },
+    {
+      "id": 2,
+      "question": "A screen reader is navigating your web page. To help the user understand the hierarchical structure of your content, you should:",
+      "options": [
+        "Use <b> tags for all titles.",
+        "Use heading tags (<h1>, <h2>, etc.) in proper numerical order.",
+        "Put all text inside a single <p> tag.",
+        "Avoid using headings and use list items instead."
+      ],
+      "correctAnswer": "Use heading tags (<h1>, <h2>, etc.) in proper numerical order.",
+      "explanation": "A meaningful heading hierarchy helps screen-reader users navigate and understand page structure.",
+      "answerSource": "marked",
+      "topic": "accessibility"
+    },
+    {
+      "id": 3,
+      "question": "You want to center a paragraph of text on your web page. Which code is correct based on Chapter 2?",
+      "options": ["<p center>Text</p>", "<center><p>Text</p></center>", "<p align=\"center\">Text</p>", "<p style=\"center\">Text</p>"],
+      "correctAnswer": "<p align=\"center\">Text</p>",
+      "explanation": "The supplied lecture answer key identifies the paragraph align attribute for this example.",
+      "answerSource": "marked",
+      "topic": "text-elements"
+    },
+    {
+      "id": 4,
+      "question": "You want to apply strong importance to a word in your paragraph, causing it to stand out, usually in bold. Which phrase element should you use?",
+      "options": ["<strong>", "<em>", "<mark>", "<h1>"],
+      "correctAnswer": "<strong>",
+      "explanation": "The strong element conveys strong importance, commonly rendered in bold.",
+      "answerSource": "marked",
+      "topic": "phrase-elements"
+    },
+    {
+      "id": 5,
+      "question": "Which example shows proper HTML nesting?",
+      "options": ["<p><i>Web Design</p></i>", "<p><i>Web Design</i></p>", "<i><p>Web Design</i></p>", "<p>Web Design<i></p></i>"],
+      "correctAnswer": "<p><i>Web Design</i></p>",
+      "explanation": "Nested elements must close in the reverse order in which they were opened.",
+      "answerSource": "marked",
+      "topic": "phrase-elements"
+    },
+    {
+      "id": 6,
+      "question": "You are creating an ordered list and want uppercase letters (A, B, C) instead of numbers. How should you format the opening tag?",
+      "options": ["<ol letter=\"uppercase\">", "<ol start=\"A\">", "<ol type=\"A\">", "<ul type=\"A\">"],
+      "correctAnswer": "<ol type=\"A\">",
+      "explanation": "The ordered list type attribute can select uppercase alphabetic markers.",
+      "answerSource": "marked",
+      "topic": "lists"
+    },
+    {
+      "id": 7,
+      "question": "You have a Top 10 list and want the list markers to count backward. Which HTML attribute should you use?",
+      "options": ["backward=\"true\"", "descending=\"yes\"", "start=\"10\"", "reversed=\"reversed\""],
+      "correctAnswer": "reversed=\"reversed\"",
+      "explanation": "The reversed attribute makes an ordered list count down.",
+      "answerSource": "marked",
+      "topic": "lists"
+    },
+    {
+      "id": 8,
+      "question": "You need to create a list of grocery items with bullets. Which tag combination will you use?",
+      "options": ["<ol> and <li>", "<ul> and <li>", "<dl> and <dt>", "<list> and <item>"],
+      "correctAnswer": "<ul> and <li>",
+      "explanation": "An unordered list uses ul for the list and li for each item.",
+      "answerSource": "marked",
+      "topic": "lists"
+    },
+    {
+      "id": 9,
+      "question": "You are building an FAQ page. A question is followed by its indented answer. Which list structure is best suited for this?",
+      "options": ["Unordered List", "Ordered List", "Description List", "Navigation List"],
+      "correctAnswer": "Description List",
+      "explanation": "A description list pairs terms or questions with their descriptions or answers.",
+      "answerSource": "marked",
+      "topic": "lists"
+    },
+    {
+      "id": 10,
+      "question": "You want to display the phrase \"HTML & CSS\" on your web page. Which entity code should you use for the ampersand?",
+      "options": ["&amp;", "&and;", "&nbsp;", "&plus;"],
+      "correctAnswer": "&amp;",
+      "explanation": "The &amp; character reference represents an ampersand in HTML.",
+      "answerSource": "marked",
+      "topic": "entities"
+    },
+    {
+      "id": 11,
+      "question": "You are structuring a blog post. Which HTML5 semantic tag is best suited to wrap the core content of the page?",
+      "options": ["<header>", "<footer>", "<nav>", "<main>"],
+      "correctAnswer": "<main>",
+      "explanation": "The main element identifies the primary content of the document.",
+      "answerSource": "marked",
+      "topic": "semantic-elements"
+    },
+    {
+      "id": 12,
+      "question": "You want to place a copyright notice and contact information at the very bottom of your web page. Which structural element is designed for this?",
+      "options": ["<div>", "<footer>", "<bottom>", "<main>"],
+      "correctAnswer": "<footer>",
+      "explanation": "The footer element represents footer content for a page or section.",
+      "answerSource": "marked",
+      "topic": "semantic-elements"
+    },
+    {
+      "id": 13,
+      "question": "You want to create a hyperlink to the Yahoo website. Which is a correct absolute hyperlink?",
+      "options": ["<a href=\"yahoo.com\">Yahoo</a>", "<a src=\"http://yahoo.com\">Yahoo</a>", "<a href=\"http://yahoo.com\">Yahoo</a>", "<a>http://yahoo.com</a>"],
+      "correctAnswer": "<a href=\"http://yahoo.com\">Yahoo</a>",
+      "explanation": "An absolute hyperlink uses an anchor element with an href containing the destination URL.",
+      "answerSource": "marked",
+      "topic": "links"
+    },
+    {
+      "id": 14,
+      "question": "You are editing index.html and want to link to contact.html in the same folder. Which is the correct relative hyperlink?",
+      "options": ["<a href=\"contact.html\">Contact Us</a>", "<a href=\"http://contact.html\">Contact Us</a>", "<link href=\"contact.html\">Contact Us</link>", "<a src=\"contact.html\">Contact Us</a>"],
+      "correctAnswer": "<a href=\"contact.html\">Contact Us</a>",
+      "explanation": "A relative link names a resource relative to the current page and uses the anchor href attribute.",
+      "answerSource": "marked",
+      "topic": "links"
+    },
+    {
+      "id": 15,
+      "question": "You want to add an email link for help@mysite.com. Which URL scheme must you use in the href attribute?",
+      "options": ["email:help@mysite.com", "mailto:help@mysite.com", "sendto:help@mysite.com", "http://help@mysite.com"],
+      "correctAnswer": "mailto:help@mysite.com",
+      "explanation": "The mailto scheme creates a link that opens an email client addressed to the specified recipient.",
+      "answerSource": "marked",
+      "topic": "links"
+    },
+    {
+      "id": 16,
+      "question": "A developer uses <meta charset=\"utf-8\">. What specific problem does this solve?",
+      "options": [
+        "It ensures the website loads quickly on mobile devices.",
+        "It provides instructions to the server on how to compress images.",
+        "It ensures the internal representation of letters, numbers, and symbols is interpreted correctly by the browser.",
+        "It links the HTML document to a CSS stylesheet."
+      ],
+      "correctAnswer": "It ensures the internal representation of letters, numbers, and symbols is interpreted correctly by the browser.",
+      "explanation": "The charset metadata tells the browser which character encoding to use when interpreting the document.",
+      "answerSource": "marked",
+      "topic": "document-structure"
+    },
+    {
+      "id": 17,
+      "question": "You want to leave a reminder in your HTML code that visitors should not see. What should you type?",
+      "options": ["<hidden>Add picture here</hidden>", "<!-- Add picture here -->", "<meta note=\"Add picture here\">", "<p display=\"none\">Add picture here</p>"],
+      "correctAnswer": "<!-- Add picture here -->",
+      "explanation": "HTML comments are for source notes and are not rendered as page content.",
+      "answerSource": "marked",
+      "topic": "comments-validation"
+    },
+    {
+      "id": 18,
+      "question": "Which tag would you use to define a definition for a specific word, usually displayed in italics according to standard conventions?",
+      "options": ["<kbd>", "<code>", "<dfn>", "<samp>"],
+      "correctAnswer": "<dfn>",
+      "explanation": "The dfn element marks the defining instance of a term.",
+      "answerSource": "marked",
+      "topic": "phrase-elements"
+    },
+    {
+      "id": 19,
+      "question": "You want to force a line break inside a paragraph, but your editor flags an error because you typed </br>. What is the correct HTML line break tag?",
+      "options": ["<break>", "<lb>", "<br>", "<newline>"],
+      "correctAnswer": "<br>",
+      "explanation": "The br element is a void element and is written without a closing tag.",
+      "answerSource": "marked",
+      "topic": "text-elements"
+    },
+    {
+      "id": 20,
+      "question": "You run your page through the W3C validator and receive an error regarding your heading tags. What is the most likely cause based on good coding practices?",
+      "options": [
+        "You used an <h1> tag inside the <head> section instead of the <body>.",
+        "You styled a heading using CSS.",
+        "You used an <h1> tag in the body section.",
+        "Headings are no longer supported in HTML5."
+      ],
+      "correctAnswer": "You used an <h1> tag inside the <head> section instead of the <body>.",
+      "explanation": "Heading content belongs in the body, not the document head.",
+      "answerSource": "marked",
+      "topic": "comments-validation"
+    }
+  ]
+}

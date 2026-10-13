@@ -1,12 +1,9 @@
 ---
 import Page from '../../../../../components/pages/QuizPage.astro';
 import { getCollection } from 'astro:content';
+import { getQuizStaticPaths } from '../../../../../lib/quiz-routes';
 export async function getStaticPaths() {
-  return (await getCollection('quizzes')).map(quiz => {
-    const [subject, year, ...parts] = quiz.id.split('/');
-    const slug = parts.join('-').replace(/\.(md|json)$/, '');
-    return { params: { subject, year, slug }, props: { quiz } };
-  });
+  return getQuizStaticPaths(await getCollection('quizzes'));
 }
 ---
 <Page {...Astro.props} />
