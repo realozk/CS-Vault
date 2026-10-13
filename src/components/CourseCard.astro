@@ -48,11 +48,13 @@ const alertKey = m.subject === 'programming-languages'
       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
     </svg>
   </div>
-  <h4 class="text-base font-semibold leading-relaxed text-gray-900 dark:text-gray-100 group-hover:text-brand-700 dark:group-hover:text-brand-500 transition-colors">
+  <h4 class="text-start text-base font-semibold leading-relaxed text-gray-900 dark:text-gray-100 group-hover:text-brand-700 dark:group-hover:text-brand-500 transition-colors">
     {m.subjectName}
   </h4>
-  {m.summariesCount + m.quizzesCount === 0 && <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">{t('course.comingSoon')}</p>}
-  <div class="mt-auto pt-4">
+  <p class="mt-2 min-h-4 text-xs text-gray-500 dark:text-gray-400" aria-hidden={m.summariesCount + m.quizzesCount > 0 || undefined}>
+    {m.summariesCount + m.quizzesCount === 0 ? t('course.comingSoon') : ''}
+  </p>
+  <div class="mt-4">
     <div class="pt-3 border-t border-gray-100 dark:border-dark-border flex flex-wrap gap-x-4 gap-y-1 text-xs leading-relaxed text-gray-600 dark:text-gray-400">
       <span>{m.quizzesCount} {t('dashboard.quizzes').toLowerCase()}</span>
       <span>{m.summariesCount} {t('dashboard.summaries').toLowerCase()}</span>

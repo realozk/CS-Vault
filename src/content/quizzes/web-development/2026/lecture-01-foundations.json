@@ -1,0 +1,348 @@
+{
+  "title": "Lecture 1 — Foundations",
+  "description": "Foundational questions on the Internet, web standards, networks, protocols, domain names, and markup languages.",
+  "subject": "Web Development",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "lecture_1_exam.md",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What was the original precursor network to the Internet, funded by the US Department of Defense?",
+      "options": [
+        "NSFNET",
+        "ARPANET",
+        "INTRANET",
+        "MILNET"
+      ],
+      "correctAnswer": "ARPANET",
+      "explanation": "ARPANET connected academic and military networks and was a precursor to the Internet.",
+      "answerSource": "marked",
+      "topic": "internet-history",
+      "sourceSlide": 6
+    },
+    {
+      "id": 2,
+      "question": "The Internet is best described as:",
+      "options": [
+        "A graphical interface for reading documents.",
+        "A global system of interconnected networks.",
+        "A single server located in the United States.",
+        "A private network for academic research."
+      ],
+      "correctAnswer": "A global system of interconnected networks.",
+      "explanation": "The Internet is a network of interconnected networks, rather than a single computer or the Web interface.",
+      "answerSource": "marked",
+      "topic": "internet-history",
+      "sourceSlides": [
+        5,
+        27,
+        28
+      ]
+    },
+    {
+      "id": 3,
+      "question": "Who introduced the World Wide Web in 1990?",
+      "options": [
+        "Tim Berners-Lee",
+        "Vint Cerf",
+        "Bill Gates",
+        "Steve Jobs"
+      ],
+      "correctAnswer": "Tim Berners-Lee",
+      "explanation": "Tim Berners-Lee introduced the World Wide Web, which made hypertext resources accessible over the Internet.",
+      "answerSource": "marked",
+      "topic": "internet-history",
+      "sourceSlides": [
+        8,
+        20
+      ]
+    },
+    {
+      "id": 4,
+      "question": "The World Wide Web Consortium (W3C) is responsible for:",
+      "options": [
+        "Assigning IP addresses.",
+        "Developing recommendations and standards for web design, such as HTML.",
+        "Maintaining the physical fiber-optic cables of the Internet.",
+        "Providing broadband internet to consumers."
+      ],
+      "correctAnswer": "Developing recommendations and standards for web design, such as HTML.",
+      "explanation": "The W3C develops Web standards, including standards related to HTML and accessibility.",
+      "answerSource": "marked",
+      "topic": "web-standards",
+      "sourceSlides": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Which organization coordinates the assignment of Internet domain names and IP addresses?",
+      "options": [
+        "IETF",
+        "IAB",
+        "W3C",
+        "ICANN"
+      ],
+      "correctAnswer": "ICANN",
+      "explanation": "ICANN coordinates domain names and IP addresses.",
+      "answerSource": "marked",
+      "topic": "web-standards",
+      "sourceSlides": [
+        12,
+        46,
+        47
+      ]
+    },
+    {
+      "id": 6,
+      "question": "What is the definition of an intranet?",
+      "options": [
+        "A network that securely shares operations with external partners.",
+        "A private network contained within an organization to share resources among coworkers.",
+        "A network designed for global, public access.",
+        "A network restricted entirely to military use."
+      ],
+      "correctAnswer": "A private network contained within an organization to share resources among coworkers.",
+      "explanation": "An intranet is a private network used within an organization; sharing selected resources externally describes an extranet.",
+      "answerSource": "marked",
+      "topic": "network-types",
+      "sourceSlide": 13
+    },
+    {
+      "id": 7,
+      "question": "\"The design of products and environments to be usable by all people, to the greatest extent possible, without the need for adaptation\" is the definition of:",
+      "options": [
+        "Responsive Design",
+        "Universal Design",
+        "Web 2.0",
+        "Standardized Markup"
+      ],
+      "correctAnswer": "Universal Design",
+      "explanation": "Universal design aims to make products and environments usable by all people without requiring adaptation.",
+      "answerSource": "marked",
+      "topic": "accessibility",
+      "sourceSlide": 18
+    },
+    {
+      "id": 8,
+      "question": "In the client/server model, the role of the client is typically to:",
+      "options": [
+        "Store heavy database files securely.",
+        "Fulfill requests and transmit status codes.",
+        "Request a service, web page, or file over a network.",
+        "Route data packets across different networks."
+      ],
+      "correctAnswer": "Request a service, web page, or file over a network.",
+      "explanation": "A client, such as a web browser, requests resources from a server.",
+      "answerSource": "marked",
+      "topic": "client-server",
+      "sourceSlides": [
+        27,
+        28,
+        29,
+        34
+      ]
+    },
+    {
+      "id": 9,
+      "question": "A network usually confined to a single building or group of buildings is called a:",
+      "options": [
+        "WAN",
+        "LAN",
+        "VPN",
+        "DNS"
+      ],
+      "correctAnswer": "LAN",
+      "explanation": "A local area network (LAN) connects devices in a limited local area.",
+      "answerSource": "marked",
+      "topic": "network-types",
+      "sourceSlide": 24
+    },
+    {
+      "id": 10,
+      "question": "Which protocol breaks files and messages into individual units called packets?",
+      "options": [
+        "HTTP",
+        "IP",
+        "FTP",
+        "TCP"
+      ],
+      "correctAnswer": "TCP",
+      "explanation": "TCP breaks data into packets and supports reliable delivery; IP routes packets.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlide": 39
+    },
+    {
+      "id": 11,
+      "question": "Which protocol is responsible for routing a packet to the correct destination address?",
+      "options": [
+        "IP",
+        "TCP",
+        "SMTP",
+        "POP3"
+      ],
+      "correctAnswer": "IP",
+      "explanation": "IP handles addressing and routing packets to their destination.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlide": 40
+    },
+    {
+      "id": 12,
+      "question": "What does HTTP stand for?",
+      "options": [
+        "Hypertext Transmission Protocol",
+        "Hypertext Transfer Protocol",
+        "Hyperlink Text Protocol",
+        "Host Transfer Protocol"
+      ],
+      "correctAnswer": "Hypertext Transfer Protocol",
+      "explanation": "HTTP is the Hypertext Transfer Protocol, used to exchange Web resources.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlides": [
+        34,
+        35
+      ]
+    },
+    {
+      "id": 13,
+      "question": "Which of the following is an email protocol used for sending email?",
+      "options": [
+        "IMAP",
+        "POP3",
+        "SMTP",
+        "FTP"
+      ],
+      "correctAnswer": "SMTP",
+      "explanation": "SMTP is used to send email; POP3 and IMAP are used to retrieve it.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlide": 36
+    },
+    {
+      "id": 14,
+      "question": "What does the MIME protocol allow email systems to do?",
+      "options": [
+        "Encrypt email passwords.",
+        "Route emails faster than standard TCP/IP.",
+        "Include multimedia content like images and attachments.",
+        "Block spam and malicious attachments."
+      ],
+      "correctAnswer": "Include multimedia content like images and attachments.",
+      "explanation": "MIME extends email formats to support multimedia and file attachments.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlide": 37
+    },
+    {
+      "id": 15,
+      "question": "A unique numeric address for a device on the Internet, consisting of four octets (for example, 216.58.194.46), is an:",
+      "options": [
+        "IP Address",
+        "MAC Address",
+        "Domain Name",
+        "TLD"
+      ],
+      "correctAnswer": "IP Address",
+      "explanation": "An IPv4 address is a numeric address used to identify a device on a network.",
+      "answerSource": "marked",
+      "topic": "domain-names",
+      "sourceSlides": [
+        41,
+        42,
+        43
+      ]
+    },
+    {
+      "id": 16,
+      "question": "What is the function of the Domain Name System (DNS)?",
+      "options": [
+        "It encrypts data sent between browsers and servers.",
+        "It associates text-based domain names with unique computer IP addresses.",
+        "It hosts the files for a website.",
+        "It provides the graphical user interface for a web browser."
+      ],
+      "correctAnswer": "It associates text-based domain names with unique computer IP addresses.",
+      "explanation": "DNS resolves human-readable domain names to IP addresses.",
+      "answerSource": "marked",
+      "topic": "domain-names",
+      "sourceSlides": [
+        42,
+        43
+      ]
+    },
+    {
+      "id": 17,
+      "question": "In the URL `http://www.google.com`, what does `.com` represent?",
+      "options": [
+        "The Web Server",
+        "The Subdomain",
+        "The Top-Level Domain (TLD)",
+        "The Folder Name"
+      ],
+      "correctAnswer": "The Top-Level Domain (TLD)",
+      "explanation": "The top-level domain is the rightmost part of a domain name, such as `.com`.",
+      "answerSource": "marked",
+      "topic": "domain-names",
+      "sourceSlides": [
+        45,
+        46
+      ]
+    },
+    {
+      "id": 18,
+      "question": "Which markup language was developed by the W3C to combine the formatting strengths of HTML 4.0 with the data structure strengths of XML?",
+      "options": [
+        "SGML",
+        "XHTML",
+        "HTML5",
+        "CSS"
+      ],
+      "correctAnswer": "XHTML",
+      "explanation": "XHTML combines HTML conventions with the stricter structure of XML.",
+      "answerSource": "marked",
+      "topic": "markup-languages",
+      "sourceSlides": [
+        53,
+        54
+      ]
+    },
+    {
+      "id": 19,
+      "question": "What is the primary purpose of XML?",
+      "options": [
+        "To replace HTML entirely.",
+        "To apply styling and colors to web pages.",
+        "To describe, deliver, and exchange structured information.",
+        "To transfer large files securely."
+      ],
+      "correctAnswer": "To describe, deliver, and exchange structured information.",
+      "explanation": "XML is designed to describe and exchange structured data, not to style pages.",
+      "answerSource": "marked",
+      "topic": "markup-languages",
+      "sourceSlide": 52
+    },
+    {
+      "id": 20,
+      "question": "The Americans with Disabilities Act (ADA) and Section 508 of the Rehabilitation Act emphasize the importance of:",
+      "options": [
+        "Faster internet speeds.",
+        "Web accessibility.",
+        "Strict copyright laws on the Web.",
+        "Preventing cybercrime."
+      ],
+      "correctAnswer": "Web accessibility.",
+      "explanation": "These laws emphasize making digital services accessible to people with disabilities.",
+      "answerSource": "marked",
+      "topic": "accessibility",
+      "sourceSlide": 17
+    }
+  ]
+}

@@ -50,6 +50,7 @@ const quizzesCollection = defineCollection({
         explanation: z.string().optional(),
         topic: z.string().min(1).optional(),
         sourceSlide: z.number().int().positive().optional(),
+        sourceSlides: z.array(z.number().int().positive()).min(1).optional(),
         sourcePage: z.number().int().positive().optional(),
         optionsSource: z.enum(['provided', 'generated']).optional(),
         answerSource: z.enum(['marked', 'inferred', 'manual']).default('manual'),

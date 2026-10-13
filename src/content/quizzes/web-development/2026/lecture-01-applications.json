@@ -1,0 +1,356 @@
+{
+  "title": "Lecture 1 — Applications",
+  "description": "Apply Internet, accessibility, protocols, DNS, and markup concepts to practical scenarios.",
+  "subject": "Web Development",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "lecture_1_exam.md",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "A local hospital needs to share patient data securely with an external medical billing company. Which type of network should they set up?",
+      "options": [
+        "An Intranet",
+        "An Extranet",
+        "A Public Web Server",
+        "A generic LAN"
+      ],
+      "correctAnswer": "An Extranet",
+      "explanation": "An extranet securely shares selected organizational resources with external partners.",
+      "answerSource": "marked",
+      "topic": "network-types",
+      "sourceSlides": [
+        6,
+        13
+      ]
+    },
+    {
+      "id": 2,
+      "question": "You are researching a medical condition online. According to the lecture's guidelines on reliability, which of the following is a red flag?",
+      "options": [
+        "The article was updated yesterday.",
+        "The site belongs to a credible medical organization.",
+        "The article is hosted on Wikipedia and lacks citations.",
+        "The article links to additional scientific resources."
+      ],
+      "correctAnswer": "The article is hosted on Wikipedia and lacks citations.",
+      "explanation": "An unsourced article is a reliability warning; check authoritative sources and citations before relying on health information.",
+      "answerSource": "marked",
+      "topic": "web-reliability",
+      "sourceSlides": [
+        8,
+        20
+      ]
+    },
+    {
+      "id": 3,
+      "question": "As a web developer, you need to upload 50 large, high-resolution video files to your web server. Which protocol is best suited to transferring files between computers?",
+      "options": [
+        "HTTP",
+        "FTP",
+        "SMTP",
+        "MIME"
+      ],
+      "correctAnswer": "FTP",
+      "explanation": "FTP is a file-transfer protocol commonly used to transfer files between computers.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlides": [
+        33,
+        35
+      ]
+    },
+    {
+      "id": 4,
+      "question": "A user types a web address into their browser and presses Enter. Which protocol is used by the browser to request the web page files?",
+      "options": [
+        "POP3",
+        "IMAP",
+        "FTP",
+        "HTTP"
+      ],
+      "correctAnswer": "HTTP",
+      "explanation": "HTTP is used by browsers and servers to request and exchange Web resources.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlides": [
+        27,
+        28,
+        29,
+        34
+      ]
+    },
+    {
+      "id": 5,
+      "question": "You are setting up an email client on your phone and only want to receive messages. Which two protocols could you configure for incoming mail?",
+      "options": [
+        "SMTP and IMAP",
+        "POP3 and IMAP",
+        "SMTP and FTP",
+        "MIME and TCP"
+      ],
+      "correctAnswer": "POP3 and IMAP",
+      "explanation": "POP3 and IMAP retrieve incoming email; SMTP is used to send it.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlide": 36
+    },
+    {
+      "id": 6,
+      "question": "A user attempts to visit `yahoo.com`. Which system does the browser query to resolve the domain name to a numeric address?",
+      "options": [
+        "W3C",
+        "DNS",
+        "IAB",
+        "HTTP"
+      ],
+      "correctAnswer": "DNS",
+      "explanation": "DNS translates domain names into IP addresses.",
+      "answerSource": "marked",
+      "topic": "domain-names",
+      "sourceSlides": [
+        41,
+        42,
+        43
+      ]
+    },
+    {
+      "id": 7,
+      "question": "You are building a website for a government agency. To ensure compliance with Section 508, you use WCAG methodology. What are you primarily doing?",
+      "options": [
+        "Evaluating how well the digital product accommodates individuals with disabilities.",
+        "Checking the server for vulnerabilities.",
+        "Ensuring the website loads in under 2 seconds.",
+        "Making sure the site works on mobile devices only."
+      ],
+      "correctAnswer": "Evaluating how well the digital product accommodates individuals with disabilities.",
+      "explanation": "WCAG provides accessibility guidance for making digital content usable by people with disabilities.",
+      "answerSource": "marked",
+      "topic": "accessibility",
+      "sourceSlides": [
+        15,
+        16,
+        17,
+        18
+      ]
+    },
+    {
+      "id": 8,
+      "question": "A new university in London is creating a website. Which combination of TLD and country-code TLD would be most appropriate?",
+      "options": [
+        ".com and .uk",
+        ".edu and .uk",
+        ".gov and .sa",
+        ".net and .eu"
+      ],
+      "correctAnswer": ".edu and .uk",
+      "explanation": "The supplied answer key selects `.edu` for an educational institution and `.uk` for the United Kingdom.",
+      "answerSource": "marked",
+      "topic": "domain-names",
+      "sourceSlides": [
+        47,
+        48
+      ]
+    },
+    {
+      "id": 9,
+      "question": "You want to send an email to a friend and include a funny GIF and a PDF document. Your email client can handle these non-text formats thanks to:",
+      "options": [
+        "TCP",
+        "IP",
+        "MIME",
+        "HTTP"
+      ],
+      "correctAnswer": "MIME",
+      "explanation": "MIME enables email messages to include multimedia and file attachments.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlide": 37
+    },
+    {
+      "id": 10,
+      "question": "You are designing a network for a small real estate office with 10 computers and a shared printer in the same room. You are building a:",
+      "options": [
+        "WAN",
+        "LAN",
+        "Cloud Network",
+        "Extranet"
+      ],
+      "correctAnswer": "LAN",
+      "explanation": "A LAN connects devices within a limited local area, such as one office.",
+      "answerSource": "marked",
+      "topic": "network-types",
+      "sourceSlide": 24
+    },
+    {
+      "id": 11,
+      "question": "An e-commerce web server responds to your browser by sending HTML files and images. This interaction represents:",
+      "options": [
+        "Peer-to-Peer Networking",
+        "The Client/Server Model",
+        "Domain Name System routing",
+        "Local Area Networking"
+      ],
+      "correctAnswer": "The Client/Server Model",
+      "explanation": "The browser acts as the client requesting resources, and the web server fulfills the request.",
+      "answerSource": "marked",
+      "topic": "client-server",
+      "sourceSlides": [
+        5,
+        27,
+        28
+      ]
+    },
+    {
+      "id": 12,
+      "question": "A developer wants to create a data format for a bookstore's inventory to share with another application, without describing how it looks on screen. Which technology should they use?",
+      "options": [
+        "HTML",
+        "SGML",
+        "XML",
+        "CSS"
+      ],
+      "correctAnswer": "XML",
+      "explanation": "XML describes and exchanges structured information independently of its visual presentation.",
+      "answerSource": "marked",
+      "topic": "markup-languages",
+      "sourceSlide": 52
+    },
+    {
+      "id": 13,
+      "question": "Why might a web browser prefer downloading a small text file via HTTP rather than FTP?",
+      "options": [
+        "HTTP is more secure than FTP by default.",
+        "HTTP requires fewer handshake steps before data transfer begins.",
+        "FTP cannot transfer text files.",
+        "HTTP uses larger packets than FTP."
+      ],
+      "correctAnswer": "HTTP requires fewer handshake steps before data transfer begins.",
+      "explanation": "The supplied answer key identifies HTTP's fewer connection setup steps as the reason in this scenario.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlides": [
+        34,
+        35
+      ]
+    },
+    {
+      "id": 14,
+      "question": "You need to read original technical specifications and standards documents about Internet protocols. What should you search for?",
+      "options": [
+        "RFCs (Requests for Comments)",
+        "HTML5 Specifications",
+        "ICANN logs",
+        "Web 2.0 Blogs"
+      ],
+      "correctAnswer": "RFCs (Requests for Comments)",
+      "explanation": "RFCs document Internet protocols, standards, and related technical information.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlide": 11
+    },
+    {
+      "id": 15,
+      "question": "A startup wants to embed a promotional video directly into a web page without relying on third-party plugins. Which markup language natively supports this feature?",
+      "options": [
+        "HTML 4.0",
+        "XHTML",
+        "HTML5",
+        "XML"
+      ],
+      "correctAnswer": "HTML5",
+      "explanation": "HTML5 provides native audio and video elements, without requiring a third-party plugin.",
+      "answerSource": "marked",
+      "topic": "markup-languages",
+      "sourceSlides": [
+        53,
+        54
+      ]
+    },
+    {
+      "id": 16,
+      "question": "Data is broken into packets that may take different paths through routers. Which protocol is responsible for routing packets to the destination address?",
+      "options": [
+        "TCP",
+        "IP",
+        "HTTP",
+        "DNS"
+      ],
+      "correctAnswer": "IP",
+      "explanation": "IP routes packets according to their destination addresses.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlide": 39
+    },
+    {
+      "id": 17,
+      "question": "After packets arrive at your computer, which protocol helps reassemble them correctly and check the integrity of the data?",
+      "options": [
+        "TCP",
+        "IP",
+        "HTTP",
+        "DNS"
+      ],
+      "correctAnswer": "TCP",
+      "explanation": "TCP supports reliable delivery by checking data and reassembling packets in order.",
+      "answerSource": "marked",
+      "topic": "internet-protocols",
+      "sourceSlide": 40
+    },
+    {
+      "id": 18,
+      "question": "In the URL `http://www.mysite.com/images/logo.jpg`, what does `images` represent?",
+      "options": [
+        "The Protocol",
+        "The Top-Level Domain",
+        "The Folder Name",
+        "The File Name"
+      ],
+      "correctAnswer": "The Folder Name",
+      "explanation": "In this URL, `images` is the directory containing the `logo.jpg` file.",
+      "answerSource": "marked",
+      "topic": "domain-names",
+      "sourceSlides": [
+        45,
+        46
+      ]
+    },
+    {
+      "id": 19,
+      "question": "Which generic TLD was created specifically for the human resources community?",
+      "options": [
+        ".biz",
+        ".pro",
+        ".coop",
+        ".jobs"
+      ],
+      "correctAnswer": ".jobs",
+      "explanation": "The `.jobs` TLD is intended for the employment and human resources community.",
+      "answerSource": "marked",
+      "topic": "domain-names",
+      "sourceSlides": [
+        12,
+        46,
+        47
+      ]
+    },
+    {
+      "id": 20,
+      "question": "Reading a technology blog via a feed reader, listening to a podcast, and interacting on social networking are categorized as:",
+      "options": [
+        "Intranet protocols",
+        "Popular Uses of the Internet / Web 2.0",
+        "Dark Web navigation",
+        "ARPANET legacy systems"
+      ],
+      "correctAnswer": "Popular Uses of the Internet / Web 2.0",
+      "explanation": "Blogs, podcasts, RSS feeds, and social networking are popular Web uses highlighted in the lecture.",
+      "answerSource": "marked",
+      "topic": "web-trends",
+      "sourceSlide": 55
+    }
+  ]
+}

@@ -48,5 +48,8 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
       module[count]++;
     }
   }
+  for (const module of modules.values()) {
+    if (module.quizzesCount > 0) module.quizzesCount++;
+  }
   return [...modules.values()].sort((a, b) => a.subjectName.localeCompare(b.subjectName));
 }

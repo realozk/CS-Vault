@@ -1,4 +1,6 @@
 import { escapeHTML } from './utils';
+import { arabicQuotes } from '../data/arabic-quotes';
+import { englishQuotes } from '../data/english-quotes';
 
 interface SearchItem {
   type: 'subject' | 'summary' | 'quiz';
@@ -13,6 +15,29 @@ interface SearchItem {
 }
 
 const initTabsAndSearch = () => {
+  const quoteElement = document.querySelector<HTMLElement>('[data-random-home-quote]');
+  const lang = quoteElement?.dataset.randomHomeQuote;
+  if (quoteElement && (lang === 'ar' || lang === 'en')) {
+    const quotes = lang === 'ar' ? arabicQuotes : englishQuotes;
+    const storageKey = `home-${lang}-quote`;
+    let previousQuote: string | null = null;
+    try {
+      previousQuote = localStorage.getItem(storageKey);
+    } catch {
+      // Random quote selection still works when storage is unavailable.
+    }
+
+    const availableQuotes = quotes.filter(quote => quote !== previousQuote);
+    const quote = availableQuotes[Math.floor(Math.random() * availableQuotes.length)];
+    quoteElement.textContent = quote;
+
+    try {
+      localStorage.setItem(storageKey, quote);
+    } catch {
+      // The quote remains visible for this visit.
+    }
+  }
+
   // 1. Year tab filtering
   const tabButtons = document.querySelectorAll('[data-year-tab]');
   const contentBlocks = document.querySelectorAll('[data-year-content]');
