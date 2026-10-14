@@ -1,0 +1,348 @@
+{
+  "title": "Lecture 3 Part 1 — Applications",
+  "description": "Apply CSS rules, selectors, colors, and text properties to common web page styling scenarios.",
+  "subject": "Web Development",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "lecture_3_exam.md",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "You want to make a single `<h2>` heading red using an inline style. Which code is correct?",
+      "options": [
+        "`<h2 style=\"color: red;\">Heading</h2>`",
+        "`<h2 css=\"color: red;\">Heading</h2>`",
+        "`<h2 font=\"red\">Heading</h2>`",
+        "`<h2 class=\"red\">Heading</h2>`"
+      ],
+      "correctAnswer": "`<h2 style=\"color: red;\">Heading</h2>`",
+      "answerSource": "marked",
+      "topic": "css-stylesheets",
+      "explanation": "The style attribute applies a CSS declaration directly to this h2 element, and color sets its text color.",
+      "sourceSlides": [
+        8,
+        24,
+        25
+      ]
+    },
+    {
+      "id": 2,
+      "question": "You are configuring an embedded style sheet to change the background of the entire page to gray. Where should this code be placed?",
+      "options": [
+        "At the very bottom of the `<body>` section.",
+        "In the `<head>` section of the HTML document.",
+        "Inside a separate `.css` file.",
+        "As an attribute inside the `<html>` tag."
+      ],
+      "correctAnswer": "In the `<head>` section of the HTML document.",
+      "answerSource": "marked",
+      "topic": "css-stylesheets",
+      "explanation": "Embedded stylesheet rules belong inside <style> in the document head, where they can style the page.",
+      "sourceSlides": [
+        8,
+        28
+      ]
+    },
+    {
+      "id": 3,
+      "question": "You have an external style sheet named `styles.css`. What is the correct way to link it to your HTML document?",
+      "options": [
+        "`<link src=\"styles.css\">`",
+        "`<stylesheet href=\"styles.css\">`",
+        "`<link rel=\"stylesheet\" href=\"styles.css\">`",
+        "`<a href=\"styles.css\">Style</a>`"
+      ],
+      "correctAnswer": "`<link rel=\"stylesheet\" href=\"styles.css\">`",
+      "answerSource": "marked",
+      "topic": "css-stylesheets",
+      "explanation": "Use <link> with rel=\"stylesheet\" and href to associate the external CSS file with the document.",
+      "sourceSlides": [
+        9,
+        48,
+        50
+      ]
+    },
+    {
+      "id": 4,
+      "question": "You have a `p` element. An external style sheet sets its color to blue. An embedded style sets its color to green. An inline style sets its color to red. What color will the text be?",
+      "options": [
+        "Blue",
+        "Green",
+        "Red",
+        "Black (default)"
+      ],
+      "correctAnswer": "Red",
+      "answerSource": "marked",
+      "topic": "css-cascade",
+      "explanation": "For the declarations described, the inline style has higher precedence than the external and embedded rules, so red is used.",
+      "sourceSlides": [
+        4,
+        54
+      ]
+    },
+    {
+      "id": 5,
+      "question": "You created a CSS class named \"highlight\" (`.highlight { background-color: yellow; }`). How do you apply this to a paragraph?",
+      "options": [
+        "`<p id=\"highlight\">`",
+        "`<p class=\"highlight\">`",
+        "`<p style=\"highlight\">`",
+        "`<p type=\"highlight\">`"
+      ],
+      "correctAnswer": "`<p class=\"highlight\">`",
+      "answerSource": "marked",
+      "topic": "css-selectors",
+      "explanation": "The class attribute connects the paragraph to the .highlight selector.",
+      "sourceSlide": 42
+    },
+    {
+      "id": 6,
+      "question": "You want a unique navigation bar to have a black background. You create the CSS rule `#navbar { background-color: black; }`. How do you apply this to a `<div>`?",
+      "options": [
+        "`<div class=\"navbar\">`",
+        "`<div id=\"navbar\">`",
+        "`<div style=\"navbar\">`",
+        "`<div name=\"navbar\">`"
+      ],
+      "correctAnswer": "`<div id=\"navbar\">`",
+      "answerSource": "marked",
+      "topic": "css-selectors",
+      "explanation": "The id attribute connects this div to the #navbar selector.",
+      "sourceSlide": 44
+    },
+    {
+      "id": 7,
+      "question": "You want to style only the `<a>` (hyperlink) tags that are inside a `<footer>` element. Which descendant selector should you use?",
+      "options": [
+        "`footer, a { ... }`",
+        "`footer > a { ... }`",
+        "`footer.a { ... }`",
+        "`footer a { ... }`"
+      ],
+      "correctAnswer": "`footer a { ... }`",
+      "answerSource": "marked",
+      "topic": "css-selectors",
+      "explanation": "A space between footer and a selects descendant links anywhere inside a footer.",
+      "sourceSlide": 45
+    },
+    {
+      "id": 8,
+      "question": "You want to configure your text to be italicized. Which property and value pair should you use?",
+      "options": [
+        "`font-weight: italic;`",
+        "`font-style: italic;`",
+        "`text-decoration: italic;`",
+        "`text-transform: italic;`"
+      ],
+      "correctAnswer": "`font-style: italic;`",
+      "answerSource": "marked",
+      "topic": "css-typography",
+      "explanation": "font-style controls italic styling; font-weight controls boldness instead.",
+      "sourceSlide": 33
+    },
+    {
+      "id": 9,
+      "question": "You notice that a hyperlink is underlined, and you want to remove the underline. Which CSS rule achieves this?",
+      "options": [
+        "`a { text-decoration: none; }`",
+        "`a { underline: false; }`",
+        "`a { text-style: plain; }`",
+        "`a { font-decoration: none; }`"
+      ],
+      "correctAnswer": "`a { text-decoration: none; }`",
+      "answerSource": "marked",
+      "topic": "css-text",
+      "explanation": "The text-decoration property controls link underlining, and none removes that decoration.",
+      "sourceSlides": [
+        15,
+        39
+      ]
+    },
+    {
+      "id": 10,
+      "question": "You want to make a paragraph's text completely capitalized. Which CSS property handles this?",
+      "options": [
+        "`text-align: uppercase;`",
+        "`text-decoration: capitalize;`",
+        "`text-transform: uppercase;`",
+        "`font-style: uppercase;`"
+      ],
+      "correctAnswer": "`text-transform: uppercase;`",
+      "answerSource": "marked",
+      "topic": "css-text",
+      "explanation": "The text-transform property changes letter case for display; uppercase makes the text capitalized.",
+      "sourceSlides": [
+        16,
+        39
+      ]
+    },
+    {
+      "id": 11,
+      "question": "You want to center the text inside an `<h1>` element. Which CSS declaration should you use?",
+      "options": [
+        "`align: center;`",
+        "`text-align: center;`",
+        "`font-align: center;`",
+        "`margin: center;`"
+      ],
+      "correctAnswer": "`text-align: center;`",
+      "answerSource": "marked",
+      "topic": "css-text",
+      "explanation": "The text-align property aligns the inline content within the heading; center centers it.",
+      "sourceSlides": [
+        15,
+        38
+      ]
+    },
+    {
+      "id": 12,
+      "question": "You want to apply a drop shadow to your text. The CSS property is `text-shadow`. According to the lecture, what do the first two numerical values represent in `text-shadow: 2px 4px 5px red;`?",
+      "options": [
+        "Blur radius and color",
+        "Horizontal offset and vertical offset",
+        "Vertical offset and blur radius",
+        "Spread distance and horizontal offset"
+      ],
+      "correctAnswer": "Horizontal offset and vertical offset",
+      "answerSource": "marked",
+      "topic": "css-text",
+      "explanation": "text-shadow values begin with horizontal offset and vertical offset, followed by blur radius and color.",
+      "sourceSlide": 40
+    },
+    {
+      "id": 13,
+      "question": "You are defining a `font-family`. Which of the following is the best practice according to web standards?",
+      "options": [
+        "`font-family: Arial;`",
+        "`font-family: \"Times New Roman\";`",
+        "`font-family: Arial, Verdana, sans-serif;`",
+        "`font-family: sans-serif, Arial;`"
+      ],
+      "correctAnswer": "`font-family: Arial, Verdana, sans-serif;`",
+      "answerSource": "marked",
+      "topic": "css-typography",
+      "explanation": "Providing fallback typefaces lets the browser use another available font; the generic sans-serif family is a robust final fallback.",
+      "sourceSlides": [
+        33,
+        34
+      ]
+    },
+    {
+      "id": 14,
+      "question": "You want to indent the first line of a paragraph. Which CSS property should you use?",
+      "options": [
+        "`margin-left`",
+        "`padding-left`",
+        "`text-indent`",
+        "`word-spacing`"
+      ],
+      "correctAnswer": "`text-indent`",
+      "answerSource": "marked",
+      "topic": "css-text",
+      "explanation": "text-indent sets the indentation of the first formatted line in a block of text.",
+      "sourceSlides": [
+        15,
+        38
+      ]
+    },
+    {
+      "id": 15,
+      "question": "A client asks you to center the entire webpage layout on the screen. Which CSS technique is commonly used on a container `<div>` to achieve this?",
+      "options": [
+        "`width: 80%; text-align: center;`",
+        "`margin-left: auto; margin-right: auto; width: 80%;`",
+        "`padding: auto; width: 80%;`",
+        "`align-content: center;`"
+      ],
+      "correctAnswer": "`margin-left: auto; margin-right: auto; width: 80%;`",
+      "answerSource": "marked",
+      "topic": "css-fundamentals",
+      "explanation": "Auto horizontal margins distribute the available side space evenly around a fixed-width or max-width block, centering it.",
+      "sourceSlide": 53
+    },
+    {
+      "id": 16,
+      "question": "You want to make the text inside a `<strong>` tag extra bold (bolder than normal). Which property do you modify?",
+      "options": [
+        "`font-size`",
+        "`text-weight`",
+        "`font-style`",
+        "`font-weight`"
+      ],
+      "correctAnswer": "`font-weight`",
+      "answerSource": "marked",
+      "topic": "css-typography",
+      "explanation": "font-weight sets text boldness; strong already carries semantic importance, while CSS controls its visual weight.",
+      "sourceSlide": 33
+    },
+    {
+      "id": 17,
+      "question": "You want to apply the same CSS rules to both `<h1>` and `<h2>` tags without writing the rules twice. How do you format the selector?",
+      "options": [
+        "`h1 + h2 { ... }`",
+        "`h1 h2 { ... }`",
+        "`h1, h2 { ... }`",
+        "`h1&h2 { ... }`"
+      ],
+      "correctAnswer": "`h1, h2 { ... }`",
+      "answerSource": "marked",
+      "topic": "css-selectors",
+      "explanation": "Comma-separated selectors apply the same rule set independently to both h1 and h2 elements.",
+      "sourceSlide": 10
+    },
+    {
+      "id": 18,
+      "question": "You want to use a web-safe hexadecimal color shorthand for red. Which of the following is correct?",
+      "options": [
+        "`#F00`",
+        "`#FF00`",
+        "`#RED`",
+        "`#R00`"
+      ],
+      "correctAnswer": "`#F00`",
+      "answerSource": "marked",
+      "topic": "css-colors",
+      "explanation": "#F00 is the three-digit shorthand for #FF0000 because each hex digit is repeated.",
+      "sourceSlide": 21
+    },
+    {
+      "id": 19,
+      "question": "You need to change the color of a single word inside a paragraph to green without breaking the paragraph to a new line. Which HTML tag combined with CSS is best for this?",
+      "options": [
+        "`<div style=\"color: green;\">word</div>`",
+        "`<p style=\"color: green;\">word</p>`",
+        "`<span style=\"color: green;\">word</span>`",
+        "`<br style=\"color: green;\">word</br>`"
+      ],
+      "correctAnswer": "`<span style=\"color: green;\">word</span>`",
+      "answerSource": "marked",
+      "topic": "css-inline-elements",
+      "explanation": "<span> stays inline within the paragraph, making it suitable for styling one word without introducing a line break.",
+      "sourceSlides": [
+        11,
+        46
+      ]
+    },
+    {
+      "id": 20,
+      "question": "You are using the HSL color notation in CSS3: `hsl(0, 100%, 50%)`. What do the three values represent respectively?",
+      "options": [
+        "Hexadecimal, Saturation, Level",
+        "Hue, Saturation, Lightness",
+        "High, Standard, Low",
+        "Hue, Shade, Luminosity"
+      ],
+      "correctAnswer": "Hue, Saturation, Lightness",
+      "answerSource": "marked",
+      "topic": "css-colors",
+      "explanation": "HSL stands for hue, saturation, and lightness, in that order.",
+      "sourceSlides": [
+        20,
+        21
+      ]
+    }
+  ]
+}

@@ -11,6 +11,7 @@ export interface Question {
   correctAnswer: string;
   explanation?: string;
   sourceSlide?: number;
+  sourceSlides?: number[];
   sourcePage?: number;
   optionsSource?: 'provided' | 'generated';
   topic?: string;

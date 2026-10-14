@@ -1,0 +1,356 @@
+{
+  "title": "Lecture 2 Part 2 — Applications",
+  "description": "Apply HTML table, form, control, and accessibility concepts to practical coding scenarios.",
+  "subject": "Web Development",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "lecture_2_part_2_exam.md",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "You are building a table and need a cell to take up the space of three columns. Which attribute should you use?",
+      "options": [
+        "`colspan=\"3\"`",
+        "`rowspan=\"3\"`",
+        "`width=\"3\"`",
+        "`span=\"3\"`"
+      ],
+      "correctAnswer": "`colspan=\"3\"`",
+      "answerSource": "marked",
+      "topic": "html-table-structure",
+      "explanation": "colspan=\"3\" makes the table cell span three columns horizontally.",
+      "sourceSlides": [
+        5,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "id": 2,
+      "question": "If you want to group the bottom row of a table that contains the grand totals, which semantic element should you wrap around that row?",
+      "options": [
+        "`<thead>`",
+        "`<tbody>`",
+        "`<tfoot>`",
+        "`<caption>`"
+      ],
+      "correctAnswer": "`<tfoot>`",
+      "answerSource": "marked",
+      "topic": "html-table-structure",
+      "explanation": "<tfoot> semantically groups footer rows such as totals, apart from the table body.",
+      "sourceSlides": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": 3,
+      "question": "You have a `<th>` tag with the attribute `id=\"employeeName\"`. To correctly associate a data cell with this header for screen readers, how should the `<td>` be coded?",
+      "options": [
+        "`<td id=\"employeeName\">`",
+        "`<td for=\"employeeName\">`",
+        "`<td headers=\"employeeName\">`",
+        "`<td link=\"employeeName\">`"
+      ],
+      "correctAnswer": "`<td headers=\"employeeName\">`",
+      "answerSource": "marked",
+      "topic": "html-table-accessibility",
+      "explanation": "The value of headers references the id of the relevant <th>, explicitly associating this data cell with its header.",
+      "sourceSlides": [
+        6,
+        8,
+        12,
+        13
+      ]
+    },
+    {
+      "id": 4,
+      "question": "You are creating a form to update a user profile. The form data includes sensitive information. Which method is most appropriate?",
+      "options": [
+        "`method=\"get\"`",
+        "`method=\"post\"`",
+        "`method=\"secure\"`",
+        "`method=\"submit\"`"
+      ],
+      "correctAnswer": "`method=\"post\"`",
+      "answerSource": "marked",
+      "topic": "html-form-setup",
+      "explanation": "POST sends form values in the request body instead of the URL. Use HTTPS as well when protecting sensitive data.",
+      "sourceSlide": 25
+    },
+    {
+      "id": 5,
+      "question": "A user clicks a button that clears all the fields they just typed into a form. What was the most likely code for that button?",
+      "options": [
+        "`<input type=\"clear\">`",
+        "`<input type=\"delete\">`",
+        "`<input type=\"reset\">`",
+        "`<button type=\"erase\">`"
+      ],
+      "correctAnswer": "`<input type=\"reset\">`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "input type=\"reset\" restores form controls to their initial values; it does not submit or delete server data.",
+      "sourceSlide": 30
+    },
+    {
+      "id": 6,
+      "question": "You want to ask users to select their favorite hobbies. They can choose multiple hobbies or none at all. Which input type is best?",
+      "options": [
+        "`type=\"radio\"`",
+        "`type=\"checkbox\"`",
+        "`type=\"text\"`",
+        "`<select>`"
+      ],
+      "correctAnswer": "`type=\"checkbox\"`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "Checkboxes are independent, so users can select several hobbies or leave them all unchecked.",
+      "sourceSlides": [
+        27,
+        32
+      ]
+    },
+    {
+      "id": 7,
+      "question": "You want to use a custom picture of a checkmark as the button users click to submit the form. Which code accomplishes this?",
+      "options": [
+        "`<input type=\"submit\" src=\"checkmark.png\">`",
+        "`<input type=\"image\" src=\"checkmark.png\" alt=\"Submit\">`",
+        "`<button image=\"checkmark.png\">Submit</button>`",
+        "`<img src=\"checkmark.png\" type=\"submit\">`"
+      ],
+      "correctAnswer": "`<input type=\"image\" src=\"checkmark.png\" alt=\"Submit\">`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "input type=\"image\" displays an image as a submit control; alt provides an accessible name for it.",
+      "sourceSlide": 35
+    },
+    {
+      "id": 8,
+      "question": "You are configuring an HTML5 email input field. Which code will automatically validate that the user entered something resembling an email address?",
+      "options": [
+        "`<input type=\"text\" validate=\"email\">`",
+        "`<input type=\"email\" name=\"userEmail\">`",
+        "`<input type=\"text\" id=\"email\">`",
+        "`<email><input></email>`"
+      ],
+      "correctAnswer": "`<input type=\"email\" name=\"userEmail\">`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "input type=\"email\" enables the browser’s basic email-format validation. It does not verify that the address exists.",
+      "sourceSlide": 36
+    },
+    {
+      "id": 9,
+      "question": "You want to add a slider control to your form that allows users to pick a number between 1 and 10. Which HTML5 input type should you use?",
+      "options": [
+        "`type=\"slider\"`",
+        "`type=\"range\"`",
+        "`type=\"number\"`",
+        "`type=\"scale\"`"
+      ],
+      "correctAnswer": "`type=\"range\"`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "input type=\"range\" provides a slider. Set min=\"1\" and max=\"10\" to constrain its range.",
+      "sourceSlide": 38
+    },
+    {
+      "id": 10,
+      "question": "You need a multi-line box for users to leave a comment. You want it to be 5 rows tall and 40 characters wide. How do you code this?",
+      "options": [
+        "`<input type=\"textarea\" rows=\"5\" cols=\"40\">`",
+        "`<textarea height=\"5\" width=\"40\"></textarea>`",
+        "`<textarea rows=\"5\" cols=\"40\"></textarea>`",
+        "`<text rows=\"5\" cols=\"40\"></text>`"
+      ],
+      "correctAnswer": "`<textarea rows=\"5\" cols=\"40\"></textarea>`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "<textarea> supports multiple lines; rows controls visible height and cols controls visible width.",
+      "sourceSlides": [
+        22,
+        43
+      ]
+    },
+    {
+      "id": 11,
+      "question": "You created a drop-down list of countries using `<select>`, but you want \"Saudi Arabia\" to be selected by default when the page loads. Which attribute do you add to its `<option>` tag?",
+      "options": [
+        "`default`",
+        "`checked`",
+        "`selected`",
+        "`active`"
+      ],
+      "correctAnswer": "`selected`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "The selected attribute marks the option chosen initially when the dropdown is displayed.",
+      "sourceSlides": [
+        23,
+        45,
+        46,
+        47
+      ]
+    },
+    {
+      "id": 12,
+      "question": "You are using a `<label>` element for a text box. The text box has the attribute `id=\"firstName\"`. How should the label be coded to connect properly?",
+      "options": [
+        "`<label name=\"firstName\">First Name:</label>`",
+        "`<label for=\"firstName\">First Name:</label>`",
+        "`<label id=\"firstName\">First Name:</label>`",
+        "`<label link=\"firstName\">First Name:</label>`"
+      ],
+      "correctAnswer": "`<label for=\"firstName\">First Name:</label>`",
+      "answerSource": "marked",
+      "topic": "html-form-accessibility",
+      "explanation": "The label’s for attribute must exactly match the input’s id to associate them.",
+      "sourceSlide": 42
+    },
+    {
+      "id": 13,
+      "question": "You want to group a customer's billing address fields together with a border and the title \"Billing Info\". Which two elements will you use?",
+      "options": [
+        "`<div>` and `<h1>`",
+        "`<fieldset>` and `<legend>`",
+        "`<form>` and `<title>`",
+        "`<group>` and `<label>`"
+      ],
+      "correctAnswer": "`<fieldset>` and `<legend>`",
+      "answerSource": "marked",
+      "topic": "html-form-accessibility",
+      "explanation": "<fieldset> groups related controls and <legend> supplies the group’s caption.",
+      "sourceSlides": [
+        52,
+        53
+      ]
+    },
+    {
+      "id": 14,
+      "question": "What happens when a user clicks an `<input type=\"submit\">` button?",
+      "options": [
+        "The form data is cleared.",
+        "The browser executes a local JavaScript file exclusively.",
+        "The form data is packaged and sent to the server-side script specified in the form's `action` attribute.",
+        "The form is printed to the user's default printer."
+      ],
+      "correctAnswer": "The form data is packaged and sent to the server-side script specified in the form's `action` attribute.",
+      "answerSource": "marked",
+      "topic": "html-form-processing",
+      "explanation": "Submitting a form sends its controls’ values to the endpoint specified by the form’s action attribute.",
+      "sourceSlide": 25
+    },
+    {
+      "id": 15,
+      "question": "You want to provide a list of suggested colors (Red, Blue, Green) to a user in a text field, but you also want them to be able to type \"Purple\" if they want. Which element is best?",
+      "options": [
+        "`<select>`",
+        "`<input type=\"radio\">`",
+        "`<datalist>`",
+        "`<input type=\"color\">`"
+      ],
+      "correctAnswer": "`<datalist>`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "<datalist> supplies suggestions to an input while still allowing values such as Purple that are not listed.",
+      "sourceSlides": [
+        49,
+        50
+      ]
+    },
+    {
+      "id": 16,
+      "question": "If you want to prompt the user to use a calendar to pick a specific date for an appointment, which HTML5 input type is used?",
+      "options": [
+        "`type=\"calendar\"`",
+        "`type=\"date\"`",
+        "`type=\"time\"`",
+        "`type=\"schedule\"`"
+      ],
+      "correctAnswer": "`type=\"date\"`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "input type=\"date\" represents a calendar date and commonly lets the browser show a date picker.",
+      "sourceSlide": 40
+    },
+    {
+      "id": 17,
+      "question": "You need to create a table cell that spans down across two rows vertically. Which code snippet is correct?",
+      "options": [
+        "`<td rowspan=\"2\">`",
+        "`<td colspan=\"2\">`",
+        "`<tr span=\"2\">`",
+        "`<td rows=\"2\">`"
+      ],
+      "correctAnswer": "`<td rowspan=\"2\">`",
+      "answerSource": "marked",
+      "topic": "html-table-structure",
+      "explanation": "rowspan=\"2\" makes this cell extend vertically across two table rows.",
+      "sourceSlides": [
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "id": 18,
+      "question": "Which of the following is a common server-side scripting language that might process a form after submission?",
+      "options": [
+        "CSS",
+        "HTML5",
+        "PHP",
+        "XML"
+      ],
+      "correctAnswer": "PHP",
+      "answerSource": "marked",
+      "topic": "html-form-processing",
+      "explanation": "PHP is a server-side programming language that can receive and process submitted form data.",
+      "sourceSlides": [
+        21,
+        56
+      ]
+    },
+    {
+      "id": 19,
+      "question": "You have a group of three radio buttons for \"Credit Card Type\" (Visa, MasterCard, Amex). To ensure only one can be clicked at a time, what must be true?",
+      "options": [
+        "They must have `value=\"1\"`, `value=\"2\"`, and `value=\"3\"`.",
+        "They must all have `name=\"cardType\"`.",
+        "They must all have `id=\"creditCard\"`.",
+        "They must all have `type=\"checkbox\"`."
+      ],
+      "correctAnswer": "They must all have `name=\"cardType\"`.",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "Radio buttons with the same name are treated as one group, allowing only one selected value at a time.",
+      "sourceSlides": [
+        33,
+        34
+      ]
+    },
+    {
+      "id": 20,
+      "question": "You want to add a text label directly inside a visual grouping box created by `<fieldset>`. Which tag do you place immediately after the opening `<fieldset>` tag?",
+      "options": [
+        "`<label>`",
+        "`<title>`",
+        "`<legend>`",
+        "`<caption>`"
+      ],
+      "correctAnswer": "`<legend>`",
+      "answerSource": "marked",
+      "topic": "html-form-accessibility",
+      "explanation": "<legend> labels a fieldset and is placed as its first child to give the grouped controls a caption.",
+      "sourceSlides": [
+        52,
+        53
+      ]
+    }
+  ]
+}

@@ -1,0 +1,352 @@
+{
+  "title": "Lecture 2 Part 2 — Foundations",
+  "description": "Foundations questions on HTML tables, forms, controls, accessibility, and server-side processing.",
+  "subject": "Web Development",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "lecture_2_part_2_exam.md",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the primary purpose of the `<table>` element in HTML?",
+      "options": [
+        "To create a database on the web server.",
+        "To organize tabular information into rows and columns.",
+        "To create a fill-in form for user input.",
+        "To layout the entire structure of a modern webpage."
+      ],
+      "correctAnswer": "To organize tabular information into rows and columns.",
+      "answerSource": "marked",
+      "topic": "html-table-structure",
+      "explanation": "Tables organize data that naturally belongs in rows and columns; modern page layout should use CSS rather than tables.",
+      "sourceSlide": 5
+    },
+    {
+      "id": 2,
+      "question": "Which tag is used to define a standard data cell within a table?",
+      "options": [
+        "`<th>`",
+        "`<tr>`",
+        "`<td>`",
+        "`<table>`"
+      ],
+      "correctAnswer": "`<td>`",
+      "answerSource": "marked",
+      "topic": "html-table-structure",
+      "explanation": "<td> creates an ordinary data cell. Use <th> for a cell that labels a row or column.",
+      "sourceSlide": 6
+    },
+    {
+      "id": 3,
+      "question": "Which element is used to provide a description or title for a table?",
+      "options": [
+        "`<title>`",
+        "`<caption>`",
+        "`<header>`",
+        "`<th>`"
+      ],
+      "correctAnswer": "`<caption>`",
+      "answerSource": "marked",
+      "topic": "html-table-structure",
+      "explanation": "<caption> supplies a visible title or description for its table and helps users understand the table context.",
+      "sourceSlides": [
+        6,
+        13
+      ]
+    },
+    {
+      "id": 4,
+      "question": "What does the `colspan` attribute do?",
+      "options": [
+        "Allows a cell to span across multiple rows.",
+        "Merges multiple tables into one.",
+        "Specifies the column width.",
+        "Allows a cell to span across multiple columns."
+      ],
+      "correctAnswer": "Allows a cell to span across multiple columns.",
+      "answerSource": "marked",
+      "topic": "html-table-structure",
+      "explanation": "colspan sets how many columns one cell occupies horizontally.",
+      "sourceSlides": [
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Which tag defines a table header cell, typically rendered as bold and centered text?",
+      "options": [
+        "`<th>`",
+        "`<tr>`",
+        "`<td>`",
+        "`<thead>`"
+      ],
+      "correctAnswer": "`<th>`",
+      "answerSource": "marked",
+      "topic": "html-table-structure",
+      "explanation": "<th> marks a header cell, allowing browsers and assistive technologies to identify its label role.",
+      "sourceSlides": [
+        8,
+        12
+      ]
+    },
+    {
+      "id": 6,
+      "question": "To improve accessibility for screen readers in complex tables, which attributes are paired together?",
+      "options": [
+        "`name` and `value`",
+        "`id` (on `<th>`) and `headers` (on `<td>`)",
+        "`class` and `id`",
+        "`colspan` and `rowspan`"
+      ],
+      "correctAnswer": "`id` (on `<th>`) and `headers` (on `<td>`)",
+      "answerSource": "marked",
+      "topic": "html-table-accessibility",
+      "explanation": "The header cell’s id gives it a reference, and the data cell’s headers attribute points to that id for assistive technology.",
+      "sourceSlides": [
+        12,
+        13
+      ]
+    },
+    {
+      "id": 7,
+      "question": "Which element is used to group the header rows of a table?",
+      "options": [
+        "`<header>`",
+        "`<tbody>`",
+        "`<thead>`",
+        "`<tfoot>`"
+      ],
+      "correctAnswer": "`<thead>`",
+      "answerSource": "marked",
+      "topic": "html-table-structure",
+      "explanation": "<thead> groups the table’s header rows semantically, separately from its body and footer.",
+      "sourceSlides": [
+        15,
+        16
+      ]
+    },
+    {
+      "id": 8,
+      "question": "What are the two essential components required for using HTML forms?",
+      "options": [
+        "The `<table>` element and the `<input>` element.",
+        "The HTML user interface and CSS styling.",
+        "The HTML user interface and server-side processing.",
+        "The `<form>` tag and the `<fieldset>` tag."
+      ],
+      "correctAnswer": "The HTML user interface and server-side processing.",
+      "answerSource": "marked",
+      "topic": "html-form-setup",
+      "explanation": "A form provides the browser-side controls, while server-side processing receives and handles submitted data.",
+      "sourceSlides": [
+        21,
+        56
+      ]
+    },
+    {
+      "id": 9,
+      "question": "In the `<form>` tag, what does the `action` attribute specify?",
+      "options": [
+        "How the data is sent (get or post).",
+        "The visual styling of the form.",
+        "Where the form data is sent upon submission.",
+        "The unique identifier for the form."
+      ],
+      "correctAnswer": "Where the form data is sent upon submission.",
+      "answerSource": "marked",
+      "topic": "html-form-setup",
+      "explanation": "The action attribute gives the destination URL or endpoint that receives the submitted form data.",
+      "sourceSlide": 25
+    },
+    {
+      "id": 10,
+      "question": "Which attribute in the `<form>` element specifies whether the data is sent securely in the HTTP entity body or in the URL?",
+      "options": [
+        "`action`",
+        "`method`",
+        "`id`",
+        "`name`"
+      ],
+      "correctAnswer": "`method`",
+      "answerSource": "marked",
+      "topic": "html-form-setup",
+      "explanation": "The method attribute selects how the request is sent, such as GET or POST. POST puts values in the request body, but HTTPS is still needed to protect data in transit.",
+      "sourceSlide": 25
+    },
+    {
+      "id": 11,
+      "question": "Which form control is created using `<input type=\"text\">`?",
+      "options": [
+        "A multi-line text area.",
+        "A drop-down list.",
+        "A single-line standard text box.",
+        "A password field."
+      ],
+      "correctAnswer": "A single-line standard text box.",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "input type=\"text\" creates a single-line text field; use <textarea> for multi-line text.",
+      "sourceSlides": [
+        27,
+        32
+      ]
+    },
+    {
+      "id": 12,
+      "question": "What `<input>` type hides the characters being typed by the user?",
+      "options": [
+        "`type=\"hidden\"`",
+        "`type=\"invisible\"`",
+        "`type=\"password\"`",
+        "`type=\"mask\"`"
+      ],
+      "correctAnswer": "`type=\"password\"`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "input type=\"password\" masks characters on screen, but does not itself encrypt the value being sent.",
+      "sourceSlide": 31
+    },
+    {
+      "id": 13,
+      "question": "Which form control allows a user to select exactly one option from a group of predetermined choices?",
+      "options": [
+        "`<input type=\"checkbox\">`",
+        "`<input type=\"radio\">`",
+        "`<textarea>`",
+        "`<input type=\"select\">`"
+      ],
+      "correctAnswer": "`<input type=\"radio\">`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "Radio buttons in one group let the user choose one option, unlike independent checkboxes.",
+      "sourceSlides": [
+        33,
+        34
+      ]
+    },
+    {
+      "id": 14,
+      "question": "What is a key requirement for a group of radio buttons to function together correctly?",
+      "options": [
+        "They must share the same `id` attribute.",
+        "They must share the same `value` attribute.",
+        "They must share the same `name` attribute.",
+        "They must have the `checked` attribute."
+      ],
+      "correctAnswer": "They must share the same `name` attribute.",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "Radio buttons with the same name form a group, so selecting one deselects the others in that group.",
+      "sourceSlide": 33
+    },
+    {
+      "id": 15,
+      "question": "Which HTML5 input type is specifically designed to accept a telephone number?",
+      "options": [
+        "`type=\"phone\"`",
+        "`type=\"tel\"`",
+        "`type=\"number\"`",
+        "`type=\"contact\"`"
+      ],
+      "correctAnswer": "`type=\"tel\"`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "input type=\"tel\" is intended for telephone numbers and may prompt a phone-friendly keyboard on mobile devices.",
+      "sourceSlide": 37
+    },
+    {
+      "id": 16,
+      "question": "Which element creates a multi-line, scrolling text box?",
+      "options": [
+        "`<input type=\"textarea\">`",
+        "`<textarea>`",
+        "`<select>`",
+        "`<textbox>`"
+      ],
+      "correctAnswer": "`<textarea>`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "<textarea> is the form control for longer, multi-line text input.",
+      "sourceSlides": [
+        22,
+        43
+      ]
+    },
+    {
+      "id": 17,
+      "question": "The `<select>` element is used in conjunction with which other element to create a drop-down list?",
+      "options": [
+        "`<choice>`",
+        "`<item>`",
+        "`<option>`",
+        "`<list>`"
+      ],
+      "correctAnswer": "`<option>`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "<select> contains a dropdown; each <option> inside it defines one of the choices.",
+      "sourceSlides": [
+        23,
+        45,
+        46,
+        47
+      ]
+    },
+    {
+      "id": 18,
+      "question": "Which element provides predefined autocomplete suggestions for an `<input>` field while still allowing custom entries?",
+      "options": [
+        "`<datalist>`",
+        "`<select>`",
+        "`<fieldset>`",
+        "`<dropdown>`"
+      ],
+      "correctAnswer": "`<datalist>`",
+      "answerSource": "marked",
+      "topic": "html-form-controls",
+      "explanation": "<datalist> provides suggested values for an associated input without restricting the user to those values.",
+      "sourceSlides": [
+        49,
+        50
+      ]
+    },
+    {
+      "id": 19,
+      "question": "What element explicitly associates a text label with a specific form control to improve accessibility?",
+      "options": [
+        "`<legend>`",
+        "`<name>`",
+        "`<label>`",
+        "`<caption>`"
+      ],
+      "correctAnswer": "`<label>`",
+      "answerSource": "marked",
+      "topic": "html-form-accessibility",
+      "explanation": "<label> associates descriptive text with a control; its for value must match the control’s id.",
+      "sourceSlide": 42
+    },
+    {
+      "id": 20,
+      "question": "What is the purpose of the `<fieldset>` element?",
+      "options": [
+        "To submit the form data.",
+        "To create a visual grouping of related form elements.",
+        "To define the server-side script.",
+        "To create a list of checkbox options."
+      ],
+      "correctAnswer": "To create a visual grouping of related form elements.",
+      "answerSource": "marked",
+      "topic": "html-form-accessibility",
+      "explanation": "<fieldset> groups related controls together. A <legend> can provide a caption for that group.",
+      "sourceSlides": [
+        52,
+        53
+      ]
+    }
+  ]
+}

@@ -493,3 +493,14 @@ html:has(body.quiz-running) { scroll-padding-bottom: calc(7rem + env(safe-area-i
 .dark .quiz-source-provided { color: #e2c47e; }
 .quiz-card-instructor, .dark .quiz-card-instructor { border-color: #b91c1c; background: rgba(185, 28, 28, .06); }
 .quiz-card-provided, .dark .quiz-card-provided { border-color: #a78b45; background: rgba(167, 139, 69, .07); }
+.quiz-inline-code {
+  border: 1px solid #e4e4e7;
+  border-radius: .25rem;
+  background: #f4f4f5;
+  padding: .08em .3em;
+  color: #18181b;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .92em;
+  overflow-wrap: anywhere;
+}
+.dark .quiz-inline-code { border-color: #3f3f46; background: #27272a; color: #f4f4f5; }
