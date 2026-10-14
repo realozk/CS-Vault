@@ -1,0 +1,340 @@
+{
+  "title": "Lecture 3 Part 1 — Foundations",
+  "date": "2026-10-14",
+  "description": "Foundations questions on CSS syntax, selectors, colors, text properties, the cascade, and validation.",
+  "subject": "Web Development",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "lecture_3_exam.md",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What does CSS stand for?",
+      "options": [
+        "Computer Style Sheets",
+        "Cascading Style Sheets",
+        "Creative Style Sheets",
+        "Colorful Style Sheets"
+      ],
+      "correctAnswer": "Cascading Style Sheets",
+      "answerSource": "marked",
+      "topic": "css-fundamentals",
+      "explanation": "CSS is short for Cascading Style Sheets, the language used to describe the presentation of documents such as HTML pages.",
+      "sourceSlide": 4
+    },
+    {
+      "id": 2,
+      "question": "Which of the following is NOT an advantage of using CSS?",
+      "options": [
+        "It separates style from structure.",
+        "It creates potentially smaller HTML documents.",
+        "It requires a server-side database to function.",
+        "It allows for easier site maintenance."
+      ],
+      "correctAnswer": "It requires a server-side database to function.",
+      "answerSource": "marked",
+      "topic": "css-fundamentals",
+      "explanation": "CSS works in the browser without a server-side database; databases are not a requirement for styling a page.",
+      "sourceSlides": [
+        5,
+        6
+      ]
+    },
+    {
+      "id": 3,
+      "question": "In the CSS rule `h1 { color: blue; }`, what is `h1` considered?",
+      "options": [
+        "The Property",
+        "The Value",
+        "The Declaration",
+        "The Selector"
+      ],
+      "correctAnswer": "The Selector",
+      "answerSource": "marked",
+      "topic": "css-fundamentals",
+      "explanation": "In a CSS rule, h1 is the selector because it identifies which elements receive the declaration.",
+      "sourceSlide": 10
+    },
+    {
+      "id": 4,
+      "question": "Which CSS property configures the text color (foreground color) of an element?",
+      "options": [
+        "`text-color`",
+        "`font-color`",
+        "`color`",
+        "`foreground`"
+      ],
+      "correctAnswer": "`color`",
+      "answerSource": "marked",
+      "topic": "css-colors",
+      "explanation": "The color property sets an element’s foreground/text color; background-color controls its background.",
+      "sourceSlide": 11
+    },
+    {
+      "id": 5,
+      "question": "Which CSS property configures the background color of an element?",
+      "options": [
+        "`background-color`",
+        "`bg-color`",
+        "`color-background`",
+        "`canvas-color`"
+      ],
+      "correctAnswer": "`background-color`",
+      "answerSource": "marked",
+      "topic": "css-colors",
+      "explanation": "background-color sets the area behind an element’s content, while color sets the foreground text color.",
+      "sourceSlide": 11
+    },
+    {
+      "id": 6,
+      "question": "Which type of style sheet is coded directly within the HTML `<body>` using the `style` attribute?",
+      "options": [
+        "External Styles",
+        "Embedded Styles",
+        "Inline Styles",
+        "Imported Styles"
+      ],
+      "correctAnswer": "Inline Styles",
+      "answerSource": "marked",
+      "topic": "css-stylesheets",
+      "explanation": "An inline style is written on an individual HTML element with its style attribute.",
+      "sourceSlides": [
+        8,
+        24,
+        25
+      ]
+    },
+    {
+      "id": 7,
+      "question": "Embedded (Internal) styles are defined within which HTML tag?",
+      "options": [
+        "`<css>`",
+        "`<script>`",
+        "`<style>`",
+        "`<link>`"
+      ],
+      "correctAnswer": "`<style>`",
+      "answerSource": "marked",
+      "topic": "css-stylesheets",
+      "explanation": "Internal or embedded CSS rules are written inside a <style> element, commonly placed in the document head.",
+      "sourceSlides": [
+        8,
+        28
+      ]
+    },
+    {
+      "id": 8,
+      "question": "Which HTML element is used to associate an external style sheet with a web page?",
+      "options": [
+        "`<a>`",
+        "`<style>`",
+        "`<link>`",
+        "`<src>`"
+      ],
+      "correctAnswer": "`<link>`",
+      "answerSource": "marked",
+      "topic": "css-stylesheets",
+      "explanation": "<link rel=\"stylesheet\" href=\"…\"> connects an HTML document to an external CSS file.",
+      "sourceSlides": [
+        9,
+        48,
+        50
+      ]
+    },
+    {
+      "id": 9,
+      "question": "How is a CSS Class selector defined in a style sheet?",
+      "options": [
+        "Starting with a hashtag (e.g., `#classname`)",
+        "Starting with a period (e.g., `.classname`)",
+        "Enclosed in brackets (e.g., `[classname]`)",
+        "Starting with a slash (e.g., `/classname`)"
+      ],
+      "correctAnswer": "Starting with a period (e.g., `.classname`)",
+      "answerSource": "marked",
+      "topic": "css-selectors",
+      "explanation": "A class selector begins with a period and matches elements carrying that class in their class attribute.",
+      "sourceSlide": 42
+    },
+    {
+      "id": 10,
+      "question": "How is a CSS Id selector defined in a style sheet?",
+      "options": [
+        "Starting with a hashtag (e.g., `#idname`)",
+        "Starting with a period (e.g., `.idname`)",
+        "Starting with an asterisk (e.g., `*idname`)",
+        "Just the name itself (e.g., `idname`)"
+      ],
+      "correctAnswer": "Starting with a hashtag (e.g., `#idname`)",
+      "answerSource": "marked",
+      "topic": "css-selectors",
+      "explanation": "An id selector begins with # and targets the element whose id matches that selector.",
+      "sourceSlide": 44
+    },
+    {
+      "id": 11,
+      "question": "Which of the following is a recommended unit for `font-size` to ensure better accessibility and scaling?",
+      "options": [
+        "`px`",
+        "`pt`",
+        "`em`",
+        "`in`"
+      ],
+      "correctAnswer": "`em`",
+      "answerSource": "marked",
+      "topic": "css-typography",
+      "explanation": "em sizes text relative to its context, so it can scale with user or inherited font-size settings more readily than a fixed pixel value.",
+      "sourceSlide": 36
+    },
+    {
+      "id": 12,
+      "question": "Which property is used to change the typeface of text?",
+      "options": [
+        "`font-weight`",
+        "`font-style`",
+        "`font-family`",
+        "`text-type`"
+      ],
+      "correctAnswer": "`font-family`",
+      "answerSource": "marked",
+      "topic": "css-typography",
+      "explanation": "font-family chooses the typeface used to render text; fallback families can be listed after it.",
+      "sourceSlides": [
+        33,
+        34
+      ]
+    },
+    {
+      "id": 13,
+      "question": "Which HTML element defines an inline section on a web page that is not physically separated from other areas (unlike a `<div>`)?",
+      "options": [
+        "`<section>`",
+        "`<span>`",
+        "`<article>`",
+        "`<block>`"
+      ],
+      "correctAnswer": "`<span>`",
+      "answerSource": "marked",
+      "topic": "css-inline-elements",
+      "explanation": "<span> is an inline container, so it can style part of a text flow without creating a new block.",
+      "sourceSlide": 46
+    },
+    {
+      "id": 14,
+      "question": "What does the \"Cascade\" refer to in CSS?",
+      "options": [
+        "The way images load from top to bottom.",
+        "The rules of precedence determining which styles override others when there is a conflict.",
+        "The folder structure of CSS files on a server.",
+        "The animation effects applied to text."
+      ],
+      "correctAnswer": "The rules of precedence determining which styles override others when there is a conflict.",
+      "answerSource": "marked",
+      "topic": "css-cascade",
+      "explanation": "The cascade resolves competing declarations using precedence rules, including origin, importance, specificity, and source order.",
+      "sourceSlides": [
+        4,
+        54
+      ]
+    },
+    {
+      "id": 15,
+      "question": "According to the CSS rules of precedence, which type of style has the highest priority?",
+      "options": [
+        "Browser Defaults",
+        "External Styles",
+        "Embedded Styles",
+        "Inline Styles"
+      ],
+      "correctAnswer": "Inline Styles",
+      "answerSource": "marked",
+      "topic": "css-cascade",
+      "explanation": "Among the style types listed here, an inline declaration takes precedence over ordinary external and embedded declarations for the same property.",
+      "sourceSlide": 54
+    },
+    {
+      "id": 16,
+      "question": "Which CSS property modifies the appearance of text with an underline, overline, or line-through?",
+      "options": [
+        "`text-decoration`",
+        "`text-transform`",
+        "`font-style`",
+        "`text-align`"
+      ],
+      "correctAnswer": "`text-decoration`",
+      "answerSource": "marked",
+      "topic": "css-text",
+      "explanation": "text-decoration controls lines such as underline, overline, and line-through.",
+      "sourceSlides": [
+        15,
+        39
+      ]
+    },
+    {
+      "id": 17,
+      "question": "What does the `line-height` property configure?",
+      "options": [
+        "The total height of the webpage.",
+        "The spacing allowed for the line of text (e.g., double-spacing).",
+        "The length of a horizontal rule (`<hr>`).",
+        "The space between individual letters."
+      ],
+      "correctAnswer": "The spacing allowed for the line of text (e.g., double-spacing).",
+      "answerSource": "marked",
+      "topic": "css-text",
+      "explanation": "line-height sets the height of a line box and therefore controls the vertical spacing between lines of text.",
+      "sourceSlides": [
+        14,
+        38
+      ]
+    },
+    {
+      "id": 18,
+      "question": "What is the standard hexadecimal color value for white?",
+      "options": [
+        "`#000000`",
+        "`#FF0000`",
+        "`#FFFFFF`",
+        "`#CCCCCC`"
+      ],
+      "correctAnswer": "`#FFFFFF`",
+      "answerSource": "marked",
+      "topic": "css-colors",
+      "explanation": "#FFFFFF has the maximum red, green, and blue values, producing white in hexadecimal RGB notation.",
+      "sourceSlide": 18
+    },
+    {
+      "id": 19,
+      "question": "How many colors are in the Web-Safe Color Palette?",
+      "options": [
+        "16",
+        "216",
+        "256",
+        "16.7 million"
+      ],
+      "correctAnswer": "216",
+      "answerSource": "marked",
+      "topic": "css-colors",
+      "explanation": "The classic web-safe palette contains 216 colors, formed from the combinations of six levels for each RGB channel.",
+      "sourceSlide": 19
+    },
+    {
+      "id": 20,
+      "question": "What is the purpose of the W3C CSS Validation Service?",
+      "options": [
+        "To automatically fix broken images.",
+        "To check Cascading Style Sheets for syntax errors.",
+        "To host external style sheets for free.",
+        "To convert HTML files to CSS files."
+      ],
+      "correctAnswer": "To check Cascading Style Sheets for syntax errors.",
+      "answerSource": "marked",
+      "topic": "css-validation",
+      "explanation": "The W3C CSS validator checks stylesheets for syntax and conformance problems; it does not host or convert them.",
+      "sourceSlide": 55
+    }
+  ]
+}

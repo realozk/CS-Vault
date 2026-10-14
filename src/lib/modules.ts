@@ -23,6 +23,7 @@ export function getSubjectName(nameOrSlug: string, lang: 'en' | 'ar' = 'en') {
 
 export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]> {
   const modules = new Map<string, ModuleItem>();
+  const latestContentDates = new Map<string, number>();
   for (const subject of subjects) {
     const key = `${subject.slug}/${subject.year}`;
     if (modules.has(key)) throw new Error(`Duplicate subject: ${key}`);
@@ -46,10 +47,16 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
       const course = subjects.find(s => s.slug === subject && String(s.year) === year)!;
       validateContentMetadata(entry.id, entry.data, course);
       module[count]++;
+      const date = entry.data.date.getTime();
+      const key = `${subject}/${year}`;
+      latestContentDates.set(key, Math.max(latestContentDates.get(key) ?? 0, date));
     }
   }
   for (const module of modules.values()) {
     if (module.quizzesCount > 0) module.quizzesCount++;
   }
-  return [...modules.values()].sort((a, b) => a.subjectName.localeCompare(b.subjectName));
+  return [...modules.values()].sort((a, b) =>
+    (latestContentDates.get(`${b.subject}/${b.year}`) ?? 0) - (latestContentDates.get(`${a.subject}/${a.year}`) ?? 0)
+      || a.subjectName.localeCompare(b.subjectName)
+  );
 }

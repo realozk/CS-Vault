@@ -50,6 +50,10 @@ const quizOrder = [
   'lecture-01-applications',
   'lecture-02-foundations',
   'lecture-02-applications',
+  'lecture-02-part-2-foundations',
+  'lecture-02-part-2-applications',
+  'lecture-03-part-1-foundations',
+  'lecture-03-part-1-applications',
 ];
 const quizzes = [...rawQuizzes].sort((a, b) => {
   const sourcePriority = { instructor: 2, provided: 1, generated: 0 };
@@ -290,6 +294,12 @@ const trackerTranslations = JSON.stringify({
                 <article class="academic-prose max-w-none text-start" dir={s.entry.data.lang === 'ar' ? 'rtl' : 'ltr'} lang={s.entry.data.lang}>
                   <s.Content />
                 </article>
+
+                <p lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'} class="mt-6 text-xs text-gray-500 dark:text-gray-400">
+                  {lang === 'ar'
+                    ? 'الملخص لايغني عن مذاكره السلايدات.'
+                    : 'The summary does not replace studying the slides.'}
+                </p>
 
                 <label class="mt-6 min-h-11 flex items-center gap-3 text-sm text-gray-600 dark:text-zinc-300">
                   <input type="checkbox" data-summary-check={s.slug} class="summary-checkbox w-4 h-4" />

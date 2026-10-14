@@ -30,6 +30,7 @@ const quizzesCollection = defineCollection({
   }),
   schema: z.object({
     title: z.string().min(1, 'Quiz title is required'),
+    date: z.coerce.date(),
     description: z.string().optional(),
     source: z.string().optional(),
     sourceKind: z.enum(['generated', 'provided', 'instructor']).default('generated'),
@@ -50,6 +51,7 @@ const quizzesCollection = defineCollection({
         explanation: z.string().optional(),
         topic: z.string().min(1).optional(),
         sourceSlide: z.number().int().positive().optional(),
+        sourceSlides: z.array(z.number().int().positive()).min(1).optional(),
         sourcePage: z.number().int().positive().optional(),
         optionsSource: z.enum(['provided', 'generated']).optional(),
         answerSource: z.enum(['marked', 'inferred', 'manual']).default('manual'),

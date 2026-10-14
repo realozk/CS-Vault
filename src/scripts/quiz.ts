@@ -10,6 +10,19 @@ const shuffle = <T>(values: T[]): T[] => {
   return result;
 };
 
+const renderInlineCode = (element: HTMLElement, text: string) => {
+  const parts = text.split(/(`[^`]+`)/g);
+  element.replaceChildren(...parts.map(part => {
+    if (part.startsWith('`') && part.endsWith('`')) {
+      const code = document.createElement('code');
+      code.className = 'quiz-inline-code';
+      code.textContent = part.slice(1, -1);
+      return code;
+    }
+    return document.createTextNode(part);
+  }));
+};
+
 const initQuizWidget = () => {
   const widget = document.getElementById('quiz-widget');
   if (!widget) return;
@@ -83,10 +96,28 @@ const initQuizWidget = () => {
   };
   const startTimer = () => { stopTimer(); if (deadline !== null && running) { tick(); if (running) timer = setInterval(tick, 1000); } };
 
-  const sourceReference = (q: Question) => q.sourcePage ? t('sourcePage').replace('{page}', String(q.sourcePage)) : q.sourceSlide ? t('sourceSlide').replace('{slide}', String(q.sourceSlide)) : '';
+  const sourceReference = (q: Question) => {
+    if (q.sourcePage) return t('sourcePage').replace('{page}', String(q.sourcePage));
+    const slides = q.sourceSlides || (q.sourceSlide ? [q.sourceSlide] : []);
+    if (!slides.length) return '';
+    const ranges: string[] = [];
+    for (const slide of [...new Set(slides)].sort((a, b) => a - b)) {
+      const lastRange = ranges[ranges.length - 1]?.match(/^(\d+)[–-](\d+)$/);
+      if (lastRange && Number(lastRange[2]) + 1 === slide) {
+        ranges[ranges.length - 1] = `${lastRange[1]}–${slide}`;
+      } else if (ranges.length && Number(ranges[ranges.length - 1]) + 1 === slide) {
+        ranges[ranges.length - 1] = `${ranges[ranges.length - 1]}–${slide}`;
+      } else {
+        ranges.push(String(slide));
+      }
+    }
+    return q.sourceSlides
+      ? t('sourceSlides').replace('{slides}', ranges.join(', '))
+      : t('sourceSlide').replace('{slide}', ranges[0]);
+  };
   const answerNotice = (q: Question) => [q.answerSource === 'inferred' ? t('inferred') : '', q.optionsSource === 'generated' ? t('generatedOptions') : ''].filter(Boolean).join(' ');
   const showExplanation = (q: Question) => {
-    el('explanation-text').textContent = q.explanation || '';
+    renderInlineCode(el('explanation-text'), q.explanation || '');
     el('source-slide').textContent = sourceReference(q);
     el('answer-warning').textContent = answerNotice(q);
     el('explanation-box').classList.toggle('hidden', !q.explanation && !sourceReference(q) && !answerNotice(q));
@@ -128,7 +159,7 @@ const initQuizWidget = () => {
   const renderQuestion = () => {
     const q = questions[currentIndex];
     el('current-question-num').textContent = String(currentIndex + 1);
-    el('question-text').textContent = q.question;
+    renderInlineCode(el('question-text'), q.question);
     el('question-code').textContent = q.code || '';
     el('question-code').classList.toggle('hidden', !q.code);
     el('progress-bar').style.width = `${currentIndex / questions.length * 100}%`;
@@ -150,7 +181,7 @@ const initQuizWidget = () => {
       choice.type = 'button';
       choice.dataset.option = option;
       // Text-only rendering keeps authored content out of HTML parsing.
-      choice.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+      renderInlineCode(choice, `${String.fromCharCode(65 + index)}. ${option}`);
       choice.addEventListener('click', () => selectAnswer(option));
       el('options-container').append(choice);
     });
@@ -182,7 +213,7 @@ const initQuizWidget = () => {
   }
 
   const paragraph = (text: string, classes = '') => {
-    const p = document.createElement('p'); p.textContent = text; p.className = classes; return p;
+    const p = document.createElement('p'); renderInlineCode(p, text); p.className = classes; return p;
   };
   function finish(expired = false, restoring = false) {
     if (!running) return;
@@ -197,12 +228,13 @@ const initQuizWidget = () => {
     el('expired-message').classList.toggle('hidden', !expired);
     el('progress-bar').style.width = '100%';
     el('topic-results').replaceChildren();
-    for (const result of topicResults(questions, answers)) {
+    const resultsByTopic = topicResults(questions, answers);
+    for (const result of resultsByTopic) {
       const row = document.createElement('tr'); row.className = 'border-b border-gray-200 dark:border-zinc-800';
       const topic = document.createElement('th'); topic.scope = 'row'; topic.className = 'text-start py-3 font-medium';
-      topic.textContent = translations[`topic.${result.topic}`] || result.topic;
+      topic.textContent = translations[`topic.${result.topic}`] || result.topic.replaceAll('-', ' ');
       const value = document.createElement('td'); value.className = 'text-start py-3';
-      value.textContent = `${result.correct}/${result.total} · ${t(result.correct === result.total ? 'allCorrect' : 'needsReview')}`;
+      value.textContent = `${result.correct}/${result.total} · ${Math.round(result.correct / result.total * 100)}% · ${t(result.correct === result.total ? 'allCorrect' : 'needsReview')}`;
       row.append(topic, value); el('topic-results').append(row);
     }
     el('mistake-list').replaceChildren();
@@ -210,7 +242,7 @@ const initQuizWidget = () => {
     for (const q of missed) {
       const card = document.createElement('article'); card.dir = 'ltr';
       card.className = 'border border-gray-200 dark:border-zinc-800 rounded-md p-4 text-start space-y-2';
-      const heading = document.createElement('h4'); heading.textContent = q.question; heading.className = 'font-bold'; card.append(heading);
+      const heading = document.createElement('h4'); renderInlineCode(heading, q.question); heading.className = 'font-bold'; card.append(heading);
       if (q.code) { const code = document.createElement('pre'); code.textContent = q.code; code.className = 'overflow-x-auto text-sm'; card.append(code); }
       card.append(paragraph(`${t('yourAnswer')}: ${answers.get(q.id) || t('unanswered')}`, 'text-sm text-red-700 dark:text-red-300'));
       card.append(paragraph(`${t('correctAnswer')}: ${q.correctAnswer}`, 'text-sm text-green-700 dark:text-green-300'));

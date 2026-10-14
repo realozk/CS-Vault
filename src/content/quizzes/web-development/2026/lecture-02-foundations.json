@@ -1,5 +1,6 @@
 {
   "title": "Lecture 2 — Foundations",
+  "date": "2026-10-14",
   "description": "Foundational questions on HTML, document structure, elements, lists, links, and validation.",
   "subject": "Web Development",
   "year": 2026,
@@ -12,29 +13,55 @@
     {
       "id": 1,
       "question": "What does HTML stand for?",
-      "options": ["Hyperlink Text Management Language", "Hypertext Markup Language", "Hyper Transfer Markup Language", "Host Text Markup Language"],
+      "options": [
+        "Hyperlink Text Management Language",
+        "Hypertext Markup Language",
+        "Hyper Transfer Markup Language",
+        "Host Text Markup Language"
+      ],
       "correctAnswer": "Hypertext Markup Language",
       "explanation": "HTML is the standard markup language used to structure web documents.",
       "answerSource": "marked",
-      "topic": "html-basics"
+      "topic": "html-basics",
+      "sourceSlides": [
+        4,
+        5,
+        12,
+        13
+      ]
     },
     {
       "id": 2,
       "question": "Which organization sets the standards for HTML and its related languages?",
-      "options": ["ICANN", "IETF", "W3C", "Mozilla"],
+      "options": [
+        "ICANN",
+        "IETF",
+        "W3C",
+        "Mozilla"
+      ],
       "correctAnswer": "W3C",
       "explanation": "The World Wide Web Consortium (W3C) develops Web standards, including HTML recommendations.",
       "answerSource": "marked",
-      "topic": "html-basics"
+      "topic": "html-basics",
+      "sourceSlide": 4
     },
     {
       "id": 3,
       "question": "What is the correct Document Type Definition (DTD) for HTML5?",
-      "options": ["<!DOCTYPE html5>", "<!DOCTYPE html>", "<html version=\"5\">", "<?xml version=\"1.0\"?>"],
+      "options": [
+        "<!DOCTYPE html5>",
+        "<!DOCTYPE html>",
+        "<html version=\"5\">",
+        "<?xml version=\"1.0\"?>"
+      ],
       "correctAnswer": "<!DOCTYPE html>",
       "explanation": "The HTML5 doctype is the short declaration <!DOCTYPE html>.",
       "answerSource": "marked",
-      "topic": "document-structure"
+      "topic": "document-structure",
+      "sourceSlides": [
+        7,
+        8
+      ]
     },
     {
       "id": 4,
@@ -48,16 +75,23 @@
       "correctAnswer": "Contain descriptive information about the web page document that does not display directly on the page.",
       "explanation": "The head contains metadata and other document information rather than the page's displayed content.",
       "answerSource": "marked",
-      "topic": "document-structure"
+      "topic": "document-structure",
+      "sourceSlide": 14
     },
     {
       "id": 5,
       "question": "Which element configures the text that will appear in the title bar or tab of the browser window?",
-      "options": ["<header>", "<title>", "<heading>", "<h1>"],
+      "options": [
+        "<header>",
+        "<title>",
+        "<heading>",
+        "<h1>"
+      ],
       "correctAnswer": "<title>",
       "explanation": "The title element sets the document title shown in the browser tab.",
       "answerSource": "marked",
-      "topic": "document-structure"
+      "topic": "document-structure",
+      "sourceSlide": 15
     },
     {
       "id": 6,
@@ -71,16 +105,30 @@
       "correctAnswer": "Stand-alone, or void, element.",
       "explanation": "A meta element is a void element and does not have a closing tag.",
       "answerSource": "marked",
-      "topic": "document-structure"
+      "topic": "document-structure",
+      "sourceSlides": [
+        16,
+        17
+      ]
     },
     {
       "id": 7,
       "question": "How many levels of heading elements are available in HTML?",
-      "options": ["3", "5", "6", "10"],
+      "options": [
+        "3",
+        "5",
+        "6",
+        "10"
+      ],
       "correctAnswer": "6",
       "explanation": "HTML provides six heading levels, from h1 through h6.",
       "answerSource": "marked",
-      "topic": "text-elements"
+      "topic": "text-elements",
+      "sourceSlides": [
+        19,
+        20,
+        21
+      ]
     },
     {
       "id": 8,
@@ -94,7 +142,12 @@
       "correctAnswer": "They are rendered by the browser with empty space above and below them.",
       "explanation": "Block elements begin on a new line and commonly have spacing above and below.",
       "answerSource": "marked",
-      "topic": "text-elements"
+      "topic": "text-elements",
+      "sourceSlides": [
+        19,
+        23,
+        25
+      ]
     },
     {
       "id": 9,
@@ -108,16 +161,23 @@
       "correctAnswer": "To cause the next element or text to display on a new line.",
       "explanation": "The br void element creates a line break.",
       "answerSource": "marked",
-      "topic": "text-elements"
+      "topic": "text-elements",
+      "sourceSlide": 27
     },
     {
       "id": 10,
       "question": "Which tag indents a block of text for special emphasis?",
-      "options": ["<indent>", "<blockquote>", "<p>", "<div>"],
+      "options": [
+        "<indent>",
+        "<blockquote>",
+        "<p>",
+        "<div>"
+      ],
       "correctAnswer": "<blockquote>",
       "explanation": "The blockquote element represents a block quotation and is conventionally indented by browsers.",
       "answerSource": "marked",
-      "topic": "text-elements"
+      "topic": "text-elements",
+      "sourceSlide": 29
     },
     {
       "id": 11,
@@ -131,16 +191,32 @@
       "correctAnswer": "Right in line with the text (inline display).",
       "explanation": "Phrase elements are inline and flow with surrounding text.",
       "answerSource": "marked",
-      "topic": "phrase-elements"
+      "topic": "phrase-elements",
+      "sourceSlides": [
+        31,
+        32,
+        33,
+        34
+      ]
     },
     {
       "id": 12,
       "question": "Which HTML element is used to create an ordered list?",
-      "options": ["<ul>", "<ol>", "<li>", "<dl>"],
+      "options": [
+        "<ul>",
+        "<ol>",
+        "<li>",
+        "<dl>"
+      ],
       "correctAnswer": "<ol>",
       "explanation": "The ol element creates an ordered list; li elements represent its items.",
       "answerSource": "marked",
-      "topic": "lists"
+      "topic": "lists",
+      "sourceSlides": [
+        36,
+        39,
+        40
+      ]
     },
     {
       "id": 13,
@@ -154,16 +230,23 @@
       "correctAnswer": "The term/phrase/sentence being described.",
       "explanation": "The dt element identifies the term; dd contains its description.",
       "answerSource": "marked",
-      "topic": "lists"
+      "topic": "lists",
+      "sourceSlide": 44
     },
     {
       "id": 14,
       "question": "Which entity code is used to display a copyright symbol on a web page?",
-      "options": ["&copy;", "#copyright;", "<copy>", "&c;"],
+      "options": [
+        "&copy;",
+        "#copyright;",
+        "<copy>",
+        "&c;"
+      ],
       "correctAnswer": "&copy;",
       "explanation": "The &copy; character reference displays the copyright symbol.",
       "answerSource": "marked",
-      "topic": "entities"
+      "topic": "entities",
+      "sourceSlide": 47
     },
     {
       "id": 15,
@@ -177,25 +260,46 @@
       "correctAnswer": "Containing the web page document's main navigation links.",
       "explanation": "The nav semantic element groups major navigation links.",
       "answerSource": "marked",
-      "topic": "semantic-elements"
+      "topic": "semantic-elements",
+      "sourceSlide": 49
     },
     {
       "id": 16,
       "question": "Which structural element configures a generic block area or division on a web page?",
-      "options": ["<section>", "<span>", "<div>", "<main>"],
+      "options": [
+        "<section>",
+        "<span>",
+        "<div>",
+        "<main>"
+      ],
       "correctAnswer": "<div>",
       "explanation": "The div element is a generic block container for grouping content.",
       "answerSource": "marked",
-      "topic": "semantic-elements"
+      "topic": "semantic-elements",
+      "sourceSlides": [
+        48,
+        49
+      ]
     },
     {
       "id": 17,
       "question": "What attribute within the anchor <a> tag specifies the destination file name or URL?",
-      "options": ["src", "link", "url", "href"],
+      "options": [
+        "src",
+        "link",
+        "url",
+        "href"
+      ],
       "correctAnswer": "href",
       "explanation": "The href attribute specifies the hyperlink destination.",
       "answerSource": "marked",
-      "topic": "links"
+      "topic": "links",
+      "sourceSlides": [
+        51,
+        52,
+        53,
+        54
+      ]
     },
     {
       "id": 18,
@@ -209,16 +313,23 @@
       "correctAnswer": "A visual representation of the structure or organization of pages in a website.",
       "explanation": "A site map represents the organization and relationships of pages in a website.",
       "answerSource": "marked",
-      "topic": "links"
+      "topic": "links",
+      "sourceSlide": 56
     },
     {
       "id": 19,
       "question": "How are comments written in HTML?",
-      "options": ["// This is a comment //", "/* This is a comment */", "<!-- This is a comment -->", "<comment> This is a comment </comment>"],
+      "options": [
+        "// This is a comment //",
+        "/* This is a comment */",
+        "<!-- This is a comment -->",
+        "<comment> This is a comment </comment>"
+      ],
       "correctAnswer": "<!-- This is a comment -->",
       "explanation": "HTML comments begin with <!-- and end with -->.",
       "answerSource": "marked",
-      "topic": "comments-validation"
+      "topic": "comments-validation",
+      "sourceSlide": 58
     },
     {
       "id": 20,
@@ -232,7 +343,8 @@
       "correctAnswer": "To check code for syntax errors and ensure more consistent browser display.",
       "explanation": "Validation helps find markup errors and supports more consistent rendering.",
       "answerSource": "marked",
-      "topic": "comments-validation"
+      "topic": "comments-validation",
+      "sourceSlide": 59
     }
   ]
 }
