@@ -1,0 +1,414 @@
+{
+  "title": "Lecture 1 - Complexity Basics MCQs",
+  "date": "2026-10-15",
+  "description": "Midterm MCQs on concepts, mathematical reasoning and proof steps. No code tracing or code-analysis questions.",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Lecture-1-Algorithm-Behaviour-and-Complexity-Analysis.pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "question": "Which property is required of an algorithm?",
+      "options": [
+        "It is written in a particular programming language.",
+        "It uses recursion.",
+        "It terminates after finitely many unambiguous steps.",
+        "It has constant running time."
+      ],
+      "correctAnswer": "It terminates after finitely many unambiguous steps.",
+      "explanation": "Termination and clear steps are part of the definition; recursion and constant time are not.",
+      "topic": "foundations",
+      "sourcePage": 3,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 1
+    },
+    {
+      "question": "Why compare algorithms by basic-operation growth instead of only stopwatch time?",
+      "options": [
+        "It makes input size irrelevant.",
+        "It proves correctness automatically.",
+        "Growth analysis reduces dependence on the particular machine.",
+        "Every machine executes every operation in one second."
+      ],
+      "correctAnswer": "Growth analysis reduces dependence on the particular machine.",
+      "explanation": "Measured seconds depend on hardware, compiler and implementation; growth describes scaling under a cost model.",
+      "topic": "foundations",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 2
+    },
+    {
+      "question": "For an array problem, what is a typical input-size measure n?",
+      "options": [
+        "The calendar time of execution.",
+        "The number of elements.",
+        "The CPU clock speed.",
+        "The number of programmer comments."
+      ],
+      "correctAnswer": "The number of elements.",
+      "explanation": "Array length describes problem size independently of the execution machine.",
+      "topic": "foundations",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 3
+    },
+    {
+      "question": "What does time complexity describe?",
+      "options": [
+        "How the number of basic operations grows with input size.",
+        "The correctness of every output.",
+        "The number of source files.",
+        "Only the amount of stored input."
+      ],
+      "correctAnswer": "How the number of basic operations grows with input size.",
+      "explanation": "It describes computational work as a function of size, not memory or correctness.",
+      "topic": "time-and-space",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 4
+    },
+    {
+      "question": "Which resource must be included when analyzing a recursive algorithm's auxiliary space?",
+      "options": [
+        "Only the elapsed time.",
+        "Every call ever made, all added together regardless of lifetime.",
+        "The memory of simultaneously active calls.",
+        "Only the final answer."
+      ],
+      "correctAnswer": "The memory of simultaneously active calls.",
+      "explanation": "Stack space depends on active recursion depth and local storage per call, not total historical calls.",
+      "topic": "time-and-space",
+      "sourcePage": 10,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 5
+    },
+    {
+      "question": "A computation repeatedly reuses a fixed number of scalar variables. What is their storage growth?",
+      "options": [
+        "Θ(n)",
+        "Θ(2ⁿ)",
+        "Θ(n²)",
+        "Θ(1)"
+      ],
+      "correctAnswer": "Θ(1)",
+      "explanation": "Reusing the same fixed storage does not allocate a new variable for each operation.",
+      "topic": "time-and-space",
+      "sourcePage": 10,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 6
+    },
+    {
+      "question": "An n by n matrix has which storage growth when each entry occupies constant space?",
+      "options": [
+        "Θ(1)",
+        "Θ(log n)",
+        "Θ(n²)",
+        "Θ(n)"
+      ],
+      "correctAnswer": "Θ(n²)",
+      "explanation": "There are n² stored entries.",
+      "topic": "time-and-space",
+      "sourcePage": 10,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 7
+    },
+    {
+      "question": "An input array takes Θ(n) space and the algorithm adds only two scalar variables. Which statement is correct?",
+      "options": [
+        "Total and auxiliary storage must both be Θ(1).",
+        "Time complexity must be Θ(1).",
+        "Auxiliary storage must be Θ(n²).",
+        "Total storage can be Θ(n) while auxiliary storage is Θ(1)."
+      ],
+      "correctAnswer": "Total storage can be Θ(n) while auxiliary storage is Θ(1).",
+      "explanation": "Total storage may include the input; auxiliary storage counts additional working memory.",
+      "topic": "time-and-space",
+      "sourcePage": 12,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 8
+    },
+    {
+      "question": "For a fixed input size, what is the worst-case running time?",
+      "options": [
+        "The cost averaged over a chosen distribution.",
+        "The maximum cost over all inputs of that size.",
+        "The minimum possible cost.",
+        "The cost of whichever input was tested first."
+      ],
+      "correctAnswer": "The maximum cost over all inputs of that size.",
+      "explanation": "Worst case takes a maximum; average and best case are different functions.",
+      "topic": "case-behaviour",
+      "sourcePage": 16,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 9
+    },
+    {
+      "question": "What additional assumption is needed to define average-case running time?",
+      "options": [
+        "That all machines have equal speed.",
+        "That the algorithm is recursive.",
+        "That every input is the worst case.",
+        "A probability distribution over inputs."
+      ],
+      "correctAnswer": "A probability distribution over inputs.",
+      "explanation": "An expectation needs a distribution specifying how inputs are weighted.",
+      "topic": "case-behaviour",
+      "sourcePage": 16,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 10
+    },
+    {
+      "question": "In a left-to-right linear scan, where is a present target in the best case?",
+      "options": [
+        "At the first position inspected.",
+        "At the final position.",
+        "At every position simultaneously.",
+        "Absent from the array."
+      ],
+      "correctAnswer": "At the first position inspected.",
+      "explanation": "A first-position match ends the scan after constant work.",
+      "topic": "case-behaviour",
+      "sourcePage": 15,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 11
+    },
+    {
+      "question": "Which order is increasing for sufficiently large n?",
+      "options": [
+        "log n, n², n, n log n",
+        "log n, n, n log n, n²",
+        "n, log n, n², n log n",
+        "n², n log n, n, log n"
+      ],
+      "correctAnswer": "log n, n, n log n, n²",
+      "explanation": "Logarithmic growth is below linear, then linearithmic, then quadratic.",
+      "topic": "growth-rates",
+      "sourcePage": 18,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 12
+    },
+    {
+      "question": "What is the tight asymptotic class of 7n³ + 25n + 60?",
+      "options": [
+        "Θ(n²)",
+        "Θ(n³)",
+        "Θ(n)",
+        "Θ(2ⁿ)"
+      ],
+      "correctAnswer": "Θ(n³)",
+      "explanation": "The positive cubic term dominates lower-order terms.",
+      "topic": "growth-rates",
+      "sourcePage": 21,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 13
+    },
+    {
+      "question": "What is the tight asymptotic class of 50n log n + 20n?",
+      "options": [
+        "Θ(n)",
+        "Θ(n log n)",
+        "Θ(log n)",
+        "Θ(n²)"
+      ],
+      "correctAnswer": "Θ(n log n)",
+      "explanation": "The n log n term dominates n for large n.",
+      "topic": "growth-rates",
+      "sourcePage": 21,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 14
+    },
+    {
+      "question": "What is the tight asymptotic class of the positive constant function f(n)=15?",
+      "options": [
+        "Θ(1)",
+        "Θ(log n)",
+        "Θ(n)",
+        "Θ(n¹⁵)"
+      ],
+      "correctAnswer": "Θ(1)",
+      "explanation": "The function does not grow with n.",
+      "topic": "growth-rates",
+      "sourcePage": 21,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 15
+    },
+    {
+      "question": "If f(n)=3n²+17n log₂ n+1000, which upper-bound statement is correct?",
+      "options": [
+        "Only f ∈ O(n³).",
+        "Only f ∈ O(n²).",
+        "Neither bound holds.",
+        "Both f ∈ O(n²) and f ∈ O(n³)."
+      ],
+      "correctAnswer": "Both f ∈ O(n²) and f ∈ O(n³).",
+      "explanation": "The function has tight quadratic growth, and cubic is also a valid looser upper bound.",
+      "topic": "asymptotic-bounds",
+      "sourcePage": 20,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 16
+    },
+    {
+      "question": "[Proof MCQ] Which condition proves f ∈ O(g) for eventually nonnegative functions?",
+      "options": [
+        "f(n)≥c g(n) for every sufficiently large n.",
+        "For every n there is a different c=n making the inequality true.",
+        "There are c>0 and n₀ such that f(n)≤c g(n) for every n≥n₀.",
+        "The inequality holds for one large input size."
+      ],
+      "correctAnswer": "There are c>0 and n₀ such that f(n)≤c g(n) for every n≥n₀.",
+      "explanation": "Big-O requires a fixed positive multiplier and an eventual upper bound across all larger inputs.",
+      "topic": "proofs",
+      "sourcePage": 19,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 17
+    },
+    {
+      "question": "[Proof MCQ] Which inequality direction is needed for an Ω(g) lower bound?",
+      "options": [
+        "f(n)=g(n) for one n only.",
+        "f(n)≤0 for all n.",
+        "f(n)≤c g(n) eventually, with c>0.",
+        "f(n)≥c g(n) eventually, with c>0."
+      ],
+      "correctAnswer": "f(n)≥c g(n) eventually, with c>0.",
+      "explanation": "Omega requires f to be at least a positive constant multiple of g eventually.",
+      "topic": "proofs",
+      "sourcePage": 22,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 18
+    },
+    {
+      "question": "[Proof MCQ] What is sufficient to establish f ∈ Θ(g)?",
+      "options": [
+        "Prove both f ∈ O(g) and f ∈ Ω(g).",
+        "Show the average of f and g is small.",
+        "Check f(100)=g(100).",
+        "Prove only f ∈ O(g)."
+      ],
+      "correctAnswer": "Prove both f ∈ O(g) and f ∈ Ω(g).",
+      "explanation": "Theta requires matching upper and lower asymptotic bounds.",
+      "topic": "proofs",
+      "sourcePage": 23,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 19
+    },
+    {
+      "question": "[Proof MCQ] In an asymptotic proof, may c depend on n?",
+      "options": [
+        "Only for Big-O, never for Omega.",
+        "No; c must be a fixed positive constant.",
+        "Yes; choosing c=n always proves the desired class.",
+        "Only when the function is a polynomial."
+      ],
+      "correctAnswer": "No; c must be a fixed positive constant.",
+      "explanation": "The existence of constants independent of input size is essential to the definitions.",
+      "topic": "proofs",
+      "sourcePage": 25,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 20
+    },
+    {
+      "question": "[Proof MCQ] Why is checking an inequality only at n=100 insufficient?",
+      "options": [
+        "Asymptotic claims cannot use inequalities.",
+        "The threshold must equal 1000.",
+        "The definition requires it only at n=1.",
+        "The definition requires it for every n beyond some threshold."
+      ],
+      "correctAnswer": "The definition requires it for every n beyond some threshold.",
+      "explanation": "A single successful example does not establish an eventual bound.",
+      "topic": "proofs",
+      "sourcePage": 25,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 21
+    },
+    {
+      "question": "What does Θ(n²) mean by itself?",
+      "options": [
+        "The cost is necessarily an average-case cost.",
+        "The cost equals exactly n² operations for every n.",
+        "The cost is necessarily a best-case cost.",
+        "A tight quadratic bound on the cost function being discussed."
+      ],
+      "correctAnswer": "A tight quadratic bound on the cost function being discussed.",
+      "explanation": "Theta gives a tight growth class; best, worst and average specify which cost function is bounded.",
+      "topic": "asymptotic-bounds",
+      "sourcePage": 23,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 22
+    },
+    {
+      "question": "Why are log₂ n and log₁₀ n in the same Θ class?",
+      "options": [
+        "The logarithm bases become equal as n grows.",
+        "All increasing functions have the same Θ class.",
+        "Both functions are constant.",
+        "Changing a fixed logarithm base multiplies by a positive constant."
+      ],
+      "correctAnswer": "Changing a fixed logarithm base multiplies by a positive constant.",
+      "explanation": "The change-of-base formula gives a constant ratio.",
+      "topic": "growth-rates",
+      "sourcePage": 18,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 23
+    },
+    {
+      "question": "[Proof MCQ] What must accompany an induction hypothesis in a correctness proof?",
+      "options": [
+        "A valid base case and a justified induction step.",
+        "A claim that all smaller cases are false.",
+        "One arbitrarily large successful test.",
+        "A fast stopwatch result only."
+      ],
+      "correctAnswer": "A valid base case and a justified induction step.",
+      "explanation": "Induction establishes a starting case and shows the property follows for the next case from the hypothesis.",
+      "topic": "correctness",
+      "sourcePage": 4,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 24
+    },
+    {
+      "question": "If a cost is exactly proportional to n², approximately what happens when n doubles?",
+      "options": [
+        "It increases by a factor of 4.",
+        "It increases by a factor of 8.",
+        "It remains unchanged.",
+        "It increases by a factor of 2."
+      ],
+      "correctAnswer": "It increases by a factor of 4.",
+      "explanation": "Substituting 2n gives (2n)²=4n².",
+      "topic": "growth-rates",
+      "sourcePage": 18,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 25
+    }
+  ]
+}

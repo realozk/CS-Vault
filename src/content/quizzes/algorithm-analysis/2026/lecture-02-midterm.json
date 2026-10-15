@@ -1,0 +1,414 @@
+{
+  "title": "Lecture 2 - Asymptotic Proof MCQs",
+  "date": "2026-10-15",
+  "description": "Midterm MCQs on concepts, mathematical reasoning and proof steps. No code tracing or code-analysis questions.",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Lecture-2-Practice-Algorithm-Behaviour-and-Complexity-Analysis.pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "question": "[Proof MCQ] To bound 3n²+17n log₂ n+1000 above by a multiple of n², which inequality is useful for n≥2?",
+      "options": [
+        "log₂ n≤n",
+        "log₂ n≥n²",
+        "1000≤1 for every n",
+        "n²≤n for every n"
+      ],
+      "correctAnswer": "log₂ n≤n",
+      "explanation": "Multiplying log₂ n≤n by 17n bounds the middle term by 17n².",
+      "topic": "proofs",
+      "sourcePage": 3,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 1
+    },
+    {
+      "question": "[Proof MCQ] Which pair certifies 3n²+17n log₂ n+1000 ∈ O(n²)?",
+      "options": [
+        "c=3, n₀=1",
+        "c=1020, n₀=2",
+        "c=0, n₀=2",
+        "c=1, n₀=2"
+      ],
+      "correctAnswer": "c=1020, n₀=2",
+      "explanation": "For n≥2, the three terms are bounded by 3n², 17n² and 1000n², respectively.",
+      "topic": "proofs",
+      "sourcePage": 3,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 2
+    },
+    {
+      "question": "[Proof MCQ] Why does 3n²+17n log₂ n+1000 ≥ 3n² hold for n≥1?",
+      "options": [
+        "Dropping positive terms increases the expression.",
+        "The discarded terms are nonnegative.",
+        "All lower-order terms are exactly zero.",
+        "Logarithms are always negative."
+      ],
+      "correctAnswer": "The discarded terms are nonnegative.",
+      "explanation": "Removing nonnegative terms gives a lower bound.",
+      "topic": "proofs",
+      "sourcePage": 4,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 3
+    },
+    {
+      "question": "[Proof MCQ] If a lower bound holds from n=1 and an upper bound from n=2, which common threshold is safe for Θ?",
+      "options": [
+        "n₀=2",
+        "n₀=-1",
+        "No common threshold exists.",
+        "n₀=0"
+      ],
+      "correctAnswer": "n₀=2",
+      "explanation": "Use the larger of the two thresholds so both inequalities hold.",
+      "topic": "proofs",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 4
+    },
+    {
+      "question": "[Proof MCQ] Which chain proves 3n²+17n log₂ n+1000 ∈ Θ(n²)?",
+      "options": [
+        "f(n)≤1020n³ with no lower bound.",
+        "1020n²≤f(n)≤3n² for all n≥2.",
+        "3n²≤f(n)≤1020n² for all n≥2.",
+        "f(2)=f(2) only."
+      ],
+      "correctAnswer": "3n²≤f(n)≤1020n² for all n≥2.",
+      "explanation": "Matching lower and upper quadratic bounds with fixed constants establish Theta.",
+      "topic": "proofs",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 5
+    },
+    {
+      "question": "[Proof MCQ] For f(n)=7n³+25n+60 and n≥1, which upper estimate is valid?",
+      "options": [
+        "f(n)≤25n",
+        "f(n)≤60",
+        "f(n)≤92n³",
+        "f(n)≤7n³"
+      ],
+      "correctAnswer": "f(n)≤92n³",
+      "explanation": "Use n≤n³ and 1≤n³, then add coefficients: 7+25+60=92.",
+      "topic": "proofs",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 6
+    },
+    {
+      "question": "[Proof MCQ] Which witnesses prove 7n³+25n+60 ∈ Θ(n³)?",
+      "options": [
+        "c₁=n, c₂=n², n₀=1",
+        "c₁=7, c₂=92, n₀=1",
+        "c₁=0, c₂=92, n₀=1",
+        "c₁=92, c₂=7, n₀=1"
+      ],
+      "correctAnswer": "c₁=7, c₂=92, n₀=1",
+      "explanation": "The valid bounds are 7n³≤f(n)≤92n³ for n≥1; constants must be positive and fixed.",
+      "topic": "proofs",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 7
+    },
+    {
+      "question": "[Proof MCQ] Why can 20n be bounded above by 20n log₂ n when n≥2?",
+      "options": [
+        "Because 20 is an input-dependent constant.",
+        "Because log₂ n≤0.",
+        "Because n²=n.",
+        "Because log₂ n≥1."
+      ],
+      "correctAnswer": "Because log₂ n≥1.",
+      "explanation": "Multiplying log₂ n≥1 by positive 20n gives the needed inequality.",
+      "topic": "proofs",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 8
+    },
+    {
+      "question": "[Proof MCQ] Which upper bound follows for 50n log₂ n+20n when n≥2?",
+      "options": [
+        "70 log₂ n",
+        "20n",
+        "50n log₂ n",
+        "70n log₂ n"
+      ],
+      "correctAnswer": "70n log₂ n",
+      "explanation": "The linear term is at most 20n log₂ n, so the coefficients add to 70.",
+      "topic": "proofs",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 9
+    },
+    {
+      "question": "[Proof MCQ] Which safe constants prove 5log₂ n+100 ∈ Θ(log₂ n)?",
+      "options": [
+        "c₁=105, c₂=5, n₀=2",
+        "c₁=5, c₂=5, n₀=2",
+        "c₁=0, c₂=100, n₀=2",
+        "c₁=5, c₂=105, n₀=2"
+      ],
+      "correctAnswer": "c₁=5, c₂=105, n₀=2",
+      "explanation": "For n≥2, log₂ n≥1, so 5log₂ n≤f(n)≤105log₂ n.",
+      "topic": "proofs",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 10
+    },
+    {
+      "question": "[Proof MCQ] For n≥1, n³+20n²+100 is at most which simple cubic bound?",
+      "options": [
+        "100n",
+        "21n³",
+        "121n³",
+        "n³"
+      ],
+      "correctAnswer": "121n³",
+      "explanation": "Bound n² and 1 by n³, then add 1+20+100.",
+      "topic": "proofs",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 11
+    },
+    {
+      "question": "[Proof MCQ] Why is 3n+2 not in Ω(n²)?",
+      "options": [
+        "Its ratio to n² tends to infinity.",
+        "(3n+2)/n² tends to 0, so no fixed positive lower multiplier works.",
+        "It fails at n=1, which alone disproves every eventual bound.",
+        "Every linear function has a quadratic lower bound."
+      ],
+      "correctAnswer": "(3n+2)/n² tends to 0, so no fixed positive lower multiplier works.",
+      "explanation": "The ratio 3/n+2/n² approaches zero, contradicting any positive eventual lower bound.",
+      "topic": "proofs",
+      "sourcePage": 11,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 12
+    },
+    {
+      "question": "[Proof MCQ] Which chain proves 3n+2 ∈ Θ(n)?",
+      "options": [
+        "3n≤3n+2≤5n for n≥1.",
+        "3n+2≥n² for n≥1.",
+        "5n≤3n+2≤3n for n≥1.",
+        "3n+2≤n for n≥1."
+      ],
+      "correctAnswer": "3n≤3n+2≤5n for n≥1.",
+      "explanation": "Since 2≤2n for n≥1, the upper bound is 5n; the lower bound is 3n.",
+      "topic": "proofs",
+      "sourcePage": 12,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 13
+    },
+    {
+      "question": "[Proof MCQ] Must the chosen Big-O constant c be the smallest possible?",
+      "options": [
+        "Yes; otherwise the proof is invalid.",
+        "No; c may be a different number for each n.",
+        "No; any fixed positive c with a valid threshold is sufficient.",
+        "Yes; c must always be 1."
+      ],
+      "correctAnswer": "No; any fixed positive c with a valid threshold is sufficient.",
+      "explanation": "The definition requires existence of suitable constants, not optimization of them.",
+      "topic": "proofs",
+      "sourcePage": 3,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 14
+    },
+    {
+      "question": "For f(n)=2n², which pair of claims is true?",
+      "options": [
+        "f ∈ O(n³) and f ∈ Ω(n).",
+        "f ∈ Θ(n³) and f ∈ Θ(n).",
+        "f ∈ O(n) and f ∈ Ω(n³).",
+        "f ∈ O(1) and f ∈ Ω(2ⁿ)."
+      ],
+      "correctAnswer": "f ∈ O(n³) and f ∈ Ω(n).",
+      "explanation": "Cubic is a looser upper bound; linear is a looser lower bound.",
+      "topic": "asymptotic-bounds",
+      "sourcePage": 13,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 15
+    },
+    {
+      "question": "Which reasoning proves n²+n ∈ O(n²)?",
+      "options": [
+        "n²+n≤2n² for n≥1.",
+        "An upper bound must discard n².",
+        "n²+n is constant.",
+        "n²+n≤n for n≥1."
+      ],
+      "correctAnswer": "n²+n≤2n² for n≥1.",
+      "explanation": "The lower-order n term is at most n² for n≥1.",
+      "topic": "growth-comparisons",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 16
+    },
+    {
+      "question": "Is 2ⁿ ∈ Ω(10n²) for sufficiently large n?",
+      "options": [
+        "No; Omega only applies to best-case algorithms.",
+        "Yes; because 2ⁿ=10n² for every n.",
+        "No; any coefficient 10 makes a polynomial grow faster than an exponential.",
+        "Yes; exponential growth eventually exceeds every constant multiple needed for this quadratic lower bound."
+      ],
+      "correctAnswer": "Yes; exponential growth eventually exceeds every constant multiple needed for this quadratic lower bound.",
+      "explanation": "Exponential growth dominates polynomial growth eventually; small initial values do not decide the claim.",
+      "topic": "growth-comparisons",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 17
+    },
+    {
+      "question": "Which argument shows 2ⁿ ∈ O(3ⁿ)?",
+      "options": [
+        "2ⁿ=3ⁿ for all large n.",
+        "The bases 2 and 3 are asymptotically equal constants, so both exponentials are Θ-equal.",
+        "2ⁿ/3ⁿ grows without bound.",
+        "2ⁿ/3ⁿ=(2/3)ⁿ≤1 for n≥0."
+      ],
+      "correctAnswer": "2ⁿ/3ⁿ=(2/3)ⁿ≤1 for n≥0.",
+      "explanation": "The ratio is bounded above, proving Big-O; it tends to zero, so this is not Theta.",
+      "topic": "growth-comparisons",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 18
+    },
+    {
+      "question": "Why is the constant function 10 in Θ(log₂ 10)?",
+      "options": [
+        "Both are positive constants independent of n.",
+        "log₂ 10 increases as n increases.",
+        "Theta always describes an average.",
+        "10 is logarithmic in n."
+      ],
+      "correctAnswer": "Both are positive constants independent of n.",
+      "explanation": "A fixed logarithm of a fixed positive argument greater than 1 is itself a positive constant.",
+      "topic": "growth-comparisons",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 19
+    },
+    {
+      "question": "Why is n not in O(10)?",
+      "options": [
+        "n is eventually at most 10.",
+        "For any fixed c, n eventually exceeds 10c.",
+        "The constant 10 has factorial growth.",
+        "Big-O cannot compare two positive functions."
+      ],
+      "correctAnswer": "For any fixed c, n eventually exceeds 10c.",
+      "explanation": "No fixed constant upper bound can contain the unbounded linear function.",
+      "topic": "growth-comparisons",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 20
+    },
+    {
+      "question": "Which identity helps compare n with log₂(n²)?",
+      "options": [
+        "log₂(n²)=(log₂ n)²",
+        "log₂(n²)=2log₂ n",
+        "log₂(n²)=log₂ n+2 for every n",
+        "log₂(n²)=n²"
+      ],
+      "correctAnswer": "log₂(n²)=2log₂ n",
+      "explanation": "The power rule moves the exponent into a multiplicative constant.",
+      "topic": "growth-comparisons",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 21
+    },
+    {
+      "question": "Is (log₂ n)² ∈ Θ(log₂ n+5)?",
+      "options": [
+        "Yes; every expression involving log is Θ(log n).",
+        "Yes; squaring any function only changes a constant.",
+        "No; the numerator tends to zero.",
+        "No; the ratio grows without bound."
+      ],
+      "correctAnswer": "No; the ratio grows without bound.",
+      "explanation": "The denominator is Θ(log n), while the numerator has an additional unbounded log factor.",
+      "topic": "growth-comparisons",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 22
+    },
+    {
+      "question": "What is insertion sort's tight best-case time on already sorted input?",
+      "options": [
+        "Θ(n)",
+        "Θ(n²)",
+        "Θ(1)",
+        "Θ(log n)"
+      ],
+      "correctAnswer": "Θ(n)",
+      "explanation": "The outer progression still visits the elements, but little shifting is needed.",
+      "topic": "case-behaviour",
+      "sourcePage": 7,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 23
+    },
+    {
+      "question": "What is insertion sort's tight worst-case time on reverse-sorted distinct input?",
+      "options": [
+        "Θ(n²)",
+        "Θ(log n)",
+        "Θ(1)",
+        "Θ(n)"
+      ],
+      "correctAnswer": "Θ(n²)",
+      "explanation": "The total shifts grow like 1+2+...+(n-1), which is quadratic.",
+      "topic": "case-behaviour",
+      "sourcePage": 7,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 24
+    },
+    {
+      "question": "Which statement correctly separates notation from input cases?",
+      "options": [
+        "Θ always means average case.",
+        "O cannot describe a best-case function.",
+        "Ω always means best case, regardless of which function is given.",
+        "O, Ω and Θ can bound best-, worst- or average-case cost functions."
+      ],
+      "correctAnswer": "O, Ω and Θ can bound best-, worst- or average-case cost functions.",
+      "explanation": "The formal inequalities define bounds; input cases define the cost function being bounded.",
+      "topic": "asymptotic-bounds",
+      "sourcePage": 2,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 25
+    }
+  ]
+}

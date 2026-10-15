@@ -1,0 +1,414 @@
+{
+  "title": "Lecture 5 - Randomized Algorithms MCQs",
+  "date": "2026-10-15",
+  "description": "Midterm MCQs on concepts, mathematical reasoning and proof steps. No code tracing or code-analysis questions.",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Lecture05-Randomized-Algorithms.pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "question": "Why can randomized pivoting help quicksort on a fixed sorted input of distinct keys?",
+      "options": [
+        "Sorted inputs cease to contain n elements.",
+        "Partitioning becomes constant time.",
+        "Every chosen pivot is guaranteed to be the exact median.",
+        "Input order no longer determines a fixed bad pivot sequence."
+      ],
+      "correctAnswer": "Input order no longer determines a fixed bad pivot sequence.",
+      "explanation": "Random pivot choices remove the systematic first/last-pivot bias without guaranteeing every split is good.",
+      "topic": "randomization",
+      "sourcePage": 4,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 1
+    },
+    {
+      "question": "Which description matches a Las Vegas algorithm?",
+      "options": [
+        "It can return wrong answers but always uses exactly one operation.",
+        "It returns correct answers, while its runtime depends on random choices.",
+        "Its runtime is necessarily constant.",
+        "It never uses randomness."
+      ],
+      "correctAnswer": "It returns correct answers, while its runtime depends on random choices.",
+      "explanation": "Correctness is preserved; the random quantity is computational effort.",
+      "topic": "randomized-types",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 2
+    },
+    {
+      "question": "Which description matches a Monte Carlo algorithm?",
+      "options": [
+        "Its only uncertainty is the programmer's identity.",
+        "It must sort an array.",
+        "It is always correct and never has a runtime bound.",
+        "Its work is bounded, but its answer can have a controlled probability of error."
+      ],
+      "correctAnswer": "Its work is bounded, but its answer can have a controlled probability of error.",
+      "explanation": "Monte Carlo algorithms permit error probability, unlike the lecture's Las Vegas examples.",
+      "topic": "randomized-types",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 3
+    },
+    {
+      "question": "How are randomized quicksort and randomized quickselect classified in this lecture?",
+      "options": [
+        "Monte Carlo because random pivots can produce wrong answers.",
+        "Approximation algorithms that always return nearly correct ranks.",
+        "Las Vegas.",
+        "Deterministic because their input is fixed."
+      ],
+      "correctAnswer": "Las Vegas.",
+      "explanation": "Correctly implemented pivot choices change runtime, not the required result.",
+      "topic": "randomized-types",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 4
+    },
+    {
+      "question": "What is the main performance metric for a Las Vegas algorithm?",
+      "options": [
+        "Expected running time.",
+        "Only the number of source files.",
+        "Probability that a correct implementation returns a wrong answer.",
+        "The color of its output."
+      ],
+      "correctAnswer": "Expected running time.",
+      "explanation": "The runtime varies over the random choices, while output correctness is maintained.",
+      "topic": "randomized-types",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 5
+    },
+    {
+      "question": "Which qualification matters when claiming repetition reduces Monte Carlo error?",
+      "options": [
+        "Reusing exactly the same random choices always gives independent trials.",
+        "The trials and output-combination rule must support the claimed reduction.",
+        "Repeating a wrong answer guarantees correctness.",
+        "A Monte Carlo algorithm becomes deterministic after two runs."
+      ],
+      "correctAnswer": "The trials and output-combination rule must support the claimed reduction.",
+      "explanation": "Independent trials with an appropriate decision rule can reduce error; repetition alone is not a universal guarantee.",
+      "topic": "randomized-types",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 6
+    },
+    {
+      "question": "What is the expected running time of standard randomized quicksort on distinct keys with uniform pivots?",
+      "options": [
+        "Θ(1)",
+        "Θ(n²)",
+        "Θ(log n)",
+        "Θ(n log n)"
+      ],
+      "correctAnswer": "Θ(n log n)",
+      "explanation": "Averaging over random pivots gives linearithmic expected work for any fixed order of distinct keys.",
+      "topic": "randomized-quicksort",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 7
+    },
+    {
+      "question": "Does uniform random pivoting remove quicksort's theoretical quadratic worst case?",
+      "options": [
+        "No; sufficiently unlucky pivot sequences can still give Θ(n²).",
+        "Yes; every run is guaranteed Θ(n log n).",
+        "Yes; every split becomes exactly equal.",
+        "No; its expected time also necessarily becomes Θ(n²)."
+      ],
+      "correctAnswer": "No; sufficiently unlucky pivot sequences can still give Θ(n²).",
+      "explanation": "Expected performance improves, but the worst possible random sequence remains quadratic.",
+      "topic": "randomized-quicksort",
+      "sourcePage": 9,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 8
+    },
+    {
+      "question": "Which pivot sequence causes quicksort's worst-case shape on distinct keys?",
+      "options": [
+        "Always producing two equal-size sides.",
+        "Always choosing a middle-ranked key.",
+        "Choosing each rank once after sorting is already complete.",
+        "Repeatedly choosing the smallest or largest remaining key."
+      ],
+      "correctAnswer": "Repeatedly choosing the smallest or largest remaining key.",
+      "explanation": "An extreme pivot leaves a side of size n-1 at each step.",
+      "topic": "randomized-quicksort",
+      "sourcePage": 7,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 9
+    },
+    {
+      "question": "Which recurrence models consistently balanced quicksort with linear partition work?",
+      "options": [
+        "T(n)=T(n-1)+Θ(n)",
+        "T(n)=2T(n-1)+Θ(1)",
+        "T(n)=2T(n/2)+Θ(n)",
+        "T(n)=T(n/2)+Θ(n)"
+      ],
+      "correctAnswer": "T(n)=2T(n/2)+Θ(n)",
+      "explanation": "Quicksort sorts both roughly equal sides after partitioning.",
+      "topic": "randomized-quicksort",
+      "sourcePage": 7,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 10
+    },
+    {
+      "question": "Which statement about median-of-three quicksort pivoting is correct?",
+      "options": [
+        "It guarantees constant-time sorting.",
+        "It removes the partition step.",
+        "It always finds the exact global median.",
+        "It can help in practice but still has quadratic worst cases."
+      ],
+      "correctAnswer": "It can help in practice but still has quadratic worst cases.",
+      "explanation": "A small deterministic sample is a heuristic, not a universal balanced-split guarantee.",
+      "topic": "pivot-strategies",
+      "sourcePage": 9,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 11
+    },
+    {
+      "question": "[Proof MCQ] For distinct ranked keys zᵢ and zⱼ, i<j, how many ranks lie in the inclusive interval i through j?",
+      "options": [
+        "j+i",
+        "j-i-1",
+        "j-i+1",
+        "j-i"
+      ],
+      "correctAnswer": "j-i+1",
+      "explanation": "The inclusive interval contains both endpoints plus its interior ranks.",
+      "topic": "proofs",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 12
+    },
+    {
+      "question": "[Proof MCQ] In randomized quicksort on distinct keys, when are zᵢ and zⱼ directly compared?",
+      "options": [
+        "Only after both keys have been removed from all subproblems.",
+        "When the first pivot from that interval is strictly between them.",
+        "When the first pivot from ranks i through j is either endpoint.",
+        "Only when every pivot is a median."
+      ],
+      "correctAnswer": "When the first pivot from ranks i through j is either endpoint.",
+      "explanation": "An endpoint pivot compares them; an interior pivot separates them before a direct comparison.",
+      "topic": "proofs",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 13
+    },
+    {
+      "question": "[Proof MCQ] For distinct keys and uniform pivots, what is P(zᵢ and zⱼ are compared), i<j?",
+      "options": [
+        "2/(j+i+1)",
+        "1/(j-i-1)",
+        "2/(j-i+1)",
+        "(j-i+1)/2"
+      ],
+      "correctAnswer": "2/(j-i+1)",
+      "explanation": "Two favorable endpoint ranks are among j-i+1 equally likely first pivots in the interval.",
+      "topic": "proofs",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 14
+    },
+    {
+      "question": "What is the comparison probability for adjacent ranks in randomized quicksort on distinct keys?",
+      "options": [
+        "1",
+        "1/n²",
+        "0",
+        "2/n for every n"
+      ],
+      "correctAnswer": "1",
+      "explanation": "For j=i+1, the formula is 2/(j-i+1)=2/2=1.",
+      "topic": "comparison-probability",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 15
+    },
+    {
+      "question": "For n distinct keys, what is the probability that the minimum and maximum are directly compared?",
+      "options": [
+        "2/n",
+        "1",
+        "(n-2)/n",
+        "1/n²"
+      ],
+      "correctAnswer": "2/n",
+      "explanation": "They are compared only if an endpoint is the first pivot among all n ranks.",
+      "topic": "comparison-probability",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 16
+    },
+    {
+      "question": "What is the comparison probability for ranks 2 and 6 under uniform randomized quicksort on distinct keys?",
+      "options": [
+        "4/5",
+        "1/2",
+        "2/7",
+        "2/5"
+      ],
+      "correctAnswer": "2/5",
+      "explanation": "The inclusive interval has 6-2+1=5 ranks, with two favorable endpoints.",
+      "topic": "comparison-probability",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 17
+    },
+    {
+      "question": "[Proof MCQ] If Xᵢⱼ indicates whether each unordered pair is compared, which expectation formula counts comparisons once?",
+      "options": [
+        "E[C]=2Σ(i<j) P(Xᵢⱼ=1), even after the probability includes both endpoints.",
+        "E[C]=the product of all pair probabilities.",
+        "E[C]=the probability of comparing just the minimum and maximum.",
+        "E[C]=Σ(i<j) E[Xᵢⱼ]=Σ(i<j) P(Xᵢⱼ=1)"
+      ],
+      "correctAnswer": "E[C]=Σ(i<j) E[Xᵢⱼ]=Σ(i<j) P(Xᵢⱼ=1)",
+      "explanation": "C is the sum of pair indicators. Linearity gives the sum of probabilities without another factor of two.",
+      "topic": "proofs",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 18
+    },
+    {
+      "question": "[Proof MCQ] Does linearity of expectation require the pair-comparison indicators to be independent?",
+      "options": [
+        "No; because the indicators are always all equal.",
+        "No; expectation of a sum is the sum of expectations even without independence.",
+        "Yes; otherwise expectations are undefined.",
+        "Yes; every pair must be independent of every other pair."
+      ],
+      "correctAnswer": "No; expectation of a sum is the sum of expectations even without independence.",
+      "explanation": "Independence is unnecessary for linearity; it is a different requirement used in other probability rules.",
+      "topic": "proofs",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 19
+    },
+    {
+      "question": "What problem does quickselect solve?",
+      "options": [
+        "Sort both partitions completely on every call.",
+        "Compute a matrix product.",
+        "Find only the maximum regardless of k.",
+        "Find a requested k-th smallest element without fully sorting every side."
+      ],
+      "correctAnswer": "Find a requested k-th smallest element without fully sorting every side.",
+      "explanation": "Selection requires an order statistic, not the complete sorted ordering.",
+      "topic": "quickselect",
+      "sourcePage": 10,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 20
+    },
+    {
+      "question": "After partitioning in quickselect, where does recursion continue if the pivot is not the target?",
+      "options": [
+        "In both sides, exactly as in quicksort.",
+        "Only in the side containing the desired rank.",
+        "Only in the side not containing the target.",
+        "In neither side for every target."
+      ],
+      "correctAnswer": "Only in the side containing the desired rank.",
+      "explanation": "The pivot rank identifies the one side that can contain the requested order statistic.",
+      "topic": "quickselect",
+      "sourcePage": 10,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 21
+    },
+    {
+      "question": "[Proof MCQ] Why does the balanced quickselect recurrence T(n)=T(n/2)+Θ(n) give Θ(n)?",
+      "options": [
+        "The work n+n/2+n/4+... is a geometric series of order n.",
+        "There are n levels each costing n.",
+        "Both sides must be added at every level.",
+        "Every call has zero partition cost."
+      ],
+      "correctAnswer": "The work n+n/2+n/4+... is a geometric series of order n.",
+      "explanation": "One retained branch means level costs shrink geometrically rather than remaining n across a full branching tree.",
+      "topic": "proofs",
+      "sourcePage": 11,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 22
+    },
+    {
+      "question": "Under uniform pivots on distinct keys, which pairing describes randomized quickselect?",
+      "options": [
+        "Θ(log n) expected time and Θ(1) worst-case time.",
+        "Θ(n²) expected time and Θ(n) worst-case time.",
+        "Θ(n log n) expected time and Θ(n log n) worst-case time.",
+        "Θ(n) expected time and Θ(n²) worst-case time."
+      ],
+      "correctAnswer": "Θ(n) expected time and Θ(n²) worst-case time.",
+      "explanation": "Only one relevant partition is explored; expectation is linear, but repeated poor shrinkage can still be quadratic.",
+      "topic": "quickselect",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 23
+    },
+    {
+      "question": "Using the lecture's 0-based global target-index convention, what index represents the fourth smallest element?",
+      "options": [
+        "k=n-4 for every input size",
+        "k=0",
+        "k=3",
+        "k=4"
+      ],
+      "correctAnswer": "k=3",
+      "explanation": "The first smallest is index 0, so the fourth is index 3; a 1-based rank convention would use 4.",
+      "topic": "selection-pitfalls",
+      "sourcePage": 12,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 24
+    },
+    {
+      "question": "Why is a three-way partition useful when many keys equal the pivot?",
+      "options": [
+        "It changes Las Vegas selection into a possibly wrong Monte Carlo method.",
+        "It groups equal keys together so repeated equal values need not form a long chain of nearly unchanged subproblems.",
+        "It removes the need to specify the target rank.",
+        "It guarantees every pivot has a unique value."
+      ],
+      "correctAnswer": "It groups equal keys together so repeated equal values need not form a long chain of nearly unchanged subproblems.",
+      "explanation": "The equal-to-pivot group can be handled at once; simple two-way schemes can degrade with heavy duplication.",
+      "topic": "selection-pitfalls",
+      "sourcePage": 12,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 25
+    }
+  ]
+}

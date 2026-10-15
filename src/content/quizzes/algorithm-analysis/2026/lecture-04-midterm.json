@@ -1,0 +1,414 @@
+{
+  "title": "Lecture 4 - Master Theorem & Divide-and-Conquer MCQs",
+  "date": "2026-10-15",
+  "description": "Midterm MCQs on concepts, mathematical reasoning and proof steps. No code tracing or code-analysis questions.",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Master-Theorem-and-Divide-and-Conquer-Algorithms.pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "question": "In T(n)=aT(n/b)+f(n), what does a represent?",
+      "options": [
+        "The number of recursive subproblems.",
+        "The logarithm base of f(n).",
+        "The reduction factor b.",
+        "The total cost of all tree levels."
+      ],
+      "correctAnswer": "The number of recursive subproblems.",
+      "explanation": "There are a recursive calls of size n/b each.",
+      "topic": "master-theorem",
+      "sourcePage": 4,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 1
+    },
+    {
+      "question": "What does f(n) represent in the Master form?",
+      "options": [
+        "The final answer returned by the algorithm.",
+        "The non-recursive dividing and combining work.",
+        "The number of input elements only.",
+        "The recursive cost already represented by aT(n/b)."
+      ],
+      "correctAnswer": "The non-recursive dividing and combining work.",
+      "explanation": "The recurrence separates recursive subproblem costs from work done outside those calls.",
+      "topic": "master-theorem",
+      "sourcePage": 4,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 2
+    },
+    {
+      "question": "Which requirements on the constants are part of the stated Master form?",
+      "options": [
+        "a=0 and b=0",
+        "a<0 and b=1",
+        "a≥1 and b>1",
+        "a=n and b=n for all n"
+      ],
+      "correctAnswer": "a≥1 and b>1",
+      "explanation": "The standard form assumes a fixed positive number of subproblems and a fixed shrink factor greater than 1.",
+      "topic": "master-theorem",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 3
+    },
+    {
+      "question": "What is the comparison exponent d for T(n)=aT(n/b)+f(n)?",
+      "options": [
+        "d=a/b",
+        "d=a+b",
+        "d=log_a b",
+        "d=log_b a"
+      ],
+      "correctAnswer": "d=log_b a",
+      "explanation": "The leaf count grows as n^(log_b a).",
+      "topic": "master-theorem",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 4
+    },
+    {
+      "question": "For f(n)=Θ(n^k(log n)^p), which result holds when d=log_b a>k?",
+      "options": [
+        "Θ(n^(d+k))",
+        "Θ(log n)",
+        "Θ(n^d)",
+        "Θ(n^k(log n)^(p+1))"
+      ],
+      "correctAnswer": "Θ(n^d)",
+      "explanation": "A polynomially larger leaf exponent dominates any fixed logarithmic factor.",
+      "topic": "master-theorem",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 5
+    },
+    {
+      "question": "If d=k and p=0, what does the balanced Master case give?",
+      "options": [
+        "Θ(log log n)",
+        "Θ(n^(d+1))",
+        "Θ(n^d log n)",
+        "Θ(n^d)"
+      ],
+      "correctAnswer": "Θ(n^d log n)",
+      "explanation": "Equal polynomial work per level adds one logarithmic factor.",
+      "topic": "master-theorem",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 6
+    },
+    {
+      "question": "If d=k and f(n)=Θ(n^d log n), what is the solution?",
+      "options": [
+        "Θ(n^(d+1))",
+        "Θ(n^d log n)",
+        "Θ(n^d(log n)²)",
+        "Θ((log n)²)"
+      ],
+      "correctAnswer": "Θ(n^d(log n)²)",
+      "explanation": "Here p=1>-1, so the generalized equal-exponent case increases p by 1.",
+      "topic": "master-theorem",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 7
+    },
+    {
+      "question": "If d=k and p=-1, what is the generalized Master result?",
+      "options": [
+        "Θ(n^d log log n)",
+        "Θ(n^d/log n)",
+        "Θ(n^(d-1))",
+        "Θ(n^d log n)"
+      ],
+      "correctAnswer": "Θ(n^d log log n)",
+      "explanation": "The reciprocal-log equal-exponent case yields a log log n factor.",
+      "topic": "master-theorem",
+      "sourcePage": 5,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 8
+    },
+    {
+      "question": "What is the tight solution of 4T(n/2)+n²/(log₂ n)², with a constant base case above n=1?",
+      "options": [
+        "Θ(n²/(log n)²)",
+        "Θ(n³)",
+        "Θ(n² log n)",
+        "Θ(n²)"
+      ],
+      "correctAnswer": "Θ(n²)",
+      "explanation": "d=log₂4=2=k and p=-2<-1, giving Θ(n²).",
+      "topic": "master-theorem",
+      "sourcePage": 9,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 9
+    },
+    {
+      "question": "What is the tight solution of T(n)=2T(n/2)+n?",
+      "options": [
+        "Θ(n log n)",
+        "Θ(log n)",
+        "Θ(n)",
+        "Θ(n²)"
+      ],
+      "correctAnswer": "Θ(n log n)",
+      "explanation": "a=b=2 gives d=k=1 with p=0, so the equal case adds log n.",
+      "topic": "master-examples",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 10
+    },
+    {
+      "question": "What is the tight solution of T(n)=5T(n/2)+n²?",
+      "options": [
+        "Θ(n^(log₂5))",
+        "Θ(n² log n)",
+        "Θ(n²)",
+        "Θ(n⁵)"
+      ],
+      "correctAnswer": "Θ(n^(log₂5))",
+      "explanation": "log₂5≈2.322 is greater than 2; the leaves dominate.",
+      "topic": "master-examples",
+      "sourcePage": 7,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 11
+    },
+    {
+      "question": "What is the tight solution of T(n)=12T(n/3)+n³?",
+      "options": [
+        "Θ(n^(log₃12))",
+        "Θ(n³ log n)",
+        "Θ(n³)",
+        "Θ(n¹²)"
+      ],
+      "correctAnswer": "Θ(n³)",
+      "explanation": "log₃12≈2.262<3; cubic non-recursive work dominates and satisfies regularity.",
+      "topic": "master-examples",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 12
+    },
+    {
+      "question": "[Proof MCQ] For f(n)=n³ and a=12,b=3, which ratio verifies Case 3 regularity?",
+      "options": [
+        "12f(n/3)/f(n)=4/9<1",
+        "12f(n/3)/f(n)=4>1",
+        "12f(n/3)/f(n)=12",
+        "12f(n/3)/f(n)=n³"
+      ],
+      "correctAnswer": "12f(n/3)/f(n)=4/9<1",
+      "explanation": "12(n/3)³=(4/9)n³, so the next level shrinks by a constant factor below 1.",
+      "topic": "proofs",
+      "sourcePage": 8,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 13
+    },
+    {
+      "question": "Which recurrence is not directly in the equal-size Master form with a fixed shrink factor b>1?",
+      "options": [
+        "T(n)=5T(n/2)+n²",
+        "T(n)=8T(n/2)+n²",
+        "T(n)=T(n-1)+n",
+        "T(n)=2T(n/2)+n"
+      ],
+      "correctAnswer": "T(n)=T(n-1)+n",
+      "explanation": "Subtracting one is not dividing by a fixed constant greater than 1.",
+      "topic": "theorem-applicability",
+      "sourcePage": 4,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 14
+    },
+    {
+      "question": "Which sequence correctly names the divide-and-conquer phases?",
+      "options": [
+        "Combine, randomize, compile.",
+        "Count, allocate, delete.",
+        "Divide, conquer, combine.",
+        "Search, hash, backtrack."
+      ],
+      "correctAnswer": "Divide, conquer, combine.",
+      "explanation": "Break the problem into smaller instances, solve them, then combine their results.",
+      "topic": "divide-and-conquer",
+      "sourcePage": 11,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 15
+    },
+    {
+      "question": "What input property is required by ordinary binary search?",
+      "options": [
+        "All elements are equal.",
+        "The array is reverse-sorted while comparisons assume ascending order.",
+        "The array is sorted according to the search order.",
+        "The array has exactly two elements."
+      ],
+      "correctAnswer": "The array is sorted according to the search order.",
+      "explanation": "Ordering justifies discarding a half after comparing with the midpoint.",
+      "topic": "binary-search",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 16
+    },
+    {
+      "question": "Why is binary search's worst-case recurrence T(n)=T(n/2)+Θ(1), rather than 2T(n/2)+Θ(1)?",
+      "options": [
+        "The input never becomes smaller.",
+        "It fully sorts both halves.",
+        "Only one half needs to be searched after the comparison.",
+        "Both halves are searched simultaneously at no cost."
+      ],
+      "correctAnswer": "Only one half needs to be searched after the comparison.",
+      "explanation": "The comparison identifies which half could contain the target.",
+      "topic": "binary-search",
+      "sourcePage": 14,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 17
+    },
+    {
+      "question": "How do quicksort and merge sort primarily differ in dividing their input?",
+      "options": [
+        "Quicksort partitions by pivot-relative values; merge sort splits by positions.",
+        "Both must always split into equal-value groups.",
+        "Quicksort first fully sorts the whole array.",
+        "Merge sort requires a random pivot."
+      ],
+      "correctAnswer": "Quicksort partitions by pivot-relative values; merge sort splits by positions.",
+      "explanation": "Value-based partitioning can be unbalanced; the standard merge-sort position split is balanced.",
+      "topic": "quicksort",
+      "sourcePage": 15,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 18
+    },
+    {
+      "question": "Which recurrence describes quicksort with a repeated extreme pivot and linear partition work?",
+      "options": [
+        "T(n)=2T(n/2)+Θ(n)",
+        "T(n)=T(n-1)+Θ(n)",
+        "T(n)=T(n-1)+Θ(1)",
+        "T(n)=T(n/2)+Θ(1)"
+      ],
+      "correctAnswer": "T(n)=T(n-1)+Θ(n)",
+      "explanation": "Only one nonempty side of size n-1 remains, while partitioning still scans the current input.",
+      "topic": "quicksort",
+      "sourcePage": 16,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 19
+    },
+    {
+      "question": "What is the arithmetic cost of multiplying an m×n matrix by an n×l matrix classically?",
+      "options": [
+        "Θ(m+n+l)",
+        "Θ(n log n)",
+        "Θ(ml)",
+        "Θ(mnl)"
+      ],
+      "correctAnswer": "Θ(mnl)",
+      "explanation": "Each of ml result entries needs a length-n dot product.",
+      "topic": "matrix-multiplication",
+      "sourcePage": 19,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 20
+    },
+    {
+      "question": "[Proof MCQ] Why does naive recursive square-matrix multiplication have eight subproducts, not four?",
+      "options": [
+        "Each of four output quadrants is the sum of two matrix products.",
+        "A square matrix always has eight entries.",
+        "Each output quadrant requires no multiplication.",
+        "Every divide-and-conquer recurrence must use eight calls."
+      ],
+      "correctAnswer": "Each of four output quadrants is the sum of two matrix products.",
+      "explanation": "The block multiplication equations require 2 products for each of 4 quadrants.",
+      "topic": "matrix-multiplication",
+      "sourcePage": 21,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 21
+    },
+    {
+      "question": "What is the tight time of T(n)=8T(n/2)+Θ(n²)?",
+      "options": [
+        "Θ(n²)",
+        "Θ(n⁸)",
+        "Θ(n³)",
+        "Θ(n² log n)"
+      ],
+      "correctAnswer": "Θ(n³)",
+      "explanation": "d=log₂8=3>2, so the leaf term is cubic.",
+      "topic": "matrix-multiplication",
+      "sourcePage": 21,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 22
+    },
+    {
+      "question": "Why is Strassen asymptotically faster than naive recursive matrix multiplication?",
+      "options": [
+        "It replaces all recursion with a single constant-time step.",
+        "It multiplies only one pair of scalar entries.",
+        "It reduces eight half-size products to seven while keeping Θ(n²) extra arithmetic per call.",
+        "It eliminates every addition."
+      ],
+      "correctAnswer": "It reduces eight half-size products to seven while keeping Θ(n²) extra arithmetic per call.",
+      "explanation": "The recurrence becomes 7T(n/2)+Θ(n²), with exponent log₂7≈2.807 rather than 3.",
+      "topic": "matrix-multiplication",
+      "sourcePage": 22,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 23
+    },
+    {
+      "question": "Which standard sorting choice combines stable Θ(n log n) time with Θ(n) auxiliary array storage?",
+      "options": [
+        "Insertion sort with quadratic worst time.",
+        "Ordinary quicksort.",
+        "Ordinary heapsort.",
+        "Merge sort."
+      ],
+      "correctAnswer": "Merge sort.",
+      "explanation": "The lecture's merge sort is stable with consistent tie handling and needs temporary arrays.",
+      "topic": "sorting-tradeoffs",
+      "sourcePage": 24,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 24
+    },
+    {
+      "question": "Which statement correctly qualifies the phrase \"in-place quicksort\"?",
+      "options": [
+        "It is always stable.",
+        "It guarantees Θ(n log n) worst-case time.",
+        "Its recursion stack is always Θ(1).",
+        "Its partition can be in-place while recursive calls still use stack memory."
+      ],
+      "correctAnswer": "Its partition can be in-place while recursive calls still use stack memory.",
+      "explanation": "In-place partitioning does not imply a zero-cost stack; straightforward worst-case recursion can be linear in depth.",
+      "topic": "sorting-tradeoffs",
+      "sourcePage": 24,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 25
+    }
+  ]
+}

@@ -1,0 +1,414 @@
+{
+  "title": "Lecture 3 - Summations & Recurrence MCQs",
+  "date": "2026-10-15",
+  "description": "Midterm MCQs on concepts, mathematical reasoning and proof steps. No code tracing or code-analysis questions.",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Lecture03-Iterative-Analysis-and-Recurrance-Relations-01.pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "question": "What is Σ(i=1..n) 1?",
+      "options": [
+        "n(n+1)/2",
+        "1",
+        "n²",
+        "n"
+      ],
+      "correctAnswer": "n",
+      "explanation": "The constant 1 is added n times.",
+      "topic": "summations",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 1
+    },
+    {
+      "question": "What is 1+2+...+n?",
+      "options": [
+        "n(n-1)/2",
+        "n²",
+        "n(n+1)/2",
+        "2ⁿ-1"
+      ],
+      "correctAnswer": "n(n+1)/2",
+      "explanation": "This is the arithmetic-series formula with n terms.",
+      "topic": "summations",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 2
+    },
+    {
+      "question": "What is the tight growth of Σ(i=1..n) i²?",
+      "options": [
+        "Θ(n⁴)",
+        "Θ(n²)",
+        "Θ(n³)",
+        "Θ(n)"
+      ],
+      "correctAnswer": "Θ(n³)",
+      "explanation": "The exact sum n(n+1)(2n+1)/6 has a cubic leading term.",
+      "topic": "summations",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 3
+    },
+    {
+      "question": "What is the tight growth of Σ(i=1..n) i³?",
+      "options": [
+        "Θ(n⁴)",
+        "Θ(n²)",
+        "Θ(2ⁿ)",
+        "Θ(n³)"
+      ],
+      "correctAnswer": "Θ(n⁴)",
+      "explanation": "The sum equals [n(n+1)/2]², whose leading degree is four.",
+      "topic": "summations",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 4
+    },
+    {
+      "question": "How many terms occur in Σ(i=m..n) c when m≤n?",
+      "options": [
+        "n+m",
+        "n-m",
+        "m-n+1",
+        "n-m+1"
+      ],
+      "correctAnswer": "n-m+1",
+      "explanation": "Both endpoints are included.",
+      "topic": "summations",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 5
+    },
+    {
+      "question": "For fixed a>1, what is Σ(i=0..h) a^i?",
+      "options": [
+        "a h²",
+        "h+a",
+        "(a^h-1)/(a-1)",
+        "(a^(h+1)-1)/(a-1)"
+      ],
+      "correctAnswer": "(a^(h+1)-1)/(a-1)",
+      "explanation": "There are h+1 terms starting with a⁰, giving the standard geometric sum.",
+      "topic": "summations",
+      "sourcePage": 6,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 6
+    },
+    {
+      "question": "Why does a triangular total n(n+1)/2 still have quadratic growth?",
+      "options": [
+        "Division by 2 makes every polynomial linear.",
+        "Its leading term is n²/2; a constant factor does not change the growth class.",
+        "A triangular total has logarithmically many terms.",
+        "Only n+1 affects growth."
+      ],
+      "correctAnswer": "Its leading term is n²/2; a constant factor does not change the growth class.",
+      "explanation": "Expanding gives (n²+n)/2, which is Θ(n²).",
+      "topic": "summations",
+      "sourcePage": 7,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 7
+    },
+    {
+      "question": "What information is needed in addition to a recurrence rule to terminate its expansion?",
+      "options": [
+        "The CPU brand.",
+        "The final sorted array.",
+        "The source-code line count.",
+        "A base-case value or constant-cost base condition."
+      ],
+      "correctAnswer": "A base-case value or constant-cost base condition.",
+      "explanation": "The expansion stops when the remaining problem reaches its base case.",
+      "topic": "recurrences",
+      "sourcePage": 9,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 8
+    },
+    {
+      "question": "[Proof MCQ] For T(n)=T(n-1)+c, what is the correct k-step expansion before the base case?",
+      "options": [
+        "T(n)=T(n/k)+c",
+        "T(n)=kc+T(n-k)",
+        "T(n)=c^k+T(n+k)",
+        "T(n)=kT(n-1)+c"
+      ],
+      "correctAnswer": "T(n)=kc+T(n-k)",
+      "explanation": "Each expansion subtracts one from the input and adds one c.",
+      "topic": "proofs",
+      "sourcePage": 12,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 9
+    },
+    {
+      "question": "[Proof MCQ] With base T(1)=1, when does T(n-k) reach the base?",
+      "options": [
+        "k=n",
+        "k=n-1",
+        "k=log₂ n",
+        "k=1/n"
+      ],
+      "correctAnswer": "k=n-1",
+      "explanation": "Solve n-k=1.",
+      "topic": "proofs",
+      "sourcePage": 12,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 10
+    },
+    {
+      "question": "If T(1)=1 and T(n)=T(n-1)+c with fixed c>0, what is T(n)?",
+      "options": [
+        "c(n-1)+1, hence Θ(n)",
+        "c log₂ n, hence Θ(log n)",
+        "c n², hence Θ(n²)",
+        "n!, hence Θ(n!)"
+      ],
+      "correctAnswer": "c(n-1)+1, hence Θ(n)",
+      "explanation": "There are n-1 non-base additions of c, then the base cost 1.",
+      "topic": "recurrences",
+      "sourcePage": 12,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 11
+    },
+    {
+      "question": "[Proof MCQ] For T(1)=1 and T(n)=T(n-1)+n, which sum is obtained?",
+      "options": [
+        "Only the final base cost 1",
+        "n+(n-1)+...+2+1",
+        "n+n+...+n with exactly n² terms",
+        "1+2+4+...+2ⁿ"
+      ],
+      "correctAnswer": "n+(n-1)+...+2+1",
+      "explanation": "The non-recursive costs decrease by one at each expansion.",
+      "topic": "proofs",
+      "sourcePage": 13,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 12
+    },
+    {
+      "question": "What is the tight solution of T(n)=T(n-1)+n with T(1)=1?",
+      "options": [
+        "Θ(n²)",
+        "Θ(log n)",
+        "Θ(n)",
+        "Θ(n log n)"
+      ],
+      "correctAnswer": "Θ(n²)",
+      "explanation": "The expansion is the arithmetic sum n(n+1)/2.",
+      "topic": "recurrences",
+      "sourcePage": 13,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 13
+    },
+    {
+      "question": "With constant positive base cost, what is T(n)=T(n/2)+c for fixed c>0?",
+      "options": [
+        "Θ(1)",
+        "Θ(n²)",
+        "Θ(log n)",
+        "Θ(n)"
+      ],
+      "correctAnswer": "Θ(log n)",
+      "explanation": "The problem halves at each step, giving logarithmic depth and constant work per level.",
+      "topic": "recurrences",
+      "sourcePage": 9,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 14
+    },
+    {
+      "question": "With constant positive base cost, what is T(n)=T(n/2)+n?",
+      "options": [
+        "Θ(n log n)",
+        "Θ(n)",
+        "Θ(log n)",
+        "Θ(n²)"
+      ],
+      "correctAnswer": "Θ(n)",
+      "explanation": "The work sums as n+n/2+n/4+..., a geometric series bounded by a constant multiple of n.",
+      "topic": "recurrences",
+      "sourcePage": 9,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 15
+    },
+    {
+      "question": "With constant positive base cost, what is T(n)=2T(n/2)+1?",
+      "options": [
+        "Θ(log n)",
+        "Θ(n log n)",
+        "Θ(n)",
+        "Θ(n²)"
+      ],
+      "correctAnswer": "Θ(n)",
+      "explanation": "A full binary recursion tree has Θ(n) nodes when its n leaves have constant size.",
+      "topic": "recurrences",
+      "sourcePage": 9,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 16
+    },
+    {
+      "question": "For T(n)=2T(n/2)+cn, how many nodes are at level i if the root is level 0?",
+      "options": [
+        "2i+1",
+        "n/2^i",
+        "i",
+        "2^i"
+      ],
+      "correctAnswer": "2^i",
+      "explanation": "Every node creates two children, so each level doubles the node count.",
+      "topic": "recursion-trees",
+      "sourcePage": 25,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 17
+    },
+    {
+      "question": "For T(n)=2T(n/2)+cn, what is each node's input size at level i?",
+      "options": [
+        "n²/2",
+        "2^i n",
+        "n/2^i",
+        "n-i"
+      ],
+      "correctAnswer": "n/2^i",
+      "explanation": "Each level halves the size from the preceding level.",
+      "topic": "recursion-trees",
+      "sourcePage": 25,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 18
+    },
+    {
+      "question": "[Proof MCQ] Which expression is the total non-recursive work at level i for T(n)=2T(n/2)+cn?",
+      "options": [
+        "2^i × c(n/2^i)=cn",
+        "cn/i for all i, including 0",
+        "c(n/2^i) only",
+        "2^i × cn=2^i cn"
+      ],
+      "correctAnswer": "2^i × c(n/2^i)=cn",
+      "explanation": "Multiply the number of nodes by the cost per node; the powers cancel.",
+      "topic": "proofs",
+      "sourcePage": 25,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 19
+    },
+    {
+      "question": "[Proof MCQ] For n a power of 2 and leaves of size 1, which equation gives the tree height?",
+      "options": [
+        "2n/h=1, so h=2n",
+        "n/2^h=n², so h=log₂ n",
+        "n-h=1, so h=n-1",
+        "n/2^h=1, so h=log₂ n"
+      ],
+      "correctAnswer": "n/2^h=1, so h=log₂ n",
+      "explanation": "Repeated halving reaches 1 after log₂ n edges.",
+      "topic": "proofs",
+      "sourcePage": 26,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 20
+    },
+    {
+      "question": "For T(n)=2T(n/2)+cn with T(1)=Θ(1), what is the combined leaf cost?",
+      "options": [
+        "Θ(n²)",
+        "Θ(1)",
+        "Θ(log n)",
+        "Θ(n)"
+      ],
+      "correctAnswer": "Θ(n)",
+      "explanation": "There are n leaves and each costs Θ(1).",
+      "topic": "recursion-trees",
+      "sourcePage": 27,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 21
+    },
+    {
+      "question": "[Proof MCQ] Why is T(n)=2T(n/2)+cn in Θ(n log n)?",
+      "options": [
+        "There are log₂ n internal levels costing cn each, plus Θ(n) leaf work.",
+        "Only the root costs anything.",
+        "The n leaves imply the entire tree must cost Θ(n).",
+        "There are n levels with n² work each."
+      ],
+      "correctAnswer": "There are log₂ n internal levels costing cn each, plus Θ(n) leaf work.",
+      "explanation": "Summing all levels gives cn log₂ n+Θ(n), not merely the leaf cost.",
+      "topic": "proofs",
+      "sourcePage": 29,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 22
+    },
+    {
+      "question": "[Proof MCQ] What distinguishes the substitution method from merely guessing a recurrence solution?",
+      "options": [
+        "It assumes the answer without inequalities.",
+        "It eliminates the need for a base case.",
+        "It verifies the guessed bound using induction and base cases.",
+        "It times one execution."
+      ],
+      "correctAnswer": "It verifies the guessed bound using induction and base cases.",
+      "explanation": "A guessed class becomes a proof only after the inductive inequality and starting cases are justified.",
+      "topic": "proofs",
+      "sourcePage": 11,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 23
+    },
+    {
+      "question": "Which recurrence models standard merge sort with linear merging?",
+      "options": [
+        "T(n)=T(n/2)+Θ(1)",
+        "T(n)=2T(n/2)+Θ(n)",
+        "T(n)=T(n-1)+Θ(1)",
+        "T(n)=4T(n/2)+Θ(n²)"
+      ],
+      "correctAnswer": "T(n)=2T(n/2)+Θ(n)",
+      "explanation": "It sorts both halves and combines them with linear work.",
+      "topic": "merge-sort",
+      "sourcePage": 33,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 24
+    },
+    {
+      "question": "Why is the standard array merge sort in this lecture not constant-auxiliary-space?",
+      "options": [
+        "Its recursion stack must contain n² frames.",
+        "Sorting always requires exponential memory.",
+        "Temporary arrays require Θ(n) peak space, dominating its logarithmic stack.",
+        "Every Θ(n log n) algorithm necessarily uses Θ(n log n) space."
+      ],
+      "correctAnswer": "Temporary arrays require Θ(n) peak space, dominating its logarithmic stack.",
+      "explanation": "The extra arrays, not just the stack depth, determine the auxiliary-space order.",
+      "topic": "merge-sort",
+      "sourcePage": 35,
+      "answerSource": "inferred",
+      "optionsSource": "generated",
+      "id": 25
+    }
+  ]
+}
