@@ -34,7 +34,7 @@ export interface ModuleItem {
   subject: string;
   subjectName: string;
   subjectCode: string;
-  isNew: boolean;
+  latestContentAt: number | null;
   year: string;
   yearLevel: number;
   semester: number;

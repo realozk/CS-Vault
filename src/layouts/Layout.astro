@@ -78,50 +78,27 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
   >
     <a href="#main-content" class="skip-link">{t("nav.skip")}</a>
     <!-- Navigation Header -->
-    <header class="glass-nav sticky top-0 z-50 transition-all duration-300">
+    <header class="glass-nav sticky top-0 z-50">
       <div
-        class="site-width mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+        class="site-width mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between"
       >
         <!-- Brand Logo -->
         <a
           href={getLocalizedPath("/", lang)}
-          class="flex items-center gap-2 min-h-11"
+          class="flex items-center min-h-11"
           id="nav-brand"
+          dir={lang === 'ar' ? 'rtl' : 'ltr'}
+          aria-label={`${t('nav.brand')} — ${t('nav.home')}`}
         >
-          <svg
-            class="w-5.5 h-5.5 text-zinc-900 dark:text-zinc-100"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2.5"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 14l9-5-9-5-9 5 9 5z"></path>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479L12 20l-6.825-2.943a12.083 12.083 0 01.665-6.479L12 14z"
-            ></path>
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M2 9v5c0 2.21 3.582 4 8 4"></path>
-          </svg>
-          <span
-            class="font-extrabold text-lg tracking-tight text-zinc-900 dark:text-zinc-100"
-          >
-            {t("nav.brand")}
-          </span>
+          <span class="nav-brand-path" dir="ltr">~/</span><bdi dir={lang === 'ar' ? 'rtl' : 'ltr'}>{lang === 'ar' ? 'قبو-الحاسب' : 'cs-vault'}</bdi>
         </a>
 
         <!-- Action Items (Links & Theme Toggle) -->
         <nav class="flex items-center gap-2 sm:gap-4" id="main-nav">
           <a
             href={getLocalizedPath("/", lang)}
-            class="inline-flex min-h-11 items-center px-2 text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors duration-200"
+            aria-current={title === t("nav.home") ? "page" : undefined}
+            class="inline-flex min-h-11 items-center px-3 text-sm font-medium"
           >
             {t("nav.home")}
           </a>
@@ -176,13 +153,13 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
 
     <!-- Footer -->
     <footer
-      class="border-t border-gray-200 dark:border-dark-border bg-white dark:bg-dark-card py-8 mt-12 transition-all duration-300"
+      class="site-footer border-t py-7 mt-12"
     >
       <div
-        class="site-width mx-auto px-4 sm:px-6 lg:px-8 text-sm text-gray-600 dark:text-gray-300"
+        class="site-footer-inner site-width mx-auto px-4 sm:px-6 lg:px-8 text-sm text-gray-600 dark:text-gray-300"
       >
-        <section id="contribute" aria-labelledby="contribute-title" class="max-w-3xl scroll-mt-24">
-          <h2 id="contribute-title" class="text-base font-semibold text-gray-900 dark:text-white">{t("contribute.title")}</h2>
+        <details id="contribute" class="scroll-mt-24">
+          <summary id="contribute-title">{t("contribute.title")}</summary>
           <p class="mt-3 leading-relaxed">{t("contribute.materials")}</p>
           <p class="mt-2 leading-relaxed">{t("contribute.website")}</p>
           <div class="mt-3 flex flex-wrap gap-x-6 gap-y-2">
@@ -196,8 +173,8 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
           </a>
           <a href="mailto:r3al0zk@gmail.com" class="inline-flex min-h-11 items-center font-medium text-brand-700 dark:text-brand-500 underline underline-offset-4 hover:no-underline">{t("contribute.email")}</a>
           </div>
-        </section>
-        <p class="mt-6 pt-4 border-t border-gray-200 dark:border-dark-border text-gray-500 dark:text-gray-400">© {new Date().getFullYear()} {t("footer.text")}</p>
+        </details>
+        <p class="footer-copy">© {new Date().getFullYear()} {t("footer.text")}</p>
       </div>
     </footer>
 
@@ -218,17 +195,16 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
       storageUnavailable: t("pomodoro.storageUnavailable"),
     })}>
       <section id="pomodoro-panel" class="pomodoro-panel hidden" aria-labelledby="pomodoro-title" aria-hidden="true">
-        <div class="flex items-center justify-between gap-3">
-          <h2 id="pomodoro-title" class="text-sm font-bold">{t("pomodoro.title")}</h2>
-          <p id="pomodoro-time" class="text-2xl font-bold tabular-nums" role="timer" aria-live="off">50:00</p>
+        <h2 id="pomodoro-title" class="sr-only">{t("pomodoro.title")}</h2>
+        <div class="pomodoro-readout">
+          <p id="pomodoro-phase">{t("pomodoro.studyPhase")}</p>
+          <p id="pomodoro-time" role="timer" aria-live="off" dir="ltr">50:00</p>
         </div>
-        <p id="pomodoro-phase" class="mt-1 text-xs font-medium text-gray-600 dark:text-gray-300">{t("pomodoro.studyPhase")}</p>
         <p id="pomodoro-notice" class="hidden mt-2 rounded bg-cyan-50 p-2 text-xs text-cyan-950 dark:bg-cyan-950/40 dark:text-cyan-100" role="alert"></p>
-        <div class="mt-3 grid grid-cols-3 gap-2">
-          <button id="pomodoro-toggle" type="button" class="pomodoro-action pomodoro-primary rounded bg-brand-500 px-2 py-1.5 text-xs font-bold text-zinc-950">{t("pomodoro.start")}</button>
-          <button id="pomodoro-reset" type="button" class="pomodoro-action rounded border border-gray-300 px-2 py-1.5 text-xs font-medium dark:border-zinc-700">{t("pomodoro.reset")}</button>
-          <button id="pomodoro-skip" type="button" class="pomodoro-action rounded border border-gray-300 px-2 py-1.5 text-xs font-medium dark:border-zinc-700" aria-label={t("pomodoro.skip")}>
-            <svg aria-hidden="true" class="mx-auto h-5 w-5 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5v14l11-7-11-7zm14 0v14" /></svg>
+        <div class="pomodoro-controls">
+          <button id="pomodoro-toggle" type="button" class="pomodoro-action pomodoro-primary">{t("pomodoro.start")}</button>
+          <button id="pomodoro-reset" type="button" class="pomodoro-action pomodoro-reset" aria-label={t("pomodoro.reset")} title={t("pomodoro.reset")}>
+            <svg aria-hidden="true" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11a9 9 0 1 1 2.6 7.4M3 4v7h7" /></svg>
           </button>
         </div>
         <details class="pomodoro-settings mt-2">
@@ -241,11 +217,12 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
               <input id="pomodoro-break-minutes" class="mt-1 w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm text-gray-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-gray-100" type="number" min="1" max="180" step="1" value="10" inputmode="numeric" />
             </label>
           </div>
+          <button id="pomodoro-skip" type="button" class="pomodoro-skip">{t("pomodoro.skip")}</button>
         </details>
         <p id="pomodoro-storage-status" class="hidden mt-3 text-xs text-amber-800 dark:text-amber-300" role="status"></p>
       </section>
       <button id="pomodoro-open" type="button" class="pomodoro-open" aria-label={t("pomodoro.open")} aria-expanded="false" aria-controls="pomodoro-panel">
-        <svg aria-hidden="true" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <svg aria-hidden="true" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
           <circle cx="12" cy="13" r="8.5" />
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v5l3 2M9 2h6M12 2v2.5M18.5 6.5 20 5" />
         </svg>

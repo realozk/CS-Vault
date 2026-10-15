@@ -3,11 +3,30 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SemesterSection from '../../components/SemesterSection.astro';
 import StudyBackground from '../StudyBackground.astro';
+import Icon from '../Icon.astro';
+import '../../styles/home.css';
 import { getModules, getSubjectName } from '../../lib/modules';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const copy = lang === 'ar' ? {
+  description: 'ملخصات واختبارات لطلاب علوم الحاسب.',
+  directory: 'اختر مادتك',
+  directoryNote: 'كل ما تحتاجه للمراجعة، في مكان واحد.',
+  yearLabel: 'السنة الدراسية',
+  searchHint: 'ابحث باسم المادة أو المحاضرة أو الموضوع',
+  emptyTitle: 'المحتوى في الطريق',
+  emptyNote: 'لم تُضف مواد لهذه السنة بعد. يمكنك استكشاف سنة أخرى.',
+} : {
+  description: 'Summaries and quizzes for CS students.',
+  directory: 'Choose your subject',
+  directoryNote: 'Everything for your next study session, in one place.',
+  yearLabel: 'ACADEMIC YEAR',
+  searchHint: 'Search by subject, lecture, or topic',
+  emptyTitle: 'A little more to come',
+  emptyNote: 'There’s no material for this year yet. Explore another year to get started.',
+};
 
 // Fetch all summaries and quizzes to discover available subject/year modules
 const summaries = await getCollection('summaries');
@@ -38,7 +57,7 @@ const searchIndex = [
       author: s.data.author,
       subjectCode: getSubjectName(s.data.subject_code, lang),
       year: parts[1],
-      url: getLocalizedPath(`/${parts[0]}/${parts[1]}`, lang),
+      url: `${getLocalizedPath(`/${parts[0]}/${parts[1]}`, lang)}#summary-content-${parts.slice(2).join('-').replace(/\.(md|json)$/, '')}`,
       yearLevel: s.data.year_level,
       semester: s.data.semester
     };
@@ -65,138 +84,87 @@ const searchIndexTranslations = JSON.stringify({
   subjectBadge: t('search.subjectBadge'),
   summaryBadge: t('search.summaryBadge'),
   quizBadge: t('search.quizBadge'),
-  readNow: t('search.readNow'),
+  openQuiz: lang === 'ar' ? 'ابدأ الاختبار ←' : 'Open quiz →',
+  openSubject: lang === 'ar' ? 'استكشف المادة ←' : 'Open subject →',
+  readSummary: lang === 'ar' ? 'اقرأ الملخص ←' : 'Read summary →',
   yearAndSem: t('search.yearAndSem')
 });
 ---
 
-<Layout title={t("nav.home")} description={t('hero.desc')}>
+<Layout title={t("nav.home")} description={copy.description}>
   <StudyBackground />
-  <div class="home-layout space-y-6 py-2">
+  <div class="home-layout">
+    <section class="home-hero" aria-labelledby="home-title">
+      <h1 id="home-title">{t('nav.brand')}</h1>
+      <p class="home-quote" data-random-home-quote={lang}>{t('hero.title')}</p>
+      <p class="home-hero-description">{copy.description}</p>
+    </section>
 
-    <!-- Hero / Welcome Panel -->
-    <div class="home-welcome rounded-lg p-6 sm:p-8">
-      <div class="relative max-w-2xl z-10">
-        <h1
-          class={`text-3xl font-bold tracking-tight leading-tight text-gray-900 dark:text-white ${lang === 'ar' ? 'whitespace-pre-line' : ''}`}
-          data-random-home-quote={lang}
-        >
-          {t('hero.title')}
-        </h1>
-        <p class="mt-3 text-base leading-relaxed text-gray-600 dark:text-zinc-300">
-          {t('hero.desc')}
-        </p>
-        <div class="mt-4 flex flex-wrap gap-3">
-          <a
-            href="#contribute"
-            class="inline-flex min-h-11 items-center text-sm font-medium text-brand-700 dark:text-brand-500"
-          >
-            {t('hero.contribute')}
-          </a>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Search Engine Section -->
     <div class="home-search">
-      <label for="global-search-input" class="block mb-2 text-sm font-semibold text-gray-700 dark:text-zinc-200">{t('search.label')}</label>
-      <div class="relative">
-      <div class="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
-        <svg class="h-5 w-5 text-gray-400 dark:text-zinc-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
-      </div>
-      <input
-        type="search"
-        id="global-search-input"
-        placeholder={t('search.placeholder')}
-        class="block w-full ps-10 pe-4 py-3 border border-gray-300/80 dark:border-zinc-700/65 rounded-md bg-white dark:bg-zinc-900/40 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-zinc-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500/80 focus:border-blue-500 text-sm shadow-xs transition-all duration-150"
-      />
+      <label for="global-search-input">{t('search.label')}</label>
+      <div class="home-search-field">
+        <Icon name="search" class="home-search-icon" />
+        <input type="search" id="global-search-input" placeholder={t('search.placeholder')} autocomplete="off" />
+        <span class="home-search-hint" aria-hidden="true">{copy.searchHint}</span>
       </div>
     </div>
 
-    <!-- Main Directory Block -->
-    <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{t('directory.title')}</h2>
-    <div id="directory-container" class="space-y-6 scroll-mt-24" data-search-index={JSON.stringify(searchIndex)} data-translations={searchIndexTranslations}>
-
-      <!-- Search Results Pane (Initially Hidden) -->
-      <div id="search-results-pane" class="hidden space-y-4">
-        <h2 class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
-          <span>{t('search.results')}</span>
-          <span id="search-results-count" role="status" aria-live="polite" aria-atomic="true" class="text-xs bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-150 dark:border-blue-900 px-2 py-0.5 rounded-sm">0 {t('search.resultsCount')}</span>
-        </h2>
-        <div id="search-results-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Results injected here -->
+    <section class="home-directory" aria-labelledby="directory-title">
+      <div class="directory-heading">
+        <div>
+          <h2 id="directory-title">{copy.directory}</h2>
+          <p>{copy.directoryNote}</p>
         </div>
-        <div id="search-no-results" class="hidden text-center py-12 border border-dashed border-gray-200 dark:border-zinc-800/85 rounded-md bg-gray-50/30 dark:bg-zinc-900/10">
-          <svg class="w-10 h-10 text-gray-300 dark:text-zinc-700 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p class="text-sm text-gray-600 dark:text-zinc-400 max-w-xs mx-auto">{t('search.noResults')}</p>
-        </div>
+        <span class="directory-subject-count">{modules.length.toString().padStart(2, '0')} <span>{t('dashboard.breadcrumbs')}</span></span>
       </div>
-
-      <!-- Core Tab View (Hidden during active search) -->
-      <div id="core-tab-view" class="directory-layout">
-
-        <!-- Year Selection Tabs -->
-        <div class="year-sidebar flex border-b border-gray-200 dark:border-zinc-800 overflow-x-auto pb-px gap-1" id="year-tabs-nav" role="group" aria-label={t('year.select')}>
-          {[1, 2, 3, 4].map((year) => (
-            <button
-              data-year-tab={year}
-              aria-pressed={year === defaultYear}
-              aria-controls={`year-content-${year}`}
-              class={`px-5 py-3 border-b-2 font-bold text-sm tracking-tight transition-all duration-150 whitespace-nowrap cursor-pointer ${
-                year === defaultYear
-                  ? 'border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-200 dark:hover:border-zinc-800'
-              }`}
-            >
-              {t('year.tab').replace('{year}', year.toString())}
-            </button>
-          ))}
+      <div id="directory-container" data-search-index={JSON.stringify(searchIndex)} data-translations={searchIndexTranslations}>
+        <div id="search-results-pane" class="hidden">
+          <div class="search-results-heading">
+            <h3>{t('search.results')}</h3>
+            <span id="search-results-count" role="status" aria-live="polite" aria-atomic="true">0 {t('search.resultsCount')}</span>
+          </div>
+          <div id="search-results-grid" class="course-grid"></div>
+          <div id="search-no-results" class="directory-empty hidden">
+            <Icon name="search" class="w-7 h-7" />
+            <p>{t('search.noResults')}</p>
+          </div>
         </div>
 
-        <!-- Course Lists organized by Semester -->
-        {[1, 2, 3, 4].map((yearNum) => {
-          const yearModules = modules.filter(m => m.yearLevel === yearNum);
-
-          return (
-            <div id={`year-content-${yearNum}`} data-year-content={yearNum} class={`year-material mt-3 space-y-10 ${yearNum === defaultYear ? '' : 'hidden'}`}>
-              {yearModules.length === 0 ? (
-                <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-12 text-center flex flex-col items-center justify-center">
-                  <svg class="w-12 h-12 text-gray-300 dark:text-zinc-700 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                  </svg>
-                  <h3 class="font-bold text-lg text-gray-700 dark:text-zinc-300">{t('year.empty').replace('{year}', yearNum.toString())}</h3>
-                  <p class="text-sm text-gray-600 dark:text-zinc-400 mt-1 max-w-sm">{t('year.emptyDesc').replace('{year}', yearNum.toString())}</p>
-                  <a
-                    href="https://github.com/realozk/CS-Vault"
-                    target="_blank"
-                    class="mt-4 px-4 py-2 border border-gray-250 dark:border-zinc-700 hover:border-zinc-500 rounded bg-gray-50 dark:bg-zinc-800 text-xs font-semibold"
-                  >
-                    {t('year.contributeGuidelines')}
-                  </a>
-                </div>
-              ) : (
-                <div class="space-y-8">
-
-                  {[1, 2].filter(sem => yearModules.some(m => m.semester === sem)).map((sem) => (
-                    <SemesterSection
-                      semester={sem}
-                      modules={yearModules.filter(m => m.semester === sem)}
-                    />
-                  ))}
-
-                </div>
-              )}
+        <div id="core-tab-view" class="directory-layout">
+          <div class="year-selector">
+            <span class="year-selector-label">{copy.yearLabel}</span>
+            <div class="year-sidebar" id="year-tabs-nav" role="group" aria-label={t('year.select')}>
+              {[1, 2, 3, 4].map((year) => (
+                <button type="button" data-year-tab={year} aria-pressed={year === defaultYear} aria-controls={`year-content-${year}`}>
+                  <span>{t('year.tab').replace('{year}', year.toString())}</span>
+                  <svg aria-hidden="true" class="year-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-5-5 5 5-5 5" /></svg>
+                </button>
+              ))}
             </div>
-          );
-        })}
+          </div>
+          {[1, 2, 3, 4].map((yearNum) => {
+            const yearModules = modules.filter(m => m.yearLevel === yearNum);
+            return (
+              <div id={`year-content-${yearNum}`} data-year-content={yearNum} class={`year-material ${yearNum === defaultYear ? '' : 'hidden'}`}>
+                {yearModules.length === 0 ? (
+                  <div class="directory-empty">
+                    <Icon name="book" class="w-8 h-8" />
+                    <h3>{copy.emptyTitle}</h3>
+                    <p>{copy.emptyNote}</p>
+                  </div>
+                ) : (
+                  <div class="semester-list">
+                    {[1, 2].filter(sem => yearModules.some(m => m.semester === sem)).map((sem) => (
+                      <SemesterSection semester={sem} modules={yearModules.filter(m => m.semester === sem)} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
-
-    </div>
+    </section>
   </div>
 </Layout>
 

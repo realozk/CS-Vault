@@ -12,7 +12,6 @@ const subjects = z.array(z.object({
   year: z.number().int().positive(),
   year_level: z.number().int().min(1).max(4),
   semester: z.number().int().min(1).max(2),
-  is_new: z.boolean().default(false),
 })).parse(catalog);
 
 // Build-time only: courses exist even before their study material is uploaded.
@@ -23,7 +22,6 @@ export function getSubjectName(nameOrSlug: string, lang: 'en' | 'ar' = 'en') {
 
 export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]> {
   const modules = new Map<string, ModuleItem>();
-  const latestContentDates = new Map<string, number>();
   for (const subject of subjects) {
     const key = `${subject.slug}/${subject.year}`;
     if (modules.has(key)) throw new Error(`Duplicate subject: ${key}`);
@@ -31,7 +29,7 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
       subject: subject.slug, subjectName: getSubjectName(subject.slug, lang), subjectCode: subject.subject_code,
       year: String(subject.year),
       yearLevel: subject.year_level, semester: subject.semester,
-      summariesCount: 0, quizzesCount: 0, isNew: subject.is_new,
+      summariesCount: 0, quizzesCount: 0, latestContentAt: null,
     });
   }
   const [summaries, quizzes] = await Promise.all([
@@ -48,15 +46,14 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
       validateContentMetadata(entry.id, entry.data, course);
       module[count]++;
       const date = entry.data.date.getTime();
-      const key = `${subject}/${year}`;
-      latestContentDates.set(key, Math.max(latestContentDates.get(key) ?? 0, date));
+      module.latestContentAt = Math.max(module.latestContentAt ?? date, date);
     }
   }
   for (const module of modules.values()) {
     if (module.quizzesCount > 0) module.quizzesCount++;
   }
   return [...modules.values()].sort((a, b) =>
-    (latestContentDates.get(`${b.subject}/${b.year}`) ?? 0) - (latestContentDates.get(`${a.subject}/${a.year}`) ?? 0)
+    (b.latestContentAt ?? 0) - (a.latestContentAt ?? 0)
       || a.subjectName.localeCompare(b.subjectName)
   );
 }

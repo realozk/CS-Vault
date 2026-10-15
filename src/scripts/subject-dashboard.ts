@@ -1,8 +1,8 @@
 import { bestScoreStorageKey, bestScoreTone, readBestScore } from './quiz-state';
 
 const initDashboard = () => {
-  const tabs = document.querySelectorAll('.summary-tab-btn');
-  const contents = document.querySelectorAll('.summary-content-block');
+  const tabs = document.querySelectorAll<HTMLAnchorElement>('.summary-tab-btn');
+  const contents = document.querySelectorAll<HTMLElement>('.summary-content-block');
   const checkboxes = document.querySelectorAll('.summary-checkbox') as NodeListOf<HTMLInputElement>;
   const progressFill = document.getElementById('subject-progress-fill');
   const progressPercentText = document.getElementById('progress-percentage-text');
@@ -125,10 +125,8 @@ const initDashboard = () => {
     const isChecked = completedSlugs.includes(slug);
     cb.checked = isChecked;
     
-    const titleSpan = [...tabs].find(tab => tab.getAttribute('data-summary-slug') === slug)?.querySelector('.summary-title-text');
-    if (isChecked) {
-      titleSpan?.classList.add('line-through', 'opacity-50');
-    }
+    const summaryLink = [...tabs].find(tab => tab.getAttribute('data-summary-slug') === slug);
+    summaryLink?.classList.toggle('is-reviewed', isChecked);
 
     // Handle checkbox change
     cb.addEventListener('change', () => {
@@ -137,10 +135,10 @@ const initDashboard = () => {
         if (!completedSlugs.includes(slug)) {
           completedSlugs.push(slug);
         }
-        titleSpan?.classList.add('line-through', 'opacity-50');
+        summaryLink?.classList.add('is-reviewed');
       } else {
         completedSlugs = completedSlugs.filter(item => item !== slug);
-        titleSpan?.classList.remove('line-through', 'opacity-50');
+        summaryLink?.classList.remove('is-reviewed');
       }
 
       updateProgressBar();
@@ -225,103 +223,121 @@ const initDashboard = () => {
 
   const scrollBehavior = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' as const : 'smooth' as const;
 
-  // Tab view switching
-  tabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const targetSlug = tab.getAttribute('data-summary-slug');
+  // Enhance the readable, anchor-based page into two focused task modes.
+  const page = document.getElementById('subject-page');
+  const modeSwitch = document.getElementById('subject-mode-switch');
+  const modeButtons = document.querySelectorAll<HTMLButtonElement>('[data-study-mode]');
+  const modePanels = document.querySelectorAll<HTMLElement>('[data-study-panel]');
+  type StudyMode = 'quizzes' | 'summaries';
 
-      // Update active tab styling
-      tabs.forEach((btn) => {
-        btn.setAttribute('aria-pressed', 'false');
-        btn.classList.remove(
-          'border-blue-600',
-          'dark:border-blue-500',
-          'bg-blue-50/10',
-          'dark:bg-blue-950/10',
-          'text-blue-950',
-          'dark:text-blue-100',
-          'font-semibold',
-          'shadow-xs'
-        );
-        btn.classList.add(
-          'border-gray-100',
-          'dark:border-zinc-800',
-          'text-gray-600',
-          'dark:text-zinc-300'
-        );
-      });
+  const setMode = (mode: StudyMode) => {
+    if (!page || !modeSwitch) return;
+    page.dataset.studyMode = mode;
+    modeButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.studyMode === mode)));
+    modePanels.forEach(panel => panel.classList.toggle('hidden', panel.dataset.studyPanel !== mode));
+  };
 
-      tab.setAttribute('aria-pressed', 'true');
-      tab.classList.add(
-        'border-blue-600',
-        'dark:border-blue-500',
-        'bg-blue-50/10',
-        'dark:bg-blue-950/10',
-        'text-blue-950',
-        'dark:text-blue-100',
-        'font-semibold',
-        'shadow-xs'
-      );
-      tab.classList.remove(
-        'border-gray-100',
-        'dark:border-zinc-800',
-        'text-gray-600',
-        'dark:text-zinc-300'
-      );
+  const writeHash = (hash: string) => {
+    if (window.location.hash !== hash) window.history.pushState(null, '', hash);
+  };
 
-      // Update active content block visibility
-      contents.forEach((content) => {
-        if (content.id === `summary-content-${targetSlug}`) {
-          content.classList.remove('hidden');
-          content.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
-        } else {
-          content.classList.add('hidden');
-        }
-      });
-      initCopyButtons();
+  const selectSummary = (slug: string, options: { scroll?: boolean; writeHistory?: boolean; activateMode?: boolean; focus?: boolean } = {}) => {
+    const selected = [...contents].find(content => content.id === `summary-content-${slug}`);
+    if (!selected) return;
+    if (options.activateMode !== false) setMode('summaries');
+    tabs.forEach(tab => {
+      if (tab.dataset.summarySlug === slug) tab.setAttribute('aria-current', 'true');
+      else tab.removeAttribute('aria-current');
+    });
+    contents.forEach(content => content.classList.toggle('hidden', content !== selected));
+    if (options.writeHistory) writeHash(`#${selected.id}`);
+    if (options.focus) selected.querySelector('h2')?.focus({ preventScroll: true });
+    if (options.scroll) selected.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
+    return selected;
+  };
+
+  const syncHash = (scroll = false) => {
+    let id: string;
+    try { id = decodeURIComponent(window.location.hash.slice(1)); }
+    catch { return; }
+    if (!id) {
+      setMode(page?.dataset.defaultStudyMode === 'summaries' ? 'summaries' : 'quizzes');
+      return;
+    }
+    const target = document.getElementById(id);
+    const summary = [...contents].find(content => content === target || (target && content.contains(target)));
+    if (summary) {
+      const slug = summary.id.slice('summary-content-'.length);
+      selectSummary(slug);
+    } else if (id === 'subject-quizzes' || (target && quizzesSection?.contains(target))) {
+      setMode('quizzes');
+    } else if (['subject-reading', 'subject-summaries', 'summary-tabs', 'subject-progress-card'].includes(id)) {
+      setMode('summaries');
+    } else {
+      return;
+    }
+    if (scroll && target) {
+      requestAnimationFrame(() => target.scrollIntoView({ behavior: 'instant', block: 'start' }));
+    }
+  };
+
+  if (page && modeSwitch) {
+    page.dataset.studyEnhanced = 'true';
+    modeSwitch.classList.remove('hidden');
+    document.querySelectorAll('.subject-finish-button').forEach(button => button.classList.remove('hidden'));
+    const firstSlug = tabs[0]?.dataset.summarySlug;
+    if (firstSlug) selectSummary(firstSlug, { activateMode: false });
+    setMode(page.dataset.defaultStudyMode === 'summaries' ? 'summaries' : 'quizzes');
+    syncHash(true);
+    window.addEventListener('hashchange', () => syncHash(true));
+    window.addEventListener('popstate', () => syncHash(true));
+  }
+
+  modeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const mode = button.dataset.studyMode === 'summaries' ? 'summaries' : 'quizzes';
+      setMode(mode);
+      writeHash(mode === 'summaries' ? '#subject-reading' : '#subject-quizzes');
     });
   });
 
-  // Handle Next, Previous, and Finish summary navigation buttons
-  document.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    const prevBtn = target.closest('button[data-nav-prev]');
-    const nextBtn = target.closest('button[data-nav-next]');
-    const finishBtn = target.closest('button[data-nav-finish]');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const slug = tab.dataset.summarySlug;
+      if (!slug) return;
+      event.preventDefault();
+      selectSummary(slug, { scroll: true, writeHistory: true });
+    });
+  });
 
-    if (prevBtn) {
-      const slug = prevBtn.getAttribute('data-nav-prev');
-      const tabToClick = document.querySelector(`.summary-tab-btn[data-summary-slug="${slug}"]`) as HTMLElement;
-      if (tabToClick) tabToClick.click();
-    } else if (nextBtn) {
-      const slug = nextBtn.getAttribute('data-nav-next');
-      const currentSlug = nextBtn.getAttribute('data-current-slug');
+  const markReviewed = (slug: string | null) => {
+    const checkbox = [...checkboxes].find(input => input.dataset.summaryCheck === slug);
+    if (checkbox && !checkbox.checked) {
+      checkbox.checked = true;
+      checkbox.dispatchEvent(new Event('change'));
+    }
+  };
 
-      if (currentSlug) {
-        const checkbox = document.querySelector(`.summary-checkbox[data-summary-check="${currentSlug}"]`) as HTMLInputElement;
-        if (checkbox && !checkbox.checked) {
-          checkbox.checked = true;
-          checkbox.dispatchEvent(new Event('change'));
-        }
-      }
-
-      const tabToClick = document.querySelector(`.summary-tab-btn[data-summary-slug="${slug}"]`) as HTMLElement;
-      if (tabToClick) tabToClick.click();
-    } else if (finishBtn) {
-      const slug = finishBtn.getAttribute('data-nav-finish');
-      const checkbox = document.querySelector(`.summary-checkbox[data-summary-check="${slug}"]`) as HTMLInputElement;
-      if (checkbox && !checkbox.checked) {
-        checkbox.checked = true;
-        checkbox.dispatchEvent(new Event('change'));
-      }
-      
-      const progressCard = document.getElementById('subject-progress-card');
-      if (progressCard) {
-        progressCard.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
-        progressCard.classList.add('ring-2', 'ring-emerald-500', 'transition-all', 'duration-500');
-        setTimeout(() => {
-          progressCard.classList.remove('ring-2', 'ring-emerald-500');
-        }, 1500);
+  // Keep the existing review-on-next and finish behavior.
+  document.addEventListener('click', (event) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (!(event.target instanceof Element)) return;
+    const previous = event.target.closest<HTMLElement>('[data-nav-prev]');
+    const next = event.target.closest<HTMLElement>('[data-nav-next]');
+    const finish = event.target.closest<HTMLElement>('[data-nav-finish]');
+    const navigation = previous || next;
+    if (navigation) {
+      event.preventDefault();
+      if (next) markReviewed(next.getAttribute('data-current-slug'));
+      const slug = navigation.getAttribute(previous ? 'data-nav-prev' : 'data-nav-next');
+      if (slug) selectSummary(slug, { scroll: true, writeHistory: true, focus: true });
+    } else if (finish) {
+      markReviewed(finish.getAttribute('data-nav-finish'));
+      if (tracker) {
+        tracker.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
+        tracker.classList.add('ring-2', 'ring-emerald-500');
+        setTimeout(() => tracker.classList.remove('ring-2', 'ring-emerald-500'), 1500);
       }
     }
   });

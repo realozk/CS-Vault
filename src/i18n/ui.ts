@@ -375,8 +375,8 @@ export const ui = {
     // Subject Dashboard
     'dashboard.breadcrumbs': 'المواد الدراسية',
     'dashboard.academicYear': 'السنة الدراسية {year}',
-    'dashboard.summaries': 'الملخصات الدراسية',
-    'dashboard.quizzes': 'الاختبارات التفاعلية',
+    'dashboard.summaries': 'الملخصات',
+    'dashboard.quizzes': 'الاختبارات',
     'dashboard.summariesDesc': 'ملخصات من إعداد الطلاب، مراجعات للامتحانات ومراجع سريعة.',
     'dashboard.quizzesDesc': 'اختبارات تفاعلية لتقييم مدى استيعابك للمادة قبل الامتحانات.',
     'dashboard.readTime': 'قراءة {time} دقيقة',

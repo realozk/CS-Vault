@@ -19,8 +19,8 @@ const t = useTranslations(lang);
 
 ---
 
-<div class="space-y-4">
-  <h3 class="text-lg font-semibold text-gray-800 dark:text-zinc-200 flex flex-wrap items-center gap-3">
+<section class="semester-section">
+  <h3 class="semester-heading">
     <span>{t('semester.title').replace('{sem}', semester.toString())}</span>
     {semester === 1 && (
       <span
@@ -40,13 +40,13 @@ const t = useTranslations(lang);
       <p class="text-xs text-gray-400 dark:text-zinc-500 italic font-medium">{t('semester.empty')}</p>
     </div>
   ) : (
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="course-grid">
       {modules.map((m) => (
         <CourseCard module={m} />
       ))}
     </div>
   )}
-</div>
+</section>
 
 <script>
   import { getAcademicWeekNumber } from '../lib/academic-week';

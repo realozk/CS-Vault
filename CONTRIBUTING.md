@@ -19,9 +19,13 @@ Add it to `src/data/subjects.json` before adding material:
 ```
 
 Use a URL-safe slug. Content folders and academic metadata must match the catalog.
-Courses may be registered before any material is available. Set optional
-`is_new: true` on a catalog entry to show a New/جديد tag after adding material;
-remove it or set it to false when the update is no longer new.
+Courses may be registered before any material is available. The New/جديد badge
+automatically follows the newest quiz or summary publication `date` for that
+course and stays visible for seven days (168 hours). Date-only values start at
+midnight UTC. The badge is checked when the page opens, including when returning
+with Back/Forward, so it expires without another deployment. Keep a file's
+original publication date when fixing typos; use the actual publication date
+when adding new material. No catalog flag is needed.
 
 ## Add notes
 
