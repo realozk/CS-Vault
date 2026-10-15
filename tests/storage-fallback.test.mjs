@@ -17,10 +17,19 @@ test('blocked progress storage still updates the checkbox and progress bar', asy
   };
   const document = { readyState: 'complete', getElementById: id => nodes[id], querySelectorAll: selector => selector === '.summary-checkbox' ? [checkbox] : [], body: { getAttribute: () => null }, addEventListener() {} };
   const source = await readFile(new URL('../src/scripts/subject-dashboard.ts', import.meta.url), 'utf8');
+  const dashboardSource = source.replace(/^import \{ bestScoreStorageKey, bestScoreTone, readBestScore \} from '\.\/quiz-state';\n/, '');
   for (const storage of [() => { throw new Error('Blocked getter'); }, () => ({ getItem: () => null, setItem: () => { throw new Error('Quota exceeded'); } })]) {
-    const context = { document, console, setTimeout };
+    const context = {
+      document,
+      console,
+      setTimeout,
+      window: { addEventListener() {} },
+      bestScoreStorageKey: id => `cs-vault-best-score-v1:${id}`,
+      bestScoreTone: () => 'green',
+      readBestScore: () => null,
+    };
     Object.defineProperty(context, 'localStorage', { get: storage });
-    vm.runInNewContext(ts.transpile(source, { target: ts.ScriptTarget.ES2022 }), context);
+    vm.runInNewContext(ts.transpile(dashboardSource, { target: ts.ScriptTarget.ES2022 }), context);
     checkbox.checked = true;
     assert.doesNotThrow(() => onChange());
     assert.equal(nodes['progress-percentage-text'].textContent, '100%');

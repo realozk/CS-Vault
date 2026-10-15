@@ -1,3 +1,5 @@
+import { bestScoreStorageKey, bestScoreTone, readBestScore } from './quiz-state';
+
 const initDashboard = () => {
   const tabs = document.querySelectorAll('.summary-tab-btn');
   const contents = document.querySelectorAll('.summary-content-block');
@@ -7,6 +9,57 @@ const initDashboard = () => {
   const progressStatusDesc = document.getElementById('progress-status-desc');
 
   const tracker = document.getElementById('subject-progress-card');
+  const quizzesSection = document.getElementById('subject-quizzes');
+  const scoreStorageStatus = document.getElementById('quiz-score-storage-status');
+  const bestScoreBadges = document.querySelectorAll<HTMLElement>('[data-best-score]');
+  const showScoreStorageNotice = () => {
+    if (!scoreStorageStatus || !quizzesSection) return;
+    scoreStorageStatus.textContent = quizzesSection.dataset.scoreStorageUnavailable || 'Quiz scores cannot be saved in this browser.';
+    scoreStorageStatus.classList.remove('hidden');
+  };
+  const renderBestScores = () => {
+    try {
+      bestScoreBadges.forEach((badge) => {
+        const quizId = badge.dataset.bestScore;
+        const total = Number(badge.dataset.bestScoreTotal);
+        if (!quizId || !Number.isInteger(total) || total < 1) {
+          throw new Error('Quiz best-score badge is missing a valid quiz ID or question count.');
+        }
+        const score = readBestScore(localStorage.getItem(bestScoreStorageKey(quizId)), total);
+        if (!score) {
+          badge.textContent = '';
+          badge.classList.add('hidden');
+          return;
+        }
+        badge.textContent = (badge.dataset.bestScoreTemplate || 'Best score: {score}/{total} ({percentage}%)')
+          .replace('{score}', String(score.correct))
+          .replace('{total}', String(score.total))
+          .replace('{percentage}', String(score.percentage));
+        badge.classList.remove(
+          'text-red-700', 'dark:text-red-300',
+          'text-amber-700', 'dark:text-amber-300',
+          'text-emerald-700', 'dark:text-emerald-300',
+        );
+        const tone = bestScoreTone(score.percentage);
+        if (tone === 'red') {
+          badge.classList.add('text-red-700', 'dark:text-red-300');
+        } else if (tone === 'yellow') {
+          badge.classList.add('text-amber-700', 'dark:text-amber-300');
+        } else {
+          badge.classList.add('text-emerald-700', 'dark:text-emerald-300');
+        }
+        badge.classList.remove('hidden');
+      });
+    } catch {
+      showScoreStorageNotice();
+    }
+  };
+  renderBestScores();
+  window.addEventListener('pageshow', renderBestScores);
+  window.addEventListener('storage', (event) => {
+    if (event.key?.startsWith('cs-vault-best-score-v1:')) renderBestScores();
+  });
+
   const subject = tracker?.dataset.subject || 'unknown';
   const year = tracker?.dataset.year || 'unknown';
   const storageKey = `cs-vault-progress-${subject}-${year}`;
