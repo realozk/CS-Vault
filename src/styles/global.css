@@ -522,8 +522,28 @@ html:has(body.quiz-running) { scroll-padding-bottom: calc(7rem + env(safe-area-i
   color: #18181b;
   box-shadow: 0 4px 14px #0003;
   cursor: pointer;
+  transition: background-color .15s ease, box-shadow .15s ease, transform .15s ease;
 }
-.pomodoro-open:hover { background: #67e8f9; }
+.pomodoro-open:hover { background: #67e8f9; box-shadow: 0 6px 18px #0004; transform: translateY(-2px); }
+.pomodoro-open:active { transform: translateY(0) scale(.94); }
+.pomodoro-action {
+  min-height: 2.25rem;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.pomodoro-action:hover { background-color: #f4f4f5; box-shadow: 0 2px 6px #0002; }
+.dark .pomodoro-action:hover { background-color: #27272a; }
+.pomodoro-action:active { transform: scale(.97); }
+.pomodoro-primary:hover,
+.dark .pomodoro-primary:hover { background-color: #67e8f9; box-shadow: 0 2px 8px #06b6d455; }
+.pomodoro-settings summary:hover { color: var(--color-brand-700); }
+.dark .pomodoro-settings summary:hover { color: var(--color-brand-500); }
+.pomodoro-settings input { transition: border-color .15s ease, box-shadow .15s ease; }
+.pomodoro-settings input:hover { border-color: #a1a1aa; }
+.pomodoro-settings input:focus { border-color: var(--color-brand-600); box-shadow: 0 0 0 2px #06b6d433; outline: none; }
+@media (prefers-reduced-motion: reduce) {
+  .pomodoro-open, .pomodoro-action, .pomodoro-settings input { transition: none; }
+}
 .pomodoro-panel {
   position: absolute;
   inset-inline-end: 0;
