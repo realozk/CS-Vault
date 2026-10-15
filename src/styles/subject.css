@@ -74,7 +74,7 @@
 .subject-action-secondary { color: var(--study-muted); }
 .subject-action-secondary:hover { background: var(--study-surface-soft); color: var(--study-text); }
 .subject-action-primary { border-color: var(--study-accent); background: var(--study-accent); color: white; }
-.dark .subject-action-primary { color: #09252e; }
+.dark .subject-action-primary { color: #18181b; }
 .subject-action-primary:hover { opacity: .9; }
 html[dir="rtl"] .subject-next-arrow { transform: rotate(180deg); }
 .subject-empty-reading { display: flex; min-height: 350px; align-items: center; justify-content: center; flex-direction: column; border: 0; }

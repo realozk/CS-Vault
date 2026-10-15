@@ -30,11 +30,6 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
 >
   <div id="quiz-start-screen" class="quiz-screen">
     <div class="quiz-intro">
-      <div class="quiz-intro-icon" aria-hidden="true">
-        <svg width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m9 5 2 2 4-4M9 12l2 2 4-4M4 6h.01M4 13h.01M4 20h.01M9 20h11M19 6h1M19 13h1" />
-        </svg>
-      </div>
       <p class="quiz-eyebrow">{getSubjectName(quiz.subject, lang)} <span aria-hidden="true">/</span> {quiz.year}</p>
       <h2 dir="auto" lang={quiz.lang || 'en'} class="quiz-title">{quiz.title}</h2>
       <div class="quiz-intro-meta">
