@@ -58,6 +58,8 @@ const initPomodoro = () => {
     toggleButton.textContent = state.deadline === null ? t('start') : t('pause');
     toggleButton.setAttribute('aria-label', toggleButton.textContent);
   };
+  studyInput.value = String(state.studyMinutes);
+  breakInput.value = String(state.breakMinutes);
   const switchPhase = (continueRunning = state.deadline !== null) => {
     state.phase = state.phase === 'study' ? 'break' : 'study';
     state.remainingSeconds = duration(state.phase);
@@ -140,14 +142,24 @@ const initPomodoro = () => {
     openButton.setAttribute('aria-expanded', 'false');
   });
 
+  const updateDuration = (phase: PomodoroState['phase'], input: HTMLInputElement) => {
+    const minutes = Number(input.value);
+    if (!input.value || !Number.isInteger(minutes) || minutes < 1) {
+      input.value = String(phase === 'study' ? state.studyMinutes : state.breakMinutes);
       return;
     }
+    const boundedMinutes = Math.min(minutes, 180);
+    input.value = String(boundedMinutes);
+    if (phase === 'study') state.studyMinutes = boundedMinutes;
+    else state.breakMinutes = boundedMinutes;
     state.remainingSeconds = duration(state.phase);
     if (state.deadline !== null) state.deadline = Date.now() + state.remainingSeconds * 1000;
     notice.classList.add('hidden');
     render();
     save();
   };
+  studyInput.addEventListener('change', () => updateDuration('study', studyInput));
+  breakInput.addEventListener('change', () => updateDuration('break', breakInput));
 
   toggleButton.addEventListener('click', () => {
     if (state.deadline === null) {
