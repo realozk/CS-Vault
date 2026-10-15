@@ -1,5 +1,5 @@
 import type { Question, QuizData } from '../types';
-import { readReview, updateReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
+import { bestScoreStorageKey, readBestScore, readReview, updateBestScore, updateReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
 
 const shuffle = <T>(values: T[]): T[] => {
   const result = [...values];
@@ -28,6 +28,8 @@ const initQuizWidget = () => {
   if (!widget) return;
   const quiz: QuizData = JSON.parse(widget.dataset.quiz || '{}');
   if (!quiz.questions?.length) return;
+  const quizId = widget.dataset.quizId;
+  if (!quizId) throw new Error('Quiz widget is missing its quiz ID.');
   const translations: Record<string, string> = JSON.parse(widget.dataset.translations || '{}');
   const t = (key: string) => translations[key] || key;
   const el = (id: string) => document.getElementById(`quiz-${id}`)!;
@@ -37,8 +39,9 @@ const initQuizWidget = () => {
     for (const [key, screen] of Object.entries(screens)) screen.classList.toggle('hidden', key !== name);
     document.body.classList.toggle('quiz-running', name === 'active');
   };
-  const storageKey = `cs-vault-review-v1:${widget.dataset.quizId}`;
-  const attemptKey = `cs-vault-attempt-v1:${widget.dataset.quizId}`;
+  const storageKey = `cs-vault-review-v1:${quizId}`;
+  const attemptKey = `cs-vault-attempt-v1:${quizId}`;
+  const bestScoreKey = bestScoreStorageKey(quizId);
   let saved: ReviewItem[] = [];
   const storageWarning = () => { el('storage-status').textContent = t('storageUnavailable'); };
   const loadSaved = () => {
@@ -256,6 +259,15 @@ const initQuizWidget = () => {
       loadSaved();
       saved = updateReview(saved, questions, answers, Date.now());
       save();
+      if (!shortSession) {
+        try {
+          const previous = readBestScore(localStorage.getItem(bestScoreKey), questions.length);
+          const best = updateBestScore(previous, score, questions.length);
+          localStorage.setItem(bestScoreKey, JSON.stringify(best));
+        } catch {
+          storageWarning();
+        }
+      }
     }
     persistAttempt('results', expired);
     show('results');

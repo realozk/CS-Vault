@@ -504,3 +504,42 @@ html:has(body.quiz-running) { scroll-padding-bottom: calc(7rem + env(safe-area-i
   overflow-wrap: anywhere;
 }
 .dark .quiz-inline-code { border-color: #3f3f46; background: #27272a; color: #f4f4f5; }
+
+.pomodoro-widget {
+  position: fixed;
+  inset-inline-end: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+}
+.pomodoro-open {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid #0891b2;
+  border-radius: 9999px;
+  background: #22d3ee;
+  color: #18181b;
+  box-shadow: 0 4px 14px #0003;
+  cursor: pointer;
+}
+.pomodoro-open:hover { background: #67e8f9; }
+.pomodoro-panel {
+  position: absolute;
+  inset-inline-end: 0;
+  bottom: calc(100% + .75rem);
+  width: min(15rem, calc(100vw - 2rem));
+  padding: .75rem;
+  border: 1px solid #d4d4d8;
+  border-radius: .5rem;
+  background: #fff;
+  color: #18181b;
+  box-shadow: 0 8px 28px #0003;
+}
+.dark .pomodoro-panel { border-color: #3f3f46; background: #18181b; color: #f4f4f5; }
+.pomodoro-panel.hidden { display: none; }
+.pomodoro-settings summary { min-height: 2rem; }
+body.quiz-running .pomodoro-widget {
+  bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
+}
+@media print { .pomodoro-widget { display: none !important; } }

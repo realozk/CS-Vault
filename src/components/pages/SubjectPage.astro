@@ -137,7 +137,7 @@ const trackerTranslations = JSON.stringify({
     <div class="subject-layout grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
         <!-- Quizzes Section -->
-        <div id="subject-quizzes" class="subject-quizzes bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-5 shadow-xs">
+        <div id="subject-quizzes" data-score-storage-unavailable={t('dashboard.storageUnavailable')} class="subject-quizzes bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-5 shadow-xs">
           <h2 class="text-base font-semibold text-gray-700 dark:text-zinc-200 mb-4 flex items-center justify-between">
             <span>{t('dashboard.quizzes')}</span>
             <span class="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 text-xs px-2 py-0.5 rounded-sm">
@@ -178,12 +178,19 @@ const trackerTranslations = JSON.stringify({
                           <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
                         </svg>
                       </span>
+                      <span
+                        data-best-score={q.entry.id}
+                        data-best-score-total={q.entry.data.questions.length}
+                        data-best-score-template={t('dashboard.bestScore')}
+                        class="hidden mt-2 text-xs font-semibold"
+                      ></span>
                     </a>
                   ))}
                 </section>
               ))}
             </div>
           )}
+          <p id="quiz-score-storage-status" class="hidden mt-3 text-xs text-amber-800 dark:text-amber-300" role="status"></p>
         </div>
 
       <!-- Left Panel: Sidebar Index of Content (Columns: 4) -->

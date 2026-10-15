@@ -8,6 +8,44 @@ export interface ReviewItem {
   streak: number;
 }
 export interface TopicResult { topic: string; correct: number; total: number }
+export interface BestScore { version: 1; correct: number; total: number; percentage: number }
+
+export const bestScoreStorageKey = (quizId: string): string => `cs-vault-best-score-v1:${quizId}`;
+
+export function bestScoreTone(percentage: number): 'red' | 'yellow' | 'green' {
+  if (!Number.isInteger(percentage) || percentage < 0 || percentage > 100) {
+    throw new Error('Best score percentage must be an integer from 0 to 100.');
+  }
+  if (percentage < 60) return 'red';
+  if (percentage < 80) return 'yellow';
+  return 'green';
+}
+
+export function readBestScore(raw: string | null, expectedTotal: number): BestScore | null {
+  if (!raw) return null;
+  try {
+    const value: unknown = JSON.parse(raw);
+    if (!value || typeof value !== 'object') return null;
+    const candidate = value as Partial<BestScore>;
+    if (candidate.version !== 1
+      || candidate.total !== expectedTotal
+      || typeof candidate.correct !== 'number' || !Number.isInteger(candidate.correct)
+      || candidate.correct < 0 || candidate.correct > candidate.total
+      || typeof candidate.percentage !== 'number'
+      || candidate.percentage !== Math.round(candidate.correct / candidate.total * 100)) return null;
+    return candidate as BestScore;
+  } catch {
+    return null;
+  }
+}
+
+export function updateBestScore(previous: BestScore | null, correct: number, total: number): BestScore {
+  if (!Number.isInteger(correct) || !Number.isInteger(total) || total < 1 || correct < 0 || correct > total) {
+    throw new Error('Best quiz score must contain a valid correct and total question count.');
+  }
+  const next: BestScore = { version: 1, correct, total, percentage: Math.round(correct / total * 100) };
+  return previous && previous.total === total && previous.percentage >= next.percentage ? previous : next;
+}
 
 export interface QuizAttempt {
   version: 1;

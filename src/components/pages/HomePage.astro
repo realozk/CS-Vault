@@ -163,7 +163,7 @@ const searchIndexTranslations = JSON.stringify({
           const yearModules = modules.filter(m => m.yearLevel === yearNum);
 
           return (
-            <div id={`year-content-${yearNum}`} data-year-content={yearNum} class={`year-material space-y-10 ${yearNum === defaultYear ? '' : 'hidden'}`}>
+            <div id={`year-content-${yearNum}`} data-year-content={yearNum} class={`year-material mt-3 space-y-10 ${yearNum === defaultYear ? '' : 'hidden'}`}>
               {yearModules.length === 0 ? (
                 <div class="bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-md p-12 text-center flex flex-col items-center justify-center">
                   <svg class="w-12 h-12 text-gray-300 dark:text-zinc-700 mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

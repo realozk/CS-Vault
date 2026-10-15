@@ -1,10 +1,59 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { DAY_MS, questionSignature, readReview, updateReview, shortReview, topicResults, secondsRemaining, readAttempt } from '../src/scripts/quiz-state.ts';
+import { DAY_MS, bestScoreStorageKey, bestScoreTone, readBestScore, updateBestScore, questionSignature, readReview, updateReview, shortReview, topicResults, secondsRemaining, readAttempt } from '../src/scripts/quiz-state.ts';
+import { completePomodoroPhase, createDefaultPomodoroState, formatPomodoroTime, getPomodoroPhaseDuration, getPomodoroRemainingSeconds, readPomodoroState } from '../src/scripts/pomodoro-state.ts';
 
 const question = (id, topic = 'evaluation') => ({ id, topic, question: `Question ${id}?`, options: ['Yes', 'No'], correctAnswer: 'Yes' });
 const q1 = question(1), q2 = question(2, 'implementation-tools'), q3 = question(3);
 const now = 1_800_000_000_000;
+
+test('Pomodoro timer defaults to 50/10, validates saved state, and calculates time accurately', () => {
+  const defaults = createDefaultPomodoroState();
+  assert.equal(defaults.studyMinutes, 50);
+  assert.equal(defaults.breakMinutes, 10);
+  assert.equal(getPomodoroPhaseDuration(defaults, 'study'), 3000);
+  assert.equal(getPomodoroPhaseDuration(defaults, 'break'), 600);
+  assert.deepEqual(readPomodoroState('{bad'), defaults);
+  assert.deepEqual(readPomodoroState(JSON.stringify({ ...defaults, studyMinutes: 0 })), defaults);
+  assert.deepEqual(readPomodoroState(JSON.stringify({ ...defaults, deadline: 'later' })), defaults);
+  const running = { ...defaults, deadline: now + 59_001 };
+  assert.deepEqual(readPomodoroState(JSON.stringify(running)), running);
+  assert.equal(getPomodoroRemainingSeconds(running, now), 60);
+  assert.equal(getPomodoroRemainingSeconds(running, now + 60_000), 0);
+  const breakState = completePomodoroPhase({ ...defaults, deadline: now }, now);
+  assert.equal(breakState.phase, 'break');
+  assert.equal(breakState.deadline, now + 600_000);
+  const studyState = completePomodoroPhase(breakState, breakState.deadline);
+  assert.equal(studyState.phase, 'study');
+  assert.equal(studyState.deadline, null);
+  assert.equal(studyState.remainingSeconds, 3000);
+  assert.equal(formatPomodoroTime(3000), '50:00');
+  assert.equal(formatPomodoroTime(9), '00:09');
+  assert.equal(formatPomodoroTime(-1), '00:00');
+  assert.throws(() => completePomodoroPhase(defaults, -1), /completion time must be valid/);
+});
+
+test('best quiz score validates storage and only improves for matching quiz sizes', () => {
+  assert.equal(bestScoreStorageKey('operating-systems/2026/chapter-01.json'), 'cs-vault-best-score-v1:operating-systems/2026/chapter-01.json');
+  assert.equal(readBestScore('{bad json', 2), null);
+  assert.equal(readBestScore(JSON.stringify({ version: 1, correct: 2, total: 3, percentage: 67 }), 2), null);
+  assert.equal(readBestScore(JSON.stringify({ version: 1, correct: 1, total: 2, percentage: 25 }), 2), null);
+  const first = updateBestScore(null, 1, 2);
+  assert.deepEqual(first, { version: 1, correct: 1, total: 2, percentage: 50 });
+  assert.deepEqual(updateBestScore(first, 0, 2), first);
+  assert.deepEqual(updateBestScore(first, 2, 2), { version: 1, correct: 2, total: 2, percentage: 100 });
+  assert.deepEqual(updateBestScore(first, 1, 3), { version: 1, correct: 1, total: 3, percentage: 33 });
+  assert.throws(() => updateBestScore(null, 3, 2), /valid correct and total/);
+});
+
+test('best quiz score colors use red below 60, yellow below 80, and green from 80', () => {
+  assert.equal(bestScoreTone(59), 'red');
+  assert.equal(bestScoreTone(60), 'yellow');
+  assert.equal(bestScoreTone(79), 'yellow');
+  assert.equal(bestScoreTone(80), 'green');
+  assert.equal(bestScoreTone(100), 'green');
+  assert.throws(() => bestScoreTone(101), /integer from 0 to 100/);
+});
 
 test('wrong and unanswered answers are scheduled; correct answers are not added', () => {
   const saved = updateReview([], [q1, q2, q3], new Map([[1, 'No'], [3, 'Yes']]), now);
