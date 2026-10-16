@@ -19,14 +19,19 @@ const alertKey = m.subject === 'programming-languages'
   : m.subject === 'operating-systems'
     ? 'courseAlert.operatingSystems'
     : m.subject === 'web-development'
-    ? 'courseAlert.webdevelopment'
-    : undefined;
+      ? 'courseAlert.webdevelopment'
+      : m.subject === 'algorithm-analysis'
+        ? 'courseAlert.algorithmAnalysis'
+        : undefined;
+const alertTargetWeek = m.subject === 'programming-languages' || m.subject === 'operating-systems'
+  ? 8
+  : 9;
 ---
 
 <a href={href} class:list={["course-card group", { "course-card-upcoming": m.summariesCount + m.quizzesCount === 0 }]}>
   <div class="course-card-top">
     <span class="course-code" dir="ltr">{m.subjectCode}</span>
-    {m.latestContentAt !== null && <span class="course-new" data-new-content-at={m.latestContentAt} hidden>{t('course.new')}</span>}
+    {m.latestContentAt !== null && m.subject !== 'programming-languages' && <span class="course-new" data-new-content-at={m.latestContentAt} hidden>{t('course.new')}</span>}
     <span class="course-open" aria-hidden="true">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-5-5 5 5-5 5" /></svg>
     </span>
@@ -34,7 +39,7 @@ const alertKey = m.subject === 'programming-languages'
   <h4>{m.subjectName}</h4>
   <div class="course-card-detail">
     {alertKey && (
-      <span class="course-alert" data-academic-week-alert data-target-week={m.subject === 'web-development' ? 9 : 8} hidden>{t(alertKey)}</span>
+      <span class="course-alert" data-academic-week-alert data-target-week={alertTargetWeek} hidden>{t(alertKey)}</span>
     )}
     {m.summariesCount + m.quizzesCount === 0 && <span class="course-coming">{t('course.comingSoon')}</span>}
   </div>

@@ -18,6 +18,7 @@
 .directory-heading p { margin-top: .35rem; font-size: .875rem; color: var(--study-muted); }
 .directory-subject-count { display: flex; align-items: center; gap: .5rem; font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--study-text); }
 .directory-subject-count > span { color: var(--study-muted); font-size: .75rem; font-weight: 400; }
+html[dir="rtl"] .directory-subject-count { flex-direction: row-reverse; }
 .directory-layout:not(.hidden) { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: start; gap: 2rem; }
 .year-selector { position: sticky; top: 6.5rem; }
 .year-selector-label { display: block; padding-inline-start: .9rem; margin-bottom: .75rem; font-size: .65rem; letter-spacing: .1em; font-weight: 700; color: var(--study-muted); }
