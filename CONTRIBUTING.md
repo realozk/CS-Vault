@@ -8,7 +8,11 @@ The form is not created yet: maintainers must complete the
 [Google Forms-first setup](contributions/google-apps-script/README.md) and set the
 public responder URL in `src/data/contribution-config.ts` before opening intake.
 
-Share the same form link in every WhatsApp group. Volunteers can use the
+Share the same form link in every WhatsApp group. The [contribution page](https://realozk.github.io/CS-Vault/contribute/)
+offers a simple choice between sending original material and preparing a quiz, with
+downloadable instructions and a valid illustrative JSON example available even while
+submissions are closed. Use your own course metadata from the included catalog.
+Volunteers can also use the
 [AI instructions and valid examples](contributions/volunteer-kit/README.md).
 The browser checker and preview are deferred until the manual process has been tested.
 

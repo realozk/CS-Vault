@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { courses, courseKey } from '../src/lib/course-catalog.ts';
-import { createInstructions, createStarterQuiz } from '../src/lib/contribution-kit.ts';
+import { createInstructions, createStarterQuiz, createPreparationExample, createPreparationInstructions, preparationExampleCourse } from '../src/lib/contribution-kit.ts';
 import { getContributionFormUrl, MAX_QUIZ_BYTES, safeQuizFilename, validateContribution } from '../src/lib/contributions.ts';
 import { quizSchema } from '../src/lib/quiz-schema.ts';
 
@@ -106,4 +106,24 @@ test('shareable volunteer files match the catalog and validate without a website
     assert.match(instructions,/shared Google Form/);
     assert.doesNotMatch(instructions,/Validate and preview on the contribution page/);
   }
+});
+
+test('public preparation guide embeds the same valid example and explains course identity', () => {
+  const example = createPreparationExample();
+  assert.ok(quizSchema.safeParse(example).success);
+  assert.ok(validateContribution(JSON.stringify(example),preparationExampleCourse()).quiz);
+  const guide = createPreparationInstructions();
+  const embedded = JSON.parse(guide.match(/```json\n([\s\S]*?)\n```/)[1]);
+  assert.deepEqual(embedded,example);
+  for (const course of courses) assert.ok(guide.includes(courseKey(course)));
+  for (const text of ['YOUR OWN course', 'Study year (year_level)', 'Catalog year (year)', 'Original exam year (sourceAcademicYear)', 'Publication date (date)', 'unique integer', 'distinct nonempty', 'exactly match one option string', 'sourceKind', 'answerSource', 'sourcePage', 'sourceSlide', 'unreadable', 'original source']) assert.ok(guide.includes(text),text);
+  assert.equal(Object.hasOwn(example,'subject_code'),false);
+});
+
+test('contribution documentation includes required course code and a schema-valid dated quiz', async () => {
+  const guide=await readFile(new URL('../CONTRIBUTING.md',import.meta.url),'utf8');
+  const examples=[...guide.matchAll(/```json\n([\s\S]*?)\n```/g)].map(match=>JSON.parse(match[1]));
+  assert.ok(examples[0].subject_code);
+  assert.ok(examples[1].date);
+  assert.ok(quizSchema.safeParse(examples[1]).success);
 });

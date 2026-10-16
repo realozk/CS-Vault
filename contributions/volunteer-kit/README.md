@@ -1,5 +1,10 @@
 # Volunteer preparation kit
 
+The [contribution page](https://realozk.github.io/CS-Vault/contribute/) also offers
+general instructions and a schema-checked example. Its sample course is explicitly
+labelled as an example: contributors must use their own course's catalog metadata.
+Downloads remain available before the Google Form opens.
+
 Share the course's `.instructions.md` and `.example.json` together with volunteers.
 Each pair is generated from the authoritative course catalog and uses valid quiz
 metadata. The example question is a placeholder: replace it with source material.

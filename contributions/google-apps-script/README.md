@@ -3,7 +3,8 @@
 **WhatsApp → Google Form → private reviewer queue → approved JSON → GitHub Pages**
 
 Use one form directly. Pin the same responder link in every year's WhatsApp group.
-The website only links to that form. The browser checker and preview are deferred
+The contribution page offers original-material and quiz-preparation options, with
+downloadable instructions. All submission actions use that form. The browser checker and preview are deferred
 until a manual pilot identifies the preparation errors worth addressing.
 
 This repository contains setup scripts and shareable files, not live Google resources.
@@ -61,8 +62,9 @@ folders restricted. Students do not need GitHub accounts.
    unrecognized or ambiguous courses go to a general coordinator (`General triage`).
 8. Run `printPublicConfig` and copy its single `responderUrl` into
    `src/data/contribution-config.ts`. Publish/open the form, validate/deploy the site,
-   and pin **that same form URL** in every WhatsApp group. Website links go directly
-   to it; until configured, the old contribution route shows an availability notice.
+   and pin **that same form URL** in every WhatsApp group. The contribution page uses it for
+   all submission actions. Until configured, those actions are disabled with one
+   opening-soon notice; instructions and downloads remain available.
    Never commit workbook/folder IDs, responses, contacts or credentials.
 
 Google documents [dropdown items](https://developers.google.com/apps-script/reference/forms/list-item),

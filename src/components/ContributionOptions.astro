@@ -1,0 +1,82 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
+import { preparationExampleCourse } from '../lib/contribution-kit';
+import '../styles/contribute.css';
+interface Props { formUrl: string | null }
+const { formUrl } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const exampleCourse = preparationExampleCourse();
+const exampleName = lang === 'ar' ? exampleCourse.name_ar || exampleCourse.name : exampleCourse.name;
+const downloadBase = `${import.meta.env.BASE_URL}contribution-kit/`;
+---
+  <div class="contribute-page">
+    <header class="contribute-heading">
+      <h1>{t('contribute.pageTitle')}</h1>
+      <p>{t('contribute.intro')}</p>
+    </header>
+    {!formUrl && <p id="contribute-closed" class="contribute-notice" role="status">{t('contribute.openingSoon')}</p>}
+    <div class="contribute-cards">
+      <section class="contribute-card" aria-labelledby="material-heading">
+        <h2 id="material-heading">{t('contribute.materialTitle')}</h2>
+        <p>{t('contribute.materialDescription')}</p>
+        <p class="contribute-help">{t('contribute.materialHelp')}</p>
+        <div class="contribute-card-actions">
+          {formUrl ? <a class="contribute-button" href={formUrl} data-submission="material">{t('contribute.sendMaterial')} <span aria-hidden="true">↗</span></a>
+            : <button class="contribute-button" disabled aria-describedby="contribute-closed">{t('contribute.sendMaterial')} <span aria-hidden="true">↗</span></button>}
+        </div>
+      </section>
+      <section class="contribute-card" aria-labelledby="prepare-heading">
+        <h2 id="prepare-heading">{t('contribute.prepareTitle')}</h2>
+        <p>{t('contribute.prepareDescription')}</p>
+        <details class="contribute-instructions">
+          <summary>{t('contribute.prepareHow')}</summary>
+          <div class="contribute-instructions-body">
+            <ol>{(['step1', 'step2', 'step3', 'step4'] as const).map(step => <li>{t(`contribute.${step}`)}</li>)}</ol>
+            <a class="contribute-text-link" href={`${downloadBase}example.json`} download="cs-vault-example.json">{t('contribute.downloadExample')} ↓</a>
+            <p class="contribute-help">{t('contribute.exampleNote').replace('{course}', exampleName).replace('{code}', exampleCourse.subject_code)}</p>
+            <label for="contribute-prompt">{t('contribute.promptLabel')}</label>
+            <textarea id="contribute-prompt" readonly rows="7" dir="auto">{t('contribute.prompt')}</textarea>
+            <button id="contribute-copy" class="contribute-button contribute-button-secondary" type="button" hidden data-success={t('contribute.promptCopied')} data-fallback={t('contribute.copyManually')}>{t('contribute.copyPrompt')}</button>
+            <p id="contribute-copy-status" class="contribute-help" role="status" aria-live="polite"></p>
+            <p class="contribute-help">{t('contribute.checkAnswers')}</p>
+          </div>
+        </details>
+        <div class="contribute-card-actions">
+          <a class="contribute-button contribute-button-secondary" href={`${downloadBase}instructions.md`} download="cs-vault-instructions.md">{t('contribute.downloadInstructions')} <span aria-hidden="true">↓</span></a>
+          {formUrl ? <a class="contribute-button" href={formUrl} data-submission="prepared">{t('contribute.submitPrepared')} <span aria-hidden="true">↗</span></a>
+            : <button class="contribute-button" disabled aria-describedby="contribute-closed">{t('contribute.submitPrepared')} <span aria-hidden="true">↗</span></button>}
+        </div>
+      </section>
+    </div>
+    <section class="contribute-correction" aria-label={t('contribute.reportMistake')}>
+      {formUrl ? <a class="contribute-text-link" href={formUrl} data-submission="correction">{t('contribute.reportMistake')}</a>
+        : <button class="contribute-text-link" disabled aria-describedby="contribute-closed">{t('contribute.reportMistake')}</button>}
+      <p>{t('contribute.correctionHelp')}</p>
+    </section>
+    <div class="contribute-submission-info">
+      <p>{t('contribute.submissionInfo')}</p>
+      <p>{t('contribute.attachInForm')}</p>
+    </div>
+    <details class="contribute-process">
+      <summary>{t('contribute.afterSubmit')}</summary>
+      <ol><li>{t('contribute.afterSource')}</li><li>{t('contribute.afterReview')}</li><li>{t('contribute.afterPublish')}</li></ol>
+    </details>
+  </div>
+<script>
+  const copyButton = document.getElementById('contribute-copy') as HTMLButtonElement | null;
+  const prompt = document.getElementById('contribute-prompt') as HTMLTextAreaElement | null;
+  const status = document.getElementById('contribute-copy-status');
+  if (copyButton && prompt && status) {
+    copyButton.hidden = false;
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(prompt.value);
+        status.textContent = copyButton.dataset.success || '';
+      } catch {
+        prompt.focus(); prompt.select();
+        status.textContent = copyButton.dataset.fallback || '';
+      }
+    });
+  }
+</script>
