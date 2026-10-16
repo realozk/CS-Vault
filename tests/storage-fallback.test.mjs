@@ -48,3 +48,21 @@ test('theme initialization falls back to system theme when storage access throws
   assert.doesNotThrow(() => vm.runInNewContext(source, context));
   assert.equal(dark, true);
 });
+
+test('course dashboard hides a stale best score after an answer correction with unchanged count', async () => {
+  const { questionBankFingerprint, updateBestScore, bestScoreStorageKey, bestScoreTone, readBestScore } = await import('../src/scripts/quiz-state.ts');
+  const bank = [{ id: 1, question: 'Which answer?', options: ['A','B'], correctAnswer: 'A' }];
+  const stored = JSON.stringify(updateBestScore(null, 1, 1, questionBankFingerprint(bank)));
+  const source = (await readFile(new URL('../src/scripts/subject-dashboard.ts', import.meta.url), 'utf8'))
+    .replace(/^import \{ bestScoreStorageKey, bestScoreTone, readBestScore \} from '\.\/quiz-state';\n/, '');
+  for (const changed of [false,true]) {
+    const set = new Set(['hidden']);
+    const badge = { textContent: '', dataset: { bestScore:'os/2026/quiz', bestScoreTotal:'1', bestScoreFingerprint:questionBankFingerprint(changed ? [{ ...bank[0], correctAnswer:'B' }] : bank) },
+      classList: { add: (...values) => values.forEach(value => set.add(value)), remove: (...values) => values.forEach(value => set.delete(value)) } };
+    const document = { readyState:'complete', getElementById:() => null, querySelectorAll:selector => selector === '[data-best-score]' ? [badge] : [], body:{getAttribute:() => null}, addEventListener() {} };
+    const context = { document, console, setTimeout, window:{addEventListener() {}}, localStorage:{getItem:() => stored}, bestScoreStorageKey,bestScoreTone,readBestScore };
+    vm.runInNewContext(ts.transpile(source,{target:ts.ScriptTarget.ES2022}),context);
+    assert.equal(set.has('hidden'), changed);
+    assert.equal(badge.textContent, changed ? '' : 'Best score: 1/1 (100%)');
+  }
+});

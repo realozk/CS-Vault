@@ -1,4 +1,6 @@
 ---
+import { contributionConfig } from '../data/contribution-config';
+import { getContributionFormUrl } from '../lib/contributions';
 import "../styles/global.css";
 import { getLangFromUrl, useTranslations, getLocalizedPath, getLanguageSwitcherPath } from "../i18n/ui";
 
@@ -13,6 +15,7 @@ const {
 } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
+const contributionUrl = getContributionFormUrl(contributionConfig) || getLocalizedPath('/contribute/', lang);
 const t = useTranslations(lang);
 const dir = lang === "ar" ? "rtl" : "ltr";
 const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.png`, Astro.site).href;
@@ -103,6 +106,8 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
             {t("nav.home")}
           </a>
 
+          <a href={contributionUrl} class="inline-flex min-h-11 items-center px-2 text-sm font-medium">{lang === 'ar' ? 'ساهم' : 'Contribute'}</a>
+
           <!-- Language Selector -->
           <a
             href={getLanguageSwitcherPath(Astro.url.pathname, lang)}
@@ -160,7 +165,7 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
       >
         <details id="contribute" class="scroll-mt-24">
           <summary id="contribute-title">{t("contribute.title")}</summary>
-          <p class="mt-3 leading-relaxed">{t("contribute.materials")}</p>
+          <p class="mt-3 leading-relaxed"><a href={contributionUrl} class="underline underline-offset-4">{lang === 'ar' ? 'أرسل مصادر أو JSON جاهزاً أو تصحيحاً عبر نموذج Google.' : 'Send material, prepared JSON, or a correction through Google Forms.'}</a></p>
           <p class="mt-2 leading-relaxed">{t("contribute.website")}</p>
           <div class="mt-3 flex flex-wrap gap-x-6 gap-y-2">
           <a

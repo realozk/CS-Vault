@@ -1,5 +1,5 @@
 import type { Question, QuizData } from '../types';
-import { bestScoreStorageKey, readBestScore, readReview, updateBestScore, updateReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
+import { bestScoreStorageKey, questionBankFingerprint, readBestScore, readReview, updateBestScore, updateReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
 
 const shuffle = <T>(values: T[]): T[] => {
   const result = [...values];
@@ -42,6 +42,7 @@ const initQuizWidget = () => {
   const storageKey = `cs-vault-review-v1:${quizId}`;
   const attemptKey = `cs-vault-attempt-v1:${quizId}`;
   const bestScoreKey = bestScoreStorageKey(quizId);
+  const bankFingerprint = questionBankFingerprint(quiz.questions);
   let saved: ReviewItem[] = [];
   const storageWarning = () => { el('storage-status').textContent = t('storageUnavailable'); };
   const loadSaved = () => {
@@ -261,8 +262,8 @@ const initQuizWidget = () => {
       save();
       if (!shortSession) {
         try {
-          const previous = readBestScore(localStorage.getItem(bestScoreKey), questions.length);
-          const best = updateBestScore(previous, score, questions.length);
+          const previous = readBestScore(localStorage.getItem(bestScoreKey), questions.length, bankFingerprint);
+          const best = updateBestScore(previous, score, questions.length, bankFingerprint);
           localStorage.setItem(bestScoreKey, JSON.stringify(best));
         } catch {
           storageWarning();

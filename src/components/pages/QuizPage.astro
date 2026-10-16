@@ -1,4 +1,6 @@
 ---
+import { contributionConfig } from '../../data/contribution-config';
+import { getContributionFormUrl } from '../../lib/contributions';
 import { getSubjectName } from '../../lib/modules';
 import type { CollectionEntry } from 'astro:content';
 interface Props { quiz: CollectionEntry<'quizzes'>; }
@@ -7,6 +9,7 @@ import QuizWidget from '../../components/QuizWidget.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
 
 const lang = getLangFromUrl(Astro.url);
+const contributionUrl = getContributionFormUrl(contributionConfig) || getLocalizedPath('/contribute/', lang);
 const t = useTranslations(lang);
 
 
@@ -31,6 +34,7 @@ const pageTitle = `${quiz.data.title} — ${t("quiz.practice")}`;
       </a>
     </div>
 
+    <p class="mb-4 text-sm"><a href={contributionUrl} class="inline-flex min-h-11 items-center underline underline-offset-4">{lang === 'ar' ? 'أرسل تصحيحاً لهذا الاختبار' : 'Suggest a correction'}</a></p>
     <!-- Main Widget Container -->
     <div>
       <QuizWidget quizId={quiz.id} quiz={quiz.data} backUrl={getLocalizedPath(`/${subject}/${year}`, lang)} />

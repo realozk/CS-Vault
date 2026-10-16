@@ -1,4 +1,6 @@
 ---
+import { contributionConfig } from '../../data/contribution-config';
+import { getContributionFormUrl } from '../../lib/contributions';
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SemesterSection from '../../components/SemesterSection.astro';
@@ -9,6 +11,7 @@ import { getModules, getSubjectName } from '../../lib/modules';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
 
 const lang = getLangFromUrl(Astro.url);
+const contributionUrl = getContributionFormUrl(contributionConfig) || getLocalizedPath('/contribute/', lang);
 const t = useTranslations(lang);
 const copy = lang === 'ar' ? {
   description: 'ملخصات واختبارات لطلاب علوم الحاسب.',
@@ -98,6 +101,7 @@ const searchIndexTranslations = JSON.stringify({
       <h1 id="home-title">{t('nav.brand')}</h1>
       <p class="home-quote" data-random-home-quote={lang}>{t('hero.title')}</p>
       <p class="home-hero-description">{copy.description}</p>
+      <a href={contributionUrl} class="inline-flex min-h-11 items-center text-brand-700 dark:text-brand-500 underline underline-offset-4">{lang === 'ar' ? 'ساهم بمصادرك' : 'Contribute material'} ↗</a>
     </section>
 
     <div class="home-search">

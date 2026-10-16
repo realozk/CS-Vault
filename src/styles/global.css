@@ -152,10 +152,11 @@ input {
 @media (max-width: 639px) {
   .site-footer-inner { grid-template-columns: 1fr; gap: .5rem; }
   #nav-brand { font-size: 1rem; }
+  #main-nav > a:first-child { display: none; }
 }
 @media (max-width: 380px) {
   #main-nav { gap: .4rem; }
-  #main-nav > a:first-child { display: none; }
+  #main-nav > a { font-size: .8125rem; padding-inline: .5rem; }
 }
 
 /* Markdown Reading Typography (Premium Prose alternative) */

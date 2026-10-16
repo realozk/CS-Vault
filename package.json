@@ -13,12 +13,15 @@
     "check": "astro check",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "check:links": "node scripts/check-links.mjs",
-    "validate": "npm run check && npm test && npm run build && npm run check:links"
+    "validate": "npm run check && npm test && npm run build && npm run check:links",
+    "check:quiz": "node --experimental-strip-types scripts/check-quiz.mjs",
+    "contribution:kit": "node --experimental-strip-types scripts/export-contribution-kit.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
     "astro": "^6.4.7",
-    "tailwindcss": "^4.3.1"
+    "tailwindcss": "^4.3.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",

@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getLangFromUrl, getLocalizedPath } from '../../i18n/ui';
+import { contributionConfig } from '../../data/contribution-config';
+import { getContributionFormUrl } from '../../lib/contributions';
+const lang = getLangFromUrl(Astro.url);
+const ar = lang === 'ar';
+const formUrl = getContributionFormUrl(contributionConfig);
+const title = ar ? 'ساهم بمصادرك' : 'Contribute material';
+---
+<Layout title={title}>
+  <section class="max-w-2xl mx-auto py-8 sm:py-16">
+    <h1 class="text-3xl sm:text-4xl font-bold mb-6">{title}</h1>
+    <p class="leading-8 mb-4">{ar
+      ? 'أرسل ملفات PDF أو صوراً أو اختبار JSON جاهزاً أو تصحيحاً عبر نموذج Google واحد. اختر المادة في النموذج ليصل طلبك إلى فريق السنة المناسب.'
+      : 'Send PDFs, photos, prepared JSON, or a correction through one Google Form. Choose your course in the form so the submission reaches the right year team.'}</p>
+    {formUrl ? <a href={formUrl} class="inline-flex min-h-11 items-center underline underline-offset-4 text-brand-700 dark:text-brand-500">{ar ? 'فتح نموذج المساهمة' : 'Open contribution form'} ↗</a>
+      : <p role="status" class="leading-8 p-4 rounded-lg border border-gray-200 dark:border-zinc-700">{ar ? 'نموذج المساهمات لم يُفعّل بعد. سيظهر الرابط هنا عند فتح استقبال المساهمات.' : 'The contribution form is not open yet. Its link will appear here when submissions open.'}</p>}
+    <p class="leading-8 mt-6">{ar
+      ? 'تُحفظ المصادر في Google Drive ويعمل الفريق في قائمة مراجعة خاصة. لا يُنشر المحتوى إلا بعد التحقق منه. يمكنك الإرسال أكثر من مرة؛ وقد يتطلب رفع الملفات تسجيل الدخول إلى Google.'
+      : 'Sources stay in Google Drive and the team works in a private review queue. Content is published after review. You may submit more than once; file uploads may require Google sign-in.'}</p>
+    <a href={getLocalizedPath('/', lang)} class="inline-flex min-h-11 items-center mt-6 underline underline-offset-4">{ar ? 'العودة للرئيسية' : 'Back to home'}</a>
+  </section>
+</Layout>

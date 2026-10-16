@@ -1,0 +1,25 @@
+{
+  "title": "Draft — replace with the material title",
+  "date": "2026-10-16",
+  "subject": "Programming Languages",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Replace with original filename or source description",
+  "sourceKind": "provided",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Replace this example with a question from the source.",
+      "options": [
+        "Example answer A",
+        "Example answer B"
+      ],
+      "correctAnswer": "Example answer A",
+      "explanation": "Replace this example explanation after checking the source.",
+      "answerSource": "inferred",
+      "optionsSource": "provided"
+    }
+  ]
+}

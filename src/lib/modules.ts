@@ -1,18 +1,8 @@
-import { z } from 'astro/zod';
 import { getCollection } from 'astro:content';
+import { safeQuizFilename } from './contributions';
 import { validateContentMetadata } from './content-metadata';
-import catalog from '../data/subjects.json';
+import { courses as subjects } from './course-catalog';
 import type { ModuleItem } from '../types';
-
-const subjects = z.array(z.object({
-  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  name: z.string().min(1),
-  subject_code: z.string().min(1),
-  name_ar: z.string().min(1).optional(),
-  year: z.number().int().positive(),
-  year_level: z.number().int().min(1).max(4),
-  semester: z.number().int().min(1).max(2),
-})).parse(catalog);
 
 // Build-time only: courses exist even before their study material is uploaded.
 export function getSubjectName(nameOrSlug: string, lang: 'en' | 'ar' = 'en') {
@@ -44,6 +34,7 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
       if (!module) throw new Error(`Register ${subject}/${year} in src/data/subjects.json first`);
       const course = subjects.find(s => s.slug === subject && String(s.year) === year)!;
       validateContentMetadata(entry.id, entry.data, course);
+      if (count === 'quizzesCount') safeQuizFilename(entry.id.split('/').slice(2).join('/'));
       module[count]++;
       const date = entry.data.date.getTime();
       module.latestContentAt = Math.max(module.latestContentAt ?? date, date);

@@ -8,9 +8,9 @@ export interface ReviewItem {
   streak: number;
 }
 export interface TopicResult { topic: string; correct: number; total: number }
-export interface BestScore { version: 1; correct: number; total: number; percentage: number }
+export interface BestScore { version: 2; fingerprint: string; correct: number; total: number; percentage: number }
 
-export const bestScoreStorageKey = (quizId: string): string => `cs-vault-best-score-v1:${quizId}`;
+export const bestScoreStorageKey = (quizId: string): string => `cs-vault-best-score-v2:${quizId}`;
 
 export function bestScoreTone(percentage: number): 'red' | 'yellow' | 'green' {
   if (!Number.isInteger(percentage) || percentage < 0 || percentage > 100) {
@@ -21,13 +21,14 @@ export function bestScoreTone(percentage: number): 'red' | 'yellow' | 'green' {
   return 'green';
 }
 
-export function readBestScore(raw: string | null, expectedTotal: number): BestScore | null {
+export function readBestScore(raw: string | null, expectedTotal: number, fingerprint: string): BestScore | null {
   if (!raw) return null;
   try {
     const value: unknown = JSON.parse(raw);
     if (!value || typeof value !== 'object') return null;
     const candidate = value as Partial<BestScore>;
-    if (candidate.version !== 1
+    if (candidate.version !== 2 || !fingerprint || candidate.fingerprint !== fingerprint
+      || !Number.isInteger(expectedTotal) || expectedTotal < 1
       || candidate.total !== expectedTotal
       || typeof candidate.correct !== 'number' || !Number.isInteger(candidate.correct)
       || candidate.correct < 0 || candidate.correct > candidate.total
@@ -39,12 +40,12 @@ export function readBestScore(raw: string | null, expectedTotal: number): BestSc
   }
 }
 
-export function updateBestScore(previous: BestScore | null, correct: number, total: number): BestScore {
-  if (!Number.isInteger(correct) || !Number.isInteger(total) || total < 1 || correct < 0 || correct > total) {
+export function updateBestScore(previous: BestScore | null, correct: number, total: number, fingerprint: string): BestScore {
+  if (!fingerprint || !Number.isInteger(correct) || !Number.isInteger(total) || total < 1 || correct < 0 || correct > total) {
     throw new Error('Best quiz score must contain a valid correct and total question count.');
   }
-  const next: BestScore = { version: 1, correct, total, percentage: Math.round(correct / total * 100) };
-  return previous && previous.total === total && previous.percentage >= next.percentage ? previous : next;
+  const next: BestScore = { version: 2, fingerprint, correct, total, percentage: Math.round(correct / total * 100) };
+  return previous && previous.fingerprint === fingerprint && previous.total === total && previous.percentage >= next.percentage ? previous : next;
 }
 
 export interface QuizAttempt {
@@ -153,4 +154,16 @@ export function topicResults(questions: Question[], answers: ReadonlyMap<number,
 
 export function secondsRemaining(deadline: number, now: number): number {
   return Math.max(0, Math.ceil((deadline - now) / 1000));
+}
+
+// Stable across language routes and shuffled display order. Legacy scores have no
+// bank identity, so version 2 deliberately leaves them behind.
+export function questionBankFingerprint(questions: Question[]): string {
+  const content = JSON.stringify([...questions].sort((a, b) => a.id - b.id).map(q =>
+    [q.id, questionSignature(q), q.explanation || '']));
+  let hash = 0xcbf29ce484222325n;
+  for (const byte of new TextEncoder().encode(content)) {
+    hash = BigInt.asUintN(64, (hash ^ BigInt(byte)) * 0x100000001b3n);
+  }
+  return hash.toString(16).padStart(16, '0');
 }

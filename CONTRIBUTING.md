@@ -1,6 +1,18 @@
 # Contributing
 
-You can add lecture notes, practice quizzes, or corrections. Fork the repository,
+Students submit original material, prepared JSON, or corrections through one shared
+Google Form. Choose your course in its required dropdown, or “Course missing / Not sure”.
+Original exam year is a separate optional field. Submissions enter a private reviewer
+queue and are published only after review; students do not need GitHub accounts.
+The form is not created yet: maintainers must complete the
+[Google Forms-first setup](contributions/google-apps-script/README.md) and set the
+public responder URL in `src/data/contribution-config.ts` before opening intake.
+
+Share the same form link in every WhatsApp group. Volunteers can use the
+[AI instructions and valid examples](contributions/volunteer-kit/README.md).
+The browser checker and preview are deferred until the manual process has been tested.
+
+To contribute through GitHub, fork the repository,
 install dependencies with `npm ci`, and work on a branch.
 
 ## Register a course
@@ -12,6 +24,7 @@ Add it to `src/data/subjects.json` before adding material:
   "slug": "operating-systems",
   "name": "Operating Systems",
   "name_ar": "نظم التشغيل",
+  "subject_code": "CS3608",
   "year": 2026,
   "year_level": 3,
   "semester": 1
@@ -37,7 +50,7 @@ title: "Lecture 1 — Introduction"
 description: "Main concepts from Lecture 1."
 author: "Your name"
 date: 2026-10-08
-subject_code: "OS"
+subject_code: "CS3608"
 year_level: 3
 semester: 1
 lang: "en"
@@ -53,6 +66,7 @@ Create `src/content/quizzes/<subject>/<year>/<filename>.json`:
 ```json
 {
   "title": "Lecture 1 — Practice",
+  "date": "2026-10-16",
   "subject": "Operating Systems",
   "year": 2026,
   "year_level": 3,
@@ -77,7 +91,9 @@ Create `src/content/quizzes/<subject>/<year>/<filename>.json`:
 Keep question IDs unique and choices distinct. `correctAnswer` must exactly match
 one choice. Check every answer against the source before submitting.
 
-Optional quiz fields include `description` and `featured` (default false).
+Optional quiz fields include `description`, `featured` (default false),
+`sourceAcademicYear` (a string such as `2023–2024`), `sourceTerm`, and `updatedAt`
+(an ISO date). Catalog `year` identifies the course collection, not the source exam year.
 `sourceKind` is `instructor` (red: instructor/Blackboard), `provided` (orange:
 collected or older material), or `generated` (regular: fully AI-generated).
 Classify by the origin of the questions; keep `answerSource` separate to identify
@@ -85,11 +101,19 @@ how each answer was determined. Optional question fields include
 `code`, `topic`, `sourceSlide`, `sourcePage`, and `optionsSource`
 (`provided` or `generated`). Source page/slide numbers start at 1.
 `answerSource` is `manual`, `marked`, or `inferred`; AI-inferred answers must use
-`inferred`. See `src/content.config.ts` for the complete validation rules.
+`inferred`. See `src/lib/quiz-schema.ts` for the complete validation rules.
 
 ## Check and submit
 
-Run `npm run build` to validate content and generate the site. For quiz behavior
+Use lowercase hyphenated filenames, without paths; `all-questions` is reserved.
+For corrections preserve filename, public URL, publication `date`, and existing question IDs.
+Use new IDs for genuinely new questions. Set `updatedAt` separately; it does not restart
+any New badge. For new quizzes the starter date is a draft: the publisher sets the
+actual date only when publishing.
+
+Run `npm run validate` to check types, tests, content, build and links. A single
+quiz can also be checked with `npm run check:quiz -- file.json --course subject/2026`
+(and `--original existing-file.json` for corrections). For quiz behavior
 changes, also run:
 
 ```sh

@@ -2,7 +2,7 @@ name: Site checks
 on:
   pull_request:
   push:
-    branches: [tests]
+    branches: [tests, ztest]
 permissions:
   contents: read
 concurrency:

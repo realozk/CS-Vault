@@ -1,14 +1,18 @@
 ---
+import { contributionConfig } from '../../data/contribution-config';
+import { getContributionFormUrl } from '../../lib/contributions';
 import { getCollection, render } from 'astro:content';
 import QuizSourceLabel from '../../components/QuizSourceLabel.astro';
 import { getModules } from '../../lib/modules';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
+import { questionBankFingerprint } from '../../scripts/quiz-state';
 import { createAllQuestionsQuiz } from '../../lib/quiz-routes';
 import '../../styles/subject.css';
 
 const lang = getLangFromUrl(Astro.url);
+const contributionUrl = getContributionFormUrl(contributionConfig) || getLocalizedPath('/contribute/', lang);
 const t = useTranslations(lang);
 
 
@@ -135,6 +139,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
       </div>
       <h1 lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>{subjectName}</h1>
       <p>{labels.intro}</p>
+      <a href={contributionUrl} class="inline-flex min-h-11 items-center text-brand-700 dark:text-brand-500 underline underline-offset-4">{lang === 'ar' ? 'ساهم بمصادرك' : 'Contribute material'}</a>
     </header>
 
     <div id="subject-mode-switch" class="subject-mode-switch hidden" data-subject-mode-switch role="group" aria-label={labels.studyTools}>
@@ -189,6 +194,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
                     <span
                       data-best-score={q.entry.id}
                       data-best-score-total={q.entry.data.questions.length}
+                      data-best-score-fingerprint={questionBankFingerprint(q.entry.data.questions)}
                       data-best-score-template={t('dashboard.bestScore')}
                       class="subject-best-score hidden"
                     ></span>

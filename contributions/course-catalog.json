@@ -1,0 +1,50 @@
+[
+  {
+    "course_key": "algorithm-analysis/2026",
+    "name": "Algorithm Analysis",
+    "name_ar": "تحليل الخوارزميات",
+    "subject_code": "CS2107",
+    "year_level": 3,
+    "semester": 1
+  },
+  {
+    "course_key": "computer-networks/2026",
+    "name": "Computer Networks",
+    "name_ar": "شبكات الحاسب",
+    "subject_code": "CEN3011",
+    "year_level": 3,
+    "semester": 1
+  },
+  {
+    "course_key": "engineering-software-products/2026",
+    "name": "Engineering Software Products",
+    "name_ar": "نظم بناء البرمجيات",
+    "subject_code": "CS3809",
+    "year_level": 3,
+    "semester": 1
+  },
+  {
+    "course_key": "operating-systems/2026",
+    "name": "Operating Systems",
+    "name_ar": "نظم التشغيل",
+    "subject_code": "CS3608",
+    "year_level": 3,
+    "semester": 1
+  },
+  {
+    "course_key": "programming-languages/2026",
+    "name": "Programming Languages",
+    "name_ar": "لغات البرمجة",
+    "subject_code": "CS3713",
+    "year_level": 3,
+    "semester": 1
+  },
+  {
+    "course_key": "web-development/2026",
+    "name": "Web Development",
+    "name_ar": "تطوير الويب",
+    "subject_code": "CS3810",
+    "year_level": 3,
+    "semester": 1
+  }
+]

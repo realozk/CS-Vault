@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { DAY_MS, bestScoreStorageKey, bestScoreTone, readBestScore, updateBestScore, questionSignature, readReview, updateReview, shortReview, topicResults, secondsRemaining, readAttempt } from '../src/scripts/quiz-state.ts';
+import { DAY_MS, questionBankFingerprint, bestScoreStorageKey, bestScoreTone, readBestScore, updateBestScore, questionSignature, readReview, updateReview, shortReview, topicResults, secondsRemaining, readAttempt } from '../src/scripts/quiz-state.ts';
 import { completePomodoroPhase, createDefaultPomodoroState, formatPomodoroTime, getPomodoroPhaseDuration, getPomodoroRemainingSeconds, readPomodoroState } from '../src/scripts/pomodoro-state.ts';
 
 const question = (id, topic = 'evaluation') => ({ id, topic, question: `Question ${id}?`, options: ['Yes', 'No'], correctAnswer: 'Yes' });
@@ -33,17 +33,24 @@ test('Pomodoro timer defaults to 50/10, validates saved state, and calculates ti
   assert.throws(() => completePomodoroPhase(defaults, -1), /completion time must be valid/);
 });
 
-test('best quiz score validates storage and only improves for matching quiz sizes', () => {
-  assert.equal(bestScoreStorageKey('operating-systems/2026/chapter-01.json'), 'cs-vault-best-score-v1:operating-systems/2026/chapter-01.json');
-  assert.equal(readBestScore('{bad json', 2), null);
-  assert.equal(readBestScore(JSON.stringify({ version: 1, correct: 2, total: 3, percentage: 67 }), 2), null);
-  assert.equal(readBestScore(JSON.stringify({ version: 1, correct: 1, total: 2, percentage: 25 }), 2), null);
-  const first = updateBestScore(null, 1, 2);
-  assert.deepEqual(first, { version: 1, correct: 1, total: 2, percentage: 50 });
-  assert.deepEqual(updateBestScore(first, 0, 2), first);
-  assert.deepEqual(updateBestScore(first, 2, 2), { version: 1, correct: 2, total: 2, percentage: 100 });
-  assert.deepEqual(updateBestScore(first, 1, 3), { version: 1, correct: 1, total: 3, percentage: 33 });
-  assert.throws(() => updateBestScore(null, 3, 2), /valid correct and total/);
+test('best scores require the same bank, reject legacy scores and only improve', () => {
+  const fingerprint = questionBankFingerprint([q1, q2]);
+  assert.equal(bestScoreStorageKey('os/2026/chapter-01'), 'cs-vault-best-score-v2:os/2026/chapter-01');
+  assert.equal(readBestScore('{bad json', 2, fingerprint), null);
+  assert.equal(readBestScore(JSON.stringify({ version: 1, correct: 2, total: 2, percentage: 100 }), 2, fingerprint), null);
+  const first = updateBestScore(null, 1, 2, fingerprint);
+  assert.deepEqual(readBestScore(JSON.stringify(first), 2, fingerprint), first);
+  assert.deepEqual(updateBestScore(first, 0, 2, fingerprint), first);
+  assert.equal(updateBestScore(first, 2, 2, fingerprint).percentage, 100);
+  assert.equal(readBestScore(JSON.stringify({ ...first, percentage: 25 }), 2, fingerprint), null);
+  assert.equal(readBestScore(JSON.stringify(first), 3, fingerprint), null);
+  assert.throws(() => updateBestScore(null, 3, 2, fingerprint), /valid correct and total/);
+  const changed = questionBankFingerprint([{ ...q1, correctAnswer: 'No' }, q2]);
+  assert.notEqual(changed, fingerprint);
+  assert.equal(readBestScore(JSON.stringify(first), 2, changed), null);
+  assert.equal(updateBestScore(first, 0, 2, changed).percentage, 0);
+  assert.equal(questionBankFingerprint([q2, q1]), fingerprint);
+  assert.notEqual(questionBankFingerprint([{ ...q1, code: 'changed' }, q2]), fingerprint);
 });
 
 test('best quiz score colors use red below 60, yellow below 80, and green from 80', () => {

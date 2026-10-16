@@ -25,7 +25,7 @@ const initDashboard = () => {
         if (!quizId || !Number.isInteger(total) || total < 1) {
           throw new Error('Quiz best-score badge is missing a valid quiz ID or question count.');
         }
-        const score = readBestScore(localStorage.getItem(bestScoreStorageKey(quizId)), total);
+        const score = readBestScore(localStorage.getItem(bestScoreStorageKey(quizId)), total, badge.dataset.bestScoreFingerprint || '');
         if (!score) {
           badge.textContent = '';
           badge.classList.add('hidden');
@@ -57,7 +57,7 @@ const initDashboard = () => {
   renderBestScores();
   window.addEventListener('pageshow', renderBestScores);
   window.addEventListener('storage', (event) => {
-    if (event.key?.startsWith('cs-vault-best-score-v1:')) renderBestScores();
+    if (event.key?.startsWith('cs-vault-best-score-v2:')) renderBestScores();
   });
 
   const subject = tracker?.dataset.subject || 'unknown';
