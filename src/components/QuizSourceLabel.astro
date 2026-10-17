@@ -1,7 +1,8 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
-interface Props { sourceKind?: 'generated' | 'provided' | 'instructor'; }
-const { sourceKind = 'generated' } = Astro.props;
+interface Props { sourceKind?: 'generated' | 'provided' | 'instructor'; combined?: boolean; }
+const { sourceKind = 'generated', combined = false } = Astro.props;
 const t = useTranslations(getLangFromUrl(Astro.url));
+const labelKind = combined ? 'combined' : sourceKind;
 ---
-<span class:list={["quiz-source-label", `quiz-source-${sourceKind}`]}>{t(`quiz.source.${sourceKind}`)}</span>
+<span class:list={["quiz-source-label", `quiz-source-${labelKind}`]}>{t(`quiz.source.${labelKind}`)}</span>

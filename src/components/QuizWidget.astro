@@ -1,5 +1,6 @@
 ---
 import QuizSourceLabel from './QuizSourceLabel.astro';
+import MaterialContext from './MaterialContext.astro';
 import '../styles/quiz.css';
 import { getSubjectName } from '../lib/modules';
 import type { QuizData } from '../types';
@@ -14,6 +15,7 @@ interface Props {
 const { quiz, quizId = `${quiz.subject}/${quiz.year}/${quiz.title}`, backUrl = "../.." } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const combined = quizId.endsWith('/all-questions');
 const serializedTranslations = JSON.stringify(Object.fromEntries(
   (Object.keys(ui.en) as (keyof typeof ui.en)[])
     .filter(key => key.startsWith('quiz.')).map(key => [key.slice(5), t(key)])
@@ -30,12 +32,19 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
 >
   <div id="quiz-start-screen" class="quiz-screen">
     <div class="quiz-intro">
-      <p class="quiz-eyebrow">{getSubjectName(quiz.subject, lang)} <span aria-hidden="true">/</span> {quiz.year}</p>
+      <p class="quiz-eyebrow">{getSubjectName(quiz.subject, lang)} <span aria-hidden="true">/</span> {lang === 'ar' ? 'سنة المجموعة' : 'Collection year'} {quiz.year}</p>
       <h2 dir="auto" lang={quiz.lang || 'en'} class="quiz-title">{quiz.title}</h2>
+      <MaterialContext
+        description={quiz.description}
+        sourceAcademicYear={quiz.sourceAcademicYear}
+        sourceTerm={quiz.sourceTerm}
+        updatedAt={quiz.updatedAt}
+        contentLang={quiz.lang}
+      />
       <div class="quiz-intro-meta">
         <span class="quiz-question-count"><strong>{quiz.questions.length}</strong> {t('quiz.questions')}</span>
         <span aria-hidden="true" class="quiz-meta-divider"></span>
-        <QuizSourceLabel sourceKind={quiz.sourceKind} />
+        <QuizSourceLabel sourceKind={quiz.sourceKind} combined={combined} />
       </div>
     </div>
 
@@ -72,12 +81,13 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
     </div>
 
     <details class="quiz-source-details">
-      <summary><QuizSourceLabel sourceKind={quiz.sourceKind} /><svg aria-hidden="true" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg></summary>
+      <summary><QuizSourceLabel sourceKind={quiz.sourceKind} combined={combined} /><svg aria-hidden="true" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg></summary>
       <div class="quiz-source-content">
         {quiz.source && <p>{t('quiz.source')}: <bdi dir="ltr">{quiz.source}</bdi></p>}
         {quiz.sourceKind === 'instructor' && <p>{t('quiz.instructorNotice')}</p>}
         {quiz.sourceKind === 'provided' && <p>{t('quiz.providedNotice')}</p>}
-        {(!quiz.sourceKind || quiz.sourceKind === 'generated') && quiz.questions.some(q => q.answerSource === 'inferred') && <p class="quiz-source-warning">{t(quiz.subject === 'Operating Systems' ? 'quiz.aiLectureNotice' : 'quiz.aiDisclaimer')}</p>}
+        {combined && <p>{t('quiz.combinedNotice')}</p>}
+        {!combined && (!quiz.sourceKind || quiz.sourceKind === 'generated') && quiz.questions.some(q => q.answerSource === 'inferred') && <p class="quiz-source-warning">{t(quiz.subject === 'Operating Systems' ? 'quiz.aiLectureNotice' : 'quiz.aiDisclaimer')}</p>}
         <p>{t('quiz.languageNote')}</p>
       </div>
     </details>

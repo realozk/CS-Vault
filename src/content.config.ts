@@ -13,6 +13,10 @@ const summariesCollection = defineCollection({
   schema: z.object({
     title: z.string().min(1, 'Title is required'),
     description: z.string().min(1, 'Description is required'),
+    source: z.string().min(1).optional(),
+    sourceAcademicYear: z.string().min(1).optional(),
+    sourceTerm: z.string().min(1).optional(),
+    updatedAt: z.coerce.date().optional(),
     author: z.string().min(1, 'Author is required'),
     date: z.coerce.date(),
     subject_code: z.string().min(1, 'Subject code is required'),

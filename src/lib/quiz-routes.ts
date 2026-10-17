@@ -36,6 +36,10 @@ export function createAllQuestionsQuiz(entries: QuizEntry[]) {
     title: 'All Questions',
     description: 'A combined practice quiz containing every distinct question available for this subject.',
     source: 'Combined from all available quizzes for this subject.',
+    // The first quiz's source details do not describe the full collection.
+    sourceAcademicYear: undefined,
+    sourceTerm: undefined,
+    updatedAt: undefined,
     sourceKind: 'generated',
     featured: false,
     questions,

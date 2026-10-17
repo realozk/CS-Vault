@@ -25,6 +25,9 @@ export interface QuizData {
   year: number;
   questions: Question[];
   description?: string;
+  sourceAcademicYear?: string;
+  sourceTerm?: string;
+  updatedAt?: Date | string;
   source?: string;
   sourceKind?: 'generated' | 'provided' | 'instructor';
   featured?: boolean;

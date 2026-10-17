@@ -87,7 +87,7 @@ const initTabsAndSearch = () => {
     }
   }
 
-  const searchInput = document.getElementById('global-search-input');
+  const searchInput = document.querySelector<HTMLInputElement>('#global-search-input');
   const searchResultsPane = document.getElementById('search-results-pane');
   const coreTabView = document.getElementById('core-tab-view');
   const resultsGrid = document.getElementById('search-results-grid');
@@ -96,12 +96,13 @@ const initTabsAndSearch = () => {
 
   if (!searchInput || !searchResultsPane || !coreTabView || !resultsGrid || !resultsCount || !noResults) return;
 
-  let debounceTimer: ReturnType<typeof setTimeout>;
-  searchInput.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-    const target = e.target as HTMLInputElement;
-    const query = target.value.toLowerCase().trim();
+  const searchModifier = document.querySelector<HTMLElement>('[data-search-modifier]');
+  if (searchModifier) {
+    searchModifier.textContent = /Mac|iPhone|iPad|iPod/.test(navigator.platform) ? '⌘' : 'Ctrl';
+  }
+
+  const updateSearchResults = () => {
+    const query = searchInput.value.toLowerCase().trim();
 
     if (query === '') {
       // Show core tab view, hide search pane
@@ -160,7 +161,35 @@ const initTabsAndSearch = () => {
       `;
       resultsGrid.appendChild(resultCard);
     });
-    }, 250);
+  };
+
+  let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+  searchInput.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    if (searchInput.value.trim() === '') {
+      updateSearchResults();
+      return;
+    }
+    debounceTimer = setTimeout(updateSearchResults, 100);
+  });
+
+  searchInput.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || event.isComposing || event.defaultPrevented) return;
+    event.preventDefault();
+    clearTimeout(debounceTimer);
+    searchInput.value = '';
+    updateSearchResults();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key.toLowerCase() !== 'k' || (!event.ctrlKey && !event.metaKey) || event.isComposing || event.defaultPrevented || event.altKey || event.shiftKey) return;
+
+    const target = event.target;
+    if (target !== searchInput && target instanceof Element && target.closest('input, textarea, select')) return;
+    if (target instanceof HTMLElement && target.isContentEditable) return;
+
+    event.preventDefault();
+    searchInput.focus();
   });
 };
 

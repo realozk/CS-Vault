@@ -1,0 +1,68 @@
+---
+import { getLangFromUrl } from '../i18n/ui';
+
+interface Props {
+  description?: string;
+  source?: string;
+  sourceAcademicYear?: string;
+  sourceTerm?: string;
+  updatedAt?: Date | string;
+  contentLang?: 'en' | 'ar';
+  compact?: boolean;
+}
+
+const {
+  description,
+  source,
+  sourceAcademicYear,
+  sourceTerm,
+  updatedAt,
+  contentLang = 'en',
+  compact = false,
+} = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const labels = lang === 'ar' ? {
+  source: 'المصدر',
+  year: 'سنة المصدر',
+  term: 'فصل المصدر',
+  updated: 'آخر تحديث',
+} : {
+  source: 'Source',
+  year: 'Source year',
+  term: 'Source term',
+  updated: 'Updated',
+};
+const contextDescription = description?.trim();
+const contextSource = source?.trim();
+const sourceYear = sourceAcademicYear?.trim();
+const term = sourceTerm?.trim();
+const updatedDate = updatedAt ? new Date(updatedAt) : undefined;
+const validUpdatedDate = updatedDate && Number.isFinite(updatedDate.getTime()) ? updatedDate : undefined;
+const hasMetadata = contextSource || sourceYear || term || validUpdatedDate;
+---
+
+{(contextDescription || hasMetadata) && (
+  <div class:list={['material-context', { 'material-context-compact': compact }]}>
+    {contextDescription && <p class="material-description" dir="auto" lang={contentLang}>{contextDescription}</p>}
+    {hasMetadata && (
+      <dl class="material-details" lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+        {contextSource && <div><dt>{labels.source}</dt><dd><bdi dir="auto">{contextSource}</bdi></dd></div>}
+        {sourceYear && <div><dt>{labels.year}</dt><dd><bdi dir="auto">{sourceYear}</bdi></dd></div>}
+        {term && <div><dt>{labels.term}</dt><dd><bdi dir="auto">{term}</bdi></dd></div>}
+        {validUpdatedDate && <div><dt>{labels.updated}</dt><dd><time datetime={validUpdatedDate.toISOString()}>{validUpdatedDate.toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric', calendar: 'gregory', timeZone: 'UTC' })}</time></dd></div>}
+      </dl>
+    )}
+  </div>
+)}
+
+<style>
+  .material-context { display: grid; gap: .7rem; min-width: 0; margin-top: .85rem; color: var(--study-muted); }
+  .material-description { justify-self: self-start; max-width: 65ch; font-size: .875rem; line-height: 1.8; overflow-wrap: anywhere; }
+  .material-details { display: flex; flex-wrap: wrap; gap: .45rem 1.1rem; font-size: .75rem; line-height: 1.7; }
+  .material-details > div { display: flex; flex-wrap: wrap; gap: .3em; min-width: 0; }
+  .material-details dt::after { content: ':'; }
+  .material-details dd { min-width: 0; font-weight: 550; overflow-wrap: anywhere; }
+  .material-context-compact { gap: .5rem; margin-block: -.5rem 1rem; }
+  .material-context-compact .material-description { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; font-size: .75rem; line-height: 1.7; }
+  .material-context-compact .material-details { gap: .3rem .8rem; font-size: .75rem; }
+</style>

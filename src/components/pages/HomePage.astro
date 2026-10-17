@@ -19,14 +19,16 @@ const copy = lang === 'ar' ? {
   directoryNote: 'كل ما تحتاجه للمراجعة، في مكان واحد.',
   yearLabel: 'السنة الدراسية',
   searchHint: 'ابحث باسم المادة أو المحاضرة أو الموضوع',
+  searchShortcut: 'اضغط Command K أو Control K للبحث، و Escape لمسح البحث.',
   emptyTitle: 'المحتوى في الطريق',
   emptyNote: 'لم تُضف مواد لهذه السنة بعد. يمكنك استكشاف سنة أخرى.',
 } : {
   description: 'Summaries and quizzes for CS students.',
   directory: 'Choose your subject',
   directoryNote: 'Everything for your next study session, in one place.',
-  yearLabel: 'ACADEMIC YEAR',
+  yearLabel: 'STUDY YEAR',
   searchHint: 'Search by subject, lecture, or topic',
+  searchShortcut: 'Press Command K or Control K to search and Escape to clear.',
   emptyTitle: 'A little more to come',
   emptyNote: 'There’s no material for this year yet. Explore another year to get started.',
 };
@@ -95,21 +97,27 @@ const searchIndexTranslations = JSON.stringify({
 ---
 
 <Layout title={t("nav.home")} description={copy.description}>
-  <StudyBackground />
   <div class="home-layout">
-    <section class="home-hero" aria-labelledby="home-title">
-      <h1 id="home-title">{t('nav.brand')}</h1>
-      <p class="home-quote" data-random-home-quote={lang}>{t('hero.title')}</p>
-      <p class="home-hero-description">{copy.description}</p>
-      <a href={contributionUrl} class="inline-flex min-h-11 items-center text-brand-700 dark:text-brand-500 underline underline-offset-4">{lang === 'ar' ? 'ساهم بمصادرك' : 'Contribute material'} ↗</a>
-    </section>
+    <div class="home-intro">
+      <StudyBackground />
+      <section class="home-hero" aria-labelledby="home-title">
+        <h1 id="home-title">{t('nav.brand')}</h1>
+        <p class="home-hero-description">{copy.description}</p>
+        <div class="home-hero-meta">
+          <p class="home-quote" data-random-home-quote={lang}>{t('hero.title')}</p>
+          <a href={contributionUrl} class="home-contribute">{lang === 'ar' ? 'ساهم بمصادرك' : 'Contribute material'} ↗</a>
+        </div>
+      </section>
 
-    <div class="home-search">
-      <label for="global-search-input">{t('search.label')}</label>
-      <div class="home-search-field">
-        <Icon name="search" class="home-search-icon" />
-        <input type="search" id="global-search-input" placeholder={t('search.placeholder')} autocomplete="off" />
-        <span class="home-search-hint" aria-hidden="true">{copy.searchHint}</span>
+      <div class="home-search">
+        <label for="global-search-input">{t('search.label')}</label>
+        <div class="home-search-field">
+          <Icon name="search" class="home-search-icon" />
+          <input type="search" id="global-search-input" placeholder={t('search.placeholder')} autocomplete="off" aria-keyshortcuts="Meta+k Control+k" aria-describedby="home-search-shortcut" />
+          <span class="home-search-hint" aria-hidden="true">{copy.searchHint}</span>
+          <kbd class="home-search-key" aria-hidden="true" dir="ltr"><span data-search-modifier>Ctrl</span><span>K</span></kbd>
+        </div>
+        <span id="home-search-shortcut" class="sr-only">{copy.searchShortcut}</span>
       </div>
     </div>
 
