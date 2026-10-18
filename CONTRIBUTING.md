@@ -107,6 +107,24 @@ how each answer was determined. Optional question fields include
 `answerSource` is `manual`, `marked`, or `inferred`; AI-inferred answers must use
 `inferred`. See `src/lib/quiz-schema.ts` for the complete validation rules.
 
+For a known unresolved source key, keep the existing question ID and original
+source answer, set `status: "disputed"`, and provide `reviewNote`. The question
+remains available for inspection but is excluded from practice, exam scores and
+saved reviews. Only use `status: "reviewed"` after actual source review; legacy
+questions need no status field. Do not resolve academic disputes by guessing.
+
+Set a question's `shuffleOptions: false` when its choices depend on their original
+order or labels. Common references such as “Both A and B” and “All of the above”
+also preserve order automatically. Check less common references explicitly.
+Combined question IDs and origin links are generated; do not author `origin` data.
+
+Quizzes and summaries can optionally set `section: { "kind": "lecture", "number": 1 }`
+(or `chapter`) and a nonnegative numeric `order` for ordering within that section.
+Use `{ "kind": "mixed" }` for mixed material. Existing lecture/chapter titles and
+filenames provide fallback grouping; explicit metadata also supports other languages.
+Summary heading IDs and local links are automatically scoped to each summary,
+so repeated headings across lectures remain safe.
+
 ## Check and submit
 
 Use lowercase hyphenated filenames, without paths; `all-questions` is reserved.

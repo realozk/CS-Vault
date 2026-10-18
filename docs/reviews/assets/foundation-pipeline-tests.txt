@@ -1,0 +1,9 @@
+
+> cs-vaulte@0.0.1 test:pipeline
+> python3 -m unittest discover -s pipeline/tests
+
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.033s
+
+OK

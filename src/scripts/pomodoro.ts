@@ -1,4 +1,4 @@
-import { completePomodoroPhase, createDefaultPomodoroState, formatPomodoroTime, getPomodoroPhaseDuration, getPomodoroRemainingSeconds, readPomodoroState, type PomodoroState } from './pomodoro-state';
+import { advancePomodoroState, createDefaultPomodoroState, formatPomodoroTime, getPomodoroPhaseDuration, getPomodoroRemainingSeconds, readPomodoroState, updatePomodoroDuration, type PomodoroState } from './pomodoro-state';
 
 const STORAGE_KEY = 'cs-vault-pomodoro-v1';
 
@@ -34,20 +34,35 @@ const initPomodoro = () => {
   };
 
   let state = createDefaultPomodoroState();
-  try {
-    state = readPomodoroState(localStorage.getItem(STORAGE_KEY));
-  } catch {
+  let lastStoredValue: string | null = null;
+  const showStorageNotice = () => {
     storageStatus.textContent = t('storageUnavailable');
     storageStatus.classList.remove('hidden');
-  }
-
+  };
+  const syncFromStorage = () => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      // Do not replace an unsaved in-memory timer with the same old value when
+      // writes are blocked. A different saved value is an edit from another tab.
+      if (stored !== lastStoredValue) {
+        state = readPomodoroState(stored);
+        lastStoredValue = stored;
+        studyInput.value = String(state.studyMinutes);
+        breakInput.value = String(state.breakMinutes);
+        notice.classList.add('hidden');
+      }
+    } catch {
+      showStorageNotice();
+    }
+  };
   const save = () => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      const stored = JSON.stringify(state);
+      localStorage.setItem(STORAGE_KEY, stored);
+      lastStoredValue = stored;
       storageStatus.classList.add('hidden');
     } catch {
-      storageStatus.textContent = t('storageUnavailable');
-      storageStatus.classList.remove('hidden');
+      showStorageNotice();
     }
   };
   const duration = (phase: PomodoroState['phase']) => getPomodoroPhaseDuration(state, phase);
@@ -58,8 +73,6 @@ const initPomodoro = () => {
     toggleButton.textContent = state.deadline === null ? t('start') : t('pause');
     toggleButton.setAttribute('aria-label', toggleButton.textContent);
   };
-  studyInput.value = String(state.studyMinutes);
-  breakInput.value = String(state.breakMinutes);
   const switchPhase = (continueRunning = state.deadline !== null) => {
     state.phase = state.phase === 'study' ? 'break' : 'study';
     state.remainingSeconds = duration(state.phase);
@@ -101,7 +114,9 @@ const initPomodoro = () => {
     }
   };
   const completePhase = () => {
-    state = completePomodoroPhase(state, Date.now());
+    const advanced = advancePomodoroState(state, Date.now());
+    if (advanced === state) return;
+    state = advanced;
     notice.textContent = t(state.phase === 'break' ? 'breakStarted' : 'studyReady');
     notice.classList.remove('hidden');
     panel.classList.remove('hidden');
@@ -111,15 +126,45 @@ const initPomodoro = () => {
     save();
     playTransitionSound(state.phase);
   };
+  let transitionPending = false;
   const tick = () => {
-    if (state.deadline !== null && state.deadline <= Date.now()) completePhase();
-    else render();
+    syncFromStorage();
+    if (state.deadline !== null && state.deadline <= Date.now()) {
+      if (window.navigator?.locks) {
+        if (!transitionPending) {
+          transitionPending = true;
+          void window.navigator.locks.request(STORAGE_KEY, { ifAvailable: true }, (lock) => {
+            if (!lock) return;
+            syncFromStorage();
+            completePhase();
+            render();
+          }).catch((error) => {
+            console.warn('Pomodoro transition could not acquire a browser lock.', error);
+            syncFromStorage();
+            completePhase();
+            render();
+          }).finally(() => { transitionPending = false; });
+        }
+      } else {
+        completePhase();
+      }
+    }
+    render();
+  };
+  const reconcileBeforeAction = () => {
+    syncFromStorage();
+    completePhase();
   };
 
-  render();
-  if (state.deadline !== null) tick();
+  studyInput.value = String(state.studyMinutes);
+  breakInput.value = String(state.breakMinutes);
+  tick();
   window.setInterval(tick, 1000);
   document.addEventListener('visibilitychange', tick);
+  window.addEventListener('pageshow', tick);
+  window.addEventListener('storage', (event) => {
+    if (event.key === null || event.key === STORAGE_KEY) tick();
+  });
 
   openButton.addEventListener('click', () => {
     const opening = panel.classList.contains('hidden');
@@ -143,17 +188,16 @@ const initPomodoro = () => {
   });
 
   const updateDuration = (phase: PomodoroState['phase'], input: HTMLInputElement) => {
-    const minutes = Number(input.value);
-    if (!input.value || !Number.isInteger(minutes) || minutes < 1) {
+    const enteredValue = input.value;
+    const minutes = Number(enteredValue);
+    reconcileBeforeAction();
+    if (!enteredValue || !Number.isInteger(minutes) || minutes < 1) {
       input.value = String(phase === 'study' ? state.studyMinutes : state.breakMinutes);
       return;
     }
     const boundedMinutes = Math.min(minutes, 180);
     input.value = String(boundedMinutes);
-    if (phase === 'study') state.studyMinutes = boundedMinutes;
-    else state.breakMinutes = boundedMinutes;
-    state.remainingSeconds = duration(state.phase);
-    if (state.deadline !== null) state.deadline = Date.now() + state.remainingSeconds * 1000;
+    state = updatePomodoroDuration(state, phase, boundedMinutes, Date.now());
     notice.classList.add('hidden');
     render();
     save();
@@ -162,6 +206,7 @@ const initPomodoro = () => {
   breakInput.addEventListener('change', () => updateDuration('break', breakInput));
 
   toggleButton.addEventListener('click', () => {
+    reconcileBeforeAction();
     if (state.deadline === null) {
       try {
         ensureAudioContext();
@@ -178,6 +223,7 @@ const initPomodoro = () => {
     save();
   });
   resetButton.addEventListener('click', () => {
+    reconcileBeforeAction();
     state.phase = 'study';
     state.remainingSeconds = duration('study');
     state.deadline = null;
@@ -186,6 +232,7 @@ const initPomodoro = () => {
     save();
   });
   skipButton.addEventListener('click', () => {
+    reconcileBeforeAction();
     switchPhase();
     notice.classList.add('hidden');
   });

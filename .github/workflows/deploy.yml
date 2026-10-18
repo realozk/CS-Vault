@@ -27,20 +27,23 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npm run check
-      - run: npm test
+      - run: npm run validate
+      - run: npm run test:pipeline
+      - run: npm run audit:prod
 
-      - name: Install, build, and upload your site
-        uses: withastro/action@v3
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload validated site
+        uses: actions/upload-pages-artifact@v3
         with:
-          node-version: 22
-
-      - run: npm run check:links
+          path: dist
 
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:

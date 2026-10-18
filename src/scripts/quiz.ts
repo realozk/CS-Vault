@@ -1,5 +1,6 @@
 import type { Question, QuizData } from '../types';
-import { bestScoreStorageKey, questionBankFingerprint, readBestScore, readReview, updateBestScore, updateReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
+import { getPracticeQuestions, prepareQuestionOptions } from '../lib/quiz-questions';
+import { bestScoreStorageKey, questionBankFingerprint, readBestScore, readReview, updateBestScore, updateReview, shortReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
 
 const shuffle = <T>(values: T[]): T[] => {
   const result = [...values];
@@ -28,9 +29,11 @@ const initQuizWidget = () => {
   if (!widget) return;
   const quiz: QuizData = JSON.parse(widget.dataset.quiz || '{}');
   if (!quiz.questions?.length) return;
+  const questionBank = getPracticeQuestions(quiz.questions);
   const quizId = widget.dataset.quizId;
   if (!quizId) throw new Error('Quiz widget is missing its quiz ID.');
   const translations: Record<string, string> = JSON.parse(widget.dataset.translations || '{}');
+  const originUrls: Record<string, string> = JSON.parse(widget.dataset.originUrls || '{}');
   const t = (key: string) => translations[key] || key;
   const el = (id: string) => document.getElementById(`quiz-${id}`)!;
   const button = (id: string) => el(id) as HTMLButtonElement;
@@ -42,17 +45,56 @@ const initQuizWidget = () => {
   const storageKey = `cs-vault-review-v1:${quizId}`;
   const attemptKey = `cs-vault-attempt-v1:${quizId}`;
   const bestScoreKey = bestScoreStorageKey(quizId);
-  const bankFingerprint = questionBankFingerprint(quiz.questions);
+  const bankFingerprint = questionBankFingerprint(questionBank);
   let saved: ReviewItem[] = [];
+  let persistedReview: ReviewItem[] = [];
+  let pendingReview = new Map<number, ReviewItem | null>();
+  let pendingClear = false;
   const storageWarning = () => { el('storage-status').textContent = t('storageUnavailable'); };
   const loadSaved = () => {
-    try { saved = readReview(localStorage.getItem(storageKey), quiz.questions); }
+    try {
+      persistedReview = readReview(localStorage.getItem(storageKey), questionBank);
+      if (!pendingClear) {
+        const merged = new Map(persistedReview.map(item => [item.id, item]));
+        for (const [id, item] of pendingReview) {
+          if (item) merged.set(id, item);
+          else merged.delete(id);
+        }
+        saved = [...merged.values()];
+      }
+    }
     catch { storageWarning(); }
+    updateSavedReview();
   };
-  const save = () => {
-    try { localStorage.setItem(storageKey, JSON.stringify(saved)); }
-    catch { storageWarning(); }
+  const save = (cleared = false) => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(saved));
+      persistedReview = saved.map(item => ({ ...item }));
+      pendingReview.clear();
+      pendingClear = false;
+    } catch {
+      // Quota/read-only storage can still return the old value. Retain local
+      // changes over that value; merge unrelated updates made by other tabs.
+      const previous = new Map(persistedReview.map(item => [item.id, item]));
+      const next = new Map(saved.map(item => [item.id, item]));
+      pendingReview = new Map();
+      for (const id of previous.keys()) if (!next.has(id)) pendingReview.set(id, null);
+      for (const [id, item] of next) {
+        const old = previous.get(id);
+        if (!old || old.signature !== item.signature || old.dueAt !== item.dueAt || old.streak !== item.streak) pendingReview.set(id, item);
+      }
+      pendingClear ||= cleared;
+      storageWarning();
+    }
   };
+  function updateSavedReview() {
+    const due = saved.filter(item => item.dueAt <= Date.now()).length;
+    el('saved-count').textContent = saved.length
+      ? t('reviewCount').replace('{saved}', String(saved.length)).replace('{due}', String(due))
+      : t('noSaved');
+    button('review-saved-btn').disabled = !saved.length;
+    button('clear-saved-btn').disabled = !saved.length;
+  }
   loadSaved();
 
   const selectedMode = () => (widget.querySelector('input[name="quiz-mode"]:checked') as HTMLInputElement).value;
@@ -100,7 +142,7 @@ const initQuizWidget = () => {
   };
   const startTimer = () => { stopTimer(); if (deadline !== null && running) { tick(); if (running) timer = setInterval(tick, 1000); } };
 
-  const sourceReference = (q: Question) => {
+  const pageReference = (q: Question) => {
     if (q.sourcePage) return t('sourcePage').replace('{page}', String(q.sourcePage));
     const slides = q.sourceSlides || (q.sourceSlide ? [q.sourceSlide] : []);
     if (!slides.length) return '';
@@ -119,12 +161,24 @@ const initQuizWidget = () => {
       ? t('sourceSlides').replace('{slides}', ranges.join(', '))
       : t('sourceSlide').replace('{slide}', ranges[0]);
   };
+  const sourceReference = (q: Question) => [q.origin?.source, pageReference(q)].filter(Boolean).join(' · ');
+  const originLink = (q: Question) => {
+    if (!q.origin || !originUrls[q.origin.quizId]) return null;
+    const link = document.createElement('a');
+    link.href = originUrls[q.origin.quizId];
+    link.className = 'underline underline-offset-4';
+    link.textContent = `${t('originalQuestion').replace('{id}', String(q.origin.questionId))} — ${q.origin.title}`;
+    return link;
+  };
   const answerNotice = (q: Question) => [q.answerSource === 'inferred' ? t('inferred') : '', q.optionsSource === 'generated' ? t('generatedOptions') : ''].filter(Boolean).join(' ');
   const showExplanation = (q: Question) => {
     renderInlineCode(el('explanation-text'), q.explanation || '');
     el('source-slide').textContent = sourceReference(q);
+    const link = originLink(q);
+    el('origin').replaceChildren(...(link ? [link] : []));
+    el('origin').className = 'mt-2 text-xs';
     el('answer-warning').textContent = answerNotice(q);
-    el('explanation-box').classList.toggle('hidden', !q.explanation && !sourceReference(q) && !answerNotice(q));
+    el('explanation-box').classList.toggle('hidden', !q.explanation && !sourceReference(q) && !answerNotice(q) && !link);
   };
   const paintOptions = () => {
     const q = questions[currentIndex];
@@ -162,6 +216,11 @@ const initQuizWidget = () => {
   };
   const renderQuestion = () => {
     const q = questions[currentIndex];
+    const contentLang = q.origin?.lang || quiz.lang || 'en';
+    el('question-content').dir = contentLang === 'ar' ? 'rtl' : 'ltr';
+    el('question-content').lang = contentLang;
+    el('explanation-text').dir = contentLang === 'ar' ? 'rtl' : 'ltr';
+    el('explanation-text').lang = contentLang;
     el('current-question-num').textContent = String(currentIndex + 1);
     renderInlineCode(el('question-text'), q.question);
     el('question-code').textContent = q.code || '';
@@ -197,7 +256,7 @@ const initQuizWidget = () => {
 
   function begin(source: Question[], short = false) {
     stopTimer();
-    questions = shuffle(source).map(q => ({ ...q, options: shuffle(q.options) }));
+    questions = shuffle(getPracticeQuestions(source)).map(q => ({ ...q, options: prepareQuestionOptions(q, shuffle) }));
     if (!questions.length) return;
     answers = new Map();
     currentIndex = 0;
@@ -244,14 +303,18 @@ const initQuizWidget = () => {
     el('mistake-list').replaceChildren();
     if (!missed.length) el('mistake-list').append(paragraph(t('noMistakes')));
     for (const q of missed) {
-      const card = document.createElement('article'); card.dir = 'ltr';
+      const card = document.createElement('article');
+      card.lang = q.origin?.lang || quiz.lang || 'en';
+      card.dir = card.lang === 'ar' ? 'rtl' : 'ltr';
       card.className = 'border border-gray-200 dark:border-zinc-800 rounded-md p-4 text-start space-y-2';
       const heading = document.createElement('h4'); renderInlineCode(heading, q.question); heading.className = 'font-bold'; card.append(heading);
-      if (q.code) { const code = document.createElement('pre'); code.textContent = q.code; code.className = 'overflow-x-auto text-sm'; card.append(code); }
+      if (q.code) { const code = document.createElement('pre'); code.textContent = q.code; code.dir = 'ltr'; code.className = 'overflow-x-auto text-sm text-left'; card.append(code); }
       card.append(paragraph(`${t('yourAnswer')}: ${answers.get(q.id) || t('unanswered')}`, 'text-sm text-red-700 dark:text-red-300'));
       card.append(paragraph(`${t('correctAnswer')}: ${q.correctAnswer}`, 'text-sm text-green-700 dark:text-green-300'));
       if (q.explanation) card.append(paragraph(q.explanation, 'text-sm text-gray-600 dark:text-gray-300'));
       if (sourceReference(q)) card.append(paragraph(sourceReference(q), 'text-xs text-gray-500'));
+      const link = originLink(q);
+      if (link) { const source = document.createElement('p'); source.className = 'text-xs'; source.append(link); card.append(source); }
       if (answerNotice(q)) card.append(paragraph(answerNotice(q), 'text-xs text-amber-800 dark:text-amber-300'));
       el('mistake-list').append(card);
     }
@@ -260,6 +323,7 @@ const initQuizWidget = () => {
       loadSaved();
       saved = updateReview(saved, questions, answers, Date.now());
       save();
+      updateSavedReview();
       if (!shortSession) {
         try {
           const previous = readBestScore(localStorage.getItem(bestScoreKey), questions.length, bankFingerprint);
@@ -275,7 +339,7 @@ const initQuizWidget = () => {
     el('result-title').focus({ preventScroll: false });
   }
 
-  document.getElementById('start-quiz-btn')!.addEventListener('click', () => begin(quiz.questions));
+  document.getElementById('start-quiz-btn')!.addEventListener('click', () => begin(questionBank));
   button('next-btn').addEventListener('click', () => {
     if (!running || checkExpiry() || button('next-btn').disabled) return;
     if (currentIndex === questions.length - 1) finish();
@@ -286,13 +350,27 @@ const initQuizWidget = () => {
     currentIndex--; renderQuestion();
   });
   button('submit-btn').addEventListener('click', () => { if (!checkExpiry()) finish(); });
-  button('restart-btn').addEventListener('click', () => begin(quiz.questions));
+  button('restart-btn').addEventListener('click', () => begin(questionBank));
   button('retry-missed-btn').addEventListener('click', () => begin(shuffle(missed).slice(0, 5), true));
+  button('review-saved-btn').addEventListener('click', () => {
+    loadSaved();
+    const review = shortReview(questionBank, saved);
+    if (review.length) begin(review, true);
+  });
+  button('clear-saved-btn').addEventListener('click', () => {
+    saved = [];
+    save(true);
+    updateSavedReview();
+  });
   button('settings-btn').addEventListener('click', () => {
     try { sessionStorage.removeItem(attemptKey); } catch { storageWarning(); }
     show('setup'); document.getElementById('start-quiz-btn')!.focus();
   });
-  document.addEventListener('visibilitychange', tick);
+  document.addEventListener('visibilitychange', () => {
+    tick();
+    if (!document.hidden) loadSaved();
+  });
+  window.addEventListener('storage', event => { if (event.key === storageKey || event.key === null) loadSaved(); });
   window.addEventListener('pagehide', stopTimer);
   window.addEventListener('pageshow', () => { if (running) startTimer(); });
   document.addEventListener('keydown', event => {
@@ -310,14 +388,14 @@ const initQuizWidget = () => {
 
   const restoreAttempt = () => {
     let attempt: QuizAttempt | null = null;
-    try { attempt = readAttempt(sessionStorage.getItem(attemptKey), quiz.questions); }
+    try { attempt = readAttempt(sessionStorage.getItem(attemptKey), questionBank); }
     catch { storageWarning(); }
     if (!attempt) {
       running = false;
       show('setup');
       return;
     }
-    const byId = new Map(quiz.questions.map(q => [q.id, q]));
+    const byId = new Map(questionBank.map(q => [q.id, q]));
     questions = attempt.questions.map(item => ({ ...byId.get(item.id)!, options: item.options }));
     answers = new Map(attempt.answers);
     currentIndex = attempt.currentIndex;

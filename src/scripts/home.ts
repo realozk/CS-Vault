@@ -9,6 +9,7 @@ interface SearchItem {
   description: string;
   author: string;
   subjectCode: string;
+  subjectNames: string[];
   year: string;
   url: string;
   yearLevel: number;
@@ -44,24 +45,27 @@ const initTabsAndSearch = () => {
   const tabButtons = document.querySelectorAll('[data-year-tab]');
   const contentBlocks = document.querySelectorAll('[data-year-content]');
 
-  tabButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const year = button.getAttribute('data-year-tab');
-
-      tabButtons.forEach(btn => {
-        btn.setAttribute('aria-pressed', String(btn === button));
-      });
-
-      // Toggle visibility of columns
-      contentBlocks.forEach(block => {
-        if (block.getAttribute('data-year-content') === year) {
-          block.classList.remove('hidden');
-        } else {
-          block.classList.add('hidden');
-        }
-      });
-    });
-  });
+  const defaultYear = [...tabButtons].find(button => button.getAttribute('aria-pressed') === 'true')?.getAttribute('data-year-tab');
+  const selectYear = (year: string | null | undefined, persist = false) => {
+    const selectedButton = [...tabButtons].find(button => button.getAttribute('data-year-tab') === year);
+    if (!selectedButton) return;
+    tabButtons.forEach(button => button.setAttribute('aria-pressed', String(button === selectedButton)));
+    contentBlocks.forEach(block => block.classList.toggle('hidden', block.getAttribute('data-year-content') !== year));
+    if (persist) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('year', year!);
+      window.history.replaceState(window.history.state, '', url);
+      window.dispatchEvent(new Event('locationchange'));
+    }
+  };
+  const restoreYear = () => {
+    const requestedYear = new URL(window.location.href).searchParams.get('year');
+    const validYear = [...tabButtons].some(button => button.getAttribute('data-year-tab') === requestedYear);
+    selectYear(validYear ? requestedYear : defaultYear);
+  };
+  restoreYear();
+  tabButtons.forEach(button => button.addEventListener('click', () => selectYear(button.getAttribute('data-year-tab'), true)));
+  window.addEventListener('popstate', restoreYear);
 
   // 2. Global fuzzy search engine
   const directoryContainer = document.getElementById('directory-container');
@@ -102,7 +106,7 @@ const initTabsAndSearch = () => {
   }
 
   const updateSearchResults = () => {
-    const query = searchInput.value.toLowerCase().trim();
+    const query = searchInput.value.normalize('NFKC').toLowerCase().trim();
 
     if (query === '') {
       // Show core tab view, hide search pane
@@ -117,11 +121,10 @@ const initTabsAndSearch = () => {
 
     // Filter index
     const matched = searchIndex.filter(item => {
-      return (
-        item.title.toLowerCase().includes(query) ||
-        item.description.toLowerCase().includes(query) ||
-        item.subjectCode.toLowerCase().includes(query)
-      );
+      const text = [item.title, item.description, ...item.subjectNames].join('\n').normalize('NFKC').toLowerCase();
+      const compactCode = item.subjectCode.toLowerCase().replace(/[\s-]+/g, '');
+      const compactQuery = query.replace(/[\s-]+/g, '');
+      return text.includes(query) || (compactQuery !== '' && compactCode.includes(compactQuery));
     });
 
     // Render search results

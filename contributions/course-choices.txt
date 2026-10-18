@@ -1,7 +1,7 @@
-CS2107 — Algorithm Analysis — Year 3
-CEN3011 — Computer Networks — Year 3
-CS3809 — Engineering Software Products — Year 3
-CS3608 — Operating Systems — Year 3
-CS3713 — Programming Languages — Year 3
-CS3810 — Web Development — Year 3
+CS2107 — Algorithm Analysis — Year 3 [algorithm-analysis/2026]
+CEN3011 — Computer Networks — Year 3 [computer-networks/2026]
+CS3809 — Engineering Software Products — Year 3 [engineering-software-products/2026]
+CS3608 — Operating Systems — Year 3 [operating-systems/2026]
+CS3713 — Programming Languages — Year 3 [programming-languages/2026]
+CS3810 — Web Development — Year 3 [web-development/2026]
 Course missing / Not sure

@@ -57,7 +57,7 @@ const initDashboard = () => {
   renderBestScores();
   window.addEventListener('pageshow', renderBestScores);
   window.addEventListener('storage', (event) => {
-    if (event.key?.startsWith('cs-vault-best-score-v2:')) renderBestScores();
+    if (event.key === null || event.key?.startsWith('cs-vault-best-score-v2:')) renderBestScores();
   });
 
   const subject = tracker?.dataset.subject || 'unknown';
@@ -86,21 +86,31 @@ const initDashboard = () => {
     }
   };
 
-  // Load progress from localStorage
+  // Keep unsaved edits in memory when browser storage is blocked or full. Each
+  // edit is applied to the latest saved checklist, so another tab's changes are
+  // retained without resurrecting items that the student has unchecked.
   let completedSlugs: string[] = [];
-  try {
-    const stored = localStorage.getItem(storageKey);
-    if (stored) {
-      const parsed: unknown = JSON.parse(stored);
-      if (Array.isArray(parsed)) {
-        const available = new Set([...checkboxes].map(cb => cb.dataset.summaryCheck));
-        completedSlugs = [...new Set(parsed.filter((slug): slug is string =>
-          typeof slug === 'string' && available.has(slug)))];
-      }
+  const availableSlugs = new Set([...checkboxes].map(cb => cb.dataset.summaryCheck));
+  const unsavedChanges = new Map<string, boolean>();
+  const reconcileProgress = () => {
+    try {
+      const stored = localStorage.getItem(storageKey);
+      let parsed: unknown = [];
+      try { parsed = stored ? JSON.parse(stored) : []; }
+      catch { /* Discard invalid saved data while keeping new local edits. */ }
+      completedSlugs = Array.isArray(parsed)
+        ? [...new Set(parsed.filter((slug): slug is string => typeof slug === 'string' && availableSlugs.has(slug)))]
+        : [];
+    } catch {
+      showStorageNotice();
     }
-  } catch {
-    showStorageNotice();
-  }
+    const completed = new Set(completedSlugs);
+    unsavedChanges.forEach((checked, slug) => {
+      if (checked) completed.add(slug);
+      else completed.delete(slug);
+    });
+    completedSlugs = [...completed];
+  };
 
   const updateProgressBar = () => {
     const total = checkboxes.length;
@@ -118,32 +128,36 @@ const initDashboard = () => {
     }
   };
 
-  // Initialize checklist checkbox states
+  const renderProgress = () => {
+    checkboxes.forEach((cb) => {
+      const slug = cb.dataset.summaryCheck;
+      const checked = !!slug && completedSlugs.includes(slug);
+      cb.checked = checked;
+      [...tabs].find(tab => tab.dataset.summarySlug === slug)?.classList.toggle('is-reviewed', checked);
+    });
+    updateProgressBar();
+  };
+  const reloadProgress = () => {
+    reconcileProgress();
+    renderProgress();
+  };
+  window.addEventListener('pageshow', reloadProgress);
+  window.addEventListener('storage', (event) => {
+    if (event.key === null || event.key === storageKey) reloadProgress();
+  });
+
   checkboxes.forEach((cb) => {
     const slug = cb.getAttribute('data-summary-check');
     if (!slug) return;
-    const isChecked = completedSlugs.includes(slug);
-    cb.checked = isChecked;
-    
-    const summaryLink = [...tabs].find(tab => tab.getAttribute('data-summary-slug') === slug);
-    summaryLink?.classList.toggle('is-reviewed', isChecked);
 
-    // Handle checkbox change
     cb.addEventListener('change', () => {
-      const checked = cb.checked;
-      if (checked) {
-        if (!completedSlugs.includes(slug)) {
-          completedSlugs.push(slug);
-        }
-        summaryLink?.classList.add('is-reviewed');
-      } else {
-        completedSlugs = completedSlugs.filter(item => item !== slug);
-        summaryLink?.classList.remove('is-reviewed');
-      }
-
-      updateProgressBar();
+      unsavedChanges.set(slug, cb.checked);
+      reconcileProgress();
+      renderProgress();
       try {
         localStorage.setItem(storageKey, JSON.stringify(completedSlugs));
+        unsavedChanges.clear();
+        document.getElementById('progress-storage-status')?.classList.add('hidden');
       } catch {
         showStorageNotice();
       }
@@ -155,8 +169,7 @@ const initDashboard = () => {
     });
   });
 
-  // Run initial progress calculation
-  updateProgressBar();
+  reloadProgress();
 
   // 5. Code Block Copy Button Injector
   const initCopyButtons = () => {
@@ -238,7 +251,10 @@ const initDashboard = () => {
   };
 
   const writeHash = (hash: string) => {
-    if (window.location.hash !== hash) window.history.pushState(null, '', hash);
+    if (window.location.hash !== hash) {
+      window.history.pushState(null, '', hash);
+      window.dispatchEvent(new Event('locationchange'));
+    }
   };
 
   const selectSummary = (slug: string, options: { scroll?: boolean; writeHistory?: boolean; activateMode?: boolean; focus?: boolean } = {}) => {
@@ -297,7 +313,10 @@ const initDashboard = () => {
     button.addEventListener('click', () => {
       const mode = button.dataset.studyMode === 'summaries' ? 'summaries' : 'quizzes';
       setMode(mode);
-      writeHash(mode === 'summaries' ? '#subject-reading' : '#subject-quizzes');
+      const selectedSlug = [...tabs].find(tab => tab.getAttribute('aria-current') === 'true')?.dataset.summarySlug;
+      writeHash(mode === 'summaries'
+        ? selectedSlug ? `#summary-content-${selectedSlug}` : '#subject-reading'
+        : '#subject-quizzes');
     });
   });
 
@@ -312,6 +331,7 @@ const initDashboard = () => {
   });
 
   const markReviewed = (slug: string | null) => {
+    reloadProgress();
     const checkbox = [...checkboxes].find(input => input.dataset.summaryCheck === slug);
     if (checkbox && !checkbox.checked) {
       checkbox.checked = true;

@@ -1,6 +1,8 @@
 import { z } from 'zod';
+import { studyPlacementSchema } from './content-order.ts';
 
 export const quizSchema = z.object({
+    ...studyPlacementSchema.shape,
     title: z.string().min(1, 'Quiz title is required'),
     date: z.coerce.date(),
     description: z.string().optional(),
@@ -22,6 +24,7 @@ export const quizSchema = z.object({
         code: z.string().optional(),
         options: z.array(z.string().min(1)).min(2, 'At least 2 options are required')
           .refine(options => new Set(options).size === options.length, 'Options must be distinct'),
+        shuffleOptions: z.boolean().optional(),
         correctAnswer: z.string(),
         explanation: z.string().optional(),
         topic: z.string().min(1).optional(),
@@ -30,6 +33,8 @@ export const quizSchema = z.object({
         sourcePage: z.number().int().positive().optional(),
         optionsSource: z.enum(['provided', 'generated']).optional(),
         answerSource: z.enum(['marked', 'inferred', 'manual']).default('manual'),
+        status: z.enum(['reviewed', 'disputed']).optional(),
+        reviewNote: z.string().min(1).optional(),
       })
     ).min(1, 'A quiz must contain questions').superRefine((questions, ctx) => {
       const ids = new Set<number>();
@@ -37,6 +42,7 @@ export const quizSchema = z.object({
         if (ids.has(q.id)) ctx.addIssue({ code: 'custom', path: [index, 'id'], message: `Question ID ${q.id} is already used.` });
         ids.add(q.id);
         if (!q.options.includes(q.correctAnswer)) ctx.addIssue({ code: 'custom', path: [index, 'correctAnswer'], message: 'correctAnswer must exactly match one option.' });
+        if (q.status === 'disputed' && !q.reviewNote) ctx.addIssue({ code: 'custom', path: [index, 'reviewNote'], message: 'A disputed question needs a review note.' });
       });
     }),
   });

@@ -1,13 +1,19 @@
 import { getCollection } from 'astro:content';
 import { safeQuizFilename } from './contributions';
 import { validateContentMetadata } from './content-metadata';
-import { courses as subjects } from './course-catalog';
+import { courses as subjects, resolveCourse } from './course-catalog';
 import type { ModuleItem } from '../types';
 
 // Build-time only: courses exist even before their study material is uploaded.
-export function getSubjectName(nameOrSlug: string, lang: 'en' | 'ar' = 'en') {
-  const subject = subjects.find(s => s.slug === nameOrSlug || s.name === nameOrSlug || s.name_ar === nameOrSlug || s.subject_code === nameOrSlug);
+export function getSubjectName(nameOrSlug: string, lang: 'en' | 'ar' = 'en', year?: string | number) {
+  const subject = resolveCourse(nameOrSlug, year);
   return subject ? (lang === 'ar' ? subject.name_ar || subject.name : subject.name) : nameOrSlug;
+}
+
+export function getDefaultStudyYear(modules: readonly ModuleItem[]): number {
+  const withContent = modules.filter(module => module.summariesCount + module.quizzesCount > 0);
+  const years = (withContent.length ? withContent : modules).map(module => module.yearLevel);
+  return years.length ? Math.min(...years) : 1;
 }
 
 export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]> {
@@ -16,7 +22,7 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
     const key = `${subject.slug}/${subject.year}`;
     if (modules.has(key)) throw new Error(`Duplicate subject: ${key}`);
     modules.set(key, {
-      subject: subject.slug, subjectName: getSubjectName(subject.slug, lang), subjectCode: subject.subject_code,
+      subject: subject.slug, subjectName: getSubjectName(subject.slug, lang, subject.year), subjectCode: subject.subject_code,
       year: String(subject.year),
       yearLevel: subject.year_level, semester: subject.semester,
       summariesCount: 0, quizzesCount: 0, latestContentAt: null,

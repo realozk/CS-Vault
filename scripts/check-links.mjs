@@ -12,31 +12,40 @@ async function visit(dir) {
     const file = path.join(dir, entry.name);
     if (entry.isDirectory()) await visit(file);
     else if (entry.name.endsWith('.html')) {
-      const ids = new Set(), links = [];
+      const ids = new Set(), duplicates = new Set(), links = [];
       function walk(node) {
         const attrs = Object.fromEntries((node.attrs ?? []).map(a => [a.name, a.value]));
-        if (attrs.id) ids.add(attrs.id);
+        if (attrs.id) {
+          if (ids.has(attrs.id)) duplicates.add(attrs.id);
+          ids.add(attrs.id);
+        }
         for (const attr of ['href', 'src', 'poster']) if (attrs[attr]) links.push(attrs[attr]);
         for (const child of node.childNodes ?? []) walk(child);
       }
       walk(parse(await readFile(file, 'utf8')));
-      documents.set(file, { ids, links });
+      documents.set(file, { ids, duplicates, links });
     }
   }
 }
 await visit(root);
 const errors = [];
+if (documents.size === 0) errors.push('No generated HTML pages found. Build the site before checking links.');
 for (const [file, doc] of documents) {
   const relative = path.relative(root, file).split(path.sep).join('/');
   const page = new URL(base + relative.replace(/index\.html$/, ''), origin);
+  for (const id of doc.duplicates) errors.push(`${relative}: duplicate id ${id}`);
   for (const link of doc.links) {
-    const url = new URL(link, page);
+    let url;
+    try { url = new URL(link, page); }
+    catch { errors.push(`${relative}: invalid URL ${link}`); continue; }
     if (url.origin !== origin) continue;
     if (!url.pathname.startsWith(base)) {
       errors.push(`${relative}: missing deployment base in ${link}`);
       continue;
     }
-    let target = path.resolve(root, decodeURIComponent(url.pathname.slice(base.length)));
+    let target;
+    try { target = path.resolve(root, decodeURIComponent(url.pathname.slice(base.length))); }
+    catch { errors.push(`${relative}: invalid encoded path ${link}`); continue; }
     if (target !== root && !target.startsWith(root + path.sep)) {
       errors.push(`${relative}: invalid path ${link}`); continue;
     }

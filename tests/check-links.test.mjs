@@ -22,3 +22,16 @@ test('link checker handles deployment base, relative pages, assets and anchors',
     assert.match(failure.stderr, /missing anchor/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+test('link checker rejects duplicate IDs, malformed paths and empty build output', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'cs-vault-link-structure-'));
+  const run = () => spawnSync(process.execPath, ['scripts/check-links.mjs', root], { encoding: 'utf8' });
+  try {
+    assert.match(run().stderr, /No generated HTML pages/);
+    await writeFile(path.join(root, 'index.html'), '<h2 id="same">First</h2><h2 id="same">Second</h2><a href="%E0%A4%A/">Bad path</a>');
+    const failure = run();
+    assert.equal(failure.status, 1);
+    assert.match(failure.stderr, /duplicate id same/);
+    assert.match(failure.stderr, /invalid encoded path/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});

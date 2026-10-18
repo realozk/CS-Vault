@@ -20,7 +20,7 @@ const pageTitle = `${quiz.data.title} — ${t("quiz.practice")}`;
 
 ---
 
-<Layout title={pageTitle} description={`${quiz.data.title} — ${getSubjectName(subject!, lang)} (${year})`}>
+<Layout title={pageTitle} description={`${quiz.data.title} — ${getSubjectName(subject!, lang, year)} (${year})`}>
   <div class="quiz-page">
     <!-- Quiz Nav Header -->
     <div class="quiz-page-nav">

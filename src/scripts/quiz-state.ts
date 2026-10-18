@@ -1,4 +1,5 @@
 import type { Question } from '../types';
+import { canShuffleOptions } from '../lib/quiz-questions.ts';
 
 export const DAY_MS = 86_400_000;
 export interface ReviewItem {
@@ -81,6 +82,7 @@ export function readAttempt(raw: string | null, bank: Question[]): QuizAttempt |
       const q = byId.get(item.id);
       if (!q || item.signature !== questionSignature(q) || !Array.isArray(item.options)
         || item.options.some((option: unknown) => typeof option !== 'string')
+        || (!canShuffleOptions(q) && JSON.stringify(item.options) !== JSON.stringify(q.options))
         || JSON.stringify([...item.options].sort()) !== JSON.stringify([...q.options].sort())) return null;
       ids.add(item.id);
     }
@@ -96,7 +98,7 @@ export function readAttempt(raw: string | null, bank: Question[]): QuizAttempt |
 
 // A content edit invalidates an old saved answer, even when its ID stays the same.
 export const questionSignature = (q: Question): string =>
-  JSON.stringify([q.question, q.code || '', [...q.options].sort(), q.correctAnswer]);
+  JSON.stringify([q.question, q.code || '', canShuffleOptions(q) ? [...q.options].sort() : q.options, q.correctAnswer, ...(!canShuffleOptions(q) ? [false] : [])]);
 
 export function readReview(raw: string | null, questions: Question[]): ReviewItem[] {
   if (!raw) return [];

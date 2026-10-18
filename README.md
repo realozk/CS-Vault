@@ -9,7 +9,7 @@ Built with Astro. Pages are static and hosted on
 
 ## Run locally
 
-Use Node.js 22.12 or later.
+Use Node.js 22.22 or later. `.nvmrc` selects the current Node 22 release.
 
 ```sh
 npm ci
@@ -22,6 +22,8 @@ Open `http://localhost:4321/CS-Vault/`.
 npm run build    # Validate content and generate dist/
 npm run preview  # Preview the production build
 npm run validate # Type check, tests, build, local links/assets
+npm run audit:prod # Check production build dependencies for advisories
+npm run test:pipeline # Optional local ingestion tests (Python 3.11+)
 ```
 
 ## Where things live
@@ -43,7 +45,7 @@ npm run validate # Type check, tests, build, local links/assets
 `astro.config.mjs` sets the GitHub Pages URL/base path, language routing, and
 Tailwind integration. `tsconfig.json` enables strict TypeScript checks.
 `package-lock.json` pins dependencies for reproducible installations.
-`.github/workflows/checks.yml` runs validation on pull requests and pushes to `tests`.
+`.github/workflows/checks.yml` runs validation on pull requests and pushes to `tests` and `ztest`.
 `.github/workflows/deploy.yml` validates and deploys pushes to `main`.
 To enforce checks before merging, configure GitHub branch protection to require
 `Site checks / validate`.
@@ -51,12 +53,15 @@ To enforce checks before merging, configure GitHub branch protection to require
 English and Arabic routes use shared page components in `src/components/pages/`.
 Translate interface text in `src/i18n/ui.ts`; preserve lecture questions, choices,
 explanations, code and notes in their original language. Language switching
-preserves the current quiz in this browser tab. Reading progress and saved mistake
+preserves the current quiz or selected summary in this browser tab. Reading progress and saved mistake
 review stay on this device; controls still work when browser storage is blocked.
 
 The build rejects content whose subject, year or academic placement disagrees
 with its folder and catalog entry. The link checker checks generated local links,
-anchors and assets under `/CS-Vault/`; external URLs are not fetched.
+anchors, duplicate IDs and assets under `/CS-Vault/`; external URLs are not fetched.
+Validation also builds an isolated synthetic catalog covering Years 1–4, both
+semesters and multiple collection years. Fixture content never enters the real site.
+CI checks high/critical dependency advisories before uploading the validated deployment.
 
 Generated folders (`node_modules/`, `dist/`, `.astro/`) and local caches are
 ignored by Git. They are created automatically when installing or building.
@@ -68,6 +73,11 @@ Explanations identify inferred answers and reference source slides or PDF pages.
 Quiz labels identify the source in both languages: red for instructor material,
 orange for collected/older questions, and regular styling for AI-generated
 practice. Source categories do not predict what will appear in an exam.
+
+Saved mistakes are accessible from each quiz's short review session. Questions
+flagged as disputed remain inspectable and are excluded from scoring until resolved.
+Future courses and collections use the same pages: register their metadata and
+add reviewed Markdown/JSON; no year-specific page implementation is required.
 
 
 For content formats and contribution steps, see [CONTRIBUTING.md](CONTRIBUTING.md).

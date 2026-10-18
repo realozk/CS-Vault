@@ -1,4 +1,5 @@
 {
+  "order": 7,
   "title": "Lecture 3 Part 1 — Foundations",
   "date": "2026-10-14",
   "description": "Foundations questions on CSS syntax, selectors, colors, text properties, the cascade, and validation.",

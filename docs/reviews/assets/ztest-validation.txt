@@ -1,0 +1,168 @@
+
+> cs-vaulte@0.0.1 validate
+> npm run check && npm test && npm run build && npm run check:links
+
+
+> cs-vaulte@0.0.1 check
+> astro check
+
+02:08:25 [content] Syncing content
+02:08:25 [content] Synced content
+02:08:25 [types] Generated 508ms
+02:08:25 [check] Getting diagnostics for Astro files in /Volumes/lethelm2/cs-vaulte...
+Result (59 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+
+> cs-vaulte@0.0.1 test
+> node --experimental-strip-types --test tests/*.test.mjs
+
+✔ link checker handles deployment base, relative pages, assets and anchors (180.187125ms)
+✔ existing course names and short codes are valid metadata (0.878042ms)
+✔ rejects wrong folder, subject, year or academic placement (0.572375ms)
+✔ new content expires exactly seven days after publication (1.690375ms)
+✔ empty courses, invalid dates and future dates do not show New (0.087709ms)
+✔ an unchanged static page expires badges when reopened, in either language (0.328416ms)
+✔ intake routes by course before year, deduplicates response IDs and preserves reviewer edits (4.052125ms)
+✔ unknown/ambiguous courses remain in triage and untrusted text cannot become formulas (0.560375ms)
+✔ failed import records an error and reconciliation recovers without duplicating rows or IDs (1.466625ms)
+✔ catalog refresh replaces only valid snapshots and retains data on HTTP or schema failure (0.980125ms)
+✔ course dropdown uses catalog choices, preserves missing-course triage and updates on command (2.854375ms)
+✔ each correction gets its own record and retains its existing quiz URL (1.505167ms)
+✔ every course starter validates with matching placement and versioned instructions (2.522833ms)
+✔ all existing quiz files pass the shared schema and catalog metadata (13.815083ms)
+✔ checker blocks oversized/malformed JSON, missing fields and wrong metadata (1.169375ms)
+✔ question errors include useful positions and preserve the schema contract (0.308208ms)
+✔ review warnings are distinct from blocking errors and source years stay strings (0.233792ms)
+✔ site links share one public form without course or correction parameters (0.208292ms)
+✔ filenames reject contributor paths and reserve the generated aggregate (0.159625ms)
+✔ corrections target an existing quiz, preserve dates/IDs and accept new IDs (0.258792ms)
+✔ shareable volunteer files match the catalog and validate without a website tool (5.716791ms)
+✔ public preparation guide embeds the same valid example and explains course identity (0.612083ms)
+✔ contribution documentation includes required course code and a schema-valid dated quiz (0.682666ms)
+✔ combined practice keeps its collection year without claiming one source edition (1.266583ms)
+✔ Pomodoro timer defaults to 50/10, validates saved state, and calculates time accurately (2.854667ms)
+✔ best scores require the same bank, reject legacy scores and only improve (1.355167ms)
+✔ best quiz score colors use red below 60, yellow below 80, and green from 80 (0.633125ms)
+✔ wrong and unanswered answers are scheduled; correct answers are not added (0.150583ms)
+✔ spaced correct reviews advance at 1, 3, and 7 days; early practice does not advance (0.205166ms)
+✔ a new mistake resets the review schedule without modifying previous state (0.054375ms)
+✔ corrupt, obsolete, duplicated, and invalid stored entries are handled safely (0.146208ms)
+✔ short sessions prioritize earliest due dates, stay within five, and preserve input order (0.401459ms)
+✔ topic totals include unanswered questions and support legacy questions without topics (0.187792ms)
+✔ timer uses a deadline, rounds partial seconds up, and expires after background delays (0.25875ms)
+✔ an attempt preserves shuffled questions, option letters, answers, position, and the original deadline (0.454333ms)
+✔ attempts reject changed content, obsolete questions, and a different-sized question bank (0.12725ms)
+✔ corrupt attempt data cannot restore invalid answers, order, index, or timer settings (0.228333ms)
+✔ practice and completed attempts restore; short review retains its subset and size limit (0.138584ms)
+✔ blocked progress storage still updates the checkbox and progress bar (46.409375ms)
+✔ theme initialization falls back to system theme when storage access throws (0.923125ms)
+✔ course dashboard hides a stale best score after an answer correction with unchanged count (68.174292ms)
+ℹ tests 41
+ℹ suites 0
+ℹ pass 41
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 393.52675
+
+> cs-vaulte@0.0.1 build
+> astro build
+
+02:08:28 [content] Syncing content
+02:08:28 [content] Synced content
+02:08:28 [types] Generated 258ms
+02:08:28 [build] output: "static"
+02:08:28 [build] mode: "static"
+02:08:28 [build] directory: /Volumes/lethelm2/cs-vaulte/dist/
+02:08:28 [build] Collecting build info...
+02:08:28 [build] ✓ Completed in 272ms.
+02:08:28 [build] Building static entrypoints...
+02:08:29 [vite] ✓ built in 716ms
+02:08:29 [vite] ✓ built in 75ms
+02:08:29 [build] Rearranging server assets...
+
+ generating static routes 
+02:08:29   ├─ /404.html (+9ms) 
+02:08:29   ├─ /ar/contribute/index.html (+10ms) 
+02:08:29   ├─ /ar/algorithm-analysis/2026/quiz/lecture-01-midterm/index.html (+15ms) 
+02:08:29   ├─ /ar/algorithm-analysis/2026/quiz/lecture-02-midterm/index.html (+6ms) 
+02:08:29   ├─ /ar/algorithm-analysis/2026/quiz/lecture-03-midterm/index.html (+7ms) 
+02:08:29   ├─ /ar/algorithm-analysis/2026/quiz/lecture-04-midterm/index.html (+5ms) 
+02:08:29   ├─ /ar/algorithm-analysis/2026/quiz/lecture-05-midterm/index.html (+3ms) 
+02:08:29   ├─ /ar/operating-systems/2026/quiz/chapter-01-practice/index.html (+11ms) 
+02:08:29   ├─ /ar/operating-systems/2026/quiz/chapter-02-practice/index.html (+3ms) 
+02:08:29   ├─ /ar/operating-systems/2026/quiz/chapters-01-02-mixed-review/index.html (+3ms) 
+02:08:29   ├─ /ar/programming-languages/2026/quiz/languages-pdf-exam/index.html (+7ms) 
+02:08:29   ├─ /ar/programming-languages/2026/quiz/lecture-01-instructor-tutorial/index.html (+3ms) 
+02:08:29   ├─ /ar/programming-languages/2026/quiz/lecture-01-practice-a/index.html (+3ms) 
+02:08:29   ├─ /ar/programming-languages/2026/quiz/lecture-01-practice-b/index.html (+3ms) 
+02:08:29   ├─ /ar/programming-languages/2026/quiz/lecture-01-practice-c/index.html (+3ms) 
+02:08:29   ├─ /ar/web-development/2026/quiz/lecture-01-applications/index.html (+8ms) 
+02:08:29   ├─ /ar/web-development/2026/quiz/lecture-01-foundations/index.html (+3ms) 
+02:08:29   ├─ /ar/web-development/2026/quiz/lecture-02-applications/index.html (+3ms) 
+02:08:29   ├─ /ar/web-development/2026/quiz/lecture-02-foundations/index.html (+3ms) 
+02:08:29   ├─ /ar/web-development/2026/quiz/lecture-02-part-2-applications/index.html (+3ms) 
+02:08:29   ├─ /ar/web-development/2026/quiz/lecture-02-part-2-foundations/index.html (+3ms) 
+02:08:29   ├─ /ar/web-development/2026/quiz/lecture-03-part-1-applications/index.html (+3ms) 
+02:08:29   ├─ /ar/web-development/2026/quiz/lecture-03-part-1-foundations/index.html (+3ms) 
+02:08:29   ├─ /ar/algorithm-analysis/2026/quiz/all-questions/index.html (+4ms) 
+02:08:29   ├─ /ar/operating-systems/2026/quiz/all-questions/index.html (+3ms) 
+02:08:29   ├─ /ar/programming-languages/2026/quiz/all-questions/index.html (+4ms) 
+02:08:29   ├─ /ar/web-development/2026/quiz/all-questions/index.html (+7ms) 
+02:08:29   ├─ /ar/algorithm-analysis/2026/index.html (+14ms) 
+02:08:29   ├─ /ar/web-development/2026/index.html (+10ms) 
+02:08:29   ├─ /ar/programming-languages/2026/index.html (+12ms) 
+02:08:29   ├─ /ar/operating-systems/2026/index.html (+6ms) 
+02:08:29   ├─ /ar/computer-networks/2026/index.html (+9ms) 
+02:08:29   ├─ /ar/engineering-software-products/2026/index.html (+10ms) 
+02:08:29   ├─ /ar/index.html (+6ms) 
+02:08:29   ├─ /contribute/index.html (+5ms) 
+02:08:29   ├─ /contribution-catalog.json (+6ms) 
+02:08:29   ├─ /contribution-kit/instructions.md (+4ms) 
+02:08:29   ├─ /contribution-kit/example.json (+2ms) 
+02:08:29   ├─ /algorithm-analysis/2026/quiz/lecture-01-midterm/index.html (+10ms) 
+02:08:29   ├─ /algorithm-analysis/2026/quiz/lecture-02-midterm/index.html (+4ms) 
+02:08:29   ├─ /algorithm-analysis/2026/quiz/lecture-03-midterm/index.html (+4ms) 
+02:08:29   ├─ /algorithm-analysis/2026/quiz/lecture-04-midterm/index.html (+4ms) 
+02:08:29   ├─ /algorithm-analysis/2026/quiz/lecture-05-midterm/index.html (+4ms) 
+02:08:29   ├─ /operating-systems/2026/quiz/chapter-01-practice/index.html (+10ms) 
+02:08:29   ├─ /operating-systems/2026/quiz/chapter-02-practice/index.html (+3ms) 
+02:08:29   ├─ /operating-systems/2026/quiz/chapters-01-02-mixed-review/index.html (+4ms) 
+02:08:29   ├─ /programming-languages/2026/quiz/languages-pdf-exam/index.html (+9ms) 
+02:08:29   ├─ /programming-languages/2026/quiz/lecture-01-instructor-tutorial/index.html (+4ms) 
+02:08:29   ├─ /programming-languages/2026/quiz/lecture-01-practice-a/index.html (+4ms) 
+02:08:29   ├─ /programming-languages/2026/quiz/lecture-01-practice-b/index.html (+4ms) 
+02:08:29   ├─ /programming-languages/2026/quiz/lecture-01-practice-c/index.html (+3ms) 
+02:08:29   ├─ /web-development/2026/quiz/lecture-01-applications/index.html (+9ms) 
+02:08:29   ├─ /web-development/2026/quiz/lecture-01-foundations/index.html (+3ms) 
+02:08:29   ├─ /web-development/2026/quiz/lecture-02-applications/index.html (+4ms) 
+02:08:29   ├─ /web-development/2026/quiz/lecture-02-foundations/index.html (+3ms) 
+02:08:30   ├─ /web-development/2026/quiz/lecture-02-part-2-applications/index.html (+3ms) 
+02:08:30   ├─ /web-development/2026/quiz/lecture-02-part-2-foundations/index.html (+3ms) 
+02:08:30   ├─ /web-development/2026/quiz/lecture-03-part-1-applications/index.html (+3ms) 
+02:08:30   ├─ /web-development/2026/quiz/lecture-03-part-1-foundations/index.html (+3ms) 
+02:08:30   ├─ /algorithm-analysis/2026/quiz/all-questions/index.html (+3ms) 
+02:08:30   ├─ /operating-systems/2026/quiz/all-questions/index.html (+4ms) 
+02:08:30   ├─ /programming-languages/2026/quiz/all-questions/index.html (+3ms) 
+02:08:30   ├─ /web-development/2026/quiz/all-questions/index.html (+4ms) 
+02:08:30   ├─ /algorithm-analysis/2026/index.html (+9ms) 
+02:08:30   ├─ /web-development/2026/index.html (+8ms) 
+02:08:30   ├─ /programming-languages/2026/index.html (+8ms) 
+02:08:30   ├─ /operating-systems/2026/index.html (+6ms) 
+02:08:30   ├─ /computer-networks/2026/index.html (+8ms) 
+02:08:30   ├─ /engineering-software-products/2026/index.html (+8ms) 
+02:08:30   ├─ /index.html (+5ms) 
+02:08:30 ✓ Completed in 418ms.
+
+02:08:30 [build] ✓ Completed in 1.26s.
+02:08:30 [build] 67 page(s) built in 1.66s
+02:08:30 [build] Complete!
+
+> cs-vaulte@0.0.1 check:links
+> node scripts/check-links.mjs
+
+Local links, anchors and assets checked across 67 pages.

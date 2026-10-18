@@ -6,7 +6,9 @@ export interface Course {
   year: number; year_level: number; semester: number;
 }
 export const courseKey = (course: Course): string => `${course.slug}/${course.year}`;
-export const courseLabel = (course: Course): string => `${course.subject_code} — ${course.name} — Year ${course.year_level}`;
+// Keep the collection key in exported choices from the first edition onward.
+// A course code/name may be reused when the next collection year is added.
+export const courseLabel = (course: Course): string => `${course.subject_code} — ${course.name} — Year ${course.year_level} [${courseKey(course)}]`;
 
 export const courses = z.array(z.object({
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
@@ -26,3 +28,14 @@ export const courses = z.array(z.object({
 }).parse(catalog);
 
 export const findCourse = (key: string): Course | undefined => courses.find(course => courseKey(course) === key);
+
+export function resolveCourse(nameOrSlug: string, year?: string | number, catalog: readonly Course[] = courses): Course | undefined {
+  return catalog.find(course => (year === undefined || String(course.year) === String(year))
+    && [course.slug, course.name, course.name_ar, course.subject_code].includes(nameOrSlug));
+}
+
+export const courseSearchNames = (course: Course): string[] => [course.name, course.name_ar || course.name];
+
+export function hasMultipleCollections(slug: string, catalog: readonly Course[] = courses): boolean {
+  return new Set(catalog.filter(course => course.slug === slug).map(course => course.year)).size > 1;
+}

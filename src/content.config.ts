@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { quizSchema } from './lib/quiz-schema';
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { studyPlacementSchema } from './lib/content-order';
 
 // 1. Summaries Collection (Markdown)
 // Uses glob loader to scan src/content/summaries recursively
@@ -11,6 +12,7 @@ const summariesCollection = defineCollection({
     base: './src/content/summaries' 
   }),
   schema: z.object({
+    ...studyPlacementSchema.shape,
     title: z.string().min(1, 'Title is required'),
     description: z.string().min(1, 'Description is required'),
     source: z.string().min(1).optional(),

@@ -10,6 +10,8 @@ import Icon from '../../components/Icon.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
 import { questionBankFingerprint } from '../../scripts/quiz-state';
 import { createAllQuestionsQuiz } from '../../lib/quiz-routes';
+import { compareStudyEntries, getStudySection } from '../../lib/content-order';
+import { getPracticeQuestions } from '../../lib/quiz-questions';
 import '../../styles/subject.css';
 
 const lang = getLangFromUrl(Astro.url);
@@ -38,7 +40,7 @@ const getSlug = (id: string) => {
 
 // Render summary content
 const summaries = await Promise.all(
-  rawSummaries.map(async (entry) => {
+  [...rawSummaries].sort(compareStudyEntries).map(async (entry) => {
     const { Content } = await render(entry);
     const words = entry.body ? entry.body.split(/\s+/g).length : 0;
     const readingTime = Math.ceil(words / 200) || 1;
@@ -51,30 +53,7 @@ const summaries = await Promise.all(
   })
 );
 
-const quizOrder = [
-  'lecture-01-foundations',
-  'lecture-01-applications',
-  'lecture-02-foundations',
-  'lecture-02-applications',
-  'lecture-02-part-2-foundations',
-  'lecture-02-part-2-applications',
-  'lecture-03-part-1-foundations',
-  'lecture-03-part-1-applications',
-];
-const quizzes = [...rawQuizzes].sort((a, b) => {
-  const sourcePriority = { instructor: 2, provided: 1, generated: 0 };
-  const bySource = sourcePriority[b.data.sourceKind] - sourcePriority[a.data.sourceKind];
-  if (bySource !== 0) return bySource;
-
-  const byFeatured = Number(b.data.featured) - Number(a.data.featured);
-  if (byFeatured !== 0) return byFeatured;
-
-  const orderOf = (entry: typeof a) => {
-    const index = quizOrder.indexOf(getSlug(entry.id));
-    return index === -1 ? quizOrder.length : index;
-  };
-  return orderOf(a) - orderOf(b);
-}).map((entry) => ({
+const quizzes = [...rawQuizzes].sort(compareStudyEntries).map((entry) => ({
   entry,
   slug: getSlug(entry.id)
 }));
@@ -83,10 +62,10 @@ if (quizzes.length > 0) {
 }
 const quizGroupsByKey = new Map<string, { key: string; sectionNumber?: string; sectionType?: 'lecture' | 'chapter'; quizzes: typeof quizzes }>();
 for (const quiz of quizzes) {
-  const sectionMatch = quiz.entry.data.title.match(/^(Lecture|Chapter)\s+(\d+)/i);
-  const sectionType = sectionMatch?.[1].toLowerCase() as 'lecture' | 'chapter' | undefined;
-  const sectionNumber = sectionMatch?.[2];
-  const isMixed = quiz.slug === 'all-questions' || /mixed-review/i.test(quiz.slug) || !sectionMatch;
+  const section = getStudySection(quiz.entry);
+  const sectionType = section.kind === 'mixed' ? undefined : section.kind;
+  const sectionNumber = section.number === undefined ? undefined : String(section.number);
+  const isMixed = section.kind === 'mixed';
   const key = isMixed ? 'mixed' : `${sectionType}-${sectionNumber}`;
   const group = quizGroupsByKey.get(key);
   if (group) {
@@ -192,7 +171,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
                     <div class="subject-quiz-card-body">
                       <div class="subject-quiz-card-top">
                         <QuizSourceLabel sourceKind={q.entry.data.sourceKind} combined={q.slug === 'all-questions'} />
-                        <span class="subject-question-count">{q.entry.data.questions.length} {t('quiz.questions')}</span>
+                        <span class="subject-question-count">{getPracticeQuestions(q.entry.data.questions).length} {t('quiz.questions')}</span>
                       </div>
                       <h4 lang={q.entry.data.lang} dir="auto">{q.entry.data.title}</h4>
                       <MaterialContext
@@ -202,13 +181,13 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
                         sourceTerm={q.entry.data.sourceTerm}
                         contentLang={q.entry.data.lang}
                       />
-                      <span
+                      {getPracticeQuestions(q.entry.data.questions).length > 0 && <span
                         data-best-score={q.entry.id}
-                        data-best-score-total={q.entry.data.questions.length}
-                        data-best-score-fingerprint={questionBankFingerprint(q.entry.data.questions)}
+                        data-best-score-total={getPracticeQuestions(q.entry.data.questions).length}
+                        data-best-score-fingerprint={questionBankFingerprint(getPracticeQuestions(q.entry.data.questions))}
                         data-best-score-template={t('dashboard.bestScore')}
                         class="subject-best-score hidden"
-                      ></span>
+                      ></span>}
                     </div>
                     <span class="subject-quiz-card-action">
                       <span>{t('dashboard.practice')}</span>

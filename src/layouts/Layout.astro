@@ -111,6 +111,7 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
           <!-- Language Selector -->
           <a
             href={getLanguageSwitcherPath(Astro.url.pathname, lang)}
+            data-language-switch
             class="inline-flex min-h-11 items-center text-sm font-medium border border-gray-200 dark:border-zinc-700 px-3 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-900 text-gray-600 dark:text-zinc-300 hover:text-gray-900 dark:hover:text-white transition-colors duration-150"
           >
             {lang === "ar" ? "English" : "العربية "}
@@ -271,6 +272,21 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
           localStorage.setItem("theme", isDarkMode() ? "dark" : "light");
         } catch { /* Theme still works for this visit. */ }
       });
+    </script>
+    <script>
+      // Static pages cannot read a visitor's query or fragment at build time.
+      const languageSwitch = document.querySelector<HTMLAnchorElement>('[data-language-switch]');
+      const languagePath = languageSwitch?.getAttribute('href');
+      const syncLanguageSwitch = () => {
+        if (!languageSwitch || !languagePath) return;
+        const target = new URL(languagePath, window.location.href);
+        target.search = window.location.search;
+        target.hash = window.location.hash;
+        languageSwitch.href = target.href;
+      };
+      syncLanguageSwitch();
+      ['hashchange', 'popstate', 'pageshow', 'locationchange'].forEach(event => window.addEventListener(event, syncLanguageSwitch));
+      ['click', 'auxclick', 'pointerdown', 'focus', 'contextmenu'].forEach(event => languageSwitch?.addEventListener(event, syncLanguageSwitch));
     </script>
     <script src="../scripts/pomodoro.ts"></script>
   </body>

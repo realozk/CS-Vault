@@ -7,7 +7,8 @@ import SemesterSection from '../../components/SemesterSection.astro';
 import StudyBackground from '../StudyBackground.astro';
 import Icon from '../Icon.astro';
 import '../../styles/home.css';
-import { getModules, getSubjectName } from '../../lib/modules';
+import { getModules, getSubjectName, getDefaultStudyYear } from '../../lib/modules';
+import { findCourse, courseSearchNames } from '../../lib/course-catalog';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
 
 const lang = getLangFromUrl(Astro.url);
@@ -40,8 +41,13 @@ const quizzes = await getCollection('quizzes');
 const modules = await getModules(lang);
 
 // Auto-detect default year tab (first year with content)
-const availableYears = [...new Set(modules.map(m => m.yearLevel))].sort((a, b) => a - b);
-const defaultYear = availableYears.length > 0 ? availableYears[0] : 1;
+const defaultYear = getDefaultStudyYear(modules);
+
+// Search both interface languages and the actual course code on every item.
+const courseSearch = (slug: string, year: string) => {
+  const course = findCourse(`${slug}/${year}`)!;
+  return { subjectCode: course.subject_code, subjectNames: courseSearchNames(course) };
+};
 
 
 
@@ -49,7 +55,7 @@ const defaultYear = availableYears.length > 0 ? availableYears[0] : 1;
 const searchIndex = [
   ...modules.map(m => ({
     type: 'subject', title: m.subjectName, description: t('semester.title').replace('{sem}', String(m.semester)),
-    author: '', subjectCode: getSubjectName(m.subject, 'en'), year: m.year,
+    author: '', ...courseSearch(m.subject, m.year), year: m.year,
     url: getLocalizedPath(`/${m.subject}/${m.year}`, lang),
     yearLevel: m.yearLevel, semester: m.semester
   })),
@@ -60,7 +66,7 @@ const searchIndex = [
       title: s.data.title,
       description: s.data.description,
       author: s.data.author,
-      subjectCode: getSubjectName(s.data.subject_code, lang),
+      ...courseSearch(parts[0], parts[1]),
       year: parts[1],
       url: `${getLocalizedPath(`/${parts[0]}/${parts[1]}`, lang)}#summary-content-${parts.slice(2).join('-').replace(/\.(md|json)$/, '')}`,
       yearLevel: s.data.year_level,
@@ -73,9 +79,9 @@ const searchIndex = [
     return {
       type: 'quiz',
       title: q.data.title,
-      description: `${t("quiz.practice")} — ${getSubjectName(q.data.subject, lang)}`,
+      description: `${t("quiz.practice")} — ${getSubjectName(parts[0], lang, parts[1])}`,
       author: 'System',
-      subjectCode: getSubjectName(q.data.subject, lang),
+      ...courseSearch(parts[0], parts[1]),
       year: parts[1],
       url: getLocalizedPath(`/${parts[0]}/${parts[1]}/quiz/${slug}`, lang),
       yearLevel: q.data.year_level,

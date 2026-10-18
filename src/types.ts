@@ -8,6 +8,7 @@ export interface Question {
   question: string;
   code?: string;
   options: string[];
+  shuffleOptions?: boolean;
   correctAnswer: string;
   explanation?: string;
   sourceSlide?: number;
@@ -16,6 +17,15 @@ export interface Question {
   optionsSource?: 'provided' | 'generated';
   topic?: string;
   answerSource?: 'marked' | 'inferred' | 'manual';
+  status?: 'reviewed' | 'disputed';
+  reviewNote?: string;
+  origin?: {
+    quizId: string;
+    questionId: number;
+    title: string;
+    source?: string;
+    lang?: 'en' | 'ar';
+  };
 }
 
 export interface QuizData {

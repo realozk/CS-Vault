@@ -167,7 +167,7 @@ input {
   overflow-wrap: anywhere;
 }
 
-.academic-prose h1 {
+.academic-prose :is(h1, [data-summary-level="1"]) {
   font-size: 2.25rem;
   font-weight: 800;
   margin-top: 2rem;
@@ -176,7 +176,7 @@ input {
   letter-spacing: -0.025em;
 }
 
-.academic-prose h2 {
+.academic-prose :is(h2, [data-summary-level="2"]) {
   font-size: 1.75rem;
   font-weight: 700;
   margin-top: 1.75rem;
@@ -185,7 +185,8 @@ input {
   letter-spacing: -0.02em;
 }
 
-.academic-prose h3 {
+.academic-prose h3:not([data-summary-level]),
+.academic-prose [data-summary-level="3"] {
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1.5rem;
@@ -193,15 +194,16 @@ input {
   color: #374151;
 }
 
-.dark .academic-prose h1 {
+.dark .academic-prose :is(h1, [data-summary-level="1"]) {
   color: #f9fafb;
 }
 
-.dark .academic-prose h2 {
+.dark .academic-prose :is(h2, [data-summary-level="2"]) {
   color: #f3f4f6;
 }
 
-.dark .academic-prose h3 {
+.dark .academic-prose h3:not([data-summary-level]),
+.dark .academic-prose [data-summary-level="3"] {
   color: #e5e7eb;
 }
 

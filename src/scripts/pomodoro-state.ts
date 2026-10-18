@@ -64,6 +64,32 @@ export function completePomodoroPhase(state: PomodoroState, now: number): Pomodo
   };
 }
 
+// Advance from the saved deadline, not from the moment a sleeping tab wakes up.
+// Identical expired snapshots therefore produce the same next phase in every tab.
+export function advancePomodoroState(state: PomodoroState, now: number): PomodoroState {
+  if (!Number.isFinite(now) || now < 0) throw new Error('Pomodoro time must be valid.');
+  let next = state;
+  while (next.deadline !== null && next.deadline <= now) {
+    next = completePomodoroPhase(next, next.deadline);
+  }
+  return next;
+}
+
+export function updatePomodoroDuration(state: PomodoroState, phase: PomodoroState['phase'], minutes: number, now: number): PomodoroState {
+  if (!Number.isInteger(minutes) || minutes < 1 || minutes > 180) throw new Error('Pomodoro duration must be between 1 and 180 minutes.');
+  if (!Number.isFinite(now) || now < 0) throw new Error('Pomodoro time must be valid.');
+  const key = phase === 'study' ? 'studyMinutes' : 'breakMinutes';
+  if (state[key] === minutes) return state;
+  return {
+    ...state,
+    [key]: minutes,
+    ...(phase === state.phase ? {
+      remainingSeconds: minutes * 60,
+      deadline: state.deadline === null ? null : now + minutes * 60_000,
+    } : {}),
+  };
+}
+
 export function formatPomodoroTime(seconds: number): string {
   const safeSeconds = Math.max(0, Math.floor(seconds));
   return `${Math.floor(safeSeconds / 60).toString().padStart(2, '0')}:${(safeSeconds % 60).toString().padStart(2, '0')}`;

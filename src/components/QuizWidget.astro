@@ -3,8 +3,9 @@ import QuizSourceLabel from './QuizSourceLabel.astro';
 import MaterialContext from './MaterialContext.astro';
 import '../styles/quiz.css';
 import { getSubjectName } from '../lib/modules';
+import { getPracticeQuestions, getQuizQuestionPath } from '../lib/quiz-questions';
 import type { QuizData } from '../types';
-import { getLangFromUrl, useTranslations, ui } from '../i18n/ui';
+import { getLangFromUrl, getLocalizedPath, useTranslations, ui } from '../i18n/ui';
 
 interface Props {
   quiz: QuizData;
@@ -16,6 +17,11 @@ const { quiz, quizId = `${quiz.subject}/${quiz.year}/${quiz.title}`, backUrl = "
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const combined = quizId.endsWith('/all-questions');
+const practiceQuestions = getPracticeQuestions(quiz.questions);
+const disputedQuestions = quiz.questions.filter(question => question.status === 'disputed');
+const originUrls = Object.fromEntries(quiz.questions.flatMap(question => question.origin
+  ? [[question.origin.quizId, getLocalizedPath(getQuizQuestionPath(question.origin.quizId), lang)]]
+  : []));
 const serializedTranslations = JSON.stringify(Object.fromEntries(
   (Object.keys(ui.en) as (keyof typeof ui.en)[])
     .filter(key => key.startsWith('quiz.')).map(key => [key.slice(5), t(key)])
@@ -29,11 +35,12 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
   data-quiz={JSON.stringify(quiz)}
   data-quiz-id={quizId}
   data-translations={serializedTranslations}
+  data-origin-urls={JSON.stringify(originUrls)}
 >
   <div id="quiz-start-screen" class="quiz-screen">
     <div class="quiz-intro">
-      <p class="quiz-eyebrow">{getSubjectName(quiz.subject, lang)} <span aria-hidden="true">/</span> {lang === 'ar' ? 'سنة المجموعة' : 'Collection year'} {quiz.year}</p>
-      <h2 dir="auto" lang={quiz.lang || 'en'} class="quiz-title">{quiz.title}</h2>
+      <p class="quiz-eyebrow">{getSubjectName(quiz.subject, lang, quiz.year)} <span aria-hidden="true">/</span> {lang === 'ar' ? 'سنة المجموعة' : 'Collection year'} {quiz.year}</p>
+      <h1 dir="auto" lang={quiz.lang || 'en'} class="quiz-title">{quiz.title}</h1>
       <MaterialContext
         description={quiz.description}
         sourceAcademicYear={quiz.sourceAcademicYear}
@@ -42,10 +49,11 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
         contentLang={quiz.lang}
       />
       <div class="quiz-intro-meta">
-        <span class="quiz-question-count"><strong>{quiz.questions.length}</strong> {t('quiz.questions')}</span>
+        <span class="quiz-question-count"><strong>{practiceQuestions.length}</strong> {t('quiz.questions')}</span>
         <span aria-hidden="true" class="quiz-meta-divider"></span>
         <QuizSourceLabel sourceKind={quiz.sourceKind} combined={combined} />
       </div>
+      {disputedQuestions.length > 0 && <p class="quiz-help mt-3">{t('quiz.disputedNotice').replace('{count}', String(disputedQuestions.length))}</p>}
     </div>
 
     <fieldset class="quiz-setup">
@@ -73,12 +81,36 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
     </fieldset>
 
     <div class="quiz-start-actions">
-      <button id="start-quiz-btn" class="quiz-primary">
+      <button id="start-quiz-btn" class="quiz-primary" disabled={!practiceQuestions.length}>
         {t('quiz.start')}
         <svg aria-hidden="true" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="rtl:rotate-180"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" /></svg>
       </button>
       <span id="quiz-mode-subtext" class="quiz-help">{t('quiz.subtext')}</span>
     </div>
+
+    <section class="quiz-result-section" aria-labelledby="quiz-saved-title">
+      <h2 id="quiz-saved-title" class="text-base font-semibold">{t('quiz.savedReview')}</h2>
+      <p id="quiz-saved-count" class="quiz-help" role="status">{t('quiz.noSaved')}</p>
+      <p class="quiz-help">{t('quiz.reviewHelp')}</p>
+      <div class="quiz-result-actions">
+        <button id="quiz-review-saved-btn" class="quiz-secondary" disabled>{t('quiz.savedReview')}</button>
+        <button id="quiz-clear-saved-btn" class="quiz-secondary" disabled>{t('quiz.clearSaved')}</button>
+      </div>
+    </section>
+
+    {disputedQuestions.length > 0 && <details class="quiz-source-details">
+      <summary>{t('quiz.disputedQuestions')}</summary>
+      <div class="quiz-source-content">
+        {disputedQuestions.map(question => <article class="space-y-2" dir={question.origin?.lang === 'ar' || (!question.origin?.lang && quiz.lang === 'ar') ? 'rtl' : 'ltr'} lang={question.origin?.lang || quiz.lang || 'en'}>
+          <h2 class="font-semibold">{question.origin?.questionId ?? question.id}. {question.question}</h2>
+          {question.code && <pre dir="ltr" class="overflow-x-auto">{question.code}</pre>}
+          <p>{t('quiz.sourceAnswer')}: {question.correctAnswer}</p>
+          {question.explanation && <p>{question.explanation}</p>}
+          <p>{question.reviewNote}</p>
+          {question.origin && <p><a class="underline underline-offset-4" href={originUrls[question.origin.quizId]}>{t('quiz.originalQuestion').replace('{id}', String(question.origin.questionId))} — {question.origin.title}</a></p>}
+        </article>)}
+      </div>
+    </details>}
 
     <details class="quiz-source-details">
       <summary><QuizSourceLabel sourceKind={quiz.sourceKind} combined={combined} /><svg aria-hidden="true" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg></summary>
@@ -95,12 +127,12 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
 
   <div id="quiz-active-screen" class="hidden quiz-screen">
     <div class="quiz-session-header">
-      <span class="quiz-counter"><span id="quiz-counter-wrapper" set:html={t('quiz.currentQuestion').replace('{current}', '<span id="quiz-current-question-num">1</span>').replace('{total}', `<span id="quiz-total-questions-num">${quiz.questions.length}</span>`)} /></span>
+      <span class="quiz-counter"><span id="quiz-counter-wrapper" set:html={t('quiz.currentQuestion').replace('{current}', '<span id="quiz-current-question-num">1</span>').replace('{total}', `<span id="quiz-total-questions-num">${practiceQuestions.length}</span>`)} /></span>
       <span id="quiz-timer" role="timer" aria-label={t('quiz.timeRemaining')}>{t('quiz.active')}</span>
     </div>
     <div class="quiz-progress-track"><div id="quiz-progress-bar" class="h-full w-0"></div></div>
 
-    <div dir={quiz.lang === 'ar' ? 'rtl' : 'ltr'} lang={quiz.lang || 'en'} class="quiz-question-content">
+    <div id="quiz-question-content" dir={quiz.lang === 'ar' ? 'rtl' : 'ltr'} lang={quiz.lang || 'en'} class="quiz-question-content">
       <h3 id="quiz-question-text" tabindex="-1">Question loading...</h3>
       <pre id="quiz-question-code" class="hidden"></pre>
       <div id="quiz-options-container"></div>
@@ -113,6 +145,7 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
         <h4>{t('quiz.explanation')}</h4>
         <p id="quiz-explanation-text" dir={quiz.lang === 'ar' ? 'rtl' : 'ltr'} lang={quiz.lang || 'en'}>Explanation content...</p>
         <p id="quiz-source-slide" />
+        <p id="quiz-origin" />
         <p id="quiz-answer-warning" />
       </div>
     </div>
