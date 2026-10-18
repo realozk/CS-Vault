@@ -1,0 +1,190 @@
+{
+  "title": "Lecture 2 — Instructor Tutorial",
+  "date": "2026-10-18",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Tutorial02.pdf",
+  "sourceKind": "instructor",
+  "description": "11 questions transcribed from the instructor’s Tutorial 2: Asymptotic proofs, growth rates, and insertion-sort case behaviours. Source questions, choices, and answer-key selections are preserved.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Based on the formal definition of Big-Ω, which of the following must be true for f(n) ∈ Ω(g(n))?",
+      "options": [
+        "∃c > 0, n₀ > 0 such that f(n) ≤ c ⋅ g(n) for all n ≥ n₀",
+        "∃c > 0, n₀ > 0 such that f(n) ≥ c ⋅ g(n) for all n ≥ n₀",
+        "f(n) represents the exact average-case growth.",
+        "f(n) is always strictly greater than g(n) for all values of n"
+      ],
+      "correctAnswer": "∃c > 0, n₀ > 0 such that f(n) ≥ c ⋅ g(n) for all n ≥ n₀",
+      "explanation": "The tutorial answer key selects B: ∃c > 0, n₀ > 0 such that f(n) ≥ c ⋅ g(n) for all n ≥ n₀",
+      "topic": "Asymptotic Definitions and Logic",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 2,
+      "question": "Big-Θ (Tight Bound) only exists for a function if:",
+      "options": [
+        "The algorithm has no best-case or worst-case scenarios.",
+        "The input size n is a constant value.",
+        "Both the upper bound (Big-O) and lower bound (Big-Ω) match on the same dominant growth function.",
+        "The constant c is equal to 1."
+      ],
+      "correctAnswer": "Both the upper bound (Big-O) and lower bound (Big-Ω) match on the same dominant growth function.",
+      "explanation": "The tutorial answer key selects C: Both the upper bound (Big-O) and lower bound (Big-Ω) match on the same dominant growth function.",
+      "topic": "Asymptotic Definitions and Logic",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 3,
+      "question": "If an algorithm has a tight bound of Θ(n²), which of the following is a valid statement regarding its Big-O and Big-Ω sets?",
+      "options": [
+        "O(f(n)) can be n, and Ω(f(n)) can be n³",
+        "O(f(n)) can be n² or n³, and Ω(f(n)) can be n² or n",
+        "Both O(f(n)) and Ω(f(n)) must be exactly n² only",
+        "O(f(n)) must be 1, and Ω(f(n)) must be n!"
+      ],
+      "correctAnswer": "O(f(n)) can be n² or n³, and Ω(f(n)) can be n² or n",
+      "explanation": "The tutorial answer key selects B: O(f(n)) can be n² or n³, and Ω(f(n)) can be n² or n",
+      "topic": "Asymptotic Definitions and Logic",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 4,
+      "question": "Arrange the following functions in increasing order of growth rate as per the lecture hierarchy: n!, 2ⁿ, n log n, nᵏ, 1, log n",
+      "options": [
+        "1 < log n < n log n < nᵏ < 2ⁿ < n!",
+        "1 < log n < nᵏ < n log n < 2ⁿ < n!",
+        "n! < 2ⁿ < nᵏ < n log n < log n < 1",
+        "1 < n log n < log n < 2ⁿ < nᵏ < n!"
+      ],
+      "correctAnswer": "1 < log n < n log n < nᵏ < 2ⁿ < n!",
+      "explanation": "The tutorial answer key selects A: 1 < log n < n log n < nᵏ < 2ⁿ < n!",
+      "topic": "Growth Hierarchy and Proof Mechanics",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 5,
+      "question": "To prove that f(n) = 3n² + 17n log n + 1000 ∈ O(n²), the lecture demonstrates combining terms to find constants. What are the resulting c and n₀ values used in the final step of this proof?",
+      "options": [
+        "c = 3, n₀ = 0",
+        "c = 17, n₀ = 2",
+        "c = 1020, n₀ = 2",
+        "c = 1000, n₀ = 1"
+      ],
+      "correctAnswer": "c = 1020, n₀ = 2",
+      "explanation": "The tutorial answer key selects C: c = 1020, n₀ = 2",
+      "topic": "Growth Hierarchy and Proof Mechanics",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 6,
+      "question": "When proving Big-Ω for a polynomial function, what is the recommended strategy?",
+      "options": [
+        "Overestimate smaller terms with larger ones.",
+        "Ignore positive smaller terms and keep only the dominant (fastest-growing) term.",
+        "Multiply all coefficients together to find the constant c.",
+        "Choose n₀ to be the smallest possible integer."
+      ],
+      "correctAnswer": "Ignore positive smaller terms and keep only the dominant (fastest-growing) term.",
+      "explanation": "The tutorial answer key selects B: Ignore positive smaller terms and keep only the dominant (fastest-growing) term.",
+      "topic": "Growth Hierarchy and Proof Mechanics",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 7,
+      "question": "If the input array provided to the Insertion Sort algorithm is already sorted, what is its runtime behavior?",
+      "options": [
+        "It remains Θ(n²) because of the nested loops.",
+        "It achieves its Best-case behavior (Linear).",
+        "It achieves its Worst-case behavior (Quadratic).",
+        "The algorithm will fail to execute."
+      ],
+      "correctAnswer": "It achieves its Best-case behavior (Linear).",
+      "explanation": "The tutorial answer key selects B: It achieves its Best-case behavior (Linear).",
+      "topic": "Case Behaviours (Insertion Sort)",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 8,
+      "question": "What happens to the time complexity of Insertion Sort when the input array is reverse-sorted?",
+      "options": [
+        "It becomes O(log n)",
+        "It becomes O(n)",
+        "It becomes O(n²)",
+        "The complexity remains constant O(1)"
+      ],
+      "correctAnswer": "It becomes O(n²)",
+      "explanation": "The tutorial answer key selects C: It becomes O(n²)",
+      "topic": "Case Behaviours (Insertion Sort)",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 9,
+      "question": "Which of the following statements regarding f(n) = 2ⁿ and g(n) = 10n² is TRUE?",
+      "options": [
+        "f(n) = O(g(n)), because 10n² has a larger coefficient.",
+        "f(n) = Ω(g(n)), because exponential growth eventually exceeds quadratic growth.",
+        "f(n) = Θ(g(n)), because both grow as n increases.",
+        "f(n) is slower growing than g(n)."
+      ],
+      "correctAnswer": "f(n) = Ω(g(n)), because exponential growth eventually exceeds quadratic growth.",
+      "explanation": "The tutorial answer key selects B: f(n) = Ω(g(n)), because exponential growth eventually exceeds quadratic growth.",
+      "topic": "Asymptotic Comparisons",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 10,
+      "question": "Determine the correctness of this statement: f(n) = n is O(g(n)) where g(n) = 10.",
+      "options": [
+        "True, because 10 is a constant.",
+        "True, because n can be smaller than 10.",
+        "False, because a linear function grows faster than a constant function.",
+        "False, because the coefficient 10 must be ignored."
+      ],
+      "correctAnswer": "False, because a linear function grows faster than a constant function.",
+      "explanation": "The tutorial answer key selects C: False, because a linear function grows faster than a constant function.",
+      "topic": "Asymptotic Comparisons",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 11,
+      "question": "Find the Big-O for the function f(n) = 50n log n + 20n",
+      "options": [
+        "O(n)",
+        "O(n log n)",
+        "O(1)",
+        "O(n²)"
+      ],
+      "correctAnswer": "O(n log n)",
+      "explanation": "The tutorial answer key selects B: O(n log n)",
+      "topic": "Asymptotic Comparisons",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    }
+  ]
+}

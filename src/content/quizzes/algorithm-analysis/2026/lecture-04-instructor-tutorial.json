@@ -1,0 +1,238 @@
+{
+  "title": "Lecture 4 — Instructor Tutorial",
+  "date": "2026-10-18",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Tutorial04.pdf",
+  "sourceKind": "instructor",
+  "description": "14 questions transcribed from the instructor’s Tutorial 4: The Master Theorem, divide-and-conquer algorithms, and matrix multiplication. Source questions, choices, and answer-key selections are preserved.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Given the general form of the Master Theorem T(n) = aT(n/b) + f(n), what do the parameters a and b represent?",
+      "options": [
+        "a is the subproblem size; b is the number of subproblems.",
+        "a is the number of subproblems; b is the factor by which the problem size is reduced.",
+        "a is the non-recursive cost; b is the recursion depth.",
+        "a is the constant time for the base case; b is the number of levels in the recursion tree."
+      ],
+      "correctAnswer": "a is the number of subproblems; b is the factor by which the problem size is reduced.",
+      "explanation": "The tutorial answer key selects B: a is the number of subproblems; b is the factor by which the problem size is reduced.",
+      "topic": "Master Theorem and Recurrence Relations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 2,
+      "question": "Which condition must be met for f(n) to be expressed as Θ(nᵏ logᵖ n) in the generalized Master Theorem?",
+      "options": [
+        "a < 1 and b = 1",
+        "a ≥ 1 and b > 1",
+        "k must be a negative integer.",
+        "p must always be greater than 0."
+      ],
+      "correctAnswer": "a ≥ 1 and b > 1",
+      "explanation": "The tutorial answer key selects B: a ≥ 1 and b > 1",
+      "topic": "Master Theorem and Recurrence Relations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 3,
+      "question": "If an algorithm's recurrence results in log_b a > k, which case of the Master Theorem applies, and what is the resulting complexity?",
+      "options": [
+        "Case 1; T(n) = Θ(n^(log_b a))",
+        "Case 2; T(n) = Θ(nᵏ log n)",
+        "Case 3; T(n) = Θ(f(n))",
+        "Case 1; T(n) = Θ(nᵏ)"
+      ],
+      "correctAnswer": "Case 1; T(n) = Θ(n^(log_b a))",
+      "explanation": "The tutorial answer key selects A: Case 1; T(n) = Θ(n^(log_b a))",
+      "topic": "Master Theorem and Recurrence Relations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 4,
+      "question": "Consider the recurrence T(n) = 4T(n/2) + n²/(log n)². According to the provided lecture examples, why does this result in T(n) = Θ(n²)?",
+      "options": [
+        "Because log_b a < k.",
+        "Because it is Case 2 with p = −2, which is less than -1.",
+        "Because f(n) grows faster than the subproblems.",
+        "Because the log term in the denominator is ignored in asymptotic analysis."
+      ],
+      "correctAnswer": "Because it is Case 2 with p = −2, which is less than -1.",
+      "explanation": "The tutorial answer key selects B: Because it is Case 2 with p = −2, which is less than -1.",
+      "topic": "Master Theorem and Recurrence Relations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 5,
+      "question": "What are the three phases of the Divide-and-Conquer paradigm in their correct order?",
+      "options": [
+        "Split, Solve, Merge",
+        "Conquer, Divide, Combine",
+        "Divide, Conquer, Combine",
+        "Partition, Recurse, Return"
+      ],
+      "correctAnswer": "Divide, Conquer, Combine",
+      "explanation": "The tutorial answer key selects C: Divide, Conquer, Combine",
+      "topic": "Divide-and-Conquer Principles",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 6,
+      "question": "In the context of Binary Search, what occurs during the \"Combine\" phase?",
+      "options": [
+        "The left and right halves of the array are merged.",
+        "The middle element is added to a results list.",
+        "No real combination is required; the answer is simply returned.",
+        "The indices are recalculated for the next iteration."
+      ],
+      "correctAnswer": "No real combination is required; the answer is simply returned.",
+      "explanation": "The tutorial answer key selects C: No real combination is required; the answer is simply returned.",
+      "topic": "Divide-and-Conquer Principles",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 7,
+      "question": "How does Quicksort differ fundamentally from Mergesort in its \"Divide\" phase?",
+      "options": [
+        "Quicksort splits elements based on their positions.",
+        "Mergesort splits elements based on their values.",
+        "Quicksort splits elements based on their values (partitioning), while Mergesort splits based on position.",
+        "Quicksort does not have a \"Divide\" phase; it only has a \"Conquer\" phase."
+      ],
+      "correctAnswer": "Quicksort splits elements based on their values (partitioning), while Mergesort splits based on position.",
+      "explanation": "The tutorial answer key selects C: Quicksort splits elements based on their values (partitioning), while Mergesort splits based on position.",
+      "topic": "Sorting Algorithms",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 8,
+      "question": "What is the worst-case time complexity and space complexity of Quicksort?",
+      "options": [
+        "O(n log n) time and O(n) space.",
+        "O(n²) time and O(n) space.",
+        "O(n²) time and O(1) space.",
+        "O(n log n) time and O(log n) space."
+      ],
+      "correctAnswer": "O(n²) time and O(n) space.",
+      "explanation": "The tutorial answer key selects B: O(n²) time and O(n) space.",
+      "topic": "Sorting Algorithms",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 9,
+      "question": "Which sorting algorithm is characterized as being stable, using O(n) extra memory, and having a guaranteed O(n log n) time complexity?",
+      "options": [
+        "Quicksort",
+        "Heapsort",
+        "Insertion Sort",
+        "Merge Sort"
+      ],
+      "correctAnswer": "Merge Sort",
+      "explanation": "The tutorial answer key selects D: Merge Sort",
+      "topic": "Sorting Algorithms",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 10,
+      "question": "According to the \"Memory vs. Speed\" trade-off analysis, which algorithm is \"memory-light\" but often too slow for large datasets?",
+      "options": [
+        "Merge Sort",
+        "Quick Sort",
+        "Insertion Sort",
+        "Heap Sort"
+      ],
+      "correctAnswer": "Insertion Sort",
+      "explanation": "The tutorial answer key selects C: Insertion Sort",
+      "topic": "Sorting Algorithms",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 11,
+      "question": "The classical iterative matrix multiplication algorithm (triple nested loops) has a time complexity of:",
+      "options": [
+        "O(n²)",
+        "O(n³)",
+        "O(n^(log₂ 7))",
+        "O(n log n)"
+      ],
+      "correctAnswer": "O(n³)",
+      "explanation": "The tutorial answer key selects B: O(n³)",
+      "topic": "Matrix Multiplication",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 12,
+      "question": "Why does the Naïve Recursive Divide-and-Conquer method for matrix multiplication fail to improve asymptotic time complexity over the iterative method?",
+      "options": [
+        "It uses too much space.",
+        "It requires 8 recursive multiplications of size n/2, resulting in T(n) = 8T(n/2) + O(n²), which still solves to O(n³).",
+        "It involves too many additions.",
+        "Partitioning the matrices takes O(n³) time."
+      ],
+      "correctAnswer": "It requires 8 recursive multiplications of size n/2, resulting in T(n) = 8T(n/2) + O(n²), which still solves to O(n³).",
+      "explanation": "The tutorial answer key selects B: It requires 8 recursive multiplications of size n/2, resulting in T(n) = 8T(n/2) + O(n²), which still solves to O(n³).",
+      "topic": "Matrix Multiplication",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 13,
+      "question": "What is the primary mathematical \"trick\" Strassen’s Algorithm uses to achieve a complexity of approximately O(n^2.81)?",
+      "options": [
+        "It reduces the number of matrix additions from 18 to 7.",
+        "It reduces the number of recursive multiplications from 8 to 7.",
+        "It eliminates the need for partitioning.",
+        "It uses an iterative approach within the recursion."
+      ],
+      "correctAnswer": "It reduces the number of recursive multiplications from 8 to 7.",
+      "explanation": "The tutorial answer key selects B: It reduces the number of recursive multiplications from 8 to 7.",
+      "topic": "Matrix Multiplication",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 14,
+      "question": "Which of the following is a disadvantage of Strassen's Algorithm compared to the classical method?",
+      "options": [
+        "It has a higher theoretical time complexity.",
+        "It is more asymptotically complex.",
+        "It has higher constant factors and more additions/subtractions, making it less stable.",
+        "It requires O(n³) space."
+      ],
+      "correctAnswer": "It has higher constant factors and more additions/subtractions, making it less stable.",
+      "explanation": "The tutorial answer key selects C: It has higher constant factors and more additions/subtractions, making it less stable.",
+      "topic": "Matrix Multiplication",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    }
+  ]
+}

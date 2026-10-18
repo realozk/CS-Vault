@@ -1,0 +1,206 @@
+{
+  "title": "Lecture 5 — Instructor Tutorial",
+  "date": "2026-10-18",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Tutorial05.pdf",
+  "sourceKind": "instructor",
+  "description": "12 questions transcribed from the instructor’s Tutorial 5: Randomized algorithms, randomized quicksort, and quickselect. Source questions, choices, and answer-key selections are preserved.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "According to the lecture, what is the primary reason for using randomness in algorithms?",
+      "options": [
+        "To ensure the algorithm always finishes in the same amount of time.",
+        "To break ties and symmetry that could lead to predictable, worst-case behavior.",
+        "To eliminate the need for recursive functions in divide-and-conquer paradigms.",
+        "To guarantee that the algorithm is 100% accurate in all cases, unlike deterministic ones."
+      ],
+      "correctAnswer": "To break ties and symmetry that could lead to predictable, worst-case behavior.",
+      "explanation": "The tutorial answer key selects B: To break ties and symmetry that could lead to predictable, worst-case behavior.",
+      "topic": "Introduction and Theory of Randomization",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 2,
+      "question": "Which of the following best describes a \"Las Vegas\" algorithm?",
+      "options": [
+        "It always produces the correct answer, but its running time is a random variable.",
+        "It has a fixed, bounded running time but may produce an incorrect answer with a small probability.",
+        "It is designed specifically for gambling applications and probability simulations.",
+        "It is an approximation algorithm that yields \"good enough\" answers in linear time."
+      ],
+      "correctAnswer": "It always produces the correct answer, but its running time is a random variable.",
+      "explanation": "The tutorial answer key selects A: It always produces the correct answer, but its running time is a random variable.",
+      "topic": "Introduction and Theory of Randomization",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 3,
+      "question": "If an algorithm always runs in O(n log n) time but has a 1% probability of providing the wrong result, it is classified as:",
+      "options": [
+        "A deterministic algorithm.",
+        "A Las Vegas algorithm.",
+        "A Monte Carlo algorithm.",
+        "An adversarial algorithm."
+      ],
+      "correctAnswer": "A Monte Carlo algorithm.",
+      "explanation": "The tutorial answer key selects C: A Monte Carlo algorithm.",
+      "topic": "Introduction and Theory of Randomization",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 4,
+      "question": "In deterministic Quicksort, which input type typically triggers the worst-case O(n²) runtime when the first element is consistently chosen as the pivot?",
+      "options": [
+        "Randomized arrays.",
+        "Arrays with many duplicate values.",
+        "Already sorted or reverse-sorted arrays.",
+        "Very small arrays where n < 10."
+      ],
+      "correctAnswer": "Already sorted or reverse-sorted arrays.",
+      "explanation": "The tutorial answer key selects C: Already sorted or reverse-sorted arrays.",
+      "topic": "Randomized Quicksort",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 5,
+      "question": "How does the Randomized Quicksort algorithm modify the standard partitioning process?",
+      "options": [
+        "It partitions the array into three parts instead of two.",
+        "It selects a random index i, swaps A[i] with the pivot position, and then partitions.",
+        "It sorts the array before selecting the median as a pivot.",
+        "It eliminates the recursion step to save space."
+      ],
+      "correctAnswer": "It selects a random index i, swaps A[i] with the pivot position, and then partitions.",
+      "explanation": "The tutorial answer key selects B: It selects a random index i, swaps A[i] with the pivot position, and then partitions.",
+      "topic": "Randomized Quicksort",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 6,
+      "question": "What is the expected number of comparisons E[C(n)] for Randomized Quicksort?",
+      "options": [
+        "Θ(n)",
+        "Θ(n log n)",
+        "Θ(n²)",
+        "Θ(log n)"
+      ],
+      "correctAnswer": "Θ(n log n)",
+      "explanation": "The tutorial answer key selects B: Θ(n log n)",
+      "topic": "Randomized Quicksort",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 7,
+      "question": "Even with a random pivot strategy, what is the theoretical worst-case time complexity of Randomized Quicksort?",
+      "options": [
+        "O(n)",
+        "O(n log n)",
+        "O(n²)",
+        "O(2ⁿ)"
+      ],
+      "correctAnswer": "O(n²)",
+      "explanation": "The tutorial answer key selects C: O(n²)",
+      "topic": "Randomized Quicksort",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 8,
+      "question": "What is the main goal of the Quickselect algorithm?",
+      "options": [
+        "To sort an entire array in linear time.",
+        "To find the k-th smallest element in an unsorted array.",
+        "To determine the maximum value in a balanced BST.",
+        "To select a random sample of data for statistical analysis."
+      ],
+      "correctAnswer": "To find the k-th smallest element in an unsorted array.",
+      "explanation": "The tutorial answer key selects B: To find the k-th smallest element in an unsorted array.",
+      "topic": "Randomized Selection (Quickselect)",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 9,
+      "question": "Why is the expected runtime of Quickselect O(n), while Quicksort is O(n log n)?",
+      "options": [
+        "Quickselect uses a faster partitioning method.",
+        "Quickselect only recurses into one side of the partition that contains the target element.",
+        "Quickselect does not use random pivots.",
+        "Quickselect requires the input array to be pre-sorted."
+      ],
+      "correctAnswer": "Quickselect only recurses into one side of the partition that contains the target element.",
+      "explanation": "The tutorial answer key selects B: Quickselect only recurses into one side of the partition that contains the target element.",
+      "topic": "Randomized Selection (Quickselect)",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 10,
+      "question": "Which of the following is identified as a \"common mistake\" when implementing Quickselect?",
+      "options": [
+        "Using recursion instead of iteration.",
+        "Picking the median of the array as the pivot.",
+        "Converting the global index k to a \"rank within a subarray\" without precise adjustment.",
+        "Using O(n) space for the partitioning step."
+      ],
+      "correctAnswer": "Converting the global index k to a \"rank within a subarray\" without precise adjustment.",
+      "explanation": "The tutorial answer key selects C: Converting the global index k to a \"rank within a subarray\" without precise adjustment.",
+      "topic": "Randomized Selection (Quickselect)",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 11,
+      "question": "Which pivot strategy is described as \"often better in practice\" but still \"not adversarially robust\"?",
+      "options": [
+        "First element.",
+        "Last element.",
+        "Median-of-three.",
+        "Random element."
+      ],
+      "correctAnswer": "Median-of-three.",
+      "explanation": "The tutorial answer key selects C: Median-of-three.",
+      "topic": "Comparative Analysis",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 12,
+      "question": "Based on the lecture \"Key Takeaways,\" randomized approaches are often preferred in practice because:",
+      "options": [
+        "They are more complex and therefore more secure.",
+        "They have better expected performance and are robust against adversarial inputs.",
+        "They guarantee a O(log n) worst-case runtime for all sorting problems.",
+        "They eliminate the need for space complexity analysis."
+      ],
+      "correctAnswer": "They have better expected performance and are robust against adversarial inputs.",
+      "explanation": "The tutorial answer key selects B: They have better expected performance and are robust against adversarial inputs.",
+      "topic": "Comparative Analysis",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    }
+  ]
+}

@@ -1,0 +1,270 @@
+{
+  "title": "Lecture 3 — Instructor Tutorial",
+  "date": "2026-10-18",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Tutorial03.pdf",
+  "sourceKind": "instructor",
+  "description": "16 questions transcribed from the instructor’s Tutorial 3: Iterative and recursive analysis, recurrence relations, and merge sort. Source questions, choices, and answer-key selections are preserved.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "If an algorithm contains neither iteration (loops) nor recursion, what can be concluded about its running time T(n)?",
+      "options": [
+        "It is dependent on the input size n.",
+        "It will always be a constant value regardless of input size.",
+        "It cannot be analyzed using asymptotic notation.",
+        "It will grow linearly with the input size."
+      ],
+      "correctAnswer": "It will always be a constant value regardless of input size.",
+      "explanation": "The tutorial answer key selects B: It will always be a constant value regardless of input size.",
+      "topic": "Algorithm Types and Iterative Analysis",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 2,
+      "question": "When analyzing a nested loop where the inner loop's iterations depend on the outer loop's index (e.g., for j = 1 to i), which summation formula represents the total number of basic operations?",
+      "options": [
+        "∑(i = 1 to n) 1 = n",
+        "∑(i = 1 to n) ∑(j = 1 to n) 1 = n²",
+        "∑(i = 1 to n) ∑(j = 1 to i) 1 = n(n + 1)/2",
+        "∑(i = 1 to n) i² = n(n + 1)(2n + 1)/6"
+      ],
+      "correctAnswer": "∑(i = 1 to n) ∑(j = 1 to i) 1 = n(n + 1)/2",
+      "explanation": "The tutorial answer key selects C: ∑(i = 1 to n) ∑(j = 1 to i) 1 = n(n + 1)/2",
+      "topic": "Algorithm Types and Iterative Analysis",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 3,
+      "question": "What is the time complexity T(n) for a nested loop where both the outer and inner loops run from 1 to n?",
+      "options": [
+        "Θ(n)",
+        "Θ(n²)",
+        "Θ(n log n)",
+        "Θ(1)"
+      ],
+      "correctAnswer": "Θ(n²)",
+      "explanation": "The tutorial answer key selects B: Θ(n²)",
+      "topic": "Algorithm Types and Iterative Analysis",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 4,
+      "question": "A recurrence relation is formally defined as:",
+      "options": [
+        "A loop that calls itself until a stopping condition is met.",
+        "An equation or inequality describes a function in terms of its value on smaller inputs.",
+        "The process of converting a recursive algorithm into an iterative form.",
+        "A method used only to measure space complexity in fixed memory."
+      ],
+      "correctAnswer": "An equation or inequality describes a function in terms of its value on smaller inputs.",
+      "explanation": "The tutorial answer key selects B: An equation or inequality describes a function in terms of its value on smaller inputs.",
+      "topic": "Recursive Analysis and Recurrence Relations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 5,
+      "question": "Match the following recurrence relation to its correct tight bound: T(n) = T(n/2) + c",
+      "options": [
+        "Θ(n)",
+        "Θ(n²)",
+        "Θ(log n)",
+        "Θ(n log n)"
+      ],
+      "correctAnswer": "Θ(log n)",
+      "explanation": "The tutorial answer key selects C: Θ(log n)",
+      "topic": "Recursive Analysis and Recurrence Relations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 6,
+      "question": "In the recurrence T(n) = c + T(n − 1), what does the 'c' represent?",
+      "options": [
+        "The number of recursive calls made.",
+        "The base case stopping condition.",
+        "The time cost of non-recursive basic operations within the function.",
+        "The total depth of the recursion tree."
+      ],
+      "correctAnswer": "The time cost of non-recursive basic operations within the function.",
+      "explanation": "The tutorial answer key selects C: The time cost of non-recursive basic operations within the function.",
+      "topic": "Recursive Analysis and Recurrence Relations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 7,
+      "question": "Which method of solving recurrences involves guessing the form of the solution and then proving it using mathematical induction?",
+      "options": [
+        "Iteration (Back-substitution) method.",
+        "Recursion tree method.",
+        "Master method.",
+        "Substitution method."
+      ],
+      "correctAnswer": "Substitution method.",
+      "explanation": "The tutorial answer key selects D: Substitution method.",
+      "topic": "Recursive Analysis and Recurrence Relations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 8,
+      "question": "In a recursion tree for the recurrence T(n) = 2T(n/2) + cn, what does each node in the tree represent?",
+      "options": [
+        "A recursive call.",
+        "The cost of non-recursive work at that level of recursion.",
+        "The base case value.",
+        "The total space complexity of the algorithm."
+      ],
+      "correctAnswer": "The cost of non-recursive work at that level of recursion.",
+      "explanation": "The tutorial answer key selects B: The cost of non-recursive work at that level of recursion.",
+      "topic": "The Recursion Tree Method",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 9,
+      "question": "For the recurrence T(n) = 2T(n/2) + cn, what is the total height h of the recursion tree?",
+      "options": [
+        "h = n",
+        "h = n²",
+        "h = log₂ n",
+        "h = n log₂ n"
+      ],
+      "correctAnswer": "h = log₂ n",
+      "explanation": "The tutorial answer key selects C: h = log₂ n",
+      "topic": "The Recursion Tree Method",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 10,
+      "question": "How many leaves are present in the recursion tree for T(n) = 2T(n/2) + cn once the input size reaches 1?",
+      "options": [
+        "1 leaf.",
+        "log₂ n leaves.",
+        "n leaves.",
+        "2n leaves."
+      ],
+      "correctAnswer": "n leaves.",
+      "explanation": "The tutorial answer key selects C: n leaves.",
+      "topic": "The Recursion Tree Method",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 11,
+      "question": "Merge Sort is categorized as which type of sorting algorithm based on its space requirements?",
+      "options": [
+        "In-Place Sort.",
+        "Not In-Place Sort.",
+        "Internal Sort only.",
+        "External Sort only."
+      ],
+      "correctAnswer": "Not In-Place Sort.",
+      "explanation": "The tutorial answer key selects B: Not In-Place Sort.",
+      "topic": "Merge Sort",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 12,
+      "question": "What is the correct recurrence relation for the Merge Sort algorithm?",
+      "options": [
+        "T(n) = T(n − 1) + O(1)",
+        "T(n) = 2T(n/2) + O(n)",
+        "T(n) = T(n/2) + O(1)",
+        "T(n) = 2T(n/2) + O(1)"
+      ],
+      "correctAnswer": "T(n) = 2T(n/2) + O(n)",
+      "explanation": "The tutorial answer key selects B: T(n) = 2T(n/2) + O(n)",
+      "topic": "Merge Sort",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 13,
+      "question": "During the space complexity analysis of Merge Sort, why is the total space complexity considered O(n)?",
+      "options": [
+        "Because it only uses constant space for indices.",
+        "It combines the space for local variables O(1), the recursion stack O(log₂ n), and storing array halves O(n).",
+        "Because it sorts the array in-place without extra memory.",
+        "Because the recursion depth is n."
+      ],
+      "correctAnswer": "It combines the space for local variables O(1), the recursion stack O(log₂ n), and storing array halves O(n).",
+      "explanation": "The tutorial answer key selects B: It combines the space for local variables O(1), the recursion stack O(log₂ n), and storing array halves O(n).",
+      "topic": "Merge Sort",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 14,
+      "question": "What is the tight asymptotic bound for the time complexity of Merge Sort?",
+      "options": [
+        "Θ(n)",
+        "Θ(n²)",
+        "Θ(n log₂ n)",
+        "Θ(log₂ n)"
+      ],
+      "correctAnswer": "Θ(n log₂ n)",
+      "explanation": "The tutorial answer key selects C: Θ(n log₂ n)",
+      "topic": "Merge Sort",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 15,
+      "question": "Which of the following describes an \"Internal Sort\"?",
+      "options": [
+        "The amount of extra space required is constant.",
+        "Data is stored on a slower, external device.",
+        "All data to be sorted is stored in the computer's main memory.",
+        "The algorithm divides the input into halves recursively."
+      ],
+      "correctAnswer": "All data to be sorted is stored in the computer's main memory.",
+      "explanation": "The tutorial answer key selects C: All data to be sorted is stored in the computer's main memory.",
+      "topic": "Advanced Concepts and Definitions",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 16,
+      "question": "When using the Back-substitution (Iteration) method to solve T(n) = c + T(n − 1), what is the generalized pattern after k steps?",
+      "options": [
+        "T(n) = k + T(n − k)",
+        "T(n) = kc + T(n − k)",
+        "T(n) = cᵏ + T(n/k)",
+        "T(n) = n ⋅ T(n − k)"
+      ],
+      "correctAnswer": "T(n) = kc + T(n − k)",
+      "explanation": "The tutorial answer key selects B: T(n) = kc + T(n − k)",
+      "topic": "Advanced Concepts and Definitions",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    }
+  ]
+}

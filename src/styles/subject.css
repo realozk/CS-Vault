@@ -28,6 +28,7 @@
 .subject-quiz-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .subject-quiz-card { display: flex; min-width: 0; flex-direction: column; padding: 1.3rem; border: 1px solid var(--study-border); border-radius: 18px; background: var(--study-surface); }
 .subject-quiz-card:hover { border-color: var(--study-accent); background: var(--study-surface); }
+.subject-quiz-card.subject-quiz-instructor { border-color: #b91c1c; background: rgba(185, 28, 28, .06); }
 .subject-quiz-card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .45rem .75rem; margin-bottom: 1rem; }
 .subject-quiz-card .quiz-source-label { margin: 0; font-size: .7rem; }
 .subject-question-count { color: var(--study-muted); font-size: .7rem; white-space: nowrap; }

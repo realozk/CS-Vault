@@ -1,0 +1,254 @@
+{
+  "title": "Lecture 1 — Instructor Tutorial",
+  "date": "2026-10-18",
+  "subject": "Algorithm Analysis",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Tutorial01.pdf",
+  "sourceKind": "instructor",
+  "description": "15 questions transcribed from the instructor’s Tutorial 1: Algorithm behaviour and complexity analysis. Source questions, choices, and answer-key selections are preserved.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which of the following is NOT a required characteristic of an algorithm as defined in the lecture?",
+      "options": [
+        "It must be an unambiguous step-by-step procedure.",
+        "It must be implemented in a specific programming language like Python or C++.",
+        "It must terminate after a finite amount of time.",
+        "The set of inputs must be predefined."
+      ],
+      "correctAnswer": "It must be implemented in a specific programming language like Python or C++.",
+      "explanation": "The tutorial answer key selects B: It must be implemented in a specific programming language like Python or C++.",
+      "topic": "Fundamental Concepts and the Design Process",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 2,
+      "question": "During the \"Prove Correctness\" phase of the algorithm design and analysis process, which method is specifically recommended for large input sets?",
+      "options": [
+        "Use cases.",
+        "Stop-watch measurement.",
+        "Mathematical induction.",
+        "Counting basic operations."
+      ],
+      "correctAnswer": "Mathematical induction.",
+      "explanation": "The tutorial answer key selects C: Mathematical induction.",
+      "topic": "Fundamental Concepts and the Design Process",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 3,
+      "question": "When deciding on the \"computational means\" for a problem, what factors should be ascertained?",
+      "options": [
+        "The complexity of the programming language.",
+        "The capabilities of the hardware, such as RAM and CPU.",
+        "Whether the solution should be exact or approximate.",
+        "The specific algorithm design technique to be used."
+      ],
+      "correctAnswer": "The capabilities of the hardware, such as RAM and CPU.",
+      "explanation": "The tutorial answer key selects B: The capabilities of the hardware, such as RAM and CPU.",
+      "topic": "Fundamental Concepts and the Design Process",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 4,
+      "question": "Why is using a \"stopwatch\" to measure an algorithm's efficiency considered a poor practice in analysis?",
+      "options": [
+        "It cannot measure the growth rate of the algorithm.",
+        "It is too difficult to count small fractions of a second.",
+        "It depends on hardware, compilers, and coding style, making it non-portable.",
+        "It only measures space complexity, not time complexity."
+      ],
+      "correctAnswer": "It depends on hardware, compilers, and coding style, making it non-portable.",
+      "explanation": "The tutorial answer key selects C: It depends on hardware, compilers, and coding style, making it non-portable.",
+      "topic": "Time and Space Complexity",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 5,
+      "question": "In time complexity analysis, which of the following is considered a \"basic operation\" that typically costs 1 step?",
+      "options": [
+        "The algorithm heading.",
+        "Opening and closing braces.",
+        "Comparison operations such as == or <.",
+        "The entire execution of a nested loop."
+      ],
+      "correctAnswer": "Comparison operations such as == or <.",
+      "explanation": "The tutorial answer key selects C: Comparison operations such as == or <.",
+      "topic": "Time and Space Complexity",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 2
+    },
+    {
+      "id": 6,
+      "question": "If an algorithm's total steps are calculated as T(p) = 3n + 4, what type of time complexity does it exhibit?",
+      "options": [
+        "Constant.",
+        "Linear.",
+        "Quadratic.",
+        "Logarithmic."
+      ],
+      "correctAnswer": "Linear.",
+      "explanation": "The tutorial answer key selects B: Linear.",
+      "topic": "Time and Space Complexity",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 7,
+      "question": "Space complexity includes both a fixed part and a variable part. Which of the following is considered part of the \"variable part\"?",
+      "options": [
+        "Program instructions.",
+        "Memory for constants.",
+        "Recursion overhead and dynamic data structures like trees.",
+        "Fixed-size variables."
+      ],
+      "correctAnswer": "Recursion overhead and dynamic data structures like trees.",
+      "explanation": "The tutorial answer key selects C: Recursion overhead and dynamic data structures like trees.",
+      "topic": "Time and Space Complexity",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 8,
+      "question": "Which case behavior provides an \"absolute guarantee\" or \"upper bound,\" ensuring the algorithm will not run longer than a specific limit regardless of the input?",
+      "options": [
+        "Best-case.",
+        "Average-case.",
+        "Worst-case.",
+        "Constant-case."
+      ],
+      "correctAnswer": "Worst-case.",
+      "explanation": "The tutorial answer key selects C: Worst-case.",
+      "topic": "Case Behaviors and Asymptotic Analysis",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 9,
+      "question": "What is the primary focus of \"Asymptotic Analysis\"?",
+      "options": [
+        "Determining the exact number of operations for a small input size.",
+        "Calculating the precise memory usage in bytes.",
+        "Comparing algorithms based on the growth rate of resources as input size n becomes arbitrarily large.",
+        "Identifying which hardware is best suited for a specific algorithm."
+      ],
+      "correctAnswer": "Comparing algorithms based on the growth rate of resources as input size n becomes arbitrarily large.",
+      "explanation": "The tutorial answer key selects C: Comparing algorithms based on the growth rate of resources as input size n becomes arbitrarily large.",
+      "topic": "Case Behaviors and Asymptotic Analysis",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 10,
+      "question": "Arrange the following orders of growth from slowest (most efficient) to fastest (least efficient):",
+      "options": [
+        "1 < n < log n < n²",
+        "1 < log n < n < n log n < n²",
+        "n < n log n < n! < 2ⁿ",
+        "log n < 1 < n < n²"
+      ],
+      "correctAnswer": "1 < log n < n < n log n < n²",
+      "explanation": "The tutorial answer key selects B: 1 < log n < n < n log n < n²",
+      "topic": "Case Behaviors and Asymptotic Analysis",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 11,
+      "question": "By definition, f(n) = O(g(n)) if there exist two constants c and n₀ such that:",
+      "options": [
+        "f(n) ≥ c ⋅ g(n) for all n ≥ n₀",
+        "f(n) ≤ c ⋅ g(n) for all n ≥ n₀",
+        "c₁ ⋅ g(n) ≤ f(n) ≤ c₂ ⋅ g(n) for all n ≥ n₀",
+        "f(n) = g(n) for all n ≥ n₀"
+      ],
+      "correctAnswer": "f(n) ≤ c ⋅ g(n) for all n ≥ n₀",
+      "explanation": "The tutorial answer key selects B: f(n) ≤ c ⋅ g(n) for all n ≥ n₀",
+      "topic": "Big-O, Omega, and Theta Notations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 3
+    },
+    {
+      "id": 12,
+      "question": "Which asymptotic notation represents the \"Tight Bound\" or exact growth rate of an algorithm?",
+      "options": [
+        "Big-O (O).",
+        "Big-Omega (Ω).",
+        "Big-Theta (Θ).",
+        "Little-o (o)."
+      ],
+      "correctAnswer": "Big-Theta (Θ).",
+      "explanation": "The tutorial answer key selects C: Big-Theta (Θ).",
+      "topic": "Big-O, Omega, and Theta Notations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 13,
+      "question": "To find the Big-O of a complex function like f(n) = 3n² + 17n log n + 1000, what is the correct procedure?",
+      "options": [
+        "Add all the coefficients together (3 + 17 + 1000).",
+        "Keep only the dominant term (3n²) and ignore constants.",
+        "Multiply all terms together.",
+        "Focus on the smallest term since it represents the best case."
+      ],
+      "correctAnswer": "Keep only the dominant term (3n²) and ignore constants.",
+      "explanation": "The tutorial answer key selects B: Keep only the dominant term (3n²) and ignore constants.",
+      "topic": "Big-O, Omega, and Theta Notations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 14,
+      "question": "Under what condition does a Big-Theta (Θ) bound exist for a function?",
+      "options": [
+        "Only when the input size is small.",
+        "When the upper bound (Big-O) and lower bound (Big-Omega) have the same growth function.",
+        "Only if the algorithm has constant time complexity.",
+        "Whenever a Big-O bound is found."
+      ],
+      "correctAnswer": "When the upper bound (Big-O) and lower bound (Big-Omega) have the same growth function.",
+      "explanation": "The tutorial answer key selects B: When the upper bound (Big-O) and lower bound (Big-Omega) have the same growth function.",
+      "topic": "Big-O, Omega, and Theta Notations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    },
+    {
+      "id": 15,
+      "question": "When proving Big-Omega (Ω), it is suggested that you should:",
+      "options": [
+        "Overestimate smaller terms with larger ones.",
+        "Choose a c that is as large as possible.",
+        "Ignore positive smaller terms, as the largest term is enough to establish the lower bound.",
+        "Use a stopwatch to verify the constants."
+      ],
+      "correctAnswer": "Ignore positive smaller terms, as the largest term is enough to establish the lower bound.",
+      "explanation": "The tutorial answer key selects C: Ignore positive smaller terms, as the largest term is enough to establish the lower bound.",
+      "topic": "Big-O, Omega, and Theta Notations",
+      "answerSource": "marked",
+      "optionsSource": "provided",
+      "sourcePage": 4
+    }
+  ]
+}
