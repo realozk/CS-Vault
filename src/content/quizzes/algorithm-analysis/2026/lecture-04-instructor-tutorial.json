@@ -20,7 +20,7 @@
         "a is the constant time for the base case; b is the number of levels in the recursion tree."
       ],
       "correctAnswer": "a is the number of subproblems; b is the factor by which the problem size is reduced.",
-      "explanation": "The tutorial answer key selects B: a is the number of subproblems; b is the factor by which the problem size is reduced.",
+      "explanation": "The tutorial answer key gives: a is the number of subproblems; b is the factor by which the problem size is reduced.",
       "topic": "Master Theorem and Recurrence Relations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -36,7 +36,7 @@
         "p must always be greater than 0."
       ],
       "correctAnswer": "a ≥ 1 and b > 1",
-      "explanation": "The tutorial answer key selects B: a ≥ 1 and b > 1",
+      "explanation": "The tutorial answer key gives: a ≥ 1 and b > 1",
       "topic": "Master Theorem and Recurrence Relations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -52,7 +52,7 @@
         "Case 1; T(n) = Θ(nᵏ)"
       ],
       "correctAnswer": "Case 1; T(n) = Θ(n^(log_b a))",
-      "explanation": "The tutorial answer key selects A: Case 1; T(n) = Θ(n^(log_b a))",
+      "explanation": "The tutorial answer key gives: Case 1; T(n) = Θ(n^(log_b a))",
       "topic": "Master Theorem and Recurrence Relations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -68,7 +68,7 @@
         "Because the log term in the denominator is ignored in asymptotic analysis."
       ],
       "correctAnswer": "Because it is Case 2 with p = −2, which is less than -1.",
-      "explanation": "The tutorial answer key selects B: Because it is Case 2 with p = −2, which is less than -1.",
+      "explanation": "The tutorial answer key gives: Because it is Case 2 with p = −2, which is less than -1.",
       "topic": "Master Theorem and Recurrence Relations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -84,7 +84,7 @@
         "Partition, Recurse, Return"
       ],
       "correctAnswer": "Divide, Conquer, Combine",
-      "explanation": "The tutorial answer key selects C: Divide, Conquer, Combine",
+      "explanation": "The tutorial answer key gives: Divide, Conquer, Combine",
       "topic": "Divide-and-Conquer Principles",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -100,7 +100,7 @@
         "The indices are recalculated for the next iteration."
       ],
       "correctAnswer": "No real combination is required; the answer is simply returned.",
-      "explanation": "The tutorial answer key selects C: No real combination is required; the answer is simply returned.",
+      "explanation": "The tutorial answer key gives: No real combination is required; the answer is simply returned.",
       "topic": "Divide-and-Conquer Principles",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -116,7 +116,7 @@
         "Quicksort does not have a \"Divide\" phase; it only has a \"Conquer\" phase."
       ],
       "correctAnswer": "Quicksort splits elements based on their values (partitioning), while Mergesort splits based on position.",
-      "explanation": "The tutorial answer key selects C: Quicksort splits elements based on their values (partitioning), while Mergesort splits based on position.",
+      "explanation": "The tutorial answer key gives: Quicksort splits elements based on their values (partitioning), while Mergesort splits based on position.",
       "topic": "Sorting Algorithms",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -132,7 +132,7 @@
         "O(n log n) time and O(log n) space."
       ],
       "correctAnswer": "O(n²) time and O(n) space.",
-      "explanation": "The tutorial answer key selects B: O(n²) time and O(n) space.",
+      "explanation": "The tutorial answer key gives: O(n²) time and O(n) space.",
       "topic": "Sorting Algorithms",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -148,7 +148,7 @@
         "Merge Sort"
       ],
       "correctAnswer": "Merge Sort",
-      "explanation": "The tutorial answer key selects D: Merge Sort",
+      "explanation": "The tutorial answer key gives: Merge Sort",
       "topic": "Sorting Algorithms",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -164,7 +164,7 @@
         "Heap Sort"
       ],
       "correctAnswer": "Insertion Sort",
-      "explanation": "The tutorial answer key selects C: Insertion Sort",
+      "explanation": "The tutorial answer key gives: Insertion Sort",
       "topic": "Sorting Algorithms",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -180,7 +180,7 @@
         "O(n log n)"
       ],
       "correctAnswer": "O(n³)",
-      "explanation": "The tutorial answer key selects B: O(n³)",
+      "explanation": "The tutorial answer key gives: O(n³)",
       "topic": "Matrix Multiplication",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -196,7 +196,7 @@
         "Partitioning the matrices takes O(n³) time."
       ],
       "correctAnswer": "It requires 8 recursive multiplications of size n/2, resulting in T(n) = 8T(n/2) + O(n²), which still solves to O(n³).",
-      "explanation": "The tutorial answer key selects B: It requires 8 recursive multiplications of size n/2, resulting in T(n) = 8T(n/2) + O(n²), which still solves to O(n³).",
+      "explanation": "The tutorial answer key gives: It requires 8 recursive multiplications of size n/2, resulting in T(n) = 8T(n/2) + O(n²), which still solves to O(n³).",
       "topic": "Matrix Multiplication",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -212,7 +212,7 @@
         "It uses an iterative approach within the recursion."
       ],
       "correctAnswer": "It reduces the number of recursive multiplications from 8 to 7.",
-      "explanation": "The tutorial answer key selects B: It reduces the number of recursive multiplications from 8 to 7.",
+      "explanation": "The tutorial answer key gives: It reduces the number of recursive multiplications from 8 to 7.",
       "topic": "Matrix Multiplication",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -228,7 +228,7 @@
         "It requires O(n³) space."
       ],
       "correctAnswer": "It has higher constant factors and more additions/subtractions, making it less stable.",
-      "explanation": "The tutorial answer key selects C: It has higher constant factors and more additions/subtractions, making it less stable.",
+      "explanation": "The tutorial answer key gives: It has higher constant factors and more additions/subtractions, making it less stable.",
       "topic": "Matrix Multiplication",
       "answerSource": "marked",
       "optionsSource": "provided",

@@ -5,7 +5,7 @@ import { getModules } from '../../lib/modules';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
-import { createAllQuestionsQuiz } from '../../lib/quiz-routes';
+import { createSupplementaryQuizzes } from '../../lib/quiz-routes';
 import '../../styles/subject.css';
 
 const lang = getLangFromUrl(Astro.url);
@@ -57,7 +57,7 @@ const quizOrder = [
   'lecture-03-part-1-applications',
 ];
 const quizzes = [...rawQuizzes].sort((a, b) => {
-  const sourcePriority = { instructor: 2, provided: 1, generated: 0 };
+  const sourcePriority = { instructor: 2, provided: 1, generated: 0, combined: 0 };
   const bySource = sourcePriority[b.data.sourceKind] - sourcePriority[a.data.sourceKind];
   if (bySource !== 0) return bySource;
 
@@ -73,8 +73,8 @@ const quizzes = [...rawQuizzes].sort((a, b) => {
   entry,
   slug: getSlug(entry.id)
 }));
-if (quizzes.length > 0) {
-  quizzes.push({ entry: createAllQuestionsQuiz(rawQuizzes), slug: 'all-questions' });
+for (const entry of createSupplementaryQuizzes(rawQuizzes)) {
+  quizzes.push({ entry, slug: getSlug(entry.id) });
 }
 const quizGroupsByKey = new Map<string, { key: string; sectionNumber?: string; sectionType?: 'lecture' | 'chapter'; quizzes: typeof quizzes }>();
 for (const quiz of quizzes) {

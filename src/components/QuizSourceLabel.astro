@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
-interface Props { sourceKind?: 'generated' | 'provided' | 'instructor'; }
+interface Props { sourceKind?: 'generated' | 'provided' | 'instructor' | 'combined'; }
 const { sourceKind = 'generated' } = Astro.props;
 const t = useTranslations(getLangFromUrl(Astro.url));
 ---

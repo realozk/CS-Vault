@@ -20,7 +20,7 @@
         "To guarantee that the algorithm is 100% accurate in all cases, unlike deterministic ones."
       ],
       "correctAnswer": "To break ties and symmetry that could lead to predictable, worst-case behavior.",
-      "explanation": "The tutorial answer key selects B: To break ties and symmetry that could lead to predictable, worst-case behavior.",
+      "explanation": "The tutorial answer key gives: To break ties and symmetry that could lead to predictable, worst-case behavior.",
       "topic": "Introduction and Theory of Randomization",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -36,7 +36,7 @@
         "It is an approximation algorithm that yields \"good enough\" answers in linear time."
       ],
       "correctAnswer": "It always produces the correct answer, but its running time is a random variable.",
-      "explanation": "The tutorial answer key selects A: It always produces the correct answer, but its running time is a random variable.",
+      "explanation": "The tutorial answer key gives: It always produces the correct answer, but its running time is a random variable.",
       "topic": "Introduction and Theory of Randomization",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -52,7 +52,7 @@
         "An adversarial algorithm."
       ],
       "correctAnswer": "A Monte Carlo algorithm.",
-      "explanation": "The tutorial answer key selects C: A Monte Carlo algorithm.",
+      "explanation": "The tutorial answer key gives: A Monte Carlo algorithm.",
       "topic": "Introduction and Theory of Randomization",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -68,7 +68,7 @@
         "Very small arrays where n < 10."
       ],
       "correctAnswer": "Already sorted or reverse-sorted arrays.",
-      "explanation": "The tutorial answer key selects C: Already sorted or reverse-sorted arrays.",
+      "explanation": "The tutorial answer key gives: Already sorted or reverse-sorted arrays.",
       "topic": "Randomized Quicksort",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -84,7 +84,7 @@
         "It eliminates the recursion step to save space."
       ],
       "correctAnswer": "It selects a random index i, swaps A[i] with the pivot position, and then partitions.",
-      "explanation": "The tutorial answer key selects B: It selects a random index i, swaps A[i] with the pivot position, and then partitions.",
+      "explanation": "The tutorial answer key gives: It selects a random index i, swaps A[i] with the pivot position, and then partitions.",
       "topic": "Randomized Quicksort",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -100,7 +100,7 @@
         "Θ(log n)"
       ],
       "correctAnswer": "Θ(n log n)",
-      "explanation": "The tutorial answer key selects B: Θ(n log n)",
+      "explanation": "The tutorial answer key gives: Θ(n log n)",
       "topic": "Randomized Quicksort",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -116,7 +116,7 @@
         "O(2ⁿ)"
       ],
       "correctAnswer": "O(n²)",
-      "explanation": "The tutorial answer key selects C: O(n²)",
+      "explanation": "The tutorial answer key gives: O(n²)",
       "topic": "Randomized Quicksort",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -132,7 +132,7 @@
         "To select a random sample of data for statistical analysis."
       ],
       "correctAnswer": "To find the k-th smallest element in an unsorted array.",
-      "explanation": "The tutorial answer key selects B: To find the k-th smallest element in an unsorted array.",
+      "explanation": "The tutorial answer key gives: To find the k-th smallest element in an unsorted array.",
       "topic": "Randomized Selection (Quickselect)",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -148,7 +148,7 @@
         "Quickselect requires the input array to be pre-sorted."
       ],
       "correctAnswer": "Quickselect only recurses into one side of the partition that contains the target element.",
-      "explanation": "The tutorial answer key selects B: Quickselect only recurses into one side of the partition that contains the target element.",
+      "explanation": "The tutorial answer key gives: Quickselect only recurses into one side of the partition that contains the target element.",
       "topic": "Randomized Selection (Quickselect)",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -164,7 +164,7 @@
         "Using O(n) space for the partitioning step."
       ],
       "correctAnswer": "Converting the global index k to a \"rank within a subarray\" without precise adjustment.",
-      "explanation": "The tutorial answer key selects C: Converting the global index k to a \"rank within a subarray\" without precise adjustment.",
+      "explanation": "The tutorial answer key gives: Converting the global index k to a \"rank within a subarray\" without precise adjustment.",
       "topic": "Randomized Selection (Quickselect)",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -180,7 +180,7 @@
         "Random element."
       ],
       "correctAnswer": "Median-of-three.",
-      "explanation": "The tutorial answer key selects C: Median-of-three.",
+      "explanation": "The tutorial answer key gives: Median-of-three.",
       "topic": "Comparative Analysis",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -196,7 +196,7 @@
         "They eliminate the need for space complexity analysis."
       ],
       "correctAnswer": "They have better expected performance and are robust against adversarial inputs.",
-      "explanation": "The tutorial answer key selects B: They have better expected performance and are robust against adversarial inputs.",
+      "explanation": "The tutorial answer key gives: They have better expected performance and are robust against adversarial inputs.",
       "topic": "Comparative Analysis",
       "answerSource": "marked",
       "optionsSource": "provided",

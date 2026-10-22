@@ -1,5 +1,6 @@
 import { z } from 'astro/zod';
 import { getCollection } from 'astro:content';
+import { createSupplementaryQuizzes } from './quiz-routes';
 import { validateContentMetadata } from './content-metadata';
 import catalog from '../data/subjects.json';
 import type { ModuleItem } from '../types';
@@ -50,7 +51,11 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
     }
   }
   for (const module of modules.values()) {
-    if (module.quizzesCount > 0) module.quizzesCount++;
+    const courseQuizzes = quizzes.filter(entry => {
+      const [subject, year] = entry.id.split('/');
+      return subject === module.subject && year === module.year;
+    });
+    module.quizzesCount += createSupplementaryQuizzes(courseQuizzes).length;
   }
   return [...modules.values()].sort((a, b) =>
     (b.latestContentAt ?? 0) - (a.latestContentAt ?? 0)

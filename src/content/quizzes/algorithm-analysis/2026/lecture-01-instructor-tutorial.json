@@ -20,7 +20,7 @@
         "The set of inputs must be predefined."
       ],
       "correctAnswer": "It must be implemented in a specific programming language like Python or C++.",
-      "explanation": "The tutorial answer key selects B: It must be implemented in a specific programming language like Python or C++.",
+      "explanation": "The tutorial answer key gives: It must be implemented in a specific programming language like Python or C++.",
       "topic": "Fundamental Concepts and the Design Process",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -36,7 +36,7 @@
         "Counting basic operations."
       ],
       "correctAnswer": "Mathematical induction.",
-      "explanation": "The tutorial answer key selects C: Mathematical induction.",
+      "explanation": "The tutorial answer key gives: Mathematical induction.",
       "topic": "Fundamental Concepts and the Design Process",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -52,7 +52,7 @@
         "The specific algorithm design technique to be used."
       ],
       "correctAnswer": "The capabilities of the hardware, such as RAM and CPU.",
-      "explanation": "The tutorial answer key selects B: The capabilities of the hardware, such as RAM and CPU.",
+      "explanation": "The tutorial answer key gives: The capabilities of the hardware, such as RAM and CPU.",
       "topic": "Fundamental Concepts and the Design Process",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -68,7 +68,7 @@
         "It only measures space complexity, not time complexity."
       ],
       "correctAnswer": "It depends on hardware, compilers, and coding style, making it non-portable.",
-      "explanation": "The tutorial answer key selects C: It depends on hardware, compilers, and coding style, making it non-portable.",
+      "explanation": "The tutorial answer key gives: It depends on hardware, compilers, and coding style, making it non-portable.",
       "topic": "Time and Space Complexity",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -84,7 +84,7 @@
         "The entire execution of a nested loop."
       ],
       "correctAnswer": "Comparison operations such as == or <.",
-      "explanation": "The tutorial answer key selects C: Comparison operations such as == or <.",
+      "explanation": "The tutorial answer key gives: Comparison operations such as == or <.",
       "topic": "Time and Space Complexity",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -100,7 +100,7 @@
         "Logarithmic."
       ],
       "correctAnswer": "Linear.",
-      "explanation": "The tutorial answer key selects B: Linear.",
+      "explanation": "The tutorial answer key gives: Linear.",
       "topic": "Time and Space Complexity",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -116,7 +116,7 @@
         "Fixed-size variables."
       ],
       "correctAnswer": "Recursion overhead and dynamic data structures like trees.",
-      "explanation": "The tutorial answer key selects C: Recursion overhead and dynamic data structures like trees.",
+      "explanation": "The tutorial answer key gives: Recursion overhead and dynamic data structures like trees.",
       "topic": "Time and Space Complexity",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -132,7 +132,7 @@
         "Constant-case."
       ],
       "correctAnswer": "Worst-case.",
-      "explanation": "The tutorial answer key selects C: Worst-case.",
+      "explanation": "The tutorial answer key gives: Worst-case.",
       "topic": "Case Behaviors and Asymptotic Analysis",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -148,7 +148,7 @@
         "Identifying which hardware is best suited for a specific algorithm."
       ],
       "correctAnswer": "Comparing algorithms based on the growth rate of resources as input size n becomes arbitrarily large.",
-      "explanation": "The tutorial answer key selects C: Comparing algorithms based on the growth rate of resources as input size n becomes arbitrarily large.",
+      "explanation": "The tutorial answer key gives: Comparing algorithms based on the growth rate of resources as input size n becomes arbitrarily large.",
       "topic": "Case Behaviors and Asymptotic Analysis",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -164,7 +164,7 @@
         "log n < 1 < n < n²"
       ],
       "correctAnswer": "1 < log n < n < n log n < n²",
-      "explanation": "The tutorial answer key selects B: 1 < log n < n < n log n < n²",
+      "explanation": "The tutorial answer key gives: 1 < log n < n < n log n < n²",
       "topic": "Case Behaviors and Asymptotic Analysis",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -180,7 +180,7 @@
         "f(n) = g(n) for all n ≥ n₀"
       ],
       "correctAnswer": "f(n) ≤ c ⋅ g(n) for all n ≥ n₀",
-      "explanation": "The tutorial answer key selects B: f(n) ≤ c ⋅ g(n) for all n ≥ n₀",
+      "explanation": "The tutorial answer key gives: f(n) ≤ c ⋅ g(n) for all n ≥ n₀",
       "topic": "Big-O, Omega, and Theta Notations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -196,7 +196,7 @@
         "Little-o (o)."
       ],
       "correctAnswer": "Big-Theta (Θ).",
-      "explanation": "The tutorial answer key selects C: Big-Theta (Θ).",
+      "explanation": "The tutorial answer key gives: Big-Theta (Θ).",
       "topic": "Big-O, Omega, and Theta Notations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -212,7 +212,7 @@
         "Focus on the smallest term since it represents the best case."
       ],
       "correctAnswer": "Keep only the dominant term (3n²) and ignore constants.",
-      "explanation": "The tutorial answer key selects B: Keep only the dominant term (3n²) and ignore constants.",
+      "explanation": "The tutorial answer key gives: Keep only the dominant term (3n²) and ignore constants.",
       "topic": "Big-O, Omega, and Theta Notations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -228,7 +228,7 @@
         "Whenever a Big-O bound is found."
       ],
       "correctAnswer": "When the upper bound (Big-O) and lower bound (Big-Omega) have the same growth function.",
-      "explanation": "The tutorial answer key selects B: When the upper bound (Big-O) and lower bound (Big-Omega) have the same growth function.",
+      "explanation": "The tutorial answer key gives: When the upper bound (Big-O) and lower bound (Big-Omega) have the same growth function.",
       "topic": "Big-O, Omega, and Theta Notations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -244,7 +244,7 @@
         "Use a stopwatch to verify the constants."
       ],
       "correctAnswer": "Ignore positive smaller terms, as the largest term is enough to establish the lower bound.",
-      "explanation": "The tutorial answer key selects C: Ignore positive smaller terms, as the largest term is enough to establish the lower bound.",
+      "explanation": "The tutorial answer key gives: Ignore positive smaller terms, as the largest term is enough to establish the lower bound.",
       "topic": "Big-O, Omega, and Theta Notations",
       "answerSource": "marked",
       "optionsSource": "provided",

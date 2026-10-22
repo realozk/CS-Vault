@@ -20,7 +20,7 @@
         "It completely replaces the study of algorithm analysis and data structures."
       ],
       "correctAnswer": "It helps them understand the significance of implementation and learn new languages more easily.",
-      "explanation": "The tutorial answer key selects C: It helps them understand the significance of implementation and learn new languages more easily.",
+      "explanation": "The tutorial answer key gives: It helps them understand the significance of implementation and learn new languages more easily.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 1
@@ -35,7 +35,7 @@
         "It eliminates the need for software maintenance across all applications."
       ],
       "correctAnswer": "It helps informed decision-makers choose better languages that can eventually displace poorer ones.",
-      "explanation": "The tutorial answer key selects B: It helps informed decision-makers choose better languages that can eventually displace poorer ones.",
+      "explanation": "The tutorial answer key gives: It helps informed decision-makers choose better languages that can eventually displace poorer ones.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 1
@@ -50,7 +50,7 @@
         "Prolog"
       ],
       "correctAnswer": "Fortran",
-      "explanation": "The tutorial answer key selects A: Fortran",
+      "explanation": "The tutorial answer key gives: Fortran",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 1
@@ -65,7 +65,7 @@
         "APL"
       ],
       "correctAnswer": "COBOL",
-      "explanation": "The tutorial answer key selects B: COBOL",
+      "explanation": "The tutorial answer key gives: COBOL",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 1
@@ -80,7 +80,7 @@
         "Visual Basic"
       ],
       "correctAnswer": "Lisp",
-      "explanation": "The tutorial answer key selects C: Lisp",
+      "explanation": "The tutorial answer key gives: Lisp",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 1
@@ -95,7 +95,7 @@
         "Perl"
       ],
       "correctAnswer": "C",
-      "explanation": "The tutorial answer key selects B: C",
+      "explanation": "The tutorial answer key gives: C",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 1
@@ -110,7 +110,7 @@
         "Pure interpreters become completely impossible to implement."
       ],
       "correctAnswer": "Code readability is impaired because different programmers often learn and use different feature subsets.",
-      "explanation": "The tutorial answer key selects A: Code readability is impaired because different programmers often learn and use different feature subsets.",
+      "explanation": "The tutorial answer key gives: Code readability is impaired because different programmers often learn and use different feature subsets.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 2
@@ -125,7 +125,7 @@
         "It prevents variables from being defined inside subroutines."
       ],
       "correctAnswer": "It can lead to confusion if operators are given unusual meanings that conflict with common conventions.",
-      "explanation": "The tutorial answer key selects C: It can lead to confusion if operators are given unusual meanings that conflict with common conventions.",
+      "explanation": "The tutorial answer key gives: It can lead to confusion if operators are given unusual meanings that conflict with common conventions.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 2
@@ -140,7 +140,7 @@
         "Loops can be created using both while and for statements."
       ],
       "correctAnswer": "Structs can be returned from functions, but arrays cannot.",
-      "explanation": "The tutorial answer key selects B: Structs can be returned from functions, but arrays cannot.",
+      "explanation": "The tutorial answer key gives: Structs can be returned from functions, but arrays cannot.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 2
@@ -155,7 +155,7 @@
         "Java"
       ],
       "correctAnswer": "ALGOL 68",
-      "explanation": "The tutorial answer key selects A: ALGOL 68",
+      "explanation": "The tutorial answer key gives: ALGOL 68",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 2
@@ -170,7 +170,7 @@
         "yield"
       ],
       "correctAnswer": "goto",
-      "explanation": "The tutorial answer key selects B: goto",
+      "explanation": "The tutorial answer key gives: goto",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 2
@@ -185,7 +185,7 @@
         "It can be executed on non-von Neumann computer architectures without modification."
       ],
       "correctAnswer": "It performs according to its specifications under all conditions.",
-      "explanation": "The tutorial answer key selects B: It performs according to its specifications under all conditions.",
+      "explanation": "The tutorial answer key gives: It performs according to its specifications under all conditions.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 2
@@ -200,7 +200,7 @@
         "It converts all formal parameters to pointers at compile time."
       ],
       "correctAnswer": "It ensures that variable bit representations match what the receiving subprogram expects, avoiding subtle errors.",
-      "explanation": "The tutorial answer key selects B: It ensures that variable bit representations match what the receiving subprogram expects, avoiding subtle errors.",
+      "explanation": "The tutorial answer key gives: It ensures that variable bit representations match what the receiving subprogram expects, avoiding subtle errors.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 2
@@ -215,7 +215,7 @@
         "The automatic optimization of machine code by a compiler."
       ],
       "correctAnswer": "Using two or more distinct names in a program to access the same memory cell.",
-      "explanation": "The tutorial answer key selects A: Using two or more distinct names in a program to access the same memory cell.",
+      "explanation": "The tutorial answer key gives: Using two or more distinct names in a program to access the same memory cell.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 3
@@ -230,7 +230,7 @@
         "A mechanism that prohibits functions from using recursion."
       ],
       "correctAnswer": "The ability of a program to intercept runtime errors, take corrective measures, and continue.",
-      "explanation": "The tutorial answer key selects B: The ability of a program to intercept runtime errors, take corrective measures, and continue.",
+      "explanation": "The tutorial answer key gives: The ability of a program to intercept runtime errors, take corrective measures, and continue.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 3
@@ -245,7 +245,7 @@
         "Because pure interpreters require comments in order to parse statements."
       ],
       "correctAnswer": "Because writing code requires programmers to frequently reread parts of the code already written.",
-      "explanation": "The tutorial answer key selects B: Because writing code requires programmers to frequently reread parts of the code already written.",
+      "explanation": "The tutorial answer key gives: Because writing code requires programmers to frequently reread parts of the code already written.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 3
@@ -260,7 +260,7 @@
         "The number of comments allowed in a language determines the hardware costs of the compiler."
       ],
       "correctAnswer": "Simpler, more orthogonal languages typically require less effort and cost to implement compilers for than complex languages.",
-      "explanation": "The tutorial answer key selects A: Simpler, more orthogonal languages typically require less effort and cost to implement compilers for than complex languages.",
+      "explanation": "The tutorial answer key gives: Simpler, more orthogonal languages typically require less effort and cost to implement compilers for than complex languages.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 3
@@ -275,7 +275,7 @@
         "Artificial neural networks and graphics processors"
       ],
       "correctAnswer": "Computer architecture and software design methodologies",
-      "explanation": "The tutorial answer key selects B: Computer architecture and software design methodologies",
+      "explanation": "The tutorial answer key gives: Computer architecture and software design methodologies",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 3
@@ -290,7 +290,7 @@
         "Imperative languages"
       ],
       "correctAnswer": "Imperative languages",
-      "explanation": "The tutorial answer key selects D: Imperative languages",
+      "explanation": "The tutorial answer key gives: Imperative languages",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 3
@@ -305,7 +305,7 @@
         "Absence of bytecode engines and poor disk access speeds"
       ],
       "correctAnswer": "Incompleteness of type checking and inadequacy of control statements",
-      "explanation": "The tutorial answer key selects A: Incompleteness of type checking and inadequacy of control statements",
+      "explanation": "The tutorial answer key gives: Incompleteness of type checking and inadequacy of control statements",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 4
@@ -320,7 +320,7 @@
         "Compilation, pure interpretation, and preprocessor directives"
       ],
       "correctAnswer": "Data abstraction, inheritance, and dynamic method binding",
-      "explanation": "The tutorial answer key selects B: Data abstraction, inheritance, and dynamic method binding",
+      "explanation": "The tutorial answer key gives: Data abstraction, inheritance, and dynamic method binding",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 4
@@ -335,7 +335,7 @@
         "Java"
       ],
       "correctAnswer": "Smalltalk",
-      "explanation": "The tutorial answer key selects A: Smalltalk This is the supplied key’s answer. The wording is worth checking with the instructor: SIMULA 67 predates Smalltalk and is commonly credited as the first object-oriented language.",
+      "explanation": "The tutorial answer key gives: Smalltalk This is the supplied key’s answer. The wording is worth checking with the instructor: SIMULA 67 predates Smalltalk and is commonly credited as the first object-oriented language.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 4
@@ -350,7 +350,7 @@
         "Static typing versus symbol table lookups"
       ],
       "correctAnswer": "Software reliability versus execution cost (e.g., array index bound checking)",
-      "explanation": "The tutorial answer key selects B: Software reliability versus execution cost (e.g., array index bound checking)",
+      "explanation": "The tutorial answer key gives: Software reliability versus execution cost (e.g., array index bound checking)",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 4
@@ -365,7 +365,7 @@
         "Static linking, dynamic linking, and loading"
       ],
       "correctAnswer": "Compilation, pure interpretation, and hybrid implementation systems",
-      "explanation": "The tutorial answer key selects C: Compilation, pure interpretation, and hybrid implementation systems",
+      "explanation": "The tutorial answer key gives: Compilation, pure interpretation, and hybrid implementation systems",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 4
@@ -380,7 +380,7 @@
         "Neither; only preprocessors produce machine instructions"
       ],
       "correctAnswer": "A compiler",
-      "explanation": "The tutorial answer key selects B: A compiler",
+      "explanation": "The tutorial answer key gives: A compiler",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 4
@@ -395,7 +395,7 @@
         "It contains pre-written machine instructions for external hardware devices."
       ],
       "correctAnswer": "It serves as a database storing type and attribute information of user-defined names.",
-      "explanation": "The tutorial answer key selects A: It serves as a database storing type and attribute information of user-defined names.",
+      "explanation": "The tutorial answer key gives: It serves as a database storing type and attribute information of user-defined names.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 4
@@ -410,7 +410,7 @@
         "It expands macro definitions like #define and #include."
       ],
       "correctAnswer": "It connects a user program to system programs and library code to produce an executable image.",
-      "explanation": "The tutorial answer key selects B: It connects a user program to system programs and library code to produce an executable image.",
+      "explanation": "The tutorial answer key gives: It connects a user program to system programs and library code to produce an executable image.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 5
@@ -425,7 +425,7 @@
         "It forces all programming languages to be dynamically typed."
       ],
       "correctAnswer": "The connection speed between memory and CPU is the primary limiting factor in computer speed.",
-      "explanation": "The tutorial answer key selects B: The connection speed between memory and CPU is the primary limiting factor in computer speed.",
+      "explanation": "The tutorial answer key gives: The connection speed between memory and CPU is the primary limiting factor in computer speed.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 5
@@ -440,7 +440,7 @@
         "There is no need for a symbol table or lexical analysis."
       ],
       "correctAnswer": "Source-level debugging and runtime error reporting are easy to implement.",
-      "explanation": "The tutorial answer key selects B: Source-level debugging and runtime error reporting are easy to implement.",
+      "explanation": "The tutorial answer key gives: Source-level debugging and runtime error reporting are easy to implement.",
       "answerSource": "marked",
       "optionsSource": "provided",
       "sourcePage": 5

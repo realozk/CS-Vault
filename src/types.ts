@@ -26,7 +26,7 @@ export interface QuizData {
   questions: Question[];
   description?: string;
   source?: string;
-  sourceKind?: 'generated' | 'provided' | 'instructor';
+  sourceKind?: 'generated' | 'provided' | 'instructor' | 'combined';
   featured?: boolean;
 }
 

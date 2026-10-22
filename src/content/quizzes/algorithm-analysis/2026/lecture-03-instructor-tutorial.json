@@ -20,7 +20,7 @@
         "It will grow linearly with the input size."
       ],
       "correctAnswer": "It will always be a constant value regardless of input size.",
-      "explanation": "The tutorial answer key selects B: It will always be a constant value regardless of input size.",
+      "explanation": "The tutorial answer key gives: It will always be a constant value regardless of input size.",
       "topic": "Algorithm Types and Iterative Analysis",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -36,7 +36,7 @@
         "∑(i = 1 to n) i² = n(n + 1)(2n + 1)/6"
       ],
       "correctAnswer": "∑(i = 1 to n) ∑(j = 1 to i) 1 = n(n + 1)/2",
-      "explanation": "The tutorial answer key selects C: ∑(i = 1 to n) ∑(j = 1 to i) 1 = n(n + 1)/2",
+      "explanation": "The tutorial answer key gives: ∑(i = 1 to n) ∑(j = 1 to i) 1 = n(n + 1)/2",
       "topic": "Algorithm Types and Iterative Analysis",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -52,7 +52,7 @@
         "Θ(1)"
       ],
       "correctAnswer": "Θ(n²)",
-      "explanation": "The tutorial answer key selects B: Θ(n²)",
+      "explanation": "The tutorial answer key gives: Θ(n²)",
       "topic": "Algorithm Types and Iterative Analysis",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -68,7 +68,7 @@
         "A method used only to measure space complexity in fixed memory."
       ],
       "correctAnswer": "An equation or inequality describes a function in terms of its value on smaller inputs.",
-      "explanation": "The tutorial answer key selects B: An equation or inequality describes a function in terms of its value on smaller inputs.",
+      "explanation": "The tutorial answer key gives: An equation or inequality describes a function in terms of its value on smaller inputs.",
       "topic": "Recursive Analysis and Recurrence Relations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -84,7 +84,7 @@
         "Θ(n log n)"
       ],
       "correctAnswer": "Θ(log n)",
-      "explanation": "The tutorial answer key selects C: Θ(log n)",
+      "explanation": "The tutorial answer key gives: Θ(log n)",
       "topic": "Recursive Analysis and Recurrence Relations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -100,7 +100,7 @@
         "The total depth of the recursion tree."
       ],
       "correctAnswer": "The time cost of non-recursive basic operations within the function.",
-      "explanation": "The tutorial answer key selects C: The time cost of non-recursive basic operations within the function.",
+      "explanation": "The tutorial answer key gives: The time cost of non-recursive basic operations within the function.",
       "topic": "Recursive Analysis and Recurrence Relations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -116,7 +116,7 @@
         "Substitution method."
       ],
       "correctAnswer": "Substitution method.",
-      "explanation": "The tutorial answer key selects D: Substitution method.",
+      "explanation": "The tutorial answer key gives: Substitution method.",
       "topic": "Recursive Analysis and Recurrence Relations",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -132,7 +132,7 @@
         "The total space complexity of the algorithm."
       ],
       "correctAnswer": "The cost of non-recursive work at that level of recursion.",
-      "explanation": "The tutorial answer key selects B: The cost of non-recursive work at that level of recursion.",
+      "explanation": "The tutorial answer key gives: The cost of non-recursive work at that level of recursion.",
       "topic": "The Recursion Tree Method",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -148,7 +148,7 @@
         "h = n log₂ n"
       ],
       "correctAnswer": "h = log₂ n",
-      "explanation": "The tutorial answer key selects C: h = log₂ n",
+      "explanation": "The tutorial answer key gives: h = log₂ n",
       "topic": "The Recursion Tree Method",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -164,7 +164,7 @@
         "2n leaves."
       ],
       "correctAnswer": "n leaves.",
-      "explanation": "The tutorial answer key selects C: n leaves.",
+      "explanation": "The tutorial answer key gives: n leaves.",
       "topic": "The Recursion Tree Method",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -180,7 +180,7 @@
         "External Sort only."
       ],
       "correctAnswer": "Not In-Place Sort.",
-      "explanation": "The tutorial answer key selects B: Not In-Place Sort.",
+      "explanation": "The tutorial answer key gives: Not In-Place Sort.",
       "topic": "Merge Sort",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -196,7 +196,7 @@
         "T(n) = 2T(n/2) + O(1)"
       ],
       "correctAnswer": "T(n) = 2T(n/2) + O(n)",
-      "explanation": "The tutorial answer key selects B: T(n) = 2T(n/2) + O(n)",
+      "explanation": "The tutorial answer key gives: T(n) = 2T(n/2) + O(n)",
       "topic": "Merge Sort",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -212,7 +212,7 @@
         "Because the recursion depth is n."
       ],
       "correctAnswer": "It combines the space for local variables O(1), the recursion stack O(log₂ n), and storing array halves O(n).",
-      "explanation": "The tutorial answer key selects B: It combines the space for local variables O(1), the recursion stack O(log₂ n), and storing array halves O(n).",
+      "explanation": "The tutorial answer key gives: It combines the space for local variables O(1), the recursion stack O(log₂ n), and storing array halves O(n).",
       "topic": "Merge Sort",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -228,7 +228,7 @@
         "Θ(log₂ n)"
       ],
       "correctAnswer": "Θ(n log₂ n)",
-      "explanation": "The tutorial answer key selects C: Θ(n log₂ n)",
+      "explanation": "The tutorial answer key gives: Θ(n log₂ n)",
       "topic": "Merge Sort",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -244,7 +244,7 @@
         "The algorithm divides the input into halves recursively."
       ],
       "correctAnswer": "All data to be sorted is stored in the computer's main memory.",
-      "explanation": "The tutorial answer key selects C: All data to be sorted is stored in the computer's main memory.",
+      "explanation": "The tutorial answer key gives: All data to be sorted is stored in the computer's main memory.",
       "topic": "Advanced Concepts and Definitions",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -260,7 +260,7 @@
         "T(n) = n ⋅ T(n − k)"
       ],
       "correctAnswer": "T(n) = kc + T(n − k)",
-      "explanation": "The tutorial answer key selects B: T(n) = kc + T(n − k)",
+      "explanation": "The tutorial answer key gives: T(n) = kc + T(n − k)",
       "topic": "Advanced Concepts and Definitions",
       "answerSource": "marked",
       "optionsSource": "provided",

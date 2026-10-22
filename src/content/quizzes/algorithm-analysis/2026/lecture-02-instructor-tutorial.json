@@ -20,7 +20,7 @@
         "f(n) is always strictly greater than g(n) for all values of n"
       ],
       "correctAnswer": "∃c > 0, n₀ > 0 such that f(n) ≥ c ⋅ g(n) for all n ≥ n₀",
-      "explanation": "The tutorial answer key selects B: ∃c > 0, n₀ > 0 such that f(n) ≥ c ⋅ g(n) for all n ≥ n₀",
+      "explanation": "The tutorial answer key gives: ∃c > 0, n₀ > 0 such that f(n) ≥ c ⋅ g(n) for all n ≥ n₀",
       "topic": "Asymptotic Definitions and Logic",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -36,7 +36,7 @@
         "The constant c is equal to 1."
       ],
       "correctAnswer": "Both the upper bound (Big-O) and lower bound (Big-Ω) match on the same dominant growth function.",
-      "explanation": "The tutorial answer key selects C: Both the upper bound (Big-O) and lower bound (Big-Ω) match on the same dominant growth function.",
+      "explanation": "The tutorial answer key gives: Both the upper bound (Big-O) and lower bound (Big-Ω) match on the same dominant growth function.",
       "topic": "Asymptotic Definitions and Logic",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -52,7 +52,7 @@
         "O(f(n)) must be 1, and Ω(f(n)) must be n!"
       ],
       "correctAnswer": "O(f(n)) can be n² or n³, and Ω(f(n)) can be n² or n",
-      "explanation": "The tutorial answer key selects B: O(f(n)) can be n² or n³, and Ω(f(n)) can be n² or n",
+      "explanation": "The tutorial answer key gives: O(f(n)) can be n² or n³, and Ω(f(n)) can be n² or n",
       "topic": "Asymptotic Definitions and Logic",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -68,7 +68,7 @@
         "1 < n log n < log n < 2ⁿ < nᵏ < n!"
       ],
       "correctAnswer": "1 < log n < n log n < nᵏ < 2ⁿ < n!",
-      "explanation": "The tutorial answer key selects A: 1 < log n < n log n < nᵏ < 2ⁿ < n!",
+      "explanation": "The tutorial answer key gives: 1 < log n < n log n < nᵏ < 2ⁿ < n!",
       "topic": "Growth Hierarchy and Proof Mechanics",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -84,7 +84,7 @@
         "c = 1000, n₀ = 1"
       ],
       "correctAnswer": "c = 1020, n₀ = 2",
-      "explanation": "The tutorial answer key selects C: c = 1020, n₀ = 2",
+      "explanation": "The tutorial answer key gives: c = 1020, n₀ = 2",
       "topic": "Growth Hierarchy and Proof Mechanics",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -100,7 +100,7 @@
         "Choose n₀ to be the smallest possible integer."
       ],
       "correctAnswer": "Ignore positive smaller terms and keep only the dominant (fastest-growing) term.",
-      "explanation": "The tutorial answer key selects B: Ignore positive smaller terms and keep only the dominant (fastest-growing) term.",
+      "explanation": "The tutorial answer key gives: Ignore positive smaller terms and keep only the dominant (fastest-growing) term.",
       "topic": "Growth Hierarchy and Proof Mechanics",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -116,7 +116,7 @@
         "The algorithm will fail to execute."
       ],
       "correctAnswer": "It achieves its Best-case behavior (Linear).",
-      "explanation": "The tutorial answer key selects B: It achieves its Best-case behavior (Linear).",
+      "explanation": "The tutorial answer key gives: It achieves its Best-case behavior (Linear).",
       "topic": "Case Behaviours (Insertion Sort)",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -132,7 +132,7 @@
         "The complexity remains constant O(1)"
       ],
       "correctAnswer": "It becomes O(n²)",
-      "explanation": "The tutorial answer key selects C: It becomes O(n²)",
+      "explanation": "The tutorial answer key gives: It becomes O(n²)",
       "topic": "Case Behaviours (Insertion Sort)",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -148,7 +148,7 @@
         "f(n) is slower growing than g(n)."
       ],
       "correctAnswer": "f(n) = Ω(g(n)), because exponential growth eventually exceeds quadratic growth.",
-      "explanation": "The tutorial answer key selects B: f(n) = Ω(g(n)), because exponential growth eventually exceeds quadratic growth.",
+      "explanation": "The tutorial answer key gives: f(n) = Ω(g(n)), because exponential growth eventually exceeds quadratic growth.",
       "topic": "Asymptotic Comparisons",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -164,7 +164,7 @@
         "False, because the coefficient 10 must be ignored."
       ],
       "correctAnswer": "False, because a linear function grows faster than a constant function.",
-      "explanation": "The tutorial answer key selects C: False, because a linear function grows faster than a constant function.",
+      "explanation": "The tutorial answer key gives: False, because a linear function grows faster than a constant function.",
       "topic": "Asymptotic Comparisons",
       "answerSource": "marked",
       "optionsSource": "provided",
@@ -180,7 +180,7 @@
         "O(n²)"
       ],
       "correctAnswer": "O(n log n)",
-      "explanation": "The tutorial answer key selects B: O(n log n)",
+      "explanation": "The tutorial answer key gives: O(n log n)",
       "topic": "Asymptotic Comparisons",
       "answerSource": "marked",
       "optionsSource": "provided",
