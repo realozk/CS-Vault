@@ -100,9 +100,10 @@ const initQuizWidget = () => {
   const startTimer = () => { stopTimer(); if (deadline !== null && running) { tick(); if (running) timer = setInterval(tick, 1000); } };
 
   const sourceReference = (q: Question) => {
-    if (q.sourcePage) return t('sourcePage').replace('{page}', String(q.sourcePage));
+    const lecturePrefix = q.sourceLecture ? `${t('lectureGroup').replace('{number}', String(q.sourceLecture))} · ` : '';
+    if (q.sourcePage) return `${lecturePrefix}${t('sourcePage').replace('{page}', String(q.sourcePage))}`;
     const slides = q.sourceSlides || (q.sourceSlide ? [q.sourceSlide] : []);
-    if (!slides.length) return '';
+    if (!slides.length) return q.sourceLecture ? t('lectureGroup').replace('{number}', String(q.sourceLecture)) : '';
     const ranges: string[] = [];
     for (const slide of [...new Set(slides)].sort((a, b) => a - b)) {
       const lastRange = ranges[ranges.length - 1]?.match(/^(\d+)[–-](\d+)$/);
@@ -114,9 +115,10 @@ const initQuizWidget = () => {
         ranges.push(String(slide));
       }
     }
-    return q.sourceSlides
+    const slideRef = q.sourceSlides
       ? t('sourceSlides').replace('{slides}', ranges.join(', '))
       : t('sourceSlide').replace('{slide}', ranges[0]);
+    return `${lecturePrefix}${slideRef}`;
   };
   const answerNotice = (q: Question) => [q.answerSource === 'inferred' ? t('inferred') : '', q.optionsSource === 'generated' ? t('generatedOptions') : ''].filter(Boolean).join(' ');
   const showExplanation = (q: Question) => {

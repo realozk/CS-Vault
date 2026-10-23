@@ -13,6 +13,10 @@ export function createAllQuestionsQuiz(entries: QuizEntry[]) {
   const seen = new Set<string>();
 
   for (const entry of entries) {
+    const lectureMatch = entry.data.title.match(/^(?:Lecture|Chapter)\s+(\d+)/i)
+      ?? entry.id.match(/\/(?:lecture|chapter)-0*(\d+)(?:-|$)/i);
+    const inferredLecture = lectureMatch ? Number(lectureMatch[1]) : undefined;
+
     for (const question of entry.data.questions) {
       const normalize = (value: string) => value.trim().toLocaleLowerCase().replace(/\s+/g, ' ');
       const signature = JSON.stringify([
@@ -25,6 +29,7 @@ export function createAllQuestionsQuiz(entries: QuizEntry[]) {
       seen.add(signature);
       questions.push({
         ...question,
+        ...(question.sourceLecture === undefined && inferredLecture !== undefined ? { sourceLecture: inferredLecture } : {}),
         id: questions.length + 1,
         answerSource: question.answerSource ?? 'manual',
       });
@@ -57,11 +62,17 @@ export function createTutorialsQuiz(entries: QuizEntry[]): QuizEntry | null {
 
   const first = tutorials[0];
   let nextId = 1;
-  const questions = tutorials.flatMap(entry => entry.data.questions.map(question => ({
-    ...question,
-    id: nextId++,
-    explanation: [entry.data.source, question.explanation].filter(Boolean).join(' — '),
-  })));
+  const questions = tutorials.flatMap(entry => {
+    const lectureMatch = entry.data.title.match(/^(?:Lecture|Chapter)\s+(\d+)/i)
+      ?? entry.id.match(/\/(?:lecture|chapter)-0*(\d+)(?:-|$)/i);
+    const inferredLecture = lectureMatch ? Number(lectureMatch[1]) : undefined;
+    return entry.data.questions.map(question => ({
+      ...question,
+      ...(question.sourceLecture === undefined && inferredLecture !== undefined ? { sourceLecture: inferredLecture } : {}),
+      id: nextId++,
+      explanation: [entry.data.source, question.explanation].filter(Boolean).join(' — '),
+    }));
+  });
 
   return {
     id: `${first.id.split('/').slice(0, 2).join('/')}/all-tutorials`,

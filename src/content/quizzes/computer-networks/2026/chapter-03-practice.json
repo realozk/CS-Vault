@@ -1,0 +1,390 @@
+{
+  "title": "Chapter 3 — Transport Layer",
+  "date": "2026-10-23",
+  "subject": "Computer Networks",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter_3_v8.2-2.pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "While the network layer provides logical communication between hosts, the transport layer provides logical communication between:",
+      "options": [
+        "Routers",
+        "Application processes",
+        "Subnets",
+        "Physical interfaces"
+      ],
+      "correctAnswer": "Application processes",
+      "explanation": "The transport layer's primary purpose is to take end-to-end host communication provided by the network layer and demultiplex it down to specific application processes.",
+      "sourceSlide": 2,
+      "answerSource": "inferred",
+      "topic": "transport-multiplexing"
+    },
+    {
+      "id": 2,
+      "question": "How does a receiver demultiplex incoming connectionless UDP segments?",
+      "options": [
+        "Using only the source IP address.",
+        "Using the 4-tuple (source IP, source port, dest IP, dest port).",
+        "Using only the destination port number.",
+        "Using the MAC address."
+      ],
+      "correctAnswer": "Using only the destination port number.",
+      "explanation": "UDP uses only the destination port number to direct the segment to the appropriate socket, making it connectionless.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "transport-multiplexing"
+    },
+    {
+      "id": 3,
+      "question": "Which of the following is NOT a characteristic of UDP?",
+      "options": [
+        "Connectionless",
+        "Best-effort delivery",
+        "Congestion control",
+        "Small header size"
+      ],
+      "correctAnswer": "Congestion control",
+      "explanation": "UDP does not provide congestion control. It can blast away as fast as the application desires.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "udp"
+    },
+    {
+      "id": 4,
+      "question": "What is the primary purpose of the UDP Checksum?",
+      "options": [
+        "To ensure packets arrive in the correct order.",
+        "To detect flipped bits or errors in the transmitted segment.",
+        "To manage the sender's transmission rate.",
+        "To encrypt the payload data."
+      ],
+      "correctAnswer": "To detect flipped bits or errors in the transmitted segment.",
+      "explanation": "The UDP checksum is a basic mechanism to detect bit errors (flipped bits) in the transmitted segment.",
+      "sourceSlide": 25,
+      "answerSource": "inferred",
+      "topic": "udp"
+    },
+    {
+      "id": 5,
+      "question": "In the reliable data transfer protocol rdt 2.0, what mechanism is introduced to tell the sender that a packet was received with errors?",
+      "options": [
+        "Timeouts",
+        "Sequence numbers",
+        "Negative Acknowledgements (NAKs)",
+        "Window sizes"
+      ],
+      "correctAnswer": "Negative Acknowledgements (NAKs)",
+      "explanation": "In rdt 2.0, the receiver sends NAKs to explicitly tell the sender that a packet had errors, prompting a retransmission.",
+      "sourceSlide": 38,
+      "answerSource": "inferred",
+      "topic": "reliable-data-transfer"
+    },
+    {
+      "id": 6,
+      "question": "Why did rdt 2.1 introduce sequence numbers to packets?",
+      "options": [
+        "To handle corrupted ACKs/NAKs and allow the receiver to detect duplicate packets.",
+        "To speed up transmission over fiber optic links.",
+        "To route the packet through the core network.",
+        "To implement encryption."
+      ],
+      "correctAnswer": "To handle corrupted ACKs/NAKs and allow the receiver to detect duplicate packets.",
+      "explanation": "If an ACK/NAK gets corrupted, the sender retransmits. Without sequence numbers, the receiver wouldn't know if the incoming packet is new data or a duplicate.",
+      "sourceSlide": 43,
+      "answerSource": "inferred",
+      "topic": "reliable-data-transfer"
+    },
+    {
+      "id": 7,
+      "question": "rdt 3.0 relies on a \"stop-and-wait\" mechanism combined with a countdown timer to handle lost packets. What is the major drawback of \"stop-and-wait\"?",
+      "options": [
+        "It causes heavy packet loss.",
+        "It severely limits network utilization and throughput.",
+        "It crashes the router buffers.",
+        "It requires an enormous sequence number space."
+      ],
+      "correctAnswer": "It severely limits network utilization and throughput.",
+      "explanation": "Stop-and-wait forces the sender to idle while waiting for an ACK, drastically reducing network utilization over high-delay or high-bandwidth links.",
+      "sourceSlides": [
+        55,
+        56,
+        57
+      ],
+      "answerSource": "inferred",
+      "topic": "reliable-data-transfer"
+    },
+    {
+      "id": 8,
+      "question": "Which pipelined reliable data transfer protocol forces the sender to retransmit all unacknowledged packets in its window if a timeout occurs?",
+      "options": [
+        "Selective Repeat (SR)",
+        "Go-Back-N (GBN)",
+        "TCP CUBIC",
+        "UDP"
+      ],
+      "correctAnswer": "Go-Back-N (GBN)",
+      "explanation": "In Go-Back-N, a timeout causes the sender to retransmit the lost packet and all subsequent in-flight packets in the window.",
+      "sourceSlide": 60,
+      "answerSource": "inferred",
+      "topic": "reliable-data-transfer"
+    },
+    {
+      "id": 9,
+      "question": "In TCP, what does the sequence number represent?",
+      "options": [
+        "The segment number (1st segment, 2nd segment, etc.).",
+        "The byte-stream number of the first data byte in the segment.",
+        "The port number of the sender.",
+        "The total length of the packet."
+      ],
+      "correctAnswer": "The byte-stream number of the first data byte in the segment.",
+      "explanation": "TCP views data as an unstructured, ordered stream of bytes. The sequence number is the byte-stream number of the first byte in the segment.",
+      "sourceSlide": 72,
+      "answerSource": "inferred",
+      "topic": "tcp"
+    },
+    {
+      "id": 10,
+      "question": "How does TCP set its timeout interval?",
+      "options": [
+        "By using a hardcoded value of 1 second.",
+        "By pinging the router explicitly.",
+        "Using an Exponential Weighted Moving Average (EWMA) of the Sample RTT plus a safety margin.",
+        "By waiting until the receiver explicitly requests a timeout."
+      ],
+      "correctAnswer": "Using an Exponential Weighted Moving Average (EWMA) of the Sample RTT plus a safety margin.",
+      "explanation": "TCP dynamically calculates the timeout by maintaining a smoothed average of RTTs (EstimatedRTT) and adding a safety margin based on the variance (DevRTT).",
+      "sourceSlide": 76,
+      "answerSource": "inferred",
+      "topic": "tcp"
+    },
+    {
+      "id": 11,
+      "question": "In TCP, what triggers a \"Fast Retransmit\" before the timeout timer expires?",
+      "options": [
+        "Receiving 3 duplicate ACKs for the same data.",
+        "Receiving a TCP segment with the FIN bit set.",
+        "A sudden drop in the receiver's window size.",
+        "The receipt of a NAK from the router."
+      ],
+      "correctAnswer": "Receiving 3 duplicate ACKs for the same data.",
+      "explanation": "If a sender receives 3 duplicate ACKs, it is a strong indication that the specific segment was lost, so it performs a \"Fast Retransmit\" before the timer expires.",
+      "sourceSlide": 81,
+      "answerSource": "inferred",
+      "topic": "tcp"
+    },
+    {
+      "id": 12,
+      "question": "TCP Flow Control is achieved by the receiver advertising its available buffer space. In which header field is this advertised?",
+      "options": [
+        "ACK number",
+        "Sequence number",
+        "Checksum",
+        "Receive window (`rwnd`)"
+      ],
+      "correctAnswer": "Receive window (`rwnd`)",
+      "explanation": "The receiver advertises its available buffer space in the `rwnd` (receive window) field of the TCP header to prevent the sender from overflowing its buffers (Flow Control).",
+      "sourceSlides": [
+        86,
+        87
+      ],
+      "answerSource": "inferred",
+      "topic": "tcp"
+    },
+    {
+      "id": 13,
+      "question": "How does a host establish a TCP connection?",
+      "options": [
+        "By sending data immediately and hoping for an ACK.",
+        "Using a 3-way handshake (SYN, SYN-ACK, ACK).",
+        "By querying the local DNS server.",
+        "By broadcasting a connection request to all hosts on the subnet."
+      ],
+      "correctAnswer": "Using a 3-way handshake (SYN, SYN-ACK, ACK).",
+      "explanation": "TCP uses a 3-way handshake (SYN from client, SYN-ACK from server, ACK from client) to establish state before transferring data.",
+      "sourceSlide": 93,
+      "answerSource": "inferred",
+      "topic": "tcp"
+    },
+    {
+      "id": 14,
+      "question": "In TCP Congestion Control, what does AIMD stand for?",
+      "options": [
+        "Automated Increment, Manual Decrement",
+        "Additive Increase, Multiplicative Decrease",
+        "Assured Integrity, Maximum Delivery",
+        "Asynchronous Input, Multiplexed Data"
+      ],
+      "correctAnswer": "Additive Increase, Multiplicative Decrease",
+      "explanation": "AIMD stands for Additive Increase (probing for bandwidth by increasing rate linearly) and Multiplicative Decrease (cutting the rate in half when loss occurs).",
+      "sourceSlide": 110,
+      "answerSource": "inferred",
+      "topic": "congestion-control"
+    },
+    {
+      "id": 15,
+      "question": "During the TCP \"Slow Start\" phase, how does the congestion window (`cwnd`) grow?",
+      "options": [
+        "Linearly, adding 1 MSS per RTT.",
+        "Exponentially, doubling every RTT.",
+        "It remains constant until a packet is lost.",
+        "It decreases by half."
+      ],
+      "correctAnswer": "Exponentially, doubling every RTT.",
+      "explanation": "Despite the name \"slow start,\" the window starts at 1 MSS but doubles every RTT (exponential growth) to rapidly find the network's capacity.",
+      "sourceSlide": 113,
+      "answerSource": "inferred",
+      "topic": "congestion-control"
+    },
+    {
+      "id": 16,
+      "question": "TCP demultiplexes incoming segments using a 4-tuple consisting of source IP, source port, destination IP, and destination port.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "TCP requires all 4 identifiers (source IP, source port, destination IP, destination port) to correctly route segments to the exact connection socket.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "transport-multiplexing"
+    },
+    {
+      "id": 17,
+      "question": "UDP is often used for streaming multimedia applications because it lacks congestion control, allowing it to blast data without throttling.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Multimedia apps often prefer UDP because TCP's congestion control will throttle their sending rate if the network gets busy, causing video/audio stutter.",
+      "sourceSlides": [
+        18,
+        125
+      ],
+      "answerSource": "inferred",
+      "topic": "udp"
+    },
+    {
+      "id": 18,
+      "question": "In Selective Repeat (SR), the receiver acknowledges the highest in-order packet and ignores out-of-order packets.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "In Selective Repeat (SR), the receiver individually ACKs each correctly received packet and buffers out-of-order packets. Go-Back-N ignores out-of-order packets.",
+      "sourceSlide": 65,
+      "answerSource": "inferred",
+      "topic": "reliable-data-transfer"
+    },
+    {
+      "id": 19,
+      "question": "TCP acknowledgements are cumulative, meaning an ACK indicates the next expected byte, acknowledging all bytes up to that point.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "TCP uses cumulative ACKs. An ACK of number N tells the sender that the receiver has correctly received all bytes up to N-1 and is waiting for byte N.",
+      "sourceSlide": 72,
+      "answerSource": "inferred",
+      "topic": "tcp"
+    },
+    {
+      "id": 20,
+      "question": "Network-assisted congestion control relies exclusively on end-systems (senders and receivers) inferring congestion from packet loss, without any feedback from routers.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Network-assisted congestion control utilizes direct feedback from the network infrastructure (routers), such as setting ECN bits. End-to-end congestion control is what relies solely on host inference.",
+      "sourceSlides": [
+        108,
+        122
+      ],
+      "answerSource": "inferred",
+      "topic": "congestion-control"
+    },
+    {
+      "id": 21,
+      "question": "TCP CUBIC ramps up its window size quickly after a loss, but slows down its rate of increase as it approaches the previous maximum window size.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "TCP CUBIC grows rapidly to recover from a loss, but the growth curve flattens (becomes cautious) as it approaches W_max to avoid inducing another loss event immediately.",
+      "sourceSlides": [
+        116,
+        117
+      ],
+      "answerSource": "inferred",
+      "topic": "congestion-control"
+    },
+    {
+      "id": 22,
+      "question": "To close a TCP connection, both the client and the server must send segments with the SYN bit set to 1.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "To close a connection, TCP uses segments with the FIN bit set, not the SYN bit.",
+      "sourceSlide": 94,
+      "answerSource": "inferred",
+      "topic": "tcp"
+    },
+    {
+      "id": 23,
+      "question": "Delay-based TCP congestion control (like BBR) attempts to track the minimum RTT to keep the bottleneck link busy without overflowing buffers.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Delay-based protocols (like BBR) track the minimum RTT and react to increases in delay before packet loss actually happens, aiming to keep bottleneck buffers empty.",
+      "sourceSlide": 120,
+      "answerSource": "inferred",
+      "topic": "congestion-control"
+    },
+    {
+      "id": 24,
+      "question": "In an ideal, uncongested network, if 5 TCP sessions share a bottleneck link of bandwidth R, each session will naturally converge to a fair share of R/5.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Under ideal assumptions (same RTT, stable connections), TCP's AIMD mechanism naturally drives competing flows to an equal (fair) share of the bottleneck link (R/K).",
+      "sourceSlides": [
+        123,
+        124
+      ],
+      "answerSource": "inferred",
+      "topic": "congestion-control"
+    },
+    {
+      "id": 25,
+      "question": "A sender using Go-Back-N (GBN) maintains a separate logical timer for every single unacknowledged packet in its window.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Go-Back-N uses a single timer for the oldest unacknowledged packet. Selective Repeat is the protocol that conceptually maintains a separate timer for each unacknowledged packet.",
+      "sourceSlides": [
+        60,
+        63
+      ],
+      "answerSource": "inferred",
+      "topic": "reliable-data-transfer"
+    }
+  ]
+}

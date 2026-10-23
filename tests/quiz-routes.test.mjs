@@ -27,8 +27,10 @@ test('combined tutorials preserve all 68 questions, marked answers, and PDF refe
   assert.equal(quiz.data.questions.length, 68);
   quiz.data.questions.forEach((question, index) => {
     const original = originals[index];
+    const lectureNumber = Number(original.entry.id.match(/lecture-0*(\d+)/)[1]);
     assert.deepEqual(question, {
       ...original.question,
+      sourceLecture: lectureNumber,
       id: index + 1,
       explanation: `${original.entry.data.source} — ${original.question.explanation}`,
     });

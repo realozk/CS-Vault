@@ -50,6 +50,7 @@ const quizzesCollection = defineCollection({
         correctAnswer: z.string(),
         explanation: z.string().optional(),
         topic: z.string().min(1).optional(),
+        sourceLecture: z.number().int().positive().optional(),
         sourceSlide: z.number().int().positive().optional(),
         sourceSlides: z.array(z.number().int().positive()).min(1).optional(),
         sourcePage: z.number().int().positive().optional(),

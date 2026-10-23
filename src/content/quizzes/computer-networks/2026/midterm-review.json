@@ -1,0 +1,399 @@
+{
+  "title": "Midterm Review",
+  "date": "2026-10-23",
+  "description": "23 midterm questions covering Chapters 1-3 (12 True/False, 11 multiple choice) with solutions. Slide numbers refer to the chapter shown in each question's topic. Wrong choices for the multiple-choice questions were added for practice.",
+  "subject": "Computer Networks",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "ميد بندر.pdf",
+  "sourceKind": "provided",
+  "featured": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "The internet contains billions of connected computing devices.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Slide 2 states, \"The Internet: a 'nuts and bolts' view - Billions of connected computing devices.\"",
+      "topic": "internet-basics",
+      "sourceSlide": 2,
+      "answerSource": "marked",
+      "sourceLecture": 1
+    },
+    {
+      "id": 2,
+      "question": "Communication links include fiber, copper, radio, and satellites are used to transmit data.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Slide 2 explicitly lists \"fiber, copper, radio, satellite\" under Communication links.",
+      "topic": "internet-basics",
+      "sourceSlide": 2,
+      "answerSource": "marked",
+      "sourceLecture": 1
+    },
+    {
+      "id": 3,
+      "question": "Protocols define the format, order of message sent and received among network entities and actions taken on message transmission.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Slide 5 gives exactly this definition for protocols.",
+      "topic": "internet-basics",
+      "sourceSlide": 5,
+      "answerSource": "marked",
+      "sourceLecture": 1
+    },
+    {
+      "id": 4,
+      "question": "Cable-based networks use telephone lines to access the internet.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Digital Subscriber Line (DSL) uses existing telephone lines (Slide 14). Cable-based access networks use a shared cable distribution network (coaxial/HFC) (Slides 12-13).",
+      "topic": "network-edge",
+      "sourceSlides": [
+        12,
+        13,
+        14
+      ],
+      "answerSource": "marked",
+      "sourceLecture": 1
+    },
+    {
+      "id": 5,
+      "question": "Forwarding is global action that determines source-destination paths taken by packets.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Forwarding is a local action (moving packets from a router's input to output). Routing is the global action that determines the source-destination path.",
+      "topic": "network-core",
+      "sourceSlide": 25,
+      "answerSource": "marked",
+      "sourceLecture": 1
+    },
+    {
+      "id": 6,
+      "question": "Queuing happens when the arrival rate of a link is slower than the transmission rate of the same link for some period of time.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Queuing occurs when the arrival rate (work arriving) is faster than (exceeds) the transmission rate of the link.",
+      "topic": "network-core",
+      "sourceSlides": [
+        29,
+        30
+      ],
+      "answerSource": "marked",
+      "sourceLecture": 1
+    },
+    {
+      "id": 7,
+      "question": "Process sends and receives messages to and from its socket.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Slide 7 states exactly: \"process sends/receives messages to/from its socket\" comparing it to a door.",
+      "topic": "app-principles",
+      "sourceSlide": 7,
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 8,
+      "question": "Application layer FTP protocol is used to display web objects.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "HTTP (Hypertext Transfer Protocol) is used for web documents/objects. FTP is for file transfer/download (Slide 13).",
+      "topic": "app-principles",
+      "sourceSlides": [
+        13,
+        17
+      ],
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 9,
+      "question": "Persistent HTTP uses a single TCP connection to send multiple objects between client and a server, rather than opening new TCP for each object.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Slide 19 notes that in Persistent HTTP, \"multiple objects can be sent over single TCP connection between client, and that server\".",
+      "topic": "web-and-http",
+      "sourceSlides": [
+        19,
+        23
+      ],
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 10,
+      "question": "When iterated query approach is used during DNS name resolution the root DNS will contact all the other DNS servers in the hierarchy.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "In an iterated query, the contacted server replies with the name of the next server to contact (\"I don't know this name, but ask this server\"). It does not contact the other servers itself; that describes a recursive query",
+      "topic": "dns",
+      "sourceSlide": 64,
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 11,
+      "question": "Authoritative DNS servers responsible for \".com, .net, .org, .edu\" domains.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Top-Level Domain (TLD) servers are responsible for .com, .org, .net, .edu. Authoritative servers belong to specific organizations providing their own host mappings.",
+      "topic": "dns",
+      "sourceSlide": 62,
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 12,
+      "question": "UDP demultiplexing uses 4 tuple: source and destination IP and source and destination port numbers.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "TCP uses a 4-tuple. UDP uses only a 2-tuple (specifically, demultiplexing relies strictly on the destination port number as shown on Slide 16).",
+      "topic": "transport-multiplexing",
+      "sourceSlides": [
+        12,
+        14,
+        16
+      ],
+      "answerSource": "marked",
+      "sourceLecture": 3
+    },
+    {
+      "id": 13,
+      "question": "What is the transmission delay for a 15 Kbits packet pushed into a 100 Mbps link?",
+      "options": [
+        "1.5 msec",
+        "15 msec",
+        "0.15 msec",
+        "0.015 msec"
+      ],
+      "correctAnswer": "0.15 msec",
+      "explanation": "Formula is L/R. L = 15,000 bits, R = 100,000,000 bps. 15,000 / 100,000,000 = 0.00015 seconds, which is 0.15 milliseconds (msec).",
+      "topic": "delay-loss-throughput",
+      "optionsSource": "generated",
+      "sourceSlides": [
+        28,
+        47
+      ],
+      "answerSource": "marked",
+      "sourceLecture": 1
+    },
+    {
+      "id": 14,
+      "question": "Which of the following is considered a network edge?",
+      "options": [
+        "Smartphone",
+        "Router",
+        "Switch",
+        "Communication link"
+      ],
+      "correctAnswer": "Smartphone",
+      "explanation": "The network edge consists of hosts (clients and servers). A smartphone is an end system/host. Routers and switches are network core devices.",
+      "topic": "network-edge",
+      "optionsSource": "generated",
+      "sourceSlides": [
+        2,
+        8
+      ],
+      "answerSource": "marked",
+      "sourceLecture": 1
+    },
+    {
+      "id": 15,
+      "question": "Select a radio link from the following.",
+      "options": [
+        "Wireless LAN (WiFi)",
+        "Bluetooth",
+        "Terrestrial microwave",
+        "All the above"
+      ],
+      "correctAnswer": "All the above",
+      "explanation": "Slide 22 lists radio link types which include Wireless LAN (WiFi), Bluetooth, terrestrial microwave, and cellular/satellite.",
+      "topic": "network-edge",
+      "optionsSource": "generated",
+      "sourceSlide": 22,
+      "answerSource": "marked",
+      "sourceLecture": 1
+    },
+    {
+      "id": 16,
+      "question": "Which of the following features describe servers?",
+      "options": [
+        "Servers are intermittently connected",
+        "Servers have dynamic IP addresses",
+        "Servers are often used in data centers",
+        "Servers communicate directly with each other only"
+      ],
+      "correctAnswer": "Servers are often used in data centers",
+      "explanation": "Under the client-server paradigm, servers are described as \"always-on host\", having a \"permanent IP address\", and \"often in data centers, for scaling\".",
+      "topic": "app-principles",
+      "optionsSource": "generated",
+      "sourceSlide": 4,
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 17,
+      "question": "Which HTTP request method is used to upload a new object to server?",
+      "options": [
+        "GET method",
+        "HEAD method",
+        "POST method",
+        "PUT method"
+      ],
+      "correctAnswer": "PUT method",
+      "explanation": "Slide 26 states that the PUT method \"uploads new file (object) to server\".",
+      "topic": "web-and-http",
+      "optionsSource": "generated",
+      "sourceSlide": 26,
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 18,
+      "question": "Select the HTTP response status code that indicates request is succeeded.",
+      "options": [
+        "200",
+        "301",
+        "400",
+        "404"
+      ],
+      "correctAnswer": "200",
+      "explanation": "\"200 OK\" means the request succeeded and the requested object is in the message.",
+      "topic": "web-and-http",
+      "optionsSource": "generated",
+      "sourceSlide": 28,
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 19,
+      "question": "Which application layer protocol is used to transfer email message from client to server?",
+      "options": [
+        "SMTP",
+        "IMAP",
+        "HTTP",
+        "DNS"
+      ],
+      "correctAnswer": "SMTP",
+      "explanation": "SMTP (Simple Mail Transfer Protocol) is used to transfer outgoing emails to the server and between servers.",
+      "topic": "email-protocols",
+      "optionsSource": "generated",
+      "sourceSlides": [
+        51,
+        53
+      ],
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 20,
+      "question": "Which of these is considered a DNS service?",
+      "options": [
+        "Reliable data transfer",
+        "Congestion control",
+        "Host to IP address translation",
+        "Web page caching"
+      ],
+      "correctAnswer": "Host to IP address translation",
+      "explanation": "The primary service of DNS is \"hostname-to-IP-address translation\" along with host/mail server aliasing and load distribution.",
+      "topic": "dns",
+      "optionsSource": "generated",
+      "sourceSlide": 58,
+      "answerSource": "marked",
+      "sourceLecture": 2
+    },
+    {
+      "id": 21,
+      "question": "Which of the following describes UDP protocol?",
+      "options": [
+        "Reliable data delivery",
+        "Congestion control",
+        "No connection setup required",
+        "Flow control"
+      ],
+      "correctAnswer": "No connection setup required",
+      "explanation": "UDP is connectionless (\"no setup/handshaking needed\"). It does not provide reliable delivery, congestion control, or flow control.",
+      "topic": "udp",
+      "optionsSource": "generated",
+      "sourceSlide": 18,
+      "answerSource": "marked",
+      "sourceLecture": 3
+    },
+    {
+      "id": 22,
+      "question": "Calculate the TCP rate having a window size 524,280 bits and the RTT is 0.030 seconds.",
+      "options": [
+        "15,728 bps",
+        "17,476,000 bps",
+        "1,747,600 bps",
+        "157,284,000 bps"
+      ],
+      "correctAnswer": "17,476,000 bps",
+      "explanation": "TCP sending rate is roughly cwnd / RTT. 524,280 bits / 0.030 sec = 17,476,000 bps.",
+      "topic": "congestion-control",
+      "optionsSource": "generated",
+      "sourceSlide": 112,
+      "answerSource": "marked",
+      "sourceLecture": 3
+    },
+    {
+      "id": 23,
+      "question": "Calculate the sender utilization for Stop-and-wait protocol having 8000 bits packet size, link bandwidth 1 Mbps, propagation delay 10 ms.",
+      "options": [
+        "28.57%",
+        "40%",
+        "44.44%",
+        "80%"
+      ],
+      "correctAnswer": "28.57%",
+      "explanation": "Formula: U_sender = (L/R) / (RTT + L/R). L/R = 8000 bits / 1,000,000 bps = 0.008 sec = 8 ms. RTT = 2 × propagation delay = 2 × 10 ms = 20 ms. U_sender = 8 / (20 + 8) = 8 / 28 ≈ 0.2857, or 28.57%.",
+      "topic": "reliable-data-transfer",
+      "optionsSource": "generated",
+      "sourceSlides": [
+        55,
+        57
+      ],
+      "answerSource": "marked",
+      "sourceLecture": 3
+    }
+  ]
+}

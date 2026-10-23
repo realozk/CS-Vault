@@ -10,6 +10,7 @@ export interface Question {
   options: string[];
   correctAnswer: string;
   explanation?: string;
+  sourceLecture?: number;
   sourceSlide?: number;
   sourceSlides?: number[];
   sourcePage?: number;

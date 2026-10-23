@@ -22,16 +22,20 @@ const alertKey = m.subject === 'programming-languages'
       ? 'courseAlert.webdevelopment'
       : m.subject === 'algorithm-analysis'
         ? 'courseAlert.algorithmAnalysis'
-        : undefined;
+        : m.subject === 'computer-networks'
+          ? 'courseAlert.computerNetworks'
+          : undefined;
 const alertTargetWeek = m.subject === 'programming-languages' || m.subject === 'operating-systems'
   ? 8
-  : 9;
+  : m.subject === 'computer-networks'
+    ? 10
+    : 9;
 ---
 
 <a href={href} class:list={["course-card group", { "course-card-upcoming": m.summariesCount + m.quizzesCount === 0 }]}>
   <div class="course-card-top">
     <span class="course-code" dir="ltr">{m.subjectCode}</span>
-    {m.latestContentAt !== null && m.subject !== 'programming-languages' && <span class="course-new" data-new-content-at={m.latestContentAt} hidden>{t('course.new')}</span>}
+    {m.latestContentAt !== null && m.subject !== 'programming-languages' && m.subject !== 'algorithm-analysis' && <span class="course-new" data-new-content-at={m.latestContentAt} hidden>{t('course.new')}</span>}
     <span class="course-open" aria-hidden="true">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-5-5 5 5-5 5" /></svg>
     </span>

@@ -1,0 +1,380 @@
+{
+  "title": "Chapter 2 — Application Layer",
+  "date": "2026-10-23",
+  "subject": "Computer Networks",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter_2_v8.2.pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which application architecture lacks an always-on centralized server and relies on arbitrary end systems communicating directly?",
+      "options": [
+        "Client-Server",
+        "Peer-to-Peer (P2P)",
+        "Hybrid Cloud",
+        "Software Defined Networking"
+      ],
+      "correctAnswer": "Peer-to-Peer (P2P)",
+      "explanation": "In a P2P architecture, there is no always-on server; arbitrary end systems directly communicate with each other.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "app-principles"
+    },
+    {
+      "id": 2,
+      "question": "The interface between the application layer and the transport layer within a host is called a:",
+      "options": [
+        "Port",
+        "Socket",
+        "Protocol",
+        "Router"
+      ],
+      "correctAnswer": "Socket",
+      "explanation": "A socket is analogous to a door; it is the programming interface between the application process and the OS-controlled transport layer.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "app-principles"
+    },
+    {
+      "id": 3,
+      "question": "Which transport protocol provides reliable data transfer, flow control, and connection setup?",
+      "options": [
+        "UDP",
+        "IP",
+        "TCP",
+        "HTTP"
+      ],
+      "correctAnswer": "TCP",
+      "explanation": "TCP provides a connection-oriented, reliable transport service with flow and congestion control.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "app-principles"
+    },
+    {
+      "id": 4,
+      "question": "HTTP is considered a \"stateless\" protocol because:",
+      "options": [
+        "It does not use TCP connections.",
+        "It does not maintain any information about past client requests.",
+        "It encrypts all data, hiding its state.",
+        "It uses UDP for fast transmission."
+      ],
+      "correctAnswer": "It does not maintain any information about past client requests.",
+      "explanation": "A stateless protocol means the server maintains no memory or state of past requests from a client.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "web-and-http"
+    },
+    {
+      "id": 5,
+      "question": "In Non-persistent HTTP, what is the total response time for a single requested object?",
+      "options": [
+        "1 RTT + file transmission time",
+        "2 RTT + file transmission time",
+        "3 RTT + file transmission time",
+        "1 RTT exactly"
+      ],
+      "correctAnswer": "2 RTT + file transmission time",
+      "explanation": "Non-persistent HTTP takes 1 RTT to initiate the TCP connection, and 1 RTT to request and begin receiving the file, totaling 2 RTTs plus transmission time.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "web-and-http"
+    },
+    {
+      "id": 6,
+      "question": "What is the primary mechanism Web sites use to maintain user state and track sessions over multiple HTTP transactions?",
+      "options": [
+        "Persistent Connections",
+        "Web Caches",
+        "Cookies",
+        "HTML forms"
+      ],
+      "correctAnswer": "Cookies",
+      "explanation": "Because HTTP is stateless, websites issue cookies (stored on the user's browser) to identify clients and maintain state across transactions.",
+      "sourceSlides": [
+        29,
+        30
+      ],
+      "answerSource": "inferred",
+      "topic": "web-and-http"
+    },
+    {
+      "id": 7,
+      "question": "A proxy server (Web cache) utilizes which HTTP header to ensure it does not serve stale data to a client?",
+      "options": [
+        "`If-modified-since`",
+        "`Connection: keep-alive`",
+        "`Set-cookie`",
+        "`User-Agent`"
+      ],
+      "correctAnswer": "`If-modified-since`",
+      "explanation": "A cache uses the `If-modified-since` header to check if a file has changed. If it hasn't, the server returns a `304 Not Modified` code.",
+      "sourceSlide": 44,
+      "answerSource": "inferred",
+      "topic": "web-caching-http2"
+    },
+    {
+      "id": 8,
+      "question": "HTTP/2 mitigates Head-of-Line (HOL) blocking by:",
+      "options": [
+        "Using UDP instead of TCP.",
+        "Dividing objects into frames and interleaving them over a single TCP connection.",
+        "Forcing the client to open 10 separate TCP connections.",
+        "Dropping large video files."
+      ],
+      "correctAnswer": "Dividing objects into frames and interleaving them over a single TCP connection.",
+      "explanation": "HTTP/2 breaks objects into frames and interleaves them to prevent a large object from blocking smaller ones (Head-of-Line blocking).",
+      "sourceSlides": [
+        46,
+        48
+      ],
+      "answerSource": "inferred",
+      "topic": "web-caching-http2"
+    },
+    {
+      "id": 9,
+      "question": "Which protocol is primarily used to push (send) electronic mail from a sending mail server to a receiving mail server?",
+      "options": [
+        "IMAP",
+        "POP3",
+        "HTTP",
+        "SMTP"
+      ],
+      "correctAnswer": "SMTP",
+      "explanation": "SMTP is the push protocol used by mail servers to transfer emails. IMAP and POP are pull protocols used to retrieve them.",
+      "sourceSlide": 53,
+      "answerSource": "inferred",
+      "topic": "email-protocols"
+    },
+    {
+      "id": 10,
+      "question": "In the Domain Name System (DNS), a query where the contacted server takes the burden of resolving the name entirely before replying is called a:",
+      "options": [
+        "Iterated query",
+        "Recursive query",
+        "Top-Level query",
+        "Authoritative query"
+      ],
+      "correctAnswer": "Recursive query",
+      "explanation": "In a recursive query, the contacted DNS server takes full responsibility for querying other servers until the IP is found.",
+      "sourceSlide": 65,
+      "answerSource": "inferred",
+      "topic": "dns"
+    },
+    {
+      "id": 11,
+      "question": "Which DNS record type maps a hostname directly to an IPv4 address?",
+      "options": [
+        "Type CNAME",
+        "Type NS",
+        "Type MX",
+        "Type A"
+      ],
+      "correctAnswer": "Type A",
+      "explanation": "A Type A DNS record specifically maps a hostname (domain) to an IPv4 address.",
+      "sourceSlide": 67,
+      "answerSource": "inferred",
+      "topic": "dns"
+    },
+    {
+      "id": 12,
+      "question": "In BitTorrent (a P2P protocol), how do peers request file chunks?",
+      "options": [
+        "They request the largest chunks first.",
+        "They request the rarest chunks first.",
+        "They request chunks sequentially from start to finish.",
+        "They request the most common chunks first."
+      ],
+      "correctAnswer": "They request the rarest chunks first.",
+      "explanation": "To ensure rare chunks aren't lost if a peer leaves, clients request the rarest chunks first to quickly distribute them across the swarm.",
+      "sourceSlide": 79,
+      "answerSource": "inferred",
+      "topic": "p2p-applications"
+    },
+    {
+      "id": 13,
+      "question": "In BitTorrent, the strategy of sending chunks to the peers that are currently uploading to you at the highest rate is known as:",
+      "options": [
+        "Tit-for-tat",
+        "Optimistic unchoking",
+        "Flooding",
+        "Tracker routing"
+      ],
+      "correctAnswer": "Tit-for-tat",
+      "explanation": "\"Tit-for-tat\" is the mechanism where a peer rewards the top uploaders by sending chunks back to them.",
+      "sourceSlide": 79,
+      "answerSource": "inferred",
+      "topic": "p2p-applications"
+    },
+    {
+      "id": 14,
+      "question": "Transport Layer Security (TLS) is actually implemented at which layer?",
+      "options": [
+        "Network layer",
+        "Link layer",
+        "Application layer",
+        "Physical layer"
+      ],
+      "correctAnswer": "Application layer",
+      "explanation": "TLS is implemented in the application layer (often as a library) before passing the encrypted data down to TCP sockets.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "app-principles"
+    },
+    {
+      "id": 15,
+      "question": "What is the standard port number for an HTTP Web server?",
+      "options": [
+        "21",
+        "25",
+        "53",
+        "80"
+      ],
+      "correctAnswer": "80",
+      "explanation": "Port 80 is the well-known port for unencrypted HTTP traffic.",
+      "sourceSlides": [
+        8,
+        20
+      ],
+      "answerSource": "inferred",
+      "topic": "web-and-http"
+    },
+    {
+      "id": 16,
+      "question": "In a client-server architecture, the server must be always-on and typically has a permanent IP address.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Servers in this model are always-on and generally require static IP addresses to be reliably found by clients.",
+      "sourceSlide": 4,
+      "answerSource": "inferred",
+      "topic": "app-principles"
+    },
+    {
+      "id": 17,
+      "question": "UDP provides flow control and congestion control to ensure reliable delivery.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "UDP is a \"no-frills\" protocol that provides unreliable delivery and lacks flow/congestion control. TCP provides those features.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "app-principles"
+    },
+    {
+      "id": 18,
+      "question": "HTTP/1.1 introduced persistent connections, allowing multiple objects to be sent over a single TCP connection.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Persistent HTTP (HTTP/1.1) leaves the TCP connection open after sending a response, allowing subsequent objects to be requested over the same connection.",
+      "sourceSlide": 23,
+      "answerSource": "inferred",
+      "topic": "web-and-http"
+    },
+    {
+      "id": 19,
+      "question": "The HTTP response code `404` means the request succeeded and the object is enclosed.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "`200 OK` means the request succeeded. `404 Not Found` means the document was not found on the server.",
+      "sourceSlide": 28,
+      "answerSource": "inferred",
+      "topic": "web-and-http"
+    },
+    {
+      "id": 20,
+      "question": "Third-party cookies can be used by advertising networks to track user browsing behavior across multiple, unrelated websites.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Ad networks place third-party cookies on users' browsers via embedded content on first-party sites to track behavior across the web.",
+      "sourceSlides": [
+        35,
+        37
+      ],
+      "answerSource": "inferred",
+      "topic": "web-and-http"
+    },
+    {
+      "id": 21,
+      "question": "The SMTP protocol uses an intermediate pull mechanism, requiring the receiving user agent to pull messages from the sender.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "SMTP is purely a \"push\" protocol. Receiving agents use access protocols like IMAP or HTTP to \"pull\" the emails from the server.",
+      "sourceSlide": 55,
+      "answerSource": "inferred",
+      "topic": "email-protocols"
+    },
+    {
+      "id": 22,
+      "question": "The DNS system is heavily centralized, relying on a single massive server located in the US to handle all global requests.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "DNS is a distributed, hierarchical database. Centralizing it would create a massive single point of failure and extreme traffic bottlenecks.",
+      "sourceSlide": 58,
+      "answerSource": "inferred",
+      "topic": "dns"
+    },
+    {
+      "id": 23,
+      "question": "Local DNS servers cache learned mappings to improve response times, keeping them indefinitely.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Cached DNS entries expire after a specified Time-to-Live (TTL) to ensure records update if an IP address changes.",
+      "sourceSlide": 66,
+      "answerSource": "inferred",
+      "topic": "dns"
+    },
+    {
+      "id": 24,
+      "question": "P2P file distribution time scales much better than client-server because as new peers join, they bring additional upload capacity to the swarm.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "P2P has \"self-scalability\"; every new peer downloading a file also contributes upload bandwidth to the system.",
+      "sourceSlide": 75,
+      "answerSource": "inferred",
+      "topic": "p2p-applications"
+    },
+    {
+      "id": 25,
+      "question": "HTTP/3 shifts its underlying transport protocol from TCP to UDP.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "HTTP/3 uses UDP at the transport layer and implements its own reliability, security, and congestion control at the application layer to avoid TCP's connection overhead and HOL blocking.",
+      "sourceSlide": 49,
+      "answerSource": "inferred",
+      "topic": "web-caching-http2"
+    }
+  ]
+}
