@@ -67,15 +67,15 @@ Connecting billions of devices requires a hierarchical structure rather than dir
 
 ## 5. Performance: Delay, Loss, and Throughput [Slides 45-56]
 
-* **Packet Delay (**$d_{nodal}$**):** Occurs at each router and consists of four components:
+* **Packet Delay (`d_nodal`):** Occurs at each router and consists of four components:
 
-  1. *Processing delay (*$d_{proc}$*):* Checking for errors and determining the output link.
+  1. *Processing delay (`d_proc`):* Checking for errors and determining the output link.
 
-  2. *Queueing delay (*$d_{queue}$*):* Time waiting in the buffer. Spikes exponentially as traffic intensity approaches link capacity.
+  2. *Queueing delay (`d_queue`):* Time waiting in the buffer. Spikes exponentially as traffic intensity approaches link capacity.
 
-  3. *Transmission delay (*$d_{trans}$*):* Time to push the packet onto the link ($L/R$, where L is packet length and R is link bandwidth).
+  3. *Transmission delay (`d_trans`):* Time to push the packet onto the link (`L/R`, where `L` is packet length and `R` is link bandwidth).
 
-  4. *Propagation delay (*$d_{prop}$*):* Time for a bit to travel physically across the medium ($d/s$, where d is distance and s is the speed of light in the medium).
+  4. *Propagation delay (`d_prop`):* Time for a bit to travel physically across the medium (`d/s`, where `d` is distance and `s` is the speed of light in the medium).
 
 * **Throughput:** The rate (bits/sec) at which data is successfully transferred from sender to receiver. The end-to-end throughput is constrained by the **bottleneck link** (the link with the lowest capacity on the path).
 
