@@ -41,7 +41,7 @@ export function createAllQuestionsQuiz(entries: QuizEntry[]) {
     title: 'All Questions',
     description: 'A combined practice quiz containing every distinct question available for this subject.',
     source: 'Combined from all available quizzes for this subject.',
-    sourceKind: 'generated',
+    sourceKind: 'combined',
     featured: false,
     questions,
   };
