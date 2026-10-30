@@ -24,18 +24,24 @@ class Element {
   }
   get textContent() { return this.children.map(child => child.textContent).join(''); }
   set textContent(value) { this.children = value ? [{ textContent: String(value) }] : []; }
-  addEventListener(event, handler) { this.listeners.set(event, handler); }
+  addEventListener(event, handler, { signal } = {}) {
+    this.listeners.set(event, handler);
+    signal?.addEventListener('abort', () => {
+      if (this.listeners.get(event) === handler) this.listeners.delete(event);
+    }, { once: true });
+  }
   append(...children) { this.children.push(...children); }
   replaceChildren(...children) { this.children = children; }
   querySelectorAll(selector) { return selector === 'button' ? this.children.filter(child => child.tagName === 'BUTTON') : []; }
   setAttribute(name, value) { this[name] = value; }
+  removeAttribute(name) { delete this[name]; }
   focus() {}
   scrollIntoView() {}
   reportValidity() { return true; }
   click() { if (!this.disabled) this.listeners.get('click')?.({ target: this }); }
 }
 
-async function mountQuiz(questions, { saved = [], lang = 'en', mode = 'practice', originUrls = {}, failWrites = false } = {}) {
+async function mountQuiz(questions, { saved = [], lang = 'en', mode = 'practice', originUrls = {}, failWrites = false, failReads = false, localValues: storedLocalValues, sessionValues: storedSessionValues } = {}) {
   const nodes = new Map();
   const node = id => {
     if (!nodes.has(id)) nodes.set(id, new Element(id.includes('-btn') ? 'button' : 'div'));
@@ -44,11 +50,16 @@ async function mountQuiz(questions, { saved = [], lang = 'en', mode = 'practice'
   const quizId = 'programming-languages/2026/all-questions';
   const reviewKey = `cs-vault-review-v1:${quizId}`;
   const attemptKey = `cs-vault-attempt-v1:${quizId}`;
-  const localValues = new Map([[reviewKey, JSON.stringify(saved)]]);
-  const sessionValues = new Map();
-  const storage = (values, blocked = false) => ({ getItem: key => values.get(key) ?? null, setItem: (key, value) => { if (blocked) throw new Error('Quota exceeded'); values.set(key, value); }, removeItem: key => values.delete(key) });
+  const localValues = storedLocalValues ?? new Map([[reviewKey, JSON.stringify(saved)]]);
+  const sessionValues = storedSessionValues ?? new Map();
+  const storage = (values, blocked = false, blockedReads = false) => ({ getItem: key => { if (blockedReads) throw new Error('Storage blocked'); return values.get(key) ?? null; }, setItem: (key, value) => { if (blocked) throw new Error('Quota exceeded'); values.set(key, value); }, removeItem: key => values.delete(key) });
   const listeners = { document: new Map(), window: new Map() };
-  const listen = target => (event, handler) => listeners[target].set(event, [...(listeners[target].get(event) || []), handler]);
+  const listen = target => (event, handler, { signal } = {}) => {
+    listeners[target].set(event, [...(listeners[target].get(event) || []), handler]);
+    signal?.addEventListener('abort', () => {
+      listeners[target].set(event, listeners[target].get(event).filter(callback => callback !== handler));
+    }, { once: true });
+  };
   const fire = (target, event, detail = {}) => listeners[target].get(event)?.forEach(handler => handler(detail));
   const modes = ['practice', 'exam'].map(value => Object.assign(new Element('input'), { value, checked: value === mode }));
   const widget = node('quiz-widget');
@@ -65,13 +76,13 @@ async function mountQuiz(questions, { saved = [], lang = 'en', mode = 'practice'
   node('quiz-use-timer').checked = true;
   node('quiz-minutes').value = '20';
   const context = {
-    ...quizState, getPracticeQuestions, prepareQuestionOptions,
+    ...quizState, getPracticeQuestions, prepareQuestionOptions, AbortController,
     document: {
       readyState: 'complete', hidden: false, body: new Element('body'),
-      getElementById: node, createElement: tag => new Element(tag), createTextNode: textContent => ({ textContent }), addEventListener: listen('document'),
+      getElementById: node, querySelector: () => null, createElement: tag => new Element(tag), createTextNode: textContent => ({ textContent }), addEventListener: listen('document'),
     },
     window: { addEventListener: listen('window') },
-    localStorage: storage(localValues, failWrites), sessionStorage: storage(sessionValues),
+    localStorage: storage(localValues, failWrites, failReads), sessionStorage: storage(sessionValues),
     setInterval: () => 1, clearInterval() {},
   };
   const source = (await readFile(new URL('../src/scripts/quiz.ts', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '');
@@ -188,4 +199,86 @@ test('combined explanations and mistakes retain filename, original ID, localized
   assert.equal(card.lang, 'ar');
   assert.ok(card.children.some(child => child.textContent === 'Tutorial.pdf · Source page: 4'));
   assert.ok(card.children.some(child => child.children?.[0]?.href === '/CS-Vault/ar/programming-languages/2026/quiz/tutorial/'));
+});
+
+test('unfinished quizzes resume across visits while disputed questions stay outside progress and scoring', async () => {
+  const questions = [question(1), question(2), { ...question(22), status: 'disputed', reviewNote: 'Awaiting clarification.' }];
+  const first = await mountQuiz(questions);
+  first.node('start-quiz-btn').click();
+  first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+  first.node('quiz-next-btn').click();
+  const original = JSON.parse(first.localValues.get(first.attemptKey));
+  const resumed = await mountQuiz(questions, { localValues: first.localValues });
+  assert.equal(resumed.node('quiz-resume-screen').classList.contains('hidden'), false);
+  assert.equal(resumed.node('quiz-resume-solved').textContent, '1');
+  assert.equal(resumed.node('quiz-resume-left').textContent, '1');
+  assert.equal(resumed.node('quiz-resume-correct').textContent, '1');
+  resumed.node('quiz-continue-btn').click();
+  const continued = JSON.parse(resumed.sessionValues.get(resumed.attemptKey));
+  assert.deepEqual(continued.questions, original.questions);
+  assert.deepEqual(continued.answers, original.answers);
+  resumed.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+  resumed.node('quiz-next-btn').click();
+  assert.equal(resumed.node('quiz-score-ratio').textContent, '2/2');
+});
+
+test('language switching preserves results without applying saved-review updates twice', async () => {
+  const questions = [question(1)];
+  const first = await mountQuiz(questions);
+  first.node('start-quiz-btn').click();
+  first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'No').click();
+  first.node('quiz-next-btn').click();
+  const reviewBefore = first.localValues.get(first.reviewKey);
+  first.fire('document', 'astro:before-preparation', {
+    from: new URL('https://example.test/CS-Vault/programming-languages/2026/quiz/all-questions/'),
+    to: new URL('https://example.test/CS-Vault/ar/programming-languages/2026/quiz/all-questions/'),
+  });
+  const arabic = await mountQuiz(questions, { lang: 'ar', localValues: first.localValues, sessionValues: first.sessionValues });
+  assert.equal(arabic.node('quiz-result-screen').classList.contains('hidden'), false);
+  assert.equal(arabic.node('quiz-score-ratio').textContent, '0/1');
+  assert.equal(arabic.localValues.get(arabic.reviewKey), reviewBefore);
+});
+
+test('resume falls back to session storage when local storage reads and writes are blocked', async () => {
+  const questions = [question(1), question(2)];
+  const first = await mountQuiz(questions, { failWrites: true });
+  first.node('start-quiz-btn').click();
+  first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+  first.node('quiz-next-btn').click();
+  const resumed = await mountQuiz(questions, { failReads: true, failWrites: true, sessionValues: first.sessionValues });
+  assert.equal(resumed.node('quiz-resume-screen').classList.contains('hidden'), false);
+  assert.equal(resumed.node('quiz-resume-solved').textContent, '1');
+  resumed.node('quiz-continue-btn').click();
+  assert.equal(JSON.parse(resumed.sessionValues.get(resumed.attemptKey)).answers.length, 1);
+});
+
+test('page swaps release quiz handlers and allow the widget to initialize again once', async () => {
+  const mounted = await mountQuiz([question(1)]);
+  mounted.fire('document', 'astro:before-swap');
+  assert.equal(mounted.node('quiz-widget').dataset.quizBound, undefined);
+  mounted.node('start-quiz-btn').click();
+  assert.equal(mounted.sessionValues.has(mounted.attemptKey), false);
+  mounted.fire('document', 'astro:after-swap');
+  mounted.node('start-quiz-btn').click();
+  assert.equal(JSON.parse(mounted.sessionValues.get(mounted.attemptKey)).questions.length, 1);
+});
+
+test('active quizzes survive language switches when equivalent routes differ by a trailing slash', async () => {
+  for (const [from, to] of [
+    ['/CS-Vault/programming-languages/2026/quiz/all-questions', '/CS-Vault/ar/programming-languages/2026/quiz/all-questions/'],
+    ['/CS-Vault/ar/programming-languages/2026/quiz/all-questions/', '/CS-Vault/programming-languages/2026/quiz/all-questions'],
+  ]) {
+    const questions = [question(1), question(2)];
+    const first = await mountQuiz(questions);
+    first.node('start-quiz-btn').click();
+    first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+    first.node('quiz-next-btn').click();
+    const before = JSON.parse(first.sessionValues.get(first.attemptKey));
+    first.fire('document', 'astro:before-preparation', { from: new URL(from, 'https://example.test'), to: new URL(to, 'https://example.test') });
+    const switched = await mountQuiz(questions, { localValues: first.localValues, sessionValues: first.sessionValues });
+    assert.equal(switched.node('quiz-active-screen').classList.contains('hidden'), false);
+    assert.equal(switched.node('quiz-resume-screen').classList.contains('hidden'), true);
+    assert.equal(switched.node('quiz-current-question-num').textContent, '2');
+    assert.deepEqual(JSON.parse(switched.sessionValues.get(switched.attemptKey)), before);
+  }
 });

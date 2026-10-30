@@ -13,6 +13,13 @@ export default defineConfig({
   markdown: {
     processor: unified({ rehypePlugins: [summaryMarkdown] }),
   },
+  prefetch: false,
+  devToolbar: {
+    enabled: false,
+  },
+  build: {
+    inlineStylesheets: 'always',
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'ar'],
@@ -21,6 +28,9 @@ export default defineConfig({
     }
   },
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    css: {
+      devSourcemap: false,
+    },
   }
 });

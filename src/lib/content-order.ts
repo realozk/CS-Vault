@@ -22,7 +22,7 @@ interface StudyEntry {
     title: string;
     section?: Section;
     order?: number;
-    sourceKind?: 'instructor' | 'provided' | 'generated';
+    sourceKind?: 'instructor' | 'provided' | 'generated' | 'combined';
     featured?: boolean;
   };
 }
@@ -42,7 +42,7 @@ export function getStudySection(entry: StudyEntry): Section {
 
 export function compareStudyEntries(a: StudyEntry, b: StudyEntry): number {
   const left = getStudySection(a), right = getStudySection(b);
-  const sourcePriority = { instructor: 2, provided: 1, generated: 0 };
+  const sourcePriority = { instructor: 2, provided: 1, generated: 0, combined: 0 };
   return Number(left.kind === 'mixed') - Number(right.kind === 'mixed')
     || (left.number ?? 0) - (right.number ?? 0)
     || left.kind.localeCompare(right.kind)

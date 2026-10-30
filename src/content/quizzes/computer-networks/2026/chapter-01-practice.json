@@ -1,0 +1,382 @@
+{
+  "title": "Chapter 1 — Introduction",
+  "date": "2026-10-23",
+  "subject": "Computer Networks",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter_1_v8.2.pdf",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which of the following best describes the \"services\" view of the Internet?",
+      "options": [
+        "A collection of billions of interconnected devices and links.",
+        "An infrastructure that provides services to distributed applications.",
+        "A strict set of protocols governing router behavior.",
+        "A hierarchy of Tier-1 and regional ISPs."
+      ],
+      "correctAnswer": "An infrastructure that provides services to distributed applications.",
+      "explanation": "The \"services\" view defines the Internet as an infrastructure providing services (like Web, email) to distributed applications, as opposed to the \"nuts and bolts\" hardware view.",
+      "sourceSlide": 4,
+      "answerSource": "inferred",
+      "topic": "internet-basics"
+    },
+    {
+      "id": 2,
+      "question": "What defines the format, order of messages sent and received, and actions taken upon message transmission?",
+      "options": [
+        "A network edge",
+        "A physical medium",
+        "A protocol",
+        "A packet switch"
+      ],
+      "correctAnswer": "A protocol",
+      "explanation": "This is the exact definition of a network protocol provided in the lecture.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "internet-basics"
+    },
+    {
+      "id": 3,
+      "question": "Which access network technology utilizes existing dedicated telephone lines to connect to a central office?",
+      "options": [
+        "Cable (HFC)",
+        "Digital Subscriber Line (DSL)",
+        "Ethernet",
+        "Wireless LAN (WiFi)"
+      ],
+      "correctAnswer": "Digital Subscriber Line (DSL)",
+      "explanation": "DSL uses existing dedicated copper telephone lines to connect to a DSLAM in the central office, unlike Cable which uses a shared coaxial network.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "network-edge"
+    },
+    {
+      "id": 4,
+      "question": "In packet switching, what is the requirement that an entire packet must arrive at a router before it can be transmitted to the next link called?",
+      "options": [
+        "Store-and-forward",
+        "Circuit switching",
+        "Pipelining",
+        "Frequency Division Multiplexing"
+      ],
+      "correctAnswer": "Store-and-forward",
+      "explanation": "\"Store-and-forward\" dictates that a router must receive all bits of a packet before it can begin transmitting the first bit onto the outbound link.",
+      "sourceSlide": 28,
+      "answerSource": "inferred",
+      "topic": "network-core"
+    },
+    {
+      "id": 5,
+      "question": "Which type of network reserves end-to-end resources (like bandwidth) exclusively for a \"call\" between source and destination?",
+      "options": [
+        "Packet-switched network",
+        "Datacenter network",
+        "Circuit-switched network",
+        "Peer-to-peer network"
+      ],
+      "correctAnswer": "Circuit-switched network",
+      "explanation": "Circuit switching reserves end-to-end resources (like a dedicated physical line or a reserved time slot) for the duration of a call.",
+      "sourceSlide": 31,
+      "answerSource": "inferred",
+      "topic": "network-core"
+    },
+    {
+      "id": 6,
+      "question": "The time required to push a packet's bits onto a link is known as:",
+      "options": [
+        "Processing delay",
+        "Queueing delay",
+        "Transmission delay",
+        "Propagation delay"
+      ],
+      "correctAnswer": "Transmission delay",
+      "explanation": "Transmission delay is the time needed to push (transmit) the packet's bits into the link.",
+      "sourceSlides": [
+        19,
+        47
+      ],
+      "answerSource": "inferred",
+      "topic": "delay-loss-throughput"
+    },
+    {
+      "id": 7,
+      "question": "If a packet has a length of L bits and the link transmission rate is R bits/sec, what is the transmission delay?",
+      "options": [
+        "L × R",
+        "R/L",
+        "L/R",
+        "d/s"
+      ],
+      "correctAnswer": "L/R",
+      "explanation": "The formula for transmission delay is the length of the packet (L) divided by the link transmission rate (R).",
+      "sourceSlides": [
+        19,
+        47
+      ],
+      "answerSource": "inferred",
+      "topic": "delay-loss-throughput"
+    },
+    {
+      "id": 8,
+      "question": "Which delay component spikes exponentially as traffic intensity approaches the link's capacity?",
+      "options": [
+        "Propagation delay",
+        "Transmission delay",
+        "Queueing delay",
+        "Processing delay"
+      ],
+      "correctAnswer": "Queueing delay",
+      "explanation": "As traffic intensity (La/R) approaches 1, the queueing delay grows exponentially as packets pile up in the buffer.",
+      "sourceSlide": 50,
+      "answerSource": "inferred",
+      "topic": "delay-loss-throughput"
+    },
+    {
+      "id": 9,
+      "question": "The end-to-end throughput of a network path is primarily constrained by:",
+      "options": [
+        "The fastest link on the path",
+        "The bottleneck link (lowest capacity link)",
+        "The propagation speed of light",
+        "The processing power of the receiving host"
+      ],
+      "correctAnswer": "The bottleneck link (lowest capacity link)",
+      "explanation": "The bottleneck link is the link on the end-to-end path that constrains the overall throughput (it acts as the weakest link).",
+      "sourceSlide": 55,
+      "answerSource": "inferred",
+      "topic": "delay-loss-throughput"
+    },
+    {
+      "id": 10,
+      "question": "Injecting packets into a network with a fake source address is known as:",
+      "options": [
+        "Packet sniffing",
+        "Denial of Service (DoS)",
+        "IP Spoofing",
+        "Phishing"
+      ],
+      "correctAnswer": "IP Spoofing",
+      "explanation": "IP spoofing involves an attacker sending packets with a false source IP address to hide their identity or impersonate another host.",
+      "sourceSlide": 60,
+      "answerSource": "inferred",
+      "topic": "network-security"
+    },
+    {
+      "id": 11,
+      "question": "In the Internet Protocol Stack, the Transport layer processes data into units called:",
+      "options": [
+        "Messages",
+        "Segments",
+        "Datagrams",
+        "Frames"
+      ],
+      "correctAnswer": "Segments",
+      "explanation": "In the encapsulation process, the transport layer creates a \"segment\", whereas the network layer creates a \"datagram\".",
+      "sourceSlide": 71,
+      "answerSource": "inferred",
+      "topic": "protocol-layers"
+    },
+    {
+      "id": 12,
+      "question": "Which layer is responsible for the routing of datagrams from source to destination?",
+      "options": [
+        "Application Layer",
+        "Transport Layer",
+        "Network Layer",
+        "Link Layer"
+      ],
+      "correctAnswer": "Network Layer",
+      "explanation": "The network layer handles the routing of datagrams from source to destination (using protocols like IP).",
+      "sourceSlide": 66,
+      "answerSource": "inferred",
+      "topic": "protocol-layers"
+    },
+    {
+      "id": 13,
+      "question": "Which of the following is an example of unguided physical media?",
+      "options": [
+        "Twisted pair copper",
+        "Coaxial cable",
+        "Fiber optic cable",
+        "Wireless radio"
+      ],
+      "correctAnswer": "Wireless radio",
+      "explanation": "Wireless radio is an unguided medium because signals propagate freely through the air/space, unlike guided media which use a physical wire or core.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "network-edge"
+    },
+    {
+      "id": 14,
+      "question": "What is the global action of determining the source-to-destination path taken by packets called?",
+      "options": [
+        "Forwarding",
+        "Routing",
+        "Multiplexing",
+        "Encapsulation"
+      ],
+      "correctAnswer": "Routing",
+      "explanation": "Routing is the global action of determining the path, while forwarding is the local action of moving a packet from an input port to an output port.",
+      "sourceSlide": 25,
+      "answerSource": "inferred",
+      "topic": "network-core"
+    },
+    {
+      "id": 15,
+      "question": "As a message moves down the protocol stack, each layer adds its own specific header information. This process is called:",
+      "options": [
+        "Decapsulation",
+        "Encapsulation",
+        "Pipelining",
+        "Handshaking"
+      ],
+      "correctAnswer": "Encapsulation",
+      "explanation": "Encapsulation is the process where each layer wraps the payload from the layer above with its own specific header.",
+      "sourceSlides": [
+        67,
+        68,
+        69
+      ],
+      "answerSource": "inferred",
+      "topic": "protocol-layers"
+    },
+    {
+      "id": 16,
+      "question": "The Internet core is primarily a client-server architecture, while the network edge is a mesh of interconnected routers.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "It is the opposite. The edge contains the hosts (client-servers), while the network core is the mesh of interconnected routers.",
+      "sourceSlides": [
+        8,
+        10,
+        24
+      ],
+      "answerSource": "inferred",
+      "topic": "network-core"
+    },
+    {
+      "id": 17,
+      "question": "Cable Internet access uses a shared broadcast medium where bandwidth is shared among homes.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Cable uses a shared distribution network where multiple homes share the bandwidth to the cable headend.",
+      "sourceSlide": 13,
+      "answerSource": "inferred",
+      "topic": "network-edge"
+    },
+    {
+      "id": 18,
+      "question": "A botnet is often used to execute Distributed Denial of Service (DDoS) attacks.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Attackers often use a network of compromised hosts (a botnet) to overwhelm a target with bogus traffic in a DoS attack.",
+      "sourceSlide": 61,
+      "answerSource": "inferred",
+      "topic": "network-security"
+    },
+    {
+      "id": 19,
+      "question": "Propagation delay is determined by the length of the packet and the bandwidth of the link.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Propagation delay is determined by the physical distance and the propagation speed of the medium (d/s). Length/bandwidth (L/R) calculates transmission delay.",
+      "sourceSlide": 47,
+      "answerSource": "inferred",
+      "topic": "delay-loss-throughput"
+    },
+    {
+      "id": 20,
+      "question": "Time Division Multiplexing (TDM) divides a link's capacity by allocating specific frequency bands to different connections.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "TDM divides time into slots. FDM (Frequency Division Multiplexing) divides the capacity into frequency bands.",
+      "sourceSlide": 32,
+      "answerSource": "inferred",
+      "topic": "network-core"
+    },
+    {
+      "id": 21,
+      "question": "Packet switching is generally better for handling \"bursty\" data than circuit switching.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Packet switching allows for resource sharing and handles unexpected/bursty traffic better than circuit switching, which leaves reserved resources idle when not in use.",
+      "sourceSlide": 34,
+      "answerSource": "inferred",
+      "topic": "network-core"
+    },
+    {
+      "id": 22,
+      "question": "The OSI reference model contains exactly the same five layers as the standard Internet protocol stack.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "The OSI model has 7 layers. It includes Presentation and Session layers, which are missing from the 5-layer Internet protocol stack.",
+      "sourceSlide": 73,
+      "answerSource": "inferred",
+      "topic": "protocol-layers"
+    },
+    {
+      "id": 23,
+      "question": "Throughput can never exceed the capacity of the bottleneck link on a path.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "A flow's end-to-end throughput is dictated by the slowest link on the path (the bottleneck link).",
+      "sourceSlide": 55,
+      "answerSource": "inferred",
+      "topic": "delay-loss-throughput"
+    },
+    {
+      "id": 24,
+      "question": "A \"traceroute\" program measures the delay from a source host to each router along the path to a destination.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "The traceroute program works by sending probes to measure the delay to each router along the path toward a destination.",
+      "sourceSlide": 51,
+      "answerSource": "inferred",
+      "topic": "delay-loss-throughput"
+    },
+    {
+      "id": 25,
+      "question": "The physical layer is responsible for moving entire frames from one network element to an adjacent network element.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "The Link layer transfers frames between neighboring elements. The Physical layer is responsible for transferring the individual bits \"on the wire.\"",
+      "sourceSlide": 66,
+      "answerSource": "inferred",
+      "topic": "protocol-layers"
+    }
+  ]
+}

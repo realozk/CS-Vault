@@ -96,6 +96,26 @@ export function readAttempt(raw: string | null, bank: Question[]): QuizAttempt |
   } catch { return null; }
 }
 
+export interface AttemptProgress {
+  total: number;
+  solved: number;
+  left: number;
+  correct: number;
+  wrong: number;
+}
+
+export function attemptProgress(attempt: QuizAttempt, bank: Question[]): AttemptProgress {
+  const byId = new Map(bank.map(q => [q.id, q]));
+  const total = attempt.questions.length;
+  const solved = attempt.answers.length;
+  const left = Math.max(0, total - solved);
+  let correct = 0;
+  for (const [id, selected] of attempt.answers) {
+    if (byId.get(id)?.correctAnswer === selected) correct++;
+  }
+  return { total, solved, left, correct, wrong: solved - correct };
+}
+
 // A content edit invalidates an old saved answer, even when its ID stays the same.
 export const questionSignature = (q: Question): string =>
   JSON.stringify([q.question, q.code || '', canShuffleOptions(q) ? [...q.options].sort() : q.options, q.correctAnswer, ...(!canShuffleOptions(q) ? [false] : [])]);

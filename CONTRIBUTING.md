@@ -94,12 +94,15 @@ Create `src/content/quizzes/<subject>/<year>/<filename>.json`:
 
 Keep question IDs unique and choices distinct. `correctAnswer` must exactly match
 one choice. Check every answer against the source before submitting.
+Refer to answers by their text in explanations, since choices are shuffled and
+their displayed letters can change.
 
 Optional quiz fields include `description`, `featured` (default false),
 `sourceAcademicYear` (a string such as `2023–2024`), `sourceTerm`, and `updatedAt`
 (an ISO date). Catalog `year` identifies the course collection, not the source exam year.
 `sourceKind` is `instructor` (red: instructor/Blackboard), `provided` (orange:
 collected or older material), or `generated` (regular: fully AI-generated).
+`combined` uses regular styling for a quiz assembled from existing quizzes.
 Classify by the origin of the questions; keep `answerSource` separate to identify
 how each answer was determined. Optional question fields include
 `code`, `topic`, `sourceSlide`, `sourcePage`, and `optionsSource`

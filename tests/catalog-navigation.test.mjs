@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import ts from 'typescript';
 import { courseKey, courseLabel, courseSearchNames, hasMultipleCollections, resolveCourse } from '../src/lib/course-catalog.ts';
+import { createSupplementaryQuizzes } from '../src/lib/quiz-routes.ts';
 
 const oldCourse = { slug: 'operating-systems', name: 'Operating Systems', name_ar: 'نظم التشغيل', subject_code: 'CS3608', year: 2026, year_level: 3, semester: 1 };
 const nextCourse = { ...oldCourse, name: 'Operating Systems II', name_ar: 'نظم التشغيل ٢', subject_code: 'CS4608', year: 2027 };
@@ -35,6 +36,7 @@ test('module names use their own collection edition and default to a year with m
     resolveCourse: (name, year) => resolveCourse(name, year, catalog),
     getCollection: async name => name === 'summaries' ? [{ id: 'operating-systems/2027/chapter-01', data: { date: new Date('2026-10-18') } }] : [],
     validateContentMetadata() {},
+    createSupplementaryQuizzes,
   });
   const modules = await exports.getModules('ar');
   assert.equal(modules.find(module => module.subject === 'operating-systems' && module.year === '2027').subjectName, nextCourse.name_ar);
@@ -48,7 +50,7 @@ const node = (attrs = {}) => {
   const listeners = new Map();
   const classes = new Set();
   const element = {
-    attrs, listeners, classes, children: [], value: '', textContent: '',
+    attrs, listeners, classes, children: [], dataset: {}, value: '', textContent: '',
     getAttribute: name => attrs[name] ?? null,
     setAttribute: (name, value) => { attrs[name] = value; },
     addEventListener: (name, callback) => { listeners.set(name, callback); },
@@ -83,7 +85,7 @@ async function homeHarness(url) {
   };
   const source = withoutImports(await readFile(new URL('../src/scripts/home.ts', import.meta.url), 'utf8'));
   vm.runInNewContext(transpile(source), {
-    window, URL, Event, console, refreshNewContentBadges() {}, escapeHTML: value => value,
+    window, URL, Event, AbortController, console, refreshNewContentBadges() {}, escapeHTML: value => value,
     setTimeout: callback => { callback(); return 1; }, clearTimeout() {},
     document: {
       querySelector: selector => selector === '#global-search-input' ? nodes['global-search-input'] : null,
@@ -132,7 +134,7 @@ test('language switching retains current query and summary fragment, including a
     const link = node({ href: target });
     const windowListeners = new Map();
     vm.runInNewContext(transpile(source), {
-      URL, document: { querySelector: () => link },
+      URL, document: { querySelector: () => link, addEventListener() {} },
       window: { get location() { return location; }, addEventListener: (name, callback) => { windowListeners.set(name, callback); } },
     });
     assert.equal(link.href, `https://example.test${target}?year=3#summary-content-chapter-02`);
@@ -143,4 +145,24 @@ test('language switching retains current query and summary fragment, including a
     windowListeners.get('locationchange')();
     assert.equal(link.href, `https://example.test${target}?year=1#summary-content-chapter-04`);
   }
+});
+
+test('language links bind to the new page after client navigation and retain its current query and fragment', async () => {
+  const layout = await readFile(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
+  const source = layout.match(/<script>\s*(\/\/ Static pages[\s\S]*?)<\/script>/)[1];
+  let location = new URL('https://example.test/CS-Vault/?year=3');
+  let link = node({ href: '/CS-Vault/ar/' });
+  const listeners = new Map();
+  vm.runInNewContext(transpile(source), {
+    URL,
+    document: { querySelector: () => link, addEventListener: (name, callback) => listeners.set(name, callback) },
+    window: { get location() { return location; }, addEventListener() {} },
+  });
+  location = new URL('https://example.test/CS-Vault/computer-networks/2026/?source=friend#summary-content-chapter-03-transport-layer');
+  link = node({ href: '/CS-Vault/ar/computer-networks/2026/' });
+  listeners.get('astro:after-swap')();
+  assert.equal(link.href, 'https://example.test/CS-Vault/ar/computer-networks/2026/?source=friend#summary-content-chapter-03-transport-layer');
+  location.hash = '#subject-quizzes';
+  link.listeners.get('click')();
+  assert.equal(link.href, 'https://example.test/CS-Vault/ar/computer-networks/2026/?source=friend#subject-quizzes');
 });

@@ -22,7 +22,8 @@
       "explanation": "The lecture says developers must be prepared to learn different languages; conceptual study supports learning rather than eliminating it.",
       "sourceSlide": 3,
       "answerSource": "inferred",
-      "topic": "reasons-domains"
+      "topic": "reasons-domains",
+      "sourceLecture": 1
     },
     {
       "id": 2,
@@ -37,7 +38,8 @@
       "explanation": "The lecture describes web software as an eclectic collection including HTML, PHP, and Java examples.",
       "sourceSlide": 5,
       "answerSource": "inferred",
-      "topic": "reasons-domains"
+      "topic": "reasons-domains",
+      "sourceLecture": 1
     },
     {
       "id": 3,
@@ -52,7 +54,8 @@
       "explanation": "Operator overloading gives one symbol different meanings, which can increase what the reader must infer.",
       "sourceSlide": 7,
       "answerSource": "inferred",
-      "topic": "evaluation"
+      "topic": "evaluation",
+      "sourceLecture": 1
     },
     {
       "id": 4,
@@ -67,7 +70,8 @@
       "explanation": "Orthogonality depends on consistent combinations; numerous exceptions reduce predictability.",
       "sourceSlide": 7,
       "answerSource": "inferred",
-      "topic": "evaluation"
+      "topic": "evaluation",
+      "sourceLecture": 1
     },
     {
       "id": 5,
@@ -82,7 +86,8 @@
       "explanation": "The lecture names simplicity/orthogonality, abstraction, and expressivity as writability characteristics.",
       "sourceSlide": 9,
       "answerSource": "inferred",
-      "topic": "evaluation"
+      "topic": "evaluation",
+      "sourceLecture": 1
     },
     {
       "id": 6,
@@ -97,7 +102,8 @@
       "explanation": "Checking before execution can avoid the cost of repeatedly checking during execution; it does not prove full correctness.",
       "sourceSlide": 10,
       "answerSource": "inferred",
-      "topic": "evaluation"
+      "topic": "evaluation",
+      "sourceLecture": 1
     },
     {
       "id": 7,
@@ -112,7 +118,8 @@
       "explanation": "Poor readability and writability can make programs less reliable by forcing awkward approaches.",
       "sourceSlide": 10,
       "answerSource": "inferred",
-      "topic": "evaluation"
+      "topic": "evaluation",
+      "sourceLecture": 1
     },
     {
       "id": 8,
@@ -127,7 +134,8 @@
       "explanation": "The cost criterion concerns the ultimate total cost throughout development and use.",
       "sourceSlide": 11,
       "answerSource": "inferred",
-      "topic": "evaluation"
+      "topic": "evaluation",
+      "sourceLecture": 1
     },
     {
       "id": 9,
@@ -142,7 +150,8 @@
       "explanation": "Well-definedness concerns completeness and precision of the official language definition.",
       "sourceSlide": 12,
       "answerSource": "inferred",
-      "topic": "evaluation"
+      "topic": "evaluation",
+      "sourceLecture": 1
     },
     {
       "id": 10,
@@ -157,7 +166,8 @@
       "explanation": "The lecture shows both instructions and data in memory, with transfers to and from the CPU.",
       "sourceSlide": 14,
       "answerSource": "inferred",
-      "topic": "architecture-paradigms"
+      "topic": "architecture-paradigms",
+      "sourceLecture": 1
     },
     {
       "id": 11,
@@ -172,7 +182,8 @@
       "explanation": "Instructions may execute faster than they can be supplied through the memory-processor connection.",
       "sourceSlide": 25,
       "answerSource": "inferred",
-      "topic": "implementation-tools"
+      "topic": "implementation-tools",
+      "sourceLecture": 1
     },
     {
       "id": 12,
@@ -187,7 +198,8 @@
       "explanation": "The late-1960s slide emphasizes people efficiency, improved control structures, and structured programming.",
       "sourceSlide": 17,
       "answerSource": "inferred",
-      "topic": "architecture-paradigms"
+      "topic": "architecture-paradigms",
+      "sourceLecture": 1
     },
     {
       "id": 13,
@@ -202,7 +214,8 @@
       "explanation": "Scheme and ML appear in the functional category, where computation uses function application.",
       "sourceSlide": 18,
       "answerSource": "inferred",
-      "topic": "architecture-paradigms"
+      "topic": "architecture-paradigms",
+      "sourceLecture": 1
     },
     {
       "id": 14,
@@ -217,7 +230,8 @@
       "explanation": "The lecture's imperative category includes languages supporting object orientation as well as scripting and visual languages.",
       "sourceSlide": 18,
       "answerSource": "inferred",
-      "topic": "architecture-paradigms"
+      "topic": "architecture-paradigms",
+      "sourceLecture": 1
     },
     {
       "id": 15,
@@ -232,7 +246,8 @@
       "explanation": "Pointers provide flexibility but can make reliable programming harder; this is the lecture's third trade-off.",
       "sourceSlide": 19,
       "answerSource": "inferred",
-      "topic": "design-tradeoffs"
+      "topic": "design-tradeoffs",
+      "sourceLecture": 1
     },
     {
       "id": 16,
@@ -247,7 +262,8 @@
       "explanation": "The compilation slide lists these four phases in order, ending with machine-code generation.",
       "sourceSlide": 22,
       "answerSource": "inferred",
-      "topic": "implementation-tools"
+      "topic": "implementation-tools",
+      "sourceLecture": 1
     },
     {
       "id": 17,
@@ -262,7 +278,8 @@
       "explanation": "The lecture defines the executable image as the combined user and system code.",
       "sourceSlide": 24,
       "answerSource": "inferred",
-      "topic": "implementation-tools"
+      "topic": "implementation-tools",
+      "sourceLecture": 1
     },
     {
       "id": 18,
@@ -277,7 +294,8 @@
       "explanation": "The pure interpretation model passes source and input to an interpreter, without a separate compilation stage.",
       "sourceSlide": 26,
       "answerSource": "inferred",
-      "topic": "implementation-tools"
+      "topic": "implementation-tools",
+      "sourceLecture": 1
     },
     {
       "id": 19,
@@ -292,7 +310,8 @@
       "explanation": "The lecture describes the JVM as a bytecode interpreter and run-time system supporting execution across machines.",
       "sourceSlide": 28,
       "answerSource": "inferred",
-      "topic": "implementation-tools"
+      "topic": "implementation-tools",
+      "sourceLecture": 1
     },
     {
       "id": 20,
@@ -307,7 +326,8 @@
       "explanation": "Programming environments collect development tools; the lecture gives UNIX, Visual Studio .NET, and NetBeans examples.",
       "sourceSlide": 32,
       "answerSource": "inferred",
-      "topic": "implementation-tools"
+      "topic": "implementation-tools",
+      "sourceLecture": 1
     }
   ]
 }

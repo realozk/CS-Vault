@@ -11,6 +11,7 @@ export interface Question {
   shuffleOptions?: boolean;
   correctAnswer: string;
   explanation?: string;
+  sourceLecture?: number;
   sourceSlide?: number;
   sourceSlides?: number[];
   sourcePage?: number;
@@ -39,7 +40,7 @@ export interface QuizData {
   sourceTerm?: string;
   updatedAt?: Date | string;
   source?: string;
-  sourceKind?: 'generated' | 'provided' | 'instructor';
+  sourceKind?: 'generated' | 'provided' | 'instructor' | 'combined';
   featured?: boolean;
 }
 

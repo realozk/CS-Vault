@@ -70,11 +70,11 @@ const icon = icons[name];
 
 {icon && (
   icon.fill ? (
-    <svg class={className} fill="currentColor" viewBox={icon.viewBox || '0 0 24 24'} xmlns="http://www.w3.org/2000/svg">
+    <svg aria-hidden="true" class={className} fill="currentColor" viewBox={icon.viewBox || '0 0 24 24'} xmlns="http://www.w3.org/2000/svg">
       {icon.paths.map((d) => <path d={d}></path>)}
     </svg>
   ) : (
-    <svg class={className} fill="none" stroke="currentColor" stroke-width={icon.strokeWidth || '2'} viewBox={icon.viewBox || '0 0 24 24'} xmlns="http://www.w3.org/2000/svg">
+    <svg aria-hidden="true" class={className} fill="none" stroke="currentColor" stroke-width={icon.strokeWidth || '2'} viewBox={icon.viewBox || '0 0 24 24'} xmlns="http://www.w3.org/2000/svg">
       {icon.paths.map((d) => <path stroke-linecap="round" stroke-linejoin="round" d={d}></path>)}
     </svg>
   )

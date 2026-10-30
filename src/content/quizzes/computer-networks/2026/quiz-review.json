@@ -1,0 +1,182 @@
+{
+  "title": "Quiz Review",
+  "date": "2026-10-23",
+  "description": "10 solved network quiz questions covering Chapters 1-3 with original choices, explanations, and lecture/slide references.",
+  "subject": "Computer Networks",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "network_quiz_solved.md",
+  "sourceKind": "provided",
+  "featured": true,
+  "questions": [
+    {
+      "id": 1,
+      "question": "Assume the length of a packet is 8000 bits. The speed of light propagation delay on each link is 3 × 10^8 m/sec. What is the propagation delay of link 1 (Transmission rate: 10 Mbps, Link Length: 2 Km)?",
+      "options": [
+        "0.0067 ms",
+        "0.80 ms",
+        "1.67 ms",
+        "0.0133 ms"
+      ],
+      "correctAnswer": "0.0067 ms",
+      "explanation": "Propagation delay = distance / speed = 2000 m / (3 × 10^8 m/s) = 0.00000667 seconds = 0.0067 ms.",
+      "topic": "delay-loss-throughput",
+      "sourceLecture": 1,
+      "sourceSlide": 47,
+      "optionsSource": "provided",
+      "answerSource": "marked"
+    },
+    {
+      "id": 2,
+      "question": "Assume a constant transmission rate of R=2000000 bps, a constant packet-length L=5000 bits, and a is the average rate of packets/second. Traffic intensity I=(La)/R and the queuing delay is calculated as I × (L/R) × (1-I) for I<1. Assuming that a=33, what is the queuing delay? Give your answer in milliseconds (ms).",
+      "options": [
+        "0.21 ms",
+        "0.020 ms",
+        "0.19 ms",
+        "0.18 ms"
+      ],
+      "correctAnswer": "0.19 ms",
+      "explanation": "I = (5000 × 33) / 2000000 = 0.0825. Using the specific formula provided in the question prompt: Queuing Delay = 0.0825 × (5000/2000000) × (1 - 0.0825) = 0.000189 seconds = 0.19 ms.",
+      "topic": "delay-loss-throughput",
+      "sourceLecture": 1,
+      "sourceSlide": 50,
+      "optionsSource": "provided",
+      "answerSource": "marked"
+    },
+    {
+      "id": 3,
+      "question": "In AIMD sender increase their sending rate by 1/2 MSS every RTT until loss detected.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "In AIMD, the sender increases the sending rate by 1 MSS (Maximum Segment Size) every RTT, not 1/2 MSS.",
+      "topic": "congestion-control",
+      "sourceLecture": 3,
+      "sourceSlide": 110,
+      "answerSource": "marked"
+    },
+    {
+      "id": 4,
+      "question": "What is the transmission delay for a 20 Kbits packet pushed into a 100 Mbps link.",
+      "options": [
+        "20 ms",
+        "2 ms",
+        "0.2 ms",
+        "0.02 ms"
+      ],
+      "correctAnswer": "0.2 ms",
+      "explanation": "Transmission delay = L / R = 20,000 bits / 100,000,000 bps = 0.0002 seconds = 0.2 ms.",
+      "topic": "delay-loss-throughput",
+      "sourceLecture": 1,
+      "sourceSlide": 47,
+      "optionsSource": "provided",
+      "answerSource": "marked"
+    },
+    {
+      "id": 5,
+      "question": "Which HTTP request method is used to send data to server",
+      "options": [
+        "POST method",
+        "GET method",
+        "HEAD method",
+        "PUT method"
+      ],
+      "correctAnswer": "GET method",
+      "explanation": "The GET method can be used to send user data to the server by including the data in the URL field of the HTTP GET request message (following a '?').",
+      "topic": "web-and-http",
+      "sourceLecture": 2,
+      "sourceSlide": 26,
+      "optionsSource": "provided",
+      "answerSource": "marked"
+    },
+    {
+      "id": 6,
+      "question": "Select the HTTP response status code that indicates the requested document not found on the server",
+      "options": [
+        "200",
+        "301",
+        "400",
+        "404"
+      ],
+      "correctAnswer": "404",
+      "explanation": "The 404 status code stands for \"Not Found\", indicating the requested document is not on the server.",
+      "topic": "web-and-http",
+      "sourceLecture": 2,
+      "sourceSlide": 28,
+      "optionsSource": "provided",
+      "answerSource": "marked"
+    },
+    {
+      "id": 7,
+      "question": "Which application layer protocol is used to transfer email message from client to server:",
+      "options": [
+        "HTTP",
+        "FTP",
+        "IMAP",
+        "SMTP"
+      ],
+      "correctAnswer": "SMTP",
+      "explanation": "SMTP (Simple Mail Transfer Protocol) is used to push/transfer email messages from the client to the mail server.",
+      "topic": "email-protocols",
+      "sourceLecture": 2,
+      "sourceSlide": 51,
+      "optionsSource": "provided",
+      "answerSource": "marked"
+    },
+    {
+      "id": 8,
+      "question": "Which of the following features describe servers:",
+      "options": [
+        "Servers do not communicate directly with each other.",
+        "Servers have dynamic IP addresses.",
+        "Servers are often used in data centers",
+        "None of the above"
+      ],
+      "correctAnswer": "Servers are often used in data centers",
+      "explanation": "Servers are always-on hosts, typically have permanent IP addresses, and are often grouped in data centers for scaling.",
+      "topic": "app-principles",
+      "sourceLecture": 2,
+      "sourceSlide": 4,
+      "optionsSource": "provided",
+      "answerSource": "marked"
+    },
+    {
+      "id": 9,
+      "question": "Calculate the TCP rate having a window size 262,136 bits and the RTT is 0.015 seconds.",
+      "options": [
+        "2,184,466 bps",
+        "3,932 bps",
+        "1,048,544 bps",
+        "17,475,733.33 bps"
+      ],
+      "correctAnswer": "17,475,733.33 bps",
+      "explanation": "TCP Rate ≈ cwnd / RTT = 262,136 bits / 0.015 seconds = 17,475,733.33 bps.",
+      "topic": "congestion-control",
+      "sourceLecture": 3,
+      "sourceSlide": 112,
+      "optionsSource": "provided",
+      "answerSource": "marked"
+    },
+    {
+      "id": 10,
+      "question": "Calculate the sender utilization for Stop-and-wait protocol having 2000 bits packet size, link bandwidth 10 Mbps, propagation delay 5 ms?",
+      "options": [
+        "1.96%",
+        "7%",
+        "19%",
+        "95%"
+      ],
+      "correctAnswer": "1.96%",
+      "explanation": "Transmission delay (L/R) = 2000 / 10,000,000 = 0.2 ms. RTT = 2 × 5 ms = 10 ms. Sender utilization U = (L/R) / (RTT + L/R) = 0.2 / 10.2 = 0.0196 or 1.96%.",
+      "topic": "reliable-data-transfer",
+      "sourceLecture": 3,
+      "sourceSlide": 57,
+      "optionsSource": "provided",
+      "answerSource": "marked"
+    }
+  ]
+}

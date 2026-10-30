@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
-interface Props { sourceKind?: 'generated' | 'provided' | 'instructor'; combined?: boolean; }
+interface Props { sourceKind?: 'generated' | 'provided' | 'instructor' | 'combined'; combined?: boolean; }
 const { sourceKind = 'generated', combined = false } = Astro.props;
 const t = useTranslations(getLangFromUrl(Astro.url));
 const labelKind = combined ? 'combined' : sourceKind;

@@ -1,0 +1,453 @@
+{
+  "title": "Chapter 5 — CPU Scheduling",
+  "date": "2026-10-30",
+  "subject": "Operating Systems",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter 5 Slides",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Process execution consists of a cycle of:",
+      "options": [
+        "CPU execution and memory fetching",
+        "CPU execution and I/O wait",
+        "I/O wait and network polling",
+        "Thread creation and termination"
+      ],
+      "correctAnswer": "CPU execution and I/O wait",
+      "explanation": "Process execution alternates between CPU execution (CPU burst) and waiting for I/O (I/O burst).",
+      "sourceSlide": 4,
+      "answerSource": "inferred",
+      "topic": "scheduling-concepts"
+    },
+    {
+      "id": 2,
+      "question": "A histogram of CPU-burst times typically shows:",
+      "options": [
+        "A large number of long bursts",
+        "A large number of short bursts",
+        "An equal distribution of all burst lengths",
+        "Only medium-length bursts"
+      ],
+      "correctAnswer": "A large number of short bursts",
+      "explanation": "CPU-burst distributions characteristically show a large number of short CPU bursts and a small number of long CPU bursts.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "scheduling-concepts"
+    },
+    {
+      "id": 3,
+      "question": "The CPU scheduler makes decisions when a process does all of the following EXCEPT:",
+      "options": [
+        "Switches from running to waiting state",
+        "Switches from running to ready state",
+        "Executes an arithmetic instruction",
+        "Terminates"
+      ],
+      "correctAnswer": "Executes an arithmetic instruction",
+      "explanation": "CPU scheduling decisions occur when a process switches from running to waiting, running to ready, waiting to ready, or terminates—not during normal arithmetic instruction execution.",
+      "sourceSlide": 6,
+      "answerSource": "inferred",
+      "topic": "scheduling-concepts"
+    },
+    {
+      "id": 4,
+      "question": "Which scheduling scheme allows a process to keep the CPU until it terminates or switches to the waiting state?",
+      "options": [
+        "Preemptive",
+        "Nonpreemptive",
+        "Round Robin",
+        "Time-slicing"
+      ],
+      "correctAnswer": "Nonpreemptive",
+      "explanation": "Under Nonpreemptive (cooperative) scheduling, once the CPU is allocated to a process, the process keeps the CPU until it releases it by terminating or switching to the waiting state.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "scheduling-concepts"
+    },
+    {
+      "id": 5,
+      "question": "Preemptive scheduling can result in what problem when data are shared among several processes?",
+      "options": [
+        "Convoy effect",
+        "Race conditions",
+        "Dispatch latency",
+        "Memory fragmentation"
+      ],
+      "correctAnswer": "Race conditions",
+      "explanation": "Preempting a process while it is updating shared data can lead to Race conditions if another process accesses the inconsistent data.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "scheduling-concepts"
+    },
+    {
+      "id": 6,
+      "question": "The module that gives control of the CPU to the process selected by the short-term scheduler is the:",
+      "options": [
+        "Dispatcher",
+        "Interrupt handler",
+        "System bootloader",
+        "Garbage collector"
+      ],
+      "correctAnswer": "Dispatcher",
+      "explanation": "The Dispatcher gives control of the CPU to the process selected by the short-term scheduler by switching context, switching to user mode, and jumping to the proper program location.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "dispatcher-criteria"
+    },
+    {
+      "id": 7,
+      "question": "The time it takes for the dispatcher to stop one process and start another running is called:",
+      "options": [
+        "Throughput",
+        "Turnaround time",
+        "Dispatch latency",
+        "Response time"
+      ],
+      "correctAnswer": "Dispatch latency",
+      "explanation": "Dispatch latency is the time required for the dispatcher to stop one process and start another running.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "dispatcher-criteria"
+    },
+    {
+      "id": 8,
+      "question": "The amount of time a process has been waiting in the ready queue is called:",
+      "options": [
+        "Turnaround time",
+        "Waiting time",
+        "Response time",
+        "Throughput"
+      ],
+      "correctAnswer": "Waiting time",
+      "explanation": "Waiting time is the sum of the periods a process spends waiting in the ready queue.",
+      "sourceSlide": 11,
+      "answerSource": "inferred",
+      "topic": "dispatcher-criteria"
+    },
+    {
+      "id": 9,
+      "question": "A scheduling algorithm aims to minimize which of the following?",
+      "options": [
+        "CPU utilization",
+        "Throughput",
+        "Turnaround time",
+        "Number of processes"
+      ],
+      "correctAnswer": "Turnaround time",
+      "explanation": "Scheduling algorithms aim to maximize CPU utilization and throughput while minimizing turnaround time, waiting time, and response time.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "dispatcher-criteria"
+    },
+    {
+      "id": 10,
+      "question": "The phenomenon where short processes wait behind a long process in FCFS scheduling is called:",
+      "options": [
+        "Starvation",
+        "Aging",
+        "Dispatch latency",
+        "Convoy effect"
+      ],
+      "correctAnswer": "Convoy effect",
+      "explanation": "In FCFS scheduling, short processes waiting for one long CPU-bound process to release the CPU is known as the Convoy effect.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 11,
+      "question": "Which scheduling algorithm gives the minimum average waiting time for a given set of processes?",
+      "options": [
+        "FCFS",
+        "SJF (Shortest-Job-First)",
+        "Priority",
+        "Round Robin"
+      ],
+      "correctAnswer": "SJF (Shortest-Job-First)",
+      "explanation": "Shortest-Job-First (SJF) is provably optimal because moving a short process before a long one reduces the waiting time of the short process more than it increases the waiting time of the long process.",
+      "sourceSlide": 15,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 12,
+      "question": "How do operating systems typically implement SJF scheduling?",
+      "options": [
+        "By asking the user",
+        "By predicting the next CPU burst using exponential averaging",
+        "By running all processes for 1 second first",
+        "By looking at the process file size"
+      ],
+      "correctAnswer": "By predicting the next CPU burst using exponential averaging",
+      "explanation": "Because the exact length of the next CPU burst cannot be known in advance, the OS estimates it using exponential averaging of previous measured CPU bursts.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 13,
+      "question": "The preemptive version of Shortest-Job-First (SJF) scheduling is:",
+      "options": [
+        "Round Robin",
+        "First-Come, First-Served",
+        "Multilevel Feedback Queue",
+        "Shortest-Remaining-Time-First (SRTF)"
+      ],
+      "correctAnswer": "Shortest-Remaining-Time-First (SRTF)",
+      "explanation": "Shortest-Remaining-Time-First (SRTF) is the preemptive version of SJF, preempting the running process if a newly arrived process has a shorter burst than the remaining time.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 14,
+      "question": "In Round Robin (RR) scheduling, what happens when a process's time quantum elapses?",
+      "options": [
+        "The process is terminated",
+        "The process is preempted and added to the end of the ready queue",
+        "The process receives a higher priority",
+        "The process blocks for I/O"
+      ],
+      "correctAnswer": "The process is preempted and added to the end of the ready queue",
+      "explanation": "In Round Robin scheduling, when a process's time quantum expires, a timer interrupt preempts the process and places it at the tail of the ready queue.",
+      "sourceSlide": 21,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 15,
+      "question": "If the time quantum in Round Robin is extremely large, the scheduling algorithm behaves like:",
+      "options": [
+        "SJF",
+        "SRTF",
+        "FCFS",
+        "Priority scheduling"
+      ],
+      "correctAnswer": "FCFS",
+      "explanation": "If the time quantum is very large, each process finishes its entire CPU burst before the quantum expires, causing Round Robin to degenerate into FCFS.",
+      "sourceSlide": 21,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 16,
+      "question": "In Round Robin, the time quantum should ideally be large with respect to the:",
+      "options": [
+        "CPU burst",
+        "Context switch time",
+        "I/O burst",
+        "Process lifetime"
+      ],
+      "correctAnswer": "Context switch time",
+      "explanation": "The time quantum must be large compared to the context switch time so that context switching overhead remains a small fraction of CPU time.",
+      "sourceSlide": 21,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 17,
+      "question": "In priority scheduling, the CPU is allocated to the process with the highest priority. A common problem with this is:",
+      "options": [
+        "Convoy effect",
+        "Starvation",
+        "Thrashing",
+        "Deadlock"
+      ],
+      "correctAnswer": "Starvation",
+      "explanation": "Priority scheduling can cause Starvation (indefinite blocking), where low-priority processes wait indefinitely because higher-priority processes keep arriving.",
+      "sourceSlide": 25,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 18,
+      "question": "What is the standard solution to the problem of starvation in priority scheduling?",
+      "options": [
+        "Aging",
+        "Preemption",
+        "Time slicing",
+        "Round Robin"
+      ],
+      "correctAnswer": "Aging",
+      "explanation": "Aging prevents starvation by gradually increasing the priority of processes that wait in the system for a long time.",
+      "sourceSlide": 25,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 19,
+      "question": "A scheduling system where the ready queue consists of multiple queues with different algorithms is called:",
+      "options": [
+        "Shortest-Job-First",
+        "Multilevel Queue",
+        "Simple Priority Scheduling",
+        "FCFS"
+      ],
+      "correctAnswer": "Multilevel Queue",
+      "explanation": "A Multilevel Queue scheduler partitions the ready queue into several separate queues, each with its own scheduling algorithm.",
+      "sourceSlide": 28,
+      "answerSource": "inferred",
+      "topic": "advanced-scheduling"
+    },
+    {
+      "id": 20,
+      "question": "A Multilevel Feedback Queue scheduler allows a process to:",
+      "options": [
+        "Ignore its time quantum",
+        "Move between the various queues",
+        "Change its actual CPU burst length",
+        "Bypass the dispatcher"
+      ],
+      "correctAnswer": "Move between the various queues",
+      "explanation": "Unlike a fixed multilevel queue, a Multilevel Feedback Queue allows a process to move between queues based on its CPU burst behavior and waiting time.",
+      "sourceSlide": 31,
+      "answerSource": "inferred",
+      "topic": "advanced-scheduling"
+    },
+    {
+      "id": 21,
+      "question": "Which scheduling model resolves scheduling competition *within* the process (between user-level threads)?",
+      "options": [
+        "System-contention scope (SCS)",
+        "Process-contention scope (PCS)",
+        "Global-contention scope (GCS)",
+        "Kernel-contention scope (KCS)"
+      ],
+      "correctAnswer": "Process-contention scope (PCS)",
+      "explanation": "Under Process-contention scope (PCS), the thread library schedules user-level threads onto available LWPs, so competition for the CPU takes place among threads belonging to the same process.",
+      "sourceSlide": 33,
+      "answerSource": "inferred",
+      "topic": "advanced-scheduling"
+    },
+    {
+      "id": 22,
+      "question": "Kernel thread scheduled onto available CPU cores represents:",
+      "options": [
+        "Process-contention scope (PCS)",
+        "System-contention scope (SCS)",
+        "Multilevel scope",
+        "Dispatcher scope"
+      ],
+      "correctAnswer": "System-contention scope (SCS)",
+      "explanation": "To decide which kernel-level thread to schedule onto a physical CPU core, the kernel uses System-contention scope (SCS), where all threads in the system compete.",
+      "sourceSlide": 33,
+      "answerSource": "inferred",
+      "topic": "advanced-scheduling"
+    },
+    {
+      "id": 23,
+      "question": "Which of the following is NOT an architecture for Multiple-Processor Scheduling?",
+      "options": [
+        "Multicore CPUs",
+        "Multithreaded cores",
+        "NUMA systems",
+        "Single-core pipelining"
+      ],
+      "correctAnswer": "Single-core pipelining",
+      "explanation": "Multiple-processor scheduling architectures discussed in the lecture include multicore CPUs, multithreaded cores, NUMA systems, and heterogeneous multiprocessing—not single-core pipelining.",
+      "sourceSlide": 34,
+      "answerSource": "inferred",
+      "topic": "advanced-scheduling"
+    },
+    {
+      "id": 24,
+      "question": "A smaller integer in priority scheduling typically represents:",
+      "options": [
+        "Lower priority",
+        "Higher priority",
+        "Unknown priority",
+        "Time quantum"
+      ],
+      "correctAnswer": "Higher priority",
+      "explanation": "In the textbook and lecture convention, priorities are represented by integers where a smaller integer indicates a higher priority.",
+      "sourceSlide": 25,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 25,
+      "question": "The SJF algorithm is a special case of which scheduling algorithm?",
+      "options": [
+        "Priority scheduling",
+        "Round Robin",
+        "FCFS",
+        "Multilevel Queue"
+      ],
+      "correctAnswer": "Priority scheduling",
+      "explanation": "SJF is a special case of general Priority scheduling where the priority is the inverse of the predicted next CPU burst length.",
+      "sourceSlide": 25,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 26,
+      "question": "Virtually all modern operating systems use nonpreemptive scheduling algorithms.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Virtually all modern operating systems (including Windows, macOS, Linux, and UNIX) use preemptive scheduling algorithms.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "scheduling-concepts"
+    },
+    {
+      "id": 27,
+      "question": "Throughput refers to the number of processes that complete their execution per time unit.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Throughput is the measure of work done, defined as the number of processes completed per unit of time.",
+      "sourceSlide": 11,
+      "answerSource": "inferred",
+      "topic": "dispatcher-criteria"
+    },
+    {
+      "id": 28,
+      "question": "SJF scheduling can be implemented exactly because the OS knows the precise length of all future CPU bursts.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "There is no way to know the exact length of the next CPU burst in short-term CPU scheduling; SJF must approximate it by predicting the next burst.",
+      "sourceSlide": 15,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 29,
+      "question": "In Round Robin scheduling, no process waits more than `(n-1)*q` time units if there are `n` processes in the ready queue and the time quantum is `q`.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "With n processes in the ready queue and time quantum q, each process gets 1/n of the CPU time in chunks of at most q time units, waiting at most (n-1)*q time units until its next turn.",
+      "sourceSlide": 21,
+      "answerSource": "inferred",
+      "topic": "scheduling-algorithms"
+    },
+    {
+      "id": 30,
+      "question": "Aging can be implemented using a multilevel feedback queue.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "A multilevel feedback queue can implement aging by upgrading a process that waits too long in a lower-priority queue to a higher-priority queue.",
+      "sourceSlide": 31,
+      "answerSource": "inferred",
+      "topic": "advanced-scheduling"
+    }
+  ]
+}

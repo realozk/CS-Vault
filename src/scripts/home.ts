@@ -16,7 +16,21 @@ interface SearchItem {
   semester: number;
 }
 
+let cleanupHome: (() => void) | undefined;
+
 const initTabsAndSearch = () => {
+  const directoryContainer = document.getElementById('directory-container');
+  if (!directoryContainer || directoryContainer.dataset.initialized === 'true') return;
+  directoryContainer.dataset.initialized = 'true';
+  cleanupHome?.();
+  const abortController = new AbortController();
+  const { signal } = abortController;
+  cleanupHome = () => {
+    abortController.abort();
+    delete directoryContainer.dataset.initialized;
+  };
+  document.addEventListener('astro:before-swap', () => cleanupHome?.(), { signal });
+
   refreshNewContentBadges(document);
   const quoteElement = document.querySelector<HTMLElement>('[data-random-home-quote]');
   const lang = quoteElement?.dataset.randomHomeQuote;
@@ -65,12 +79,9 @@ const initTabsAndSearch = () => {
   };
   restoreYear();
   tabButtons.forEach(button => button.addEventListener('click', () => selectYear(button.getAttribute('data-year-tab'), true)));
-  window.addEventListener('popstate', restoreYear);
+  window.addEventListener('popstate', restoreYear, { signal });
 
   // 2. Global fuzzy search engine
-  const directoryContainer = document.getElementById('directory-container');
-  if (!directoryContainer) return;
-
   const rawSearchIndex = directoryContainer.getAttribute('data-search-index');
   let searchIndex: SearchItem[] = [];
   if (rawSearchIndex) {
@@ -193,10 +204,12 @@ const initTabsAndSearch = () => {
 
     event.preventDefault();
     searchInput.focus();
-  });
+  }, { signal });
 };
 
 initTabsAndSearch();
+document.addEventListener('astro:after-swap', initTabsAndSearch);
+document.addEventListener('astro:page-load', initTabsAndSearch);
 window.addEventListener('pageshow', event => {
   if (event.persisted) refreshNewContentBadges(document);
 });

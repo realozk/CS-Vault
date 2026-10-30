@@ -30,6 +30,18 @@ try {
     });
   }
   await symlink(path.join(root, 'node_modules'), path.join(fixture, 'node_modules'), 'dir');
+  // Keep Astro's virtual component paths inside the isolated fixture even
+  // though its dependencies are shared with the real checkout.
+  await writeFile(path.join(fixture, 'astro.scale.config.mjs'), `
+import config from './astro.config.mjs';
+export default {
+  ...config,
+  vite: {
+    ...config.vite,
+    resolve: { ...config.vite?.resolve, preserveSymlinks: true },
+  },
+};
+`);
   const catalogPath = path.join(fixture, 'src/data/subjects.json');
   const catalog = JSON.parse(await readFile(catalogPath, 'utf8'));
   const courses = [
@@ -57,7 +69,7 @@ try {
   }
   const astroPackage = JSON.parse(await readFile(path.join(root, 'node_modules/astro/package.json'), 'utf8'));
   const astroBin = typeof astroPackage.bin === 'string' ? astroPackage.bin : astroPackage.bin.astro;
-  run(path.join(root, 'node_modules/astro', astroBin), ['build']);
+  run(path.join(root, 'node_modules/astro', astroBin), ['build', '--config', 'astro.scale.config.mjs']);
   run(path.join(root, 'scripts/check-links.mjs'), [path.join(fixture, 'dist')]);
   const home = await readFile(path.join(fixture, 'dist/index.html'), 'utf8');
   const index = JSON.parse(attributes(home, attrs => !!attrs['data-search-index'])[0]['data-search-index']);

@@ -22,7 +22,8 @@
       "explanation": "The OS manages conflicting resource requests for efficient and fair use.",
       "sourcePage": 4,
       "answerSource": "inferred",
-      "topic": "os-foundations"
+      "topic": "os-foundations",
+      "sourceLecture": 1
     },
     {
       "id": 2,
@@ -37,7 +38,8 @@
       "explanation": "The lecture describes middleware as frameworks providing services beyond the kernel.",
       "sourcePage": 5,
       "answerSource": "inferred",
-      "topic": "os-foundations"
+      "topic": "os-foundations",
+      "sourceLecture": 1
     },
     {
       "id": 3,
@@ -52,7 +54,8 @@
       "explanation": "The controller interrupts the CPU to indicate completion or a need for attention.",
       "sourcePage": 6,
       "answerSource": "inferred",
-      "topic": "interrupts-io"
+      "topic": "interrupts-io",
+      "sourceLecture": 1
     },
     {
       "id": 4,
@@ -67,7 +70,8 @@
       "explanation": "The lecture distinguishes software-generated exceptions or traps from device-generated interrupts.",
       "sourcePage": 15,
       "answerSource": "inferred",
-      "topic": "interrupts-io"
+      "topic": "interrupts-io",
+      "sourceLecture": 1
     },
     {
       "id": 5,
@@ -82,7 +86,8 @@
       "explanation": "A cache miss requires fetching the information from the slower level before using it through the cache.",
       "sourcePage": 12,
       "answerSource": "inferred",
-      "topic": "storage-caching"
+      "topic": "storage-caching",
+      "sourceLecture": 1
     },
     {
       "id": 6,
@@ -97,7 +102,8 @@
       "explanation": "DMA transfers blocks directly and signals completion per block rather than requiring per-byte CPU work.",
       "sourcePage": 13,
       "answerSource": "inferred",
-      "topic": "interrupts-io"
+      "topic": "interrupts-io",
+      "sourceLecture": 1
     },
     {
       "id": 7,
@@ -112,7 +118,8 @@
       "explanation": "Multiprogramming maintains useful CPU work while another job waits.",
       "sourcePage": 14,
       "answerSource": "inferred",
-      "topic": "scheduling-modes"
+      "topic": "scheduling-modes",
+      "sourceLecture": 1
     },
     {
       "id": 8,
@@ -127,7 +134,8 @@
       "explanation": "The slides identify an executing program in memory as a process.",
       "sourcePage": 14,
       "answerSource": "inferred",
-      "topic": "scheduling-modes"
+      "topic": "scheduling-modes",
+      "sourceLecture": 1
     },
     {
       "id": 9,
@@ -142,7 +150,8 @@
       "explanation": "A system call transfers execution to the kernel; returning restores user mode.",
       "sourcePage": 16,
       "answerSource": "inferred",
-      "topic": "scheduling-modes"
+      "topic": "scheduling-modes",
+      "sourceLecture": 1
     },
     {
       "id": 10,
@@ -157,7 +166,8 @@
       "explanation": "The lecture's convention resets the mode bit to 1 before resuming user code.",
       "sourcePage": 16,
       "answerSource": "inferred",
-      "topic": "scheduling-modes"
+      "topic": "scheduling-modes",
+      "sourceLecture": 1
     },
     {
       "id": 11,
@@ -172,7 +182,8 @@
       "explanation": "The timer is configured to interrupt after a period, preventing indefinite CPU monopolization.",
       "sourcePage": 17,
       "answerSource": "inferred",
-      "topic": "scheduling-modes"
+      "topic": "scheduling-modes",
+      "sourceLecture": 1
     },
     {
       "id": 12,
@@ -187,7 +198,8 @@
       "explanation": "The error-detection service covers hardware, I/O device, and user-program errors.",
       "sourcePage": 18,
       "answerSource": "inferred",
-      "topic": "os-services"
+      "topic": "os-services",
+      "sourceLecture": 2
     },
     {
       "id": 13,
@@ -202,7 +214,8 @@
       "explanation": "The caller follows the API contract while the interface invokes the kernel operation and returns status or values.",
       "sourcePage": 24,
       "answerSource": "inferred",
-      "topic": "system-calls"
+      "topic": "system-calls",
+      "sourceLecture": 2
     },
     {
       "id": 14,
@@ -217,7 +230,8 @@
       "explanation": "A block or table keeps parameter data in memory, while a register carries its address.",
       "sourcePage": 25,
       "answerSource": "inferred",
-      "topic": "system-calls"
+      "topic": "system-calls",
+      "sourceLecture": 2
     },
     {
       "id": 15,
@@ -232,7 +246,8 @@
       "explanation": "The example uses fork() for process creation and exec() for loading a program into the process.",
       "sourcePage": 27,
       "answerSource": "inferred",
-      "topic": "system-calls"
+      "topic": "system-calls",
+      "sourceLecture": 2
     },
     {
       "id": 16,
@@ -247,7 +262,8 @@
       "explanation": "Users commonly interact with system programs rather than directly with low-level system calls.",
       "sourcePage": 31,
       "answerSource": "inferred",
-      "topic": "os-services"
+      "topic": "os-services",
+      "sourceLecture": 2
     },
     {
       "id": 17,
@@ -262,7 +278,8 @@
       "explanation": "User goals concern convenience, learning, safety, reliability, and speed; system goals include implementation and maintenance.",
       "sourcePage": 33,
       "answerSource": "inferred",
-      "topic": "os-structures"
+      "topic": "os-structures",
+      "sourceLecture": 2
     },
     {
       "id": 18,
@@ -277,7 +294,8 @@
       "explanation": "The MS-DOS example emphasizes weak separation and direct application access to basic I/O functionality.",
       "sourcePage": 34,
       "answerSource": "inferred",
-      "topic": "os-structures"
+      "topic": "os-structures",
+      "sourceLecture": 2
     },
     {
       "id": 19,
@@ -292,7 +310,8 @@
       "explanation": "Moving services to user space can improve separation but adds communication overhead.",
       "sourcePage": 37,
       "answerSource": "inferred",
-      "topic": "os-structures"
+      "topic": "os-structures",
+      "sourceLecture": 2
     },
     {
       "id": 20,
@@ -307,7 +326,8 @@
       "explanation": "Hybrid systems combine structural techniques rather than adhering to one pure model.",
       "sourcePage": 39,
       "answerSource": "inferred",
-      "topic": "os-structures"
+      "topic": "os-structures",
+      "sourceLecture": 2
     }
   ]
 }

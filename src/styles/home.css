@@ -42,8 +42,8 @@ html[dir="rtl"] .directory-subject-count { flex-direction: row-reverse; }
 .semester-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; min-height: 1.65rem; margin-bottom: 1rem; font-size: .8125rem; font-weight: 600; color: var(--study-text); }
 .course-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 .semester-section > .course-grid { grid-auto-rows: 1fr; }
-.course-card { position: relative; display: flex; flex-direction: column; min-height: 11.75rem; padding: 1.35rem; border: 1px solid var(--study-border); border-radius: 1.1rem; background: var(--study-surface); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--study-text) 5%, transparent), var(--study-shadow); transition: border-color .16s ease, background-color .16s ease; }
-.course-card:is(:hover, :focus-visible) { border-color: color-mix(in srgb, var(--study-accent) 55%, var(--study-border)); background: color-mix(in srgb, var(--study-accent-soft) 15%, var(--study-surface)); }
+.course-card { position: relative; display: flex; flex-direction: column; min-height: 11.75rem; padding: 1.35rem; border: 1px solid var(--study-border); border-radius: 1.1rem; background: var(--study-surface); box-shadow: inset 0 1px 0 color-mix(in srgb, var(--study-text) 5%, transparent), var(--study-shadow); transition: border-color .24s ease, background-color .24s ease, transform .28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .28s cubic-bezier(0.16, 1, 0.3, 1); }
+.course-card:is(:hover, :focus-visible) { transform: translateY(-3px); border-color: color-mix(in srgb, var(--study-accent) 55%, var(--study-border)); background: color-mix(in srgb, var(--study-accent-soft) 15%, var(--study-surface)); }
 .course-card-top { display: flex; align-items: center; gap: .6rem; }
 .course-code { color: var(--study-muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .75rem; letter-spacing: .03em; }
 .course-new { align-items: center; gap: .3rem; font-size: .75rem; font-weight: 500; padding: .1rem .4rem; background: var(--study-accent-soft); color: var(--study-accent); border-radius: .3rem; }

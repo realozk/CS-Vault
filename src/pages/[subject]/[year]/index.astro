@@ -1,8 +1,8 @@
 ---
 import Page from '../../../components/pages/SubjectPage.astro';
-import { getModules } from '../../../lib/modules';
-export async function getStaticPaths() {
-  return (await getModules()).map(m => ({ params: { subject: m.subject, year: m.year } }));
+import { getCourseRoutes } from '../../../lib/modules';
+export function getStaticPaths() {
+  return getCourseRoutes();
 }
 ---
 <Page />

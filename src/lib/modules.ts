@@ -1,5 +1,6 @@
 import { getCollection } from 'astro:content';
 import { safeQuizFilename } from './contributions';
+import { createSupplementaryQuizzes } from './quiz-routes';
 import { validateContentMetadata } from './content-metadata';
 import { courses as subjects, resolveCourse } from './course-catalog';
 import type { ModuleItem } from '../types';
@@ -14,6 +15,23 @@ export function getDefaultStudyYear(modules: readonly ModuleItem[]): number {
   const withContent = modules.filter(module => module.summariesCount + module.quizzesCount > 0);
   const years = (withContent.length ? withContent : modules).map(module => module.yearLevel);
   return years.length ? Math.min(...years) : 1;
+}
+
+export function getCourseRoutes() {
+  return subjects.map(s => ({ params: { subject: s.slug, year: String(s.year) } }));
+}
+
+export function getCourseMeta(subjectSlug: string, year: string, lang: 'en' | 'ar' = 'en') {
+  const course = subjects.find(s => s.slug === subjectSlug && String(s.year) === year);
+  if (!course) throw new Error(`Register ${subjectSlug}/${year} in src/data/subjects.json first`);
+  return {
+    subject: course.slug,
+    subjectName: getSubjectName(course.slug, lang, course.year),
+    subjectCode: course.subject_code,
+    year: String(course.year),
+    yearLevel: course.year_level,
+    semester: course.semester,
+  };
 }
 
 export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]> {
@@ -47,7 +65,11 @@ export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]
     }
   }
   for (const module of modules.values()) {
-    if (module.quizzesCount > 0) module.quizzesCount++;
+    const courseQuizzes = quizzes.filter(entry => {
+      const [subject, year] = entry.id.split('/');
+      return subject === module.subject && year === module.year;
+    });
+    module.quizzesCount += createSupplementaryQuizzes(courseQuizzes).length;
   }
   return [...modules.values()].sort((a, b) =>
     (b.latestContentAt ?? 0) - (a.latestContentAt ?? 0)

@@ -29,6 +29,10 @@ export function createAllQuestionsQuiz(entries: QuizEntry[]) {
   const ids = new Set<number>();
 
   for (const entry of ordered) {
+    const lectureMatch = entry.data.title.match(/^(?:Lecture|Chapter)\s+(\d+)/i)
+      ?? entry.id.match(/\/(?:lecture|chapter)-0*(\d+)(?:-|$)/i);
+    const inferredLecture = lectureMatch ? Number(lectureMatch[1]) : undefined;
+
     for (const question of [...entry.data.questions].sort((a, b) => a.id - b.id)) {
       // Code, case, and whitespace can change a programming question's meaning.
       // Only remove exact copies; option display order is shuffled separately.
@@ -48,6 +52,7 @@ export function createAllQuestionsQuiz(entries: QuizEntry[]) {
       ids.add(id);
       questions.push({
         ...question,
+        ...(question.sourceLecture === undefined && inferredLecture !== undefined ? { sourceLecture: inferredLecture } : {}),
         id,
         answerSource: question.answerSource ?? 'manual',
         origin: {
@@ -72,7 +77,7 @@ export function createAllQuestionsQuiz(entries: QuizEntry[]) {
     updatedAt: undefined,
     order: undefined,
     section: { kind: 'mixed' },
-    sourceKind: 'generated',
+    sourceKind: 'combined',
     featured: false,
     questions,
   };
@@ -82,6 +87,48 @@ export function createAllQuestionsQuiz(entries: QuizEntry[]) {
     collection: 'quizzes' as const,
     data,
   };
+}
+
+export function createTutorialsQuiz(entries: QuizEntry[]): QuizEntry | null {
+  const tutorials = entries.filter(entry =>
+    /^algorithm-analysis\/[^/]+\/lecture-\d+-instructor-tutorial(?:\.json)?$/.test(entry.id)
+    && entry.data.sourceKind === 'instructor'
+  ).sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }));
+  if (tutorials.length === 0) return null;
+
+  const first = tutorials[0];
+  let nextId = 1;
+  const questions = tutorials.flatMap(entry => {
+    const lectureMatch = entry.data.title.match(/^(?:Lecture|Chapter)\s+(\d+)/i)
+      ?? entry.id.match(/\/(?:lecture|chapter)-0*(\d+)(?:-|$)/i);
+    const inferredLecture = lectureMatch ? Number(lectureMatch[1]) : undefined;
+    return entry.data.questions.map(question => ({
+      ...question,
+      ...(question.sourceLecture === undefined && inferredLecture !== undefined ? { sourceLecture: inferredLecture } : {}),
+      id: nextId++,
+      explanation: [entry.data.source, question.explanation].filter(Boolean).join(' — '),
+    }));
+  });
+
+  return {
+    id: `${first.id.split('/').slice(0, 2).join('/')}/all-tutorials`,
+    collection: 'quizzes',
+    data: {
+      ...first.data,
+      title: 'All Tutorials — Combined Quiz',
+      description: `All ${questions.length} questions from the ${tutorials.length} Algorithm Analysis tutorials, with the original choices and marked answers.`,
+      source: tutorials.map(entry => entry.data.source).filter(Boolean).join(', '),
+      sourceKind: 'combined',
+      featured: false,
+      questions,
+    },
+  };
+}
+
+export function createSupplementaryQuizzes(entries: QuizEntry[]): QuizEntry[] {
+  if (entries.length === 0) return [];
+  const tutorials = createTutorialsQuiz(entries);
+  return [createAllQuestionsQuiz(entries), ...(tutorials ? [tutorials] : [])];
 }
 
 export function getQuizStaticPaths(entries: QuizEntry[]) {
@@ -101,12 +148,10 @@ export function getQuizStaticPaths(entries: QuizEntry[]) {
   }
 
   for (const courseEntries of courses.values()) {
-    const quiz = createAllQuestionsQuiz(courseEntries);
-    const [subject, year] = quiz.id.split('/');
-    paths.push({
-      params: { subject, year, slug: 'all-questions' },
-      props: { quiz },
-    });
+    for (const quiz of createSupplementaryQuizzes(courseEntries)) {
+      const [subject, year, slug] = quiz.id.split('/');
+      paths.push({ params: { subject, year, slug }, props: { quiz } });
+    }
   }
 
   return paths;

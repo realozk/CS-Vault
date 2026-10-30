@@ -32,6 +32,7 @@ const pageTitle = `${quiz.data.title} — ${t("quiz.practice")}`;
         </svg>
         {t("quiz.backToSubject")}
       </a>
+      <span dir="auto" lang={quiz.data.lang || 'en'} class="quiz-page-title">{quiz.data.title}</span>
     </div>
 
     <p class="mb-4 text-sm"><a href={contributionUrl} class="inline-flex min-h-11 items-center underline underline-offset-4">{lang === 'ar' ? 'أرسل تصحيحاً لهذا الاختبار' : 'Suggest a correction'}</a></p>

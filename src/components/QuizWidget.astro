@@ -16,7 +16,7 @@ interface Props {
 const { quiz, quizId = `${quiz.subject}/${quiz.year}/${quiz.title}`, backUrl = "../.." } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const combined = quizId.endsWith('/all-questions');
+const combined = quiz.sourceKind === 'combined' || quizId.endsWith('/all-questions');
 const practiceQuestions = getPracticeQuestions(quiz.questions);
 const disputedQuestions = quiz.questions.filter(question => question.status === 'disputed');
 const originUrls = Object.fromEntries(quiz.questions.flatMap(question => question.origin
@@ -125,6 +125,54 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
     </details>
   </div>
 
+  <div id="quiz-resume-screen" class="hidden quiz-screen">
+    <div class="quiz-intro">
+      <p class="quiz-eyebrow">{getSubjectName(quiz.subject, lang, quiz.year)} <span aria-hidden="true">/</span> {quiz.year}</p>
+      <h2 id="quiz-resume-title" tabindex="-1" class="quiz-title">{t('quiz.resumeTitle')}</h2>
+      <p id="quiz-resume-desc" class="quiz-resume-desc">{t('quiz.resumePrompt')}</p>
+    </div>
+
+    <div class="quiz-resume-card">
+      <div class="quiz-resume-progress-header">
+        <span class="quiz-resume-badge">{t('quiz.unfinishedBadge')}</span>
+        <span id="quiz-resume-progress-text" class="quiz-resume-progress-text"></span>
+      </div>
+      <div class="quiz-progress-track quiz-resume-track">
+        <div id="quiz-resume-progress-bar" class="h-full w-0"></div>
+      </div>
+
+      <div class="quiz-resume-stats" role="group" aria-label={t('quiz.progressSummary')}>
+        <div class="quiz-resume-stat">
+          <span class="quiz-resume-stat-label">{t('quiz.solvedCount')}</span>
+          <strong id="quiz-resume-solved" class="quiz-resume-stat-value">0</strong>
+        </div>
+        <div class="quiz-resume-stat">
+          <span class="quiz-resume-stat-label">{t('quiz.leftCount')}</span>
+          <strong id="quiz-resume-left" class="quiz-resume-stat-value">0</strong>
+        </div>
+        <div class="quiz-resume-stat quiz-resume-stat-correct">
+          <span class="quiz-resume-stat-label">{t('quiz.correctSoFar')}</span>
+          <strong id="quiz-resume-correct" class="quiz-resume-stat-value">0</strong>
+        </div>
+        <div class="quiz-resume-stat quiz-resume-stat-wrong">
+          <span class="quiz-resume-stat-label">{t('quiz.wrongSoFar')}</span>
+          <strong id="quiz-resume-wrong" class="quiz-resume-stat-value">0</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-resume-actions">
+      <button id="quiz-continue-btn" type="button" class="quiz-primary">
+        {t('quiz.continueSolving')}
+        <svg aria-hidden="true" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="rtl:rotate-180"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" /></svg>
+      </button>
+      <div class="quiz-resume-secondary-actions">
+        <button id="quiz-redo-btn" type="button" class="quiz-secondary">{t('quiz.redoExam')}</button>
+        <button id="quiz-resume-settings-btn" type="button" class="quiz-secondary">{t('quiz.settings')}</button>
+      </div>
+    </div>
+  </div>
+
   <div id="quiz-active-screen" class="hidden quiz-screen">
     <div class="quiz-session-header">
       <span class="quiz-counter"><span id="quiz-counter-wrapper" set:html={t('quiz.currentQuestion').replace('{current}', '<span id="quiz-current-question-num">1</span>').replace('{total}', `<span id="quiz-total-questions-num">${practiceQuestions.length}</span>`)} /></span>
@@ -154,7 +202,7 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
       <div class="quiz-controls-inner">
         <button id="quiz-previous-btn" class="hidden quiz-secondary">{t('quiz.previous')}</button>
         <button id="quiz-submit-btn" class="hidden quiz-secondary">{t('quiz.submit')}</button>
-        <button id="quiz-next-btn" disabled class="quiz-primary">{t('quiz.next')}</button>
+        <button id="quiz-next-btn" class="quiz-primary">{t('quiz.next')}</button>
       </div>
     </div>
   </div>

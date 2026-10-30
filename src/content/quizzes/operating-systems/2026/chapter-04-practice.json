@@ -1,0 +1,453 @@
+{
+  "title": "Chapter 4 — Threads & Concurrency",
+  "date": "2026-10-30",
+  "subject": "Operating Systems",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter 4 Slides",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "A thread is considered a basic unit of what?",
+      "options": [
+        "Memory utilization",
+        "CPU utilization",
+        "I/O utilization",
+        "Disk storage"
+      ],
+      "correctAnswer": "CPU utilization",
+      "explanation": "A thread is the basic unit of CPU utilization, comprising a thread ID, a program counter, a register set, and a stack.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "threads-overview"
+    },
+    {
+      "id": 2,
+      "question": "Which of the following is NOT uniquely owned by a single thread (i.e., it is shared with other threads in the process)?",
+      "options": [
+        "Program counter",
+        "Register set",
+        "Stack",
+        "Data section"
+      ],
+      "correctAnswer": "Data section",
+      "explanation": "Each thread has its own program counter, register set, and stack, but shares the code section, data section, and OS resources with peer threads in the same process.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "threads-overview"
+    },
+    {
+      "id": 3,
+      "question": "Why are threads generally preferred over processes for modern applications?",
+      "options": [
+        "Thread creation is heavyweight",
+        "Thread creation is lightweight compared to processes",
+        "Threads do not share memory",
+        "Threads run independently on different hard drives"
+      ],
+      "correctAnswer": "Thread creation is lightweight compared to processes",
+      "explanation": "Process creation is heavyweight and resource-intensive, whereas thread creation is lightweight and shares the existing process address space and resources.",
+      "sourceSlide": 4,
+      "answerSource": "inferred",
+      "topic": "threads-overview"
+    },
+    {
+      "id": 4,
+      "question": "Placing multiple computing cores on a single processing chip is known as:",
+      "options": [
+        "Multithreading",
+        "Multitasking",
+        "Multicore systems",
+        "Hyperthreading"
+      ],
+      "correctAnswer": "Multicore systems",
+      "explanation": "Multicore systems place multiple computing cores on a single processor chip, where each core appears as a separate processor to the OS.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "multicore-parallelism"
+    },
+    {
+      "id": 5,
+      "question": "Which multicore programming challenge ensures that tasks perform equal work of equal value?",
+      "options": [
+        "Data splitting",
+        "Data dependency",
+        "Dividing activities",
+        "Balance"
+      ],
+      "correctAnswer": "Balance",
+      "explanation": "Balance ensures that the tasks divided across cores perform equal work of equal value so one core is not underutilized.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "multicore-parallelism"
+    },
+    {
+      "id": 6,
+      "question": "A system that can perform more than one task simultaneously exhibits:",
+      "options": [
+        "Concurrency",
+        "Parallelism",
+        "Virtualization",
+        "Timesharing"
+      ],
+      "correctAnswer": "Parallelism",
+      "explanation": "A system is parallel if it can perform more than one task simultaneously across multiple cores.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "multicore-parallelism"
+    },
+    {
+      "id": 7,
+      "question": "A single-core system with a scheduler switching between tasks provides:",
+      "options": [
+        "Parallelism",
+        "Data parallelism",
+        "Concurrency",
+        "Task parallelism"
+      ],
+      "correctAnswer": "Concurrency",
+      "explanation": "Concurrency supports more than one task making progress over time, which is possible on a single core by interleaving execution via scheduling.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "multicore-parallelism"
+    },
+    {
+      "id": 8,
+      "question": "Which type of parallelism distributes subsets of the same data across multiple cores to perform the same operation?",
+      "options": [
+        "Data parallelism",
+        "Task parallelism",
+        "System parallelism",
+        "Process parallelism"
+      ],
+      "correctAnswer": "Data parallelism",
+      "explanation": "Data parallelism distributes subsets of the same data across multiple cores and performs the same operation on each subset.",
+      "sourceSlide": 11,
+      "answerSource": "inferred",
+      "topic": "multicore-parallelism"
+    },
+    {
+      "id": 9,
+      "question": "Threads managed without kernel support by a user-level library are called:",
+      "options": [
+        "Kernel threads",
+        "User threads",
+        "System threads",
+        "Hardware threads"
+      ],
+      "correctAnswer": "User threads",
+      "explanation": "User threads are managed above the kernel by a user-level threads library without direct kernel awareness.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "multithreading-models"
+    },
+    {
+      "id": 10,
+      "question": "Which multithreading model maps many user-level threads to a single kernel thread?",
+      "options": [
+        "One-to-One",
+        "Many-to-Many",
+        "Many-to-One",
+        "One-to-Many"
+      ],
+      "correctAnswer": "Many-to-One",
+      "explanation": "The Many-to-One model maps multiple user-level threads to one kernel thread.",
+      "sourceSlide": 16,
+      "answerSource": "inferred",
+      "topic": "multithreading-models"
+    },
+    {
+      "id": 11,
+      "question": "In the Many-to-One multithreading model, what happens if one user thread makes a blocking system call?",
+      "options": [
+        "Only that thread blocks",
+        "Another thread is mapped immediately",
+        "The entire process (all threads) blocks",
+        "The kernel thread replicates"
+      ],
+      "correctAnswer": "The entire process (all threads) blocks",
+      "explanation": "Because only one kernel thread backs all user threads in the Many-to-One model, a blocking system call by any thread blocks the entire process.",
+      "sourceSlide": 16,
+      "answerSource": "inferred",
+      "topic": "multithreading-models"
+    },
+    {
+      "id": 12,
+      "question": "Which multithreading model maps each user-level thread directly to a kernel thread?",
+      "options": [
+        "Many-to-One",
+        "One-to-One",
+        "Many-to-Many",
+        "User-to-Kernel"
+      ],
+      "correctAnswer": "One-to-One",
+      "explanation": "The One-to-One model maps each user-level thread to its own dedicated kernel thread.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "multithreading-models"
+    },
+    {
+      "id": 13,
+      "question": "What is a drawback of the One-to-One multithreading model?",
+      "options": [
+        "It causes the whole process to block easily",
+        "It does not allow parallelism",
+        "Creating a user thread creates a kernel thread, causing overhead",
+        "It restricts network communication"
+      ],
+      "correctAnswer": "Creating a user thread creates a kernel thread, causing overhead",
+      "explanation": "In the One-to-One model, creating a user thread requires creating a corresponding kernel thread, which adds overhead and can limit the total number of threads.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "multithreading-models"
+    },
+    {
+      "id": 14,
+      "question": "Which multithreading model allows developers to create as many user threads as necessary without restricting concurrency on multiprocessors?",
+      "options": [
+        "Many-to-One",
+        "One-to-One",
+        "Many-to-Many",
+        "None of the above"
+      ],
+      "correctAnswer": "Many-to-Many",
+      "explanation": "The Many-to-Many model multiplexes many user-level threads onto a smaller or equal number of kernel threads, allowing flexible thread creation and true multiprocessor execution.",
+      "sourceSlide": 19,
+      "answerSource": "inferred",
+      "topic": "multithreading-models"
+    },
+    {
+      "id": 15,
+      "question": "What provides the programmer with an API for creating and managing threads?",
+      "options": [
+        "Thread Library",
+        "System calls",
+        "Kernel memory",
+        "Network sockets"
+      ],
+      "correctAnswer": "Thread Library",
+      "explanation": "A Thread Library provides programmers with an API for creating and managing threads.",
+      "sourceSlide": 20,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    },
+    {
+      "id": 16,
+      "question": "A thread library implemented entirely in user space invokes library functions as:",
+      "options": [
+        "System calls",
+        "Local function calls in user space",
+        "Hardware interrupts",
+        "I/O traps"
+      ],
+      "correctAnswer": "Local function calls in user space",
+      "explanation": "A user-space thread library has all code and data structures in user space, so invoking a library function results in a local function call rather than a system call.",
+      "sourceSlide": 20,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    },
+    {
+      "id": 17,
+      "question": "Which of the following is NOT one of the three primary thread libraries in use today?",
+      "options": [
+        "POSIX Pthreads",
+        "Windows threads",
+        "Java threads",
+        "Python GIL threads"
+      ],
+      "correctAnswer": "Python GIL threads",
+      "explanation": "The three main thread libraries highlighted in the lecture are POSIX Pthreads, Windows threads, and Java threads.",
+      "sourceSlide": 21,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    },
+    {
+      "id": 18,
+      "question": "Java threads are managed by:",
+      "options": [
+        "The Java Thread Manager",
+        "The JVM (Java Virtual Machine)",
+        "The POSIX library directly",
+        "The Windows Kernel Registry"
+      ],
+      "correctAnswer": "The JVM (Java Virtual Machine)",
+      "explanation": "Java threads are managed by the Java Virtual Machine (JVM) and typically implemented using the thread model provided by the underlying host OS.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    },
+    {
+      "id": 19,
+      "question": "What is the standard practice for creating a thread in Java?",
+      "options": [
+        "Extending the String class",
+        "Extending the Thread class",
+        "Implementing the Runnable interface",
+        "Overriding the main() method"
+      ],
+      "correctAnswer": "Implementing the Runnable interface",
+      "explanation": "While a class can extend Thread, the standard practice in Java is implementing the Runnable interface.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    },
+    {
+      "id": 20,
+      "question": "In Java, which method must be overridden when implementing the Runnable interface?",
+      "options": [
+        "start()",
+        "run()",
+        "join()",
+        "init()"
+      ],
+      "correctAnswer": "run()",
+      "explanation": "Implementing the Runnable interface requires defining and overriding the run() method.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    },
+    {
+      "id": 21,
+      "question": "In a Java thread, what method is used to cause the main thread to wait until a worker thread finishes?",
+      "options": [
+        "stop()",
+        "yield()",
+        "join()",
+        "wait()"
+      ],
+      "correctAnswer": "join()",
+      "explanation": "Calling join() on a worker thread makes the calling thread wait until that worker thread finishes execution.",
+      "sourceSlide": 23,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    },
+    {
+      "id": 22,
+      "question": "What happens if the `join()` method is NOT used in the Java example when printing a computed result?",
+      "options": [
+        "The thread crashes",
+        "The compiler throws an error",
+        "The output is not guaranteed and might print the uninitialized value",
+        "The thread executes twice"
+      ],
+      "correctAnswer": "The output is not guaranteed and might print the uninitialized value",
+      "explanation": "Without join(), the main thread may read and print the shared result variable before the worker thread finishes computing it.",
+      "sourceSlide": 24,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    },
+    {
+      "id": 23,
+      "question": "Which OS natively provides a kernel-level thread library?",
+      "options": [
+        "Windows",
+        "MS-DOS",
+        "Early batch systems",
+        "iOS version 1"
+      ],
+      "correctAnswer": "Windows",
+      "explanation": "The Windows thread library is a kernel-level library available directly on Windows systems.",
+      "sourceSlide": 21,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    },
+    {
+      "id": 24,
+      "question": "A Kernel thread is sometimes called a:",
+      "options": [
+        "Heavyweight process",
+        "Lightweight Process (LWP)",
+        "Zombie process",
+        "Background daemon"
+      ],
+      "correctAnswer": "Lightweight Process (LWP)",
+      "explanation": "The lecture notes that a kernel thread is also referred to as a Lightweight Process (LWP).",
+      "sourceSlide": 13,
+      "answerSource": "inferred",
+      "topic": "multithreading-models"
+    },
+    {
+      "id": 25,
+      "question": "Distributing threads across cores where each thread performs a unique operation is known as:",
+      "options": [
+        "Data parallelism",
+        "Process separation",
+        "Task parallelism",
+        "Instruction parallelism"
+      ],
+      "correctAnswer": "Task parallelism",
+      "explanation": "Task parallelism distributes threads across cores so that each thread executes a unique operation.",
+      "sourceSlide": 11,
+      "answerSource": "inferred",
+      "topic": "multicore-parallelism"
+    },
+    {
+      "id": 26,
+      "question": "A traditional process has a single thread of control.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "A traditional (heavyweight) process has a single thread of control, whereas multithreaded processes have multiple threads of control.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "threads-overview"
+    },
+    {
+      "id": 27,
+      "question": "Concurrency requires a multicore architecture to function.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Concurrency can occur on a single processor core via time-slicing scheduler switches; parallelism is what requires multiple cores.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "multicore-parallelism"
+    },
+    {
+      "id": 28,
+      "question": "Kernel threads are generally more expensive to create than user threads.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Kernel threads are supported and managed directly by the OS kernel, making them slower and more expensive to create and manage than user-level threads.",
+      "sourceSlide": 13,
+      "answerSource": "inferred",
+      "topic": "multithreading-models"
+    },
+    {
+      "id": 29,
+      "question": "In the Many-to-One model, multiple threads can run in parallel on a multicore system.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Because all user threads map to a single kernel thread in the Many-to-One model, only one thread can access the kernel at a time, preventing parallel execution on multicore systems.",
+      "sourceSlide": 16,
+      "answerSource": "inferred",
+      "topic": "multithreading-models"
+    },
+    {
+      "id": 30,
+      "question": "Java threads are available on any system that provides a JVM.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Because Java threads are managed by the JVM, they are available on any host platform that provides a JVM.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "thread-libraries-java"
+    }
+  ]
+}

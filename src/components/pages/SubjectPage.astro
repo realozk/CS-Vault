@@ -4,12 +4,12 @@ import { getContributionFormUrl } from '../../lib/contributions';
 import { getCollection, render } from 'astro:content';
 import QuizSourceLabel from '../../components/QuizSourceLabel.astro';
 import MaterialContext from '../../components/MaterialContext.astro';
-import { getModules } from '../../lib/modules';
+import { getCourseMeta } from '../../lib/modules';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
 import { questionBankFingerprint } from '../../scripts/quiz-state';
-import { createAllQuestionsQuiz } from '../../lib/quiz-routes';
+import { createSupplementaryQuizzes } from '../../lib/quiz-routes';
 import { compareStudyEntries, getStudySection } from '../../lib/content-order';
 import { getPracticeQuestions } from '../../lib/quiz-questions';
 import '../../styles/subject.css';
@@ -21,16 +21,17 @@ const t = useTranslations(lang);
 
 const { subject, year } = Astro.params;
 
-// Fetch collections filtering by subject and year folder structure
-const rawSummaries = await getCollection('summaries', (entry) => {
-  const parts = entry.id.split('/');
-  return parts[0] === subject && parts[1] === year;
-});
-
-const rawQuizzes = await getCollection('quizzes', (entry) => {
-  const parts = entry.id.split('/');
-  return parts[0] === subject && parts[1] === year;
-});
+// Fetch collections in parallel filtering by subject and year folder structure
+const [rawSummaries, rawQuizzes] = await Promise.all([
+  getCollection('summaries', (entry) => {
+    const parts = entry.id.split('/');
+    return parts[0] === subject && parts[1] === year;
+  }),
+  getCollection('quizzes', (entry) => {
+    const parts = entry.id.split('/');
+    return parts[0] === subject && parts[1] === year;
+  }),
+]);
 
 // Helper to get slug from file path
 const getSlug = (id: string) => {
@@ -57,8 +58,8 @@ const quizzes = [...rawQuizzes].sort(compareStudyEntries).map((entry) => ({
   entry,
   slug: getSlug(entry.id)
 }));
-if (quizzes.length > 0) {
-  quizzes.push({ entry: createAllQuestionsQuiz(rawQuizzes), slug: 'all-questions' });
+for (const entry of createSupplementaryQuizzes(rawQuizzes)) {
+  quizzes.push({ entry, slug: getSlug(entry.id) });
 }
 const quizGroupsByKey = new Map<string, { key: string; sectionNumber?: string; sectionType?: 'lecture' | 'chapter'; quizzes: typeof quizzes }>();
 for (const quiz of quizzes) {
@@ -81,7 +82,7 @@ for (const quiz of quizzes) {
 }
 const quizGroups = [...quizGroupsByKey.values()].sort((a, b) => Number(a.key === 'mixed') - Number(b.key === 'mixed'));
 
-const module = (await getModules(lang)).find(m => m.subject === subject && m.year === year)!;
+const module = getCourseMeta(subject!, year!, lang);
 const subjectName = module.subjectName;
 const pageTitle = `${subjectName} (${year})`;
 const trackerTranslations = JSON.stringify({
@@ -106,7 +107,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
 ---
 
 <Layout title={pageTitle} description={`${subjectName} (${year}) — ${t("dashboard.quizzes")}, ${t("dashboard.summaries")}`}>
-  <div id="subject-page" class="subject-page" data-default-study-mode={defaultMode}>
+  <div id="subject-page" class="subject-page" data-default-study-mode={defaultMode} data-study-mode={defaultMode} data-study-enhanced="true">
     <header class="subject-heading">
       <nav class="subject-breadcrumbs" aria-label={t('dashboard.breadcrumbs')}>
         <a href={getLocalizedPath('/', lang)}>{t('dashboard.breadcrumbs')}</a>
@@ -124,7 +125,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
       </div>
     </header>
 
-    <div id="subject-mode-switch" class="subject-mode-switch hidden" data-subject-mode-switch role="group" aria-label={labels.studyTools}>
+    <div id="subject-mode-switch" class="subject-mode-switch" data-subject-mode-switch role="group" aria-label={labels.studyTools}>
       <button type="button" data-study-mode="quizzes" aria-pressed={defaultMode === 'quizzes'} aria-controls="subject-quizzes">
         <Icon name="lightbulb" class="subject-mode-icon" />
         <span>{t('dashboard.quizzes')}</span>
@@ -137,13 +138,18 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
       </button>
     </div>
     <noscript>
+      <style>
+        #subject-mode-switch, .subject-finish-button { display: none !important; }
+        #subject-quizzes.hidden, .summary-content-block.hidden { display: block !important; }
+        #subject-summaries.hidden { display: grid !important; margin-top: 2.5rem !important; }
+      </style>
       <nav class="subject-fallback-nav" aria-label={labels.studyTools}>
         <a href="#subject-quizzes">{t('dashboard.quizzes')} <span>{quizzes.length}</span></a>
         <a href="#subject-reading">{t('dashboard.summaries')} <span>{summaries.length}</span></a>
       </nav>
     </noscript>
 
-    <section id="subject-quizzes" class="subject-quiz-panel" data-study-panel="quizzes" data-score-storage-unavailable={t('dashboard.storageUnavailable')} aria-labelledby="subject-quizzes-heading">
+    <section id="subject-quizzes" class:list={['subject-quiz-panel', { hidden: defaultMode !== 'quizzes' }]} data-study-panel="quizzes" data-score-storage-unavailable={t('dashboard.storageUnavailable')} aria-labelledby="subject-quizzes-heading">
       <div class="subject-section-heading">
         <div>
           <h2 id="subject-quizzes-heading">{t('dashboard.quizzes')}</h2>
@@ -203,7 +209,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
       <p id="quiz-score-storage-status" class="subject-storage-notice hidden" role="status"></p>
     </section>
 
-    <section id="subject-summaries" class="subject-summary-panel" data-study-panel="summaries" aria-label={t('dashboard.summaries')}>
+    <section id="subject-summaries" class:list={['subject-summary-panel', { hidden: defaultMode !== 'summaries' }]} data-study-panel="summaries" aria-label={t('dashboard.summaries')}>
       <aside class="subject-contents">
         <div class="subject-contents-heading">
           <h2>{labels.contents}</h2>
@@ -213,7 +219,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
           <>
             <nav class="subject-summary-list" id="summary-tabs" aria-label={labels.contents}>
               {summaries.map((s, idx) => (
-                <a href={`#summary-content-${s.slug}`} data-summary-slug={s.slug} aria-controls={`summary-content-${s.slug}`} class="summary-tab-btn">
+                <a href={`#summary-content-${s.slug}`} data-summary-slug={s.slug} aria-controls={`summary-content-${s.slug}`} aria-current={idx === 0 ? 'true' : undefined} class="summary-tab-btn">
                   <span class="subject-summary-number" aria-hidden="true">{String(idx + 1).padStart(2, '0')}</span>
                   <span dir={s.entry.data.lang === 'ar' ? 'rtl' : 'ltr'} lang={s.entry.data.lang} class="summary-title-text">{s.entry.data.title}</span>
                   <svg class="subject-summary-reviewed" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m5 12 4 4L19 6" /></svg>
@@ -241,7 +247,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
             <p>{t('dashboard.emptySummaries')}</p>
           </div>
         ) : summaries.map((s, idx) => (
-          <div id={`summary-content-${s.slug}`} class="summary-content-block">
+          <div id={`summary-content-${s.slug}`} class:list={['summary-content-block', { hidden: idx !== 0 }]}>
             <header class="subject-reading-heading">
               <h2 tabindex="-1" dir={s.entry.data.lang === 'ar' ? 'rtl' : 'ltr'} lang={s.entry.data.lang}>{s.entry.data.title}</h2>
               <MaterialContext
@@ -274,7 +280,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
                 {idx < summaries.length - 1 ? (
                   <a href={`#summary-content-${summaries[idx + 1].slug}`} data-nav-next={summaries[idx + 1].slug} data-current-slug={s.slug} class="subject-action-primary">{t('nav.next')} <span aria-hidden="true" class="subject-next-arrow">→</span></a>
                 ) : (
-                  <button type="button" data-nav-finish={s.slug} class="subject-action-primary subject-finish-button hidden">{t('nav.finish')} <span aria-hidden="true">✓</span></button>
+                  <button type="button" data-nav-finish={s.slug} class="subject-action-primary subject-finish-button">{t('nav.finish')} <span aria-hidden="true">✓</span></button>
                 )}
               </nav>
             )}
@@ -283,6 +289,5 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
       </div>
     </section>
   </div>
+  <script src="../../scripts/subject-dashboard.ts"></script>
 </Layout>
-
-<script src="../../scripts/subject-dashboard.ts"></script>

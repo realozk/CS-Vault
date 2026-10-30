@@ -31,8 +31,9 @@ function eventTarget(extra = {}) {
 function element(extra = {}) {
   const classNames = new Set();
   const attributes = new Map();
-  return eventTarget({
-    dataset: {}, style: {}, textContent: '', value: '',
+  let text = '';
+  const node = eventTarget({
+    dataset: {}, style: {}, children: [], value: '',
     classList: {
       add: (...names) => names.forEach(name => classNames.add(name)),
       remove: (...names) => names.forEach(name => classNames.delete(name)),
@@ -45,9 +46,17 @@ function element(extra = {}) {
     setAttribute: (name, value) => attributes.set(name, value),
     getAttribute: name => attributes.get(name) ?? null,
     removeAttribute: name => attributes.delete(name),
-    focus() {}, contains: () => false, querySelector: () => null,
+    append(...children) { this.children.push(...children); },
+    replaceChildren(...children) { this.children = children; text = ''; },
+    querySelector(selector) { return this.children.find(child => child.className?.split(' ').includes(selector.slice(1))) ?? null; },
+    focus() {}, contains: () => false,
     ...extra,
   });
+  Object.defineProperty(node, 'textContent', {
+    get: () => node.children.length ? node.children.map(child => child.textContent).join('') : text,
+    set: value => { text = String(value); node.children = []; },
+  });
+  return node;
 }
 
 function storage(initial = {}) {
@@ -174,10 +183,10 @@ function timer(saved, clock, locks) {
     'storageUnavailable', 'studyPhase', 'breakPhase', 'start', 'pause', 'breakStarted', 'studyReady',
   ].map(key => [key, key])));
   let interval;
-  const window = eventTarget({ navigator: { locks }, setInterval: callback => { interval = callback; } });
-  const document = eventTarget({ readyState: 'complete', getElementById: id => nodes[id] });
+  const window = eventTarget({ navigator: { locks }, setInterval: callback => { interval = callback; }, clearInterval() {} });
+  const document = eventTarget({ readyState: 'complete', getElementById: id => nodes[id], createElement: () => element() });
   vm.runInNewContext(timerSource, {
-    ...pomodoro, document, window, localStorage: saved,
+    ...pomodoro, document, window, localStorage: saved, AbortController,
     Date: { now: () => clock.now }, console: { warn() {} },
   });
   return {
