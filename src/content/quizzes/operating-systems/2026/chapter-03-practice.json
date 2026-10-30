@@ -1,0 +1,453 @@
+{
+  "title": "Chapter 3 — Processes",
+  "date": "2026-10-30",
+  "subject": "Operating Systems",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter 3 Slides",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the definition of a process?",
+      "options": [
+        "A passive entity stored on a disk",
+        "A program in execution",
+        "A hardware component",
+        "A memory management unit"
+      ],
+      "correctAnswer": "A program in execution",
+      "explanation": "A process is an active entity defined as a program in execution, whereas a program on disk is a passive executable file.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "process-concept-memory"
+    },
+    {
+      "id": 2,
+      "question": "Which section of a process's memory layout contains dynamically allocated memory?",
+      "options": [
+        "Text",
+        "Data",
+        "Heap",
+        "Stack"
+      ],
+      "correctAnswer": "Heap",
+      "explanation": "The Heap section holds memory that is dynamically allocated during process run time.",
+      "sourceSlide": 6,
+      "answerSource": "inferred",
+      "topic": "process-concept-memory"
+    },
+    {
+      "id": 3,
+      "question": "Which section contains global variables?",
+      "options": [
+        "Text",
+        "Data",
+        "Heap",
+        "Stack"
+      ],
+      "correctAnswer": "Data",
+      "explanation": "The Data section stores global and static variables, while the Text section holds code and the Stack holds temporary local data.",
+      "sourceSlide": 6,
+      "answerSource": "inferred",
+      "topic": "process-concept-memory"
+    },
+    {
+      "id": 4,
+      "question": "What state is a process in when instructions are being executed?",
+      "options": [
+        "New",
+        "Ready",
+        "Running",
+        "Waiting"
+      ],
+      "correctAnswer": "Running",
+      "explanation": "A process is in the Running state when its instructions are actively being executed on a CPU core.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "process-states-pcb"
+    },
+    {
+      "id": 5,
+      "question": "When a process is waiting for an I/O event to occur, it is in which state?",
+      "options": [
+        "Running",
+        "Ready",
+        "Waiting",
+        "Terminated"
+      ],
+      "correctAnswer": "Waiting",
+      "explanation": "A process enters the Waiting state when it cannot continue until some external event (such as I/O completion or a signal) occurs.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "process-states-pcb"
+    },
+    {
+      "id": 6,
+      "question": "Which of the following is NOT stored in the Process Control Block (PCB)?",
+      "options": [
+        "Program counter",
+        "CPU registers",
+        "Hardware MAC address",
+        "Process state"
+      ],
+      "correctAnswer": "Hardware MAC address",
+      "explanation": "The PCB stores process-specific context such as process state, program counter, CPU registers, scheduling data, memory limits, and I/O status, not the network interface's hardware MAC address.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "process-states-pcb"
+    },
+    {
+      "id": 7,
+      "question": "What is the set of processes residing in main memory, ready and waiting to execute called?",
+      "options": [
+        "Job queue",
+        "Wait queue",
+        "Device queue",
+        "Ready queue"
+      ],
+      "correctAnswer": "Ready queue",
+      "explanation": "Processes that are in main memory and ready to run on the CPU are kept in the Ready queue.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "process-scheduling-context"
+    },
+    {
+      "id": 8,
+      "question": "What occurs when the CPU switches from one process to another?",
+      "options": [
+        "Process termination",
+        "Context switch",
+        "Deadlock",
+        "Interprocess communication"
+      ],
+      "correctAnswer": "Context switch",
+      "explanation": "Switching the CPU to another process requires saving the current process's state and loading the saved state of the next process, known as a context switch.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "process-scheduling-context"
+    },
+    {
+      "id": 9,
+      "question": "Context switch time is considered to be:",
+      "options": [
+        "Pure overhead",
+        "Useful CPU work",
+        "User application time",
+        "I/O wait time"
+      ],
+      "correctAnswer": "Pure overhead",
+      "explanation": "Context switch time is pure overhead because the system performs no useful application execution while saving and restoring PCB state.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "process-scheduling-context"
+    },
+    {
+      "id": 10,
+      "question": "In Android, which process type is considered the least important and is terminated first to reclaim resources?",
+      "options": [
+        "Foreground process",
+        "Visible process",
+        "Background process",
+        "Empty process"
+      ],
+      "correctAnswer": "Empty process",
+      "explanation": "Android places Empty processes at the bottom of its importance hierarchy, terminating them first when system resources must be reclaimed.",
+      "sourceSlide": 29,
+      "answerSource": "inferred",
+      "topic": "process-operations"
+    },
+    {
+      "id": 11,
+      "question": "What UNIX system call creates a new process?",
+      "options": [
+        "create()",
+        "fork()",
+        "exec()",
+        "init()"
+      ],
+      "correctAnswer": "fork()",
+      "explanation": "In UNIX systems, the fork() system call creates a new child process by duplicating the parent's address space.",
+      "sourceSlide": 24,
+      "answerSource": "inferred",
+      "topic": "process-operations"
+    },
+    {
+      "id": 12,
+      "question": "What UNIX system call is used after a fork to replace the process' memory space with a new program?",
+      "options": [
+        "wait()",
+        "fork()",
+        "exec()",
+        "replace()"
+      ],
+      "correctAnswer": "exec()",
+      "explanation": "The exec() system call loads a binary file into memory and replaces the calling process's memory image with the new program.",
+      "sourceSlide": 24,
+      "answerSource": "inferred",
+      "topic": "process-operations"
+    },
+    {
+      "id": 13,
+      "question": "What is a process called if it has terminated but its parent has not yet invoked the wait() system call?",
+      "options": [
+        "Orphan",
+        "Zombie",
+        "Terminated",
+        "Suspended"
+      ],
+      "correctAnswer": "Zombie",
+      "explanation": "A process that has finished execution but whose exit status has not yet been collected by its parent via wait() is a Zombie process.",
+      "sourceSlide": 28,
+      "answerSource": "inferred",
+      "topic": "process-operations"
+    },
+    {
+      "id": 14,
+      "question": "What is a process called if its parent terminates without invoking wait()?",
+      "options": [
+        "Orphan",
+        "Zombie",
+        "Background",
+        "Daemon"
+      ],
+      "correctAnswer": "Orphan",
+      "explanation": "When a parent process terminates before waiting for its child processes, those remaining children are called Orphan processes.",
+      "sourceSlide": 28,
+      "answerSource": "inferred",
+      "topic": "process-operations"
+    },
+    {
+      "id": 15,
+      "question": "Google Chrome Browser uses a multiprocess architecture. Which process manages the user interface, disk, and network I/O?",
+      "options": [
+        "Renderer process",
+        "Browser process",
+        "Plug-in process",
+        "Sandbox process"
+      ],
+      "correctAnswer": "Browser process",
+      "explanation": "In Chrome's multiprocess architecture, the Browser process manages the user interface as well as disk and network I/O, while Renderer processes render web pages in sandboxes.",
+      "sourceSlide": 30,
+      "answerSource": "inferred",
+      "topic": "process-operations"
+    },
+    {
+      "id": 16,
+      "question": "Which model of Interprocess Communication (IPC) involves a region of memory that is shared by cooperating processes?",
+      "options": [
+        "Message passing",
+        "Sockets",
+        "Shared memory",
+        "RPC"
+      ],
+      "correctAnswer": "Shared memory",
+      "explanation": "In the Shared memory IPC model, cooperating processes establish a shared region of memory and exchange data by reading and writing to it.",
+      "sourceSlide": 32,
+      "answerSource": "inferred",
+      "topic": "ipc-shared-memory"
+    },
+    {
+      "id": 17,
+      "question": "In the Producer-Consumer problem, which variation places no practical limit on the size of the buffer?",
+      "options": [
+        "Bounded-buffer",
+        "Unbounded-buffer",
+        "Zero-capacity buffer",
+        "Fixed-buffer"
+      ],
+      "correctAnswer": "Unbounded-buffer",
+      "explanation": "An Unbounded-buffer places no practical limit on buffer size, so the producer never has to wait for buffer space.",
+      "sourceSlide": 33,
+      "answerSource": "inferred",
+      "topic": "ipc-shared-memory"
+    },
+    {
+      "id": 18,
+      "question": "In a shared-memory solution for a bounded buffer of size BUFFER_SIZE, how many elements can actually be used to store items correctly?",
+      "options": [
+        "BUFFER_SIZE",
+        "BUFFER_SIZE - 1",
+        "BUFFER_SIZE + 1",
+        "0"
+      ],
+      "correctAnswer": "BUFFER_SIZE - 1",
+      "explanation": "The circular array implementation using only in and out pointers distinguishes full from empty by leaving one slot unused, allowing at most BUFFER_SIZE - 1 items.",
+      "sourceSlide": 35,
+      "answerSource": "inferred",
+      "topic": "ipc-shared-memory"
+    },
+    {
+      "id": 19,
+      "question": "Message passing IPC provides which two primary operations?",
+      "options": [
+        "read() and write()",
+        "send() and receive()",
+        "push() and pop()",
+        "get() and put()"
+      ],
+      "correctAnswer": "send() and receive()",
+      "explanation": "Message-passing facilities provide at least two operations: send(message) and receive(message).",
+      "sourceSlide": 43,
+      "answerSource": "inferred",
+      "topic": "ipc-message-passing"
+    },
+    {
+      "id": 20,
+      "question": "In direct communication, what must processes do?",
+      "options": [
+        "Use a shared mailbox",
+        "Name each other explicitly",
+        "Share variables",
+        "Use exactly the same memory space"
+      ],
+      "correctAnswer": "Name each other explicitly",
+      "explanation": "Under direct communication, each process that wants to communicate must explicitly name the recipient or sender of the communication.",
+      "sourceSlide": 46,
+      "answerSource": "inferred",
+      "topic": "ipc-message-passing"
+    },
+    {
+      "id": 21,
+      "question": "In indirect communication, messages are directed to and received from:",
+      "options": [
+        "Mailboxes (or ports)",
+        "Shared memory segments",
+        "Network sockets",
+        "File descriptors"
+      ],
+      "correctAnswer": "Mailboxes (or ports)",
+      "explanation": "With indirect communication, messages are sent to and received from mailboxes (also referred to as ports).",
+      "sourceSlide": 47,
+      "answerSource": "inferred",
+      "topic": "ipc-message-passing"
+    },
+    {
+      "id": 22,
+      "question": "Blocking message passing is considered:",
+      "options": [
+        "Asynchronous",
+        "Synchronous",
+        "Non-blocking",
+        "Indirect"
+      ],
+      "correctAnswer": "Synchronous",
+      "explanation": "Blocking send or blocking receive is considered synchronous because the sender waits until the message is received or the receiver waits until a message is available.",
+      "sourceSlide": 50,
+      "answerSource": "inferred",
+      "topic": "ipc-message-passing"
+    },
+    {
+      "id": 23,
+      "question": "If both send and receive are blocking operations, the scenario is known as a:",
+      "options": [
+        "Rendezvous",
+        "Deadlock",
+        "Race condition",
+        "Orphan state"
+      ],
+      "correctAnswer": "Rendezvous",
+      "explanation": "When both send() and receive() are blocking, the sender and receiver synchronize directly in a rendezvous.",
+      "sourceSlide": 50,
+      "answerSource": "inferred",
+      "topic": "ipc-message-passing"
+    },
+    {
+      "id": 24,
+      "question": "A message queue attached to a link with \"Zero capacity\" means:",
+      "options": [
+        "The sender never waits",
+        "The sender must wait for the receiver (rendezvous)",
+        "The link is infinite",
+        "The link has failed"
+      ],
+      "correctAnswer": "The sender must wait for the receiver (rendezvous)",
+      "explanation": "A zero-capacity queue cannot store any messages waiting on the link, so the sender must block until the receiver receives the message.",
+      "sourceSlide": 52,
+      "answerSource": "inferred",
+      "topic": "ipc-message-passing"
+    },
+    {
+      "id": 25,
+      "question": "Which IPC mechanism relies entirely on the operating system for communication?",
+      "options": [
+        "Shared memory",
+        "Message passing",
+        "Threading",
+        "Global variables"
+      ],
+      "correctAnswer": "Message passing",
+      "explanation": "Message passing is mediated by the kernel via system calls for every transfer, whereas shared memory only requires kernel intervention to establish the shared region.",
+      "sourceSlide": 32,
+      "answerSource": "inferred",
+      "topic": "ipc-message-passing"
+    },
+    {
+      "id": 26,
+      "question": "A program becomes a process when an executable file is loaded into memory.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "A program is a passive executable file on disk that becomes an active process once loaded into memory.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "process-concept-memory"
+    },
+    {
+      "id": 27,
+      "question": "The stack and heap sections of a process memory layout remain fixed in size during execution.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "Only the Text and Data sections are fixed in size; the Stack and Heap shrink and grow dynamically during program execution.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "process-concept-memory"
+    },
+    {
+      "id": 28,
+      "question": "The wait() system call takes a process out of the ready queue until the child process terminates.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Calling wait() blocks the parent process and moves it out of the ready queue until the child terminates.",
+      "sourceSlide": 24,
+      "answerSource": "inferred",
+      "topic": "process-operations"
+    },
+    {
+      "id": 29,
+      "question": "In a bounded buffer message passing queue, the sender never waits.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "False",
+      "explanation": "In a bounded-capacity queue, the link has finite length n; if the queue is full, the sender must block until space becomes available. Only in an unbounded queue does the sender never wait.",
+      "sourceSlide": 52,
+      "answerSource": "inferred",
+      "topic": "ipc-message-passing"
+    },
+    {
+      "id": 30,
+      "question": "A context switch does no useful work while switching.",
+      "options": [
+        "True",
+        "False"
+      ],
+      "correctAnswer": "True",
+      "explanation": "Context switch time is pure overhead because the system does no useful application work while saving and loading process states.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "process-scheduling-context"
+    }
+  ]
+}

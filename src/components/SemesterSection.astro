@@ -57,24 +57,30 @@ const t = useTranslations(lang);
     }
   }
 
-  const weekElement = document.querySelector<HTMLElement>('[data-academic-week]');
-  if (!weekElement) throw new Error('Academic week label is missing.');
+  const initAcademicWeek = () => {
+    const weekElement = document.querySelector<HTMLElement>('[data-academic-week]');
+    if (!weekElement) return;
 
-  const weekStart = weekElement.dataset.weekStart;
-  const template = weekElement.dataset.weekTemplate;
-  if (!weekStart || !template) {
-    throw new Error('Academic week label is missing its start date or translation.');
-  }
-
-  window.currentAcademicWeek = getAcademicWeekNumber(new Date(), weekStart);
-  weekElement.textContent = template.replace('{n}', String(window.currentAcademicWeek));
-
-  document.querySelectorAll<HTMLElement>('[data-academic-week-alert]').forEach((element) => {
-    const targetWeek = Number(element.dataset.targetWeek);
-    if (!Number.isInteger(targetWeek) || targetWeek < 1) {
-      throw new Error('Academic week alert is missing a valid target week.');
+    const weekStart = weekElement.dataset.weekStart;
+    const template = weekElement.dataset.weekTemplate;
+    if (!weekStart || !template) {
+      throw new Error('Academic week label is missing its start date or translation.');
     }
 
-    element.hidden = window.currentAcademicWeek > targetWeek;
-  });
+    window.currentAcademicWeek = getAcademicWeekNumber(new Date(), weekStart);
+    weekElement.textContent = template.replace('{n}', String(window.currentAcademicWeek));
+
+    document.querySelectorAll<HTMLElement>('[data-academic-week-alert]').forEach((element) => {
+      const targetWeek = Number(element.dataset.targetWeek);
+      if (!Number.isInteger(targetWeek) || targetWeek < 1) {
+        throw new Error('Academic week alert is missing a valid target week.');
+      }
+
+      element.hidden = window.currentAcademicWeek > targetWeek;
+    });
+  };
+
+  initAcademicWeek();
+  document.addEventListener('astro:after-swap', initAcademicWeek);
+  document.addEventListener('astro:page-load', initAcademicWeek);
 </script>

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { DAY_MS, bestScoreStorageKey, bestScoreTone, readBestScore, updateBestScore, questionSignature, readReview, updateReview, shortReview, topicResults, secondsRemaining, readAttempt } from '../src/scripts/quiz-state.ts';
+import { DAY_MS, attemptProgress, bestScoreStorageKey, bestScoreTone, readBestScore, updateBestScore, questionSignature, readReview, updateReview, shortReview, topicResults, secondsRemaining, readAttempt } from '../src/scripts/quiz-state.ts';
 import { completePomodoroPhase, createDefaultPomodoroState, formatPomodoroTime, getPomodoroPhaseDuration, getPomodoroRemainingSeconds, readPomodoroState } from '../src/scripts/pomodoro-state.ts';
 
 const question = (id, topic = 'evaluation') => ({ id, topic, question: `Question ${id}?`, options: ['Yes', 'No'], correctAnswer: 'Yes' });
@@ -161,4 +161,25 @@ test('practice and completed attempts restore; short review retains its subset a
   assert.deepEqual(readAttempt(JSON.stringify(short), [q1, q2, q3]), short);
   const bank = Array.from({ length: 6 }, (_, i) => question(i + 1));
   assert.equal(readAttempt(JSON.stringify({ ...short, questions: bank.map(q => ({ id: q.id, signature: questionSignature(q), options: q.options })) }), bank), null);
+});
+
+test('attemptProgress reports solved, remaining, correct, and wrong counts accurately', () => {
+  const saved = {
+    version: 1,
+    phase: 'active',
+    examMode: false,
+    short: false,
+    currentIndex: 2,
+    deadline: null,
+    expired: false,
+    questions: [q1, q2, q3].map(q => ({ id: q.id, signature: questionSignature(q), options: q.options })),
+    answers: [[1, 'Yes'], [2, 'No']],
+  };
+  assert.deepEqual(attemptProgress(saved, [q1, q2, q3]), {
+    total: 3,
+    solved: 2,
+    left: 1,
+    correct: 1,
+    wrong: 1,
+  });
 });

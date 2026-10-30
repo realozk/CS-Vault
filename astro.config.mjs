@@ -6,6 +6,13 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://realozk.github.io',
   base: '/CS-Vault/',
+  prefetch: false,
+  devToolbar: {
+    enabled: false,
+  },
+  build: {
+    inlineStylesheets: 'always',
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'ar'],
@@ -14,6 +21,9 @@ export default defineConfig({
     }
   },
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    css: {
+      devSourcemap: false,
+    },
   }
 });

@@ -16,6 +16,10 @@ interface SearchItem {
 }
 
 const initTabsAndSearch = () => {
+  const directoryContainer = document.getElementById('directory-container');
+  if (!directoryContainer || directoryContainer.dataset.initialized === 'true') return;
+  directoryContainer.dataset.initialized = 'true';
+
   refreshNewContentBadges(document);
   const quoteElement = document.querySelector<HTMLElement>('[data-random-home-quote]');
   const lang = quoteElement?.dataset.randomHomeQuote;
@@ -64,9 +68,6 @@ const initTabsAndSearch = () => {
   });
 
   // 2. Global fuzzy search engine
-  const directoryContainer = document.getElementById('directory-container');
-  if (!directoryContainer) return;
-
   const rawSearchIndex = directoryContainer.getAttribute('data-search-index');
   let searchIndex: SearchItem[] = [];
   if (rawSearchIndex) {
@@ -165,6 +166,8 @@ const initTabsAndSearch = () => {
 };
 
 initTabsAndSearch();
+document.addEventListener('astro:after-swap', initTabsAndSearch);
+document.addEventListener('astro:page-load', initTabsAndSearch);
 window.addEventListener('pageshow', event => {
   if (event.persisted) refreshNewContentBadges(document);
 });

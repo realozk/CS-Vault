@@ -21,6 +21,23 @@ export function getSubjectName(nameOrSlug: string, lang: 'en' | 'ar' = 'en') {
   return subject ? (lang === 'ar' ? subject.name_ar || subject.name : subject.name) : nameOrSlug;
 }
 
+export function getCourseRoutes() {
+  return subjects.map(s => ({ params: { subject: s.slug, year: String(s.year) } }));
+}
+
+export function getCourseMeta(subjectSlug: string, year: string, lang: 'en' | 'ar' = 'en') {
+  const course = subjects.find(s => s.slug === subjectSlug && String(s.year) === year);
+  if (!course) throw new Error(`Register ${subjectSlug}/${year} in src/data/subjects.json first`);
+  return {
+    subject: course.slug,
+    subjectName: getSubjectName(course.slug, lang),
+    subjectCode: course.subject_code,
+    year: String(course.year),
+    yearLevel: course.year_level,
+    semester: course.semester,
+  };
+}
+
 export async function getModules(lang: 'en' | 'ar' = 'en'): Promise<ModuleItem[]> {
   const modules = new Map<string, ModuleItem>();
   for (const subject of subjects) {

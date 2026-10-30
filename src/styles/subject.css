@@ -9,12 +9,29 @@
 .subject-heading h1 { margin-top: .9rem; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.045em; line-height: 1.2; }
 .subject-heading > p { margin-top: .85rem; color: var(--study-muted); font-size: 1rem; }
 .subject-mode-switch { display: inline-flex; gap: .35rem; max-width: 100%; margin-bottom: 2.5rem; padding: .35rem; border: 1px solid var(--study-border); border-radius: 14px; background: var(--study-surface-soft); }
-.subject-mode-switch button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: .65rem; padding: .65rem 1.15rem; border: 1px solid transparent; border-radius: 10px; color: var(--study-muted); font-size: .95rem; font-weight: 600; cursor: pointer; }
+.subject-mode-switch button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: .65rem; padding: .65rem 1.15rem; border: 1px solid transparent; border-radius: 10px; color: var(--study-muted); font-size: .95rem; font-weight: 600; cursor: pointer; transition: background-color .22s ease, border-color .22s ease, color .22s ease, box-shadow .22s ease, transform .22s cubic-bezier(0.22, 1, 0.36, 1); }
 .subject-mode-switch button:hover { color: var(--study-text); }
-.subject-mode-switch button[aria-pressed="true"] { border-color: var(--study-border); background: var(--study-surface); color: var(--study-accent); box-shadow: 0 2px 4px #071b3007; }
+.subject-mode-switch button[aria-pressed="true"] { border-color: var(--study-border); background: var(--study-surface); color: var(--study-accent); box-shadow: 0 2px 6px #071b300d; }
 .subject-mode-icon { width: 19px; height: 19px; flex-shrink: 0; }
-.subject-mode-count { display: grid; min-width: 23px; min-height: 23px; place-items: center; padding-inline: .35rem; border-radius: 6px; background: var(--study-surface-soft); color: var(--study-muted); font-size: .7rem; font-weight: 700; }
+.subject-mode-count { display: grid; min-width: 23px; min-height: 23px; place-items: center; padding-inline: .35rem; border-radius: 6px; background: var(--study-surface-soft); color: var(--study-muted); font-size: .7rem; font-weight: 700; transition: background-color .22s ease, color .22s ease; }
 .subject-mode-switch button[aria-pressed="true"] .subject-mode-count { background: var(--study-accent-soft); color: var(--study-accent); }
+@media (prefers-reduced-motion: no-preference) {
+  .subject-panel-enter,
+  .subject-page[data-mode-ready] [data-study-panel]:not(.hidden),
+  .subject-page[data-mode-ready] .summary-content-block:not(.hidden) {
+    animation: subject-panel-in 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+@keyframes subject-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .subject-fallback-nav { display: flex; gap: 1rem; margin-bottom: 2rem; }
 .subject-fallback-nav a { padding: .75rem 1rem; border: 1px solid var(--study-border); border-radius: 10px; background: var(--study-surface); color: var(--study-accent); }
 .subject-fallback-nav span { margin-inline-start: .5rem; color: var(--study-muted); }
@@ -23,11 +40,13 @@
 .subject-section-heading p { margin-top: .25rem; color: var(--study-muted); font-size: .9rem; }
 .subject-section-count { display: grid; min-width: 32px; height: 32px; place-items: center; padding-inline: .5rem; border: 1px solid var(--study-border); border-radius: 9px; color: var(--study-muted); font-size: .8rem; font-weight: 600; }
 .subject-quiz-groups { display: grid; gap: 2.25rem; }
+.subject-quiz-group { content-visibility: auto; contain-intrinsic-size: auto 220px; }
+.summary-content-block:not(.hidden) { content-visibility: auto; contain-intrinsic-size: auto 600px; }
 .subject-quiz-group > h3 { display: flex; align-items: center; gap: .85rem; margin-bottom: .9rem; color: var(--study-muted); font-size: .8rem; font-weight: 650; }
 .subject-quiz-group > h3::after { content: ''; flex: 1; height: 1px; background: var(--study-border); }
 .subject-quiz-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-.subject-quiz-card { display: flex; min-width: 0; flex-direction: column; padding: 1.3rem; border: 1px solid var(--study-border); border-radius: 18px; background: var(--study-surface); }
-.subject-quiz-card:hover { border-color: var(--study-accent); background: var(--study-surface); }
+.subject-quiz-card { display: flex; min-width: 0; flex-direction: column; padding: 1.3rem; border: 1px solid var(--study-border); border-radius: 18px; background: var(--study-surface); transition: border-color .24s ease, background-color .24s ease, transform .28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .28s cubic-bezier(0.16, 1, 0.3, 1); }
+.subject-quiz-card:hover { border-color: var(--study-accent); background: var(--study-surface); transform: translateY(-3px); box-shadow: var(--study-shadow); }
 .subject-quiz-card.subject-quiz-instructor { border-color: #b91c1c; background: rgba(185, 28, 28, .06); }
 .subject-quiz-card-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .45rem .75rem; margin-bottom: 1rem; }
 .subject-quiz-card .quiz-source-label { margin: 0; font-size: .7rem; }
@@ -44,7 +63,7 @@
 .subject-contents-heading h2 { font-size: .95rem; font-weight: 700; }
 .subject-contents .subject-section-count { min-width: 26px; height: 26px; border: 0; background: var(--study-surface-soft); border-radius: 6px; font-size: .7rem; }
 .subject-summary-list { display: grid; gap: .35rem; }
-.subject-page .summary-tab-btn { display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) 16px; align-items: start; gap: .45rem; width: 100%; min-height: 48px; padding: .8rem .65rem; border: 1px solid transparent; border-radius: 10px; color: var(--study-muted); text-align: start; line-height: 1.55; }
+.subject-page .summary-tab-btn { display: grid; grid-template-columns: 1.4rem minmax(0, 1fr) 16px; align-items: start; gap: .45rem; width: 100%; min-height: 48px; padding: .8rem .65rem; border: 1px solid transparent; border-radius: 10px; color: var(--study-muted); text-align: start; line-height: 1.55; transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
 .subject-page .summary-tab-btn:hover { background: var(--study-surface-soft); color: var(--study-text); }
 .subject-page .summary-tab-btn[aria-current="true"] { border-color: var(--study-border); background: var(--study-accent-soft); color: var(--study-accent); }
 .subject-summary-number { padding-top: .1rem; font-size: .65rem; font-variant-numeric: tabular-nums; }

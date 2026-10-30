@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SemesterSection from '../../components/SemesterSection.astro';
-import StudyBackground from '../StudyBackground.astro';
 import Icon from '../Icon.astro';
 import '../../styles/home.css';
 import { getModules, getSubjectName } from '../../lib/modules';
@@ -28,11 +27,12 @@ const copy = lang === 'ar' ? {
   emptyNote: 'There’s no material for this year yet. Explore another year to get started.',
 };
 
-// Fetch all summaries and quizzes to discover available subject/year modules
-const summaries = await getCollection('summaries');
-const quizzes = await getCollection('quizzes');
-
-const modules = await getModules(lang);
+// Fetch all summaries, quizzes, and modules in parallel
+const [summaries, quizzes, modules] = await Promise.all([
+  getCollection('summaries'),
+  getCollection('quizzes'),
+  getModules(lang),
+]);
 
 // Auto-detect default year tab (first year with content)
 const availableYears = [...new Set(modules.map(m => m.yearLevel))].sort((a, b) => a - b);
@@ -92,7 +92,6 @@ const searchIndexTranslations = JSON.stringify({
 ---
 
 <Layout title={t("nav.home")} description={copy.description}>
-  <StudyBackground />
   <div class="home-layout">
     <section class="home-hero" aria-labelledby="home-title">
       <h1 id="home-title">{t('nav.brand')}</h1>
@@ -166,6 +165,5 @@ const searchIndexTranslations = JSON.stringify({
       </div>
     </section>
   </div>
+  <script src="../../scripts/home.ts"></script>
 </Layout>
-
-<script src="../../scripts/home.ts"></script>

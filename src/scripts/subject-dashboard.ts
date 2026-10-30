@@ -1,6 +1,27 @@
 import { bestScoreStorageKey, bestScoreTone, readBestScore } from './quiz-state';
 
+let cleanupDashboardListeners: (() => void) | undefined;
+
 const initDashboard = () => {
+  const page = document.getElementById('subject-page');
+  if (page) {
+    if (page.dataset.dashboardBound === 'true') return;
+    page.dataset.dashboardBound = 'true';
+  }
+  cleanupDashboardListeners?.();
+  const activeListeners: Array<() => void> = [];
+  const listen = (target: EventTarget, type: string, listener: EventListener) => {
+    if (typeof target?.addEventListener !== 'function') return;
+    target.addEventListener(type, listener);
+    if (typeof target.removeEventListener === 'function') {
+      activeListeners.push(() => target.removeEventListener(type, listener));
+    }
+  };
+  cleanupDashboardListeners = () => {
+    for (const remove of activeListeners) remove();
+    activeListeners.length = 0;
+  };
+
   const tabs = document.querySelectorAll<HTMLAnchorElement>('.summary-tab-btn');
   const contents = document.querySelectorAll<HTMLElement>('.summary-content-block');
   const checkboxes = document.querySelectorAll('.summary-checkbox') as NodeListOf<HTMLInputElement>;
@@ -55,10 +76,10 @@ const initDashboard = () => {
     }
   };
   renderBestScores();
-  window.addEventListener('pageshow', renderBestScores);
-  window.addEventListener('storage', (event) => {
+  listen(window, 'pageshow', renderBestScores);
+  listen(window, 'storage', ((event: StorageEvent) => {
     if (event.key?.startsWith('cs-vault-best-score-v1:')) renderBestScores();
-  });
+  }) as EventListener);
 
   const subject = tracker?.dataset.subject || 'unknown';
   const year = tracker?.dataset.year || 'unknown';
@@ -224,32 +245,48 @@ const initDashboard = () => {
   const scrollBehavior = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' as const : 'smooth' as const;
 
   // Enhance the readable, anchor-based page into two focused task modes.
-  const page = document.getElementById('subject-page');
   const modeSwitch = document.getElementById('subject-mode-switch');
   const modeButtons = document.querySelectorAll<HTMLButtonElement>('[data-study-mode]');
   const modePanels = document.querySelectorAll<HTMLElement>('[data-study-panel]');
   type StudyMode = 'quizzes' | 'summaries';
 
-  const setMode = (mode: StudyMode) => {
+  const setMode = (mode: StudyMode, animate = false) => {
     if (!page || !modeSwitch) return;
+    const modeChanged = page.dataset.studyMode !== mode;
     page.dataset.studyMode = mode;
     modeButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.studyMode === mode)));
-    modePanels.forEach(panel => panel.classList.toggle('hidden', panel.dataset.studyPanel !== mode));
+    modePanels.forEach(panel => {
+      const isTarget = panel.dataset.studyPanel === mode;
+      panel.classList.toggle('hidden', !isTarget);
+      panel.classList.remove('subject-panel-enter');
+      if (isTarget && animate && modeChanged) {
+        void panel.offsetWidth;
+        panel.classList.add('subject-panel-enter');
+      }
+    });
   };
 
   const writeHash = (hash: string) => {
     if (window.location.hash !== hash) window.history.pushState(null, '', hash);
   };
 
-  const selectSummary = (slug: string, options: { scroll?: boolean; writeHistory?: boolean; activateMode?: boolean; focus?: boolean } = {}) => {
+  const selectSummary = (slug: string, options: { scroll?: boolean; writeHistory?: boolean; activateMode?: boolean; focus?: boolean; animate?: boolean } = {}) => {
     const selected = [...contents].find(content => content.id === `summary-content-${slug}`);
     if (!selected) return;
-    if (options.activateMode !== false) setMode('summaries');
+    const wasHidden = selected.classList.contains('hidden');
+    if (options.activateMode !== false) setMode('summaries', options.animate);
     tabs.forEach(tab => {
       if (tab.dataset.summarySlug === slug) tab.setAttribute('aria-current', 'true');
       else tab.removeAttribute('aria-current');
     });
-    contents.forEach(content => content.classList.toggle('hidden', content !== selected));
+    contents.forEach(content => {
+      content.classList.toggle('hidden', content !== selected);
+      content.classList.remove('subject-panel-enter');
+    });
+    if (options.animate && wasHidden) {
+      void selected.offsetWidth;
+      selected.classList.add('subject-panel-enter');
+    }
     if (options.writeHistory) writeHash(`#${selected.id}`);
     if (options.focus) selected.querySelector('h2')?.focus({ preventScroll: true });
     if (options.scroll) selected.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
@@ -289,14 +326,17 @@ const initDashboard = () => {
     if (firstSlug) selectSummary(firstSlug, { activateMode: false });
     setMode(page.dataset.defaultStudyMode === 'summaries' ? 'summaries' : 'quizzes');
     syncHash(true);
-    window.addEventListener('hashchange', () => syncHash(true));
-    window.addEventListener('popstate', () => syncHash(true));
+    requestAnimationFrame(() => {
+      page.dataset.modeReady = 'true';
+    });
+    listen(window, 'hashchange', () => syncHash(true));
+    listen(window, 'popstate', () => syncHash(true));
   }
 
   modeButtons.forEach(button => {
     button.addEventListener('click', () => {
       const mode = button.dataset.studyMode === 'summaries' ? 'summaries' : 'quizzes';
-      setMode(mode);
+      setMode(mode, true);
       writeHash(mode === 'summaries' ? '#subject-reading' : '#subject-quizzes');
     });
   });
@@ -307,7 +347,7 @@ const initDashboard = () => {
       const slug = tab.dataset.summarySlug;
       if (!slug) return;
       event.preventDefault();
-      selectSummary(slug, { scroll: true, writeHistory: true });
+      selectSummary(slug, { scroll: true, writeHistory: true, animate: true });
     });
   });
 
@@ -320,7 +360,7 @@ const initDashboard = () => {
   };
 
   // Keep the existing review-on-next and finish behavior.
-  document.addEventListener('click', (event) => {
+  listen(document, 'click', ((event: MouseEvent) => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     if (!(event.target instanceof Element)) return;
     const previous = event.target.closest<HTMLElement>('[data-nav-prev]');
@@ -331,7 +371,7 @@ const initDashboard = () => {
       event.preventDefault();
       if (next) markReviewed(next.getAttribute('data-current-slug'));
       const slug = navigation.getAttribute(previous ? 'data-nav-prev' : 'data-nav-next');
-      if (slug) selectSummary(slug, { scroll: true, writeHistory: true, focus: true });
+      if (slug) selectSummary(slug, { scroll: true, writeHistory: true, focus: true, animate: true });
     } else if (finish) {
       markReviewed(finish.getAttribute('data-nav-finish'));
       if (tracker) {
@@ -340,7 +380,7 @@ const initDashboard = () => {
         setTimeout(() => tracker.classList.remove('ring-2', 'ring-emerald-500'), 1500);
       }
     }
-  });
+  }) as EventListener);
 
   // Run initial loaders
   initCopyButtons();
@@ -351,3 +391,5 @@ if (document.readyState === 'loading') {
 } else {
   initDashboard();
 }
+document.addEventListener('astro:after-swap', initDashboard);
+document.addEventListener('astro:page-load', initDashboard);

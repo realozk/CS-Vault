@@ -1,5 +1,5 @@
 import type { Question, QuizData } from '../types';
-import { bestScoreStorageKey, readBestScore, readReview, updateBestScore, updateReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
+import { attemptProgress, bestScoreStorageKey, readBestScore, readReview, updateBestScore, updateReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
 
 const shuffle = <T>(values: T[]): T[] => {
   const result = [...values];
@@ -23,9 +23,15 @@ const renderInlineCode = (element: HTMLElement, text: string) => {
   }));
 };
 
+let cleanupQuizWidget: (() => void) | undefined;
+
 const initQuizWidget = () => {
   const widget = document.getElementById('quiz-widget');
-  if (!widget) return;
+  if (!widget || widget.dataset.quizBound === 'true') return;
+  widget.dataset.quizBound = 'true';
+  cleanupQuizWidget?.();
+  const abortController = new AbortController();
+  const { signal } = abortController;
   const quiz: QuizData = JSON.parse(widget.dataset.quiz || '{}');
   if (!quiz.questions?.length) return;
   const quizId = widget.dataset.quizId;
@@ -34,16 +40,40 @@ const initQuizWidget = () => {
   const t = (key: string) => translations[key] || key;
   const el = (id: string) => document.getElementById(`quiz-${id}`)!;
   const button = (id: string) => el(id) as HTMLButtonElement;
-  const screens = { setup: el('start-screen'), active: el('active-screen'), results: el('result-screen') };
+  const screens = {
+    setup: el('start-screen'),
+    resume: el('resume-screen'),
+    active: el('active-screen'),
+    results: el('result-screen'),
+  };
+  const footer = document.querySelector<HTMLElement>('.site-footer');
+  const setFooterHidden = (hidden: boolean) => {
+    if (!footer) return;
+    footer.hidden = hidden;
+    footer.style.display = hidden ? 'none' : '';
+  };
   const show = (name: keyof typeof screens) => {
     for (const [key, screen] of Object.entries(screens)) screen.classList.toggle('hidden', key !== name);
-    document.body.classList.toggle('quiz-running', name === 'active');
+    const isActive = name === 'active';
+    document.body.classList.toggle('quiz-running', isActive);
+    setFooterHidden(isActive);
   };
   const storageKey = `cs-vault-review-v1:${quizId}`;
   const attemptKey = `cs-vault-attempt-v1:${quizId}`;
+  const langSwitchKey = 'cs-vault-quiz-lang-switch';
   const bestScoreKey = bestScoreStorageKey(quizId);
   let saved: ReviewItem[] = [];
   const storageWarning = () => { el('storage-status').textContent = t('storageUnavailable'); };
+  const readStoredAttemptRaw = (): string | null => {
+    try { return localStorage.getItem(attemptKey) ?? sessionStorage.getItem(attemptKey); }
+    catch { storageWarning(); return null; }
+  };
+  const clearStoredAttempt = () => {
+    try {
+      localStorage.removeItem(attemptKey);
+      sessionStorage.removeItem(attemptKey);
+    } catch { storageWarning(); }
+  };
   const loadSaved = () => {
     try { saved = readReview(localStorage.getItem(storageKey), quiz.questions); }
     catch { storageWarning(); }
@@ -62,8 +92,8 @@ const initQuizWidget = () => {
     (el('minutes') as HTMLInputElement).disabled = !(el('use-timer') as HTMLInputElement).checked;
     el('mode-subtext').textContent = t(exam ? 'examSubtext' : 'subtext');
   };
-  widget.querySelectorAll('input[name="quiz-mode"]').forEach(input => input.addEventListener('change', updateSettings));
-  el('use-timer').addEventListener('change', updateSettings);
+  widget.querySelectorAll('input[name="quiz-mode"]').forEach(input => input.addEventListener('change', updateSettings, { signal }));
+  el('use-timer').addEventListener('change', updateSettings, { signal });
   updateSettings();
 
   let questions: Question[] = [];
@@ -81,8 +111,12 @@ const initQuizWidget = () => {
       questions: questions.map(q => ({ id: q.id, signature: questionSignature(q), options: q.options })),
       answers: [...answers],
     };
-    try { sessionStorage.setItem(attemptKey, JSON.stringify(attempt)); }
-    catch { storageWarning(); }
+    const serialized = JSON.stringify(attempt);
+    try {
+      if (phase === 'active') localStorage.setItem(attemptKey, serialized);
+      else localStorage.removeItem(attemptKey);
+      sessionStorage.setItem(attemptKey, serialized);
+    } catch { storageWarning(); }
   };
   const stopTimer = () => { if (timer !== undefined) clearInterval(timer); timer = undefined; };
   const checkExpiry = () => {
@@ -121,11 +155,22 @@ const initQuizWidget = () => {
     return `${lecturePrefix}${slideRef}`;
   };
   const answerNotice = (q: Question) => [q.answerSource === 'inferred' ? t('inferred') : '', q.optionsSource === 'generated' ? t('generatedOptions') : ''].filter(Boolean).join(' ');
-  const showExplanation = (q: Question) => {
+  const showExplanation = (q: Question, revealed: boolean) => {
+    const explanationBox = el('explanation-box');
+    const hasContent = Boolean(q.explanation || sourceReference(q) || answerNotice(q));
+    if (examMode || !hasContent) {
+      explanationBox.classList.add('hidden');
+      explanationBox.classList.remove('is-blurred');
+      explanationBox.removeAttribute('aria-hidden');
+      return;
+    }
     renderInlineCode(el('explanation-text'), q.explanation || '');
     el('source-slide').textContent = sourceReference(q);
     el('answer-warning').textContent = answerNotice(q);
-    el('explanation-box').classList.toggle('hidden', !q.explanation && !sourceReference(q) && !answerNotice(q));
+    explanationBox.classList.remove('hidden');
+    explanationBox.classList.toggle('is-blurred', !revealed);
+    if (revealed) explanationBox.removeAttribute('aria-hidden');
+    else explanationBox.setAttribute('aria-hidden', 'true');
   };
   const paintOptions = () => {
     const q = questions[currentIndex];
@@ -146,7 +191,7 @@ const initQuizWidget = () => {
         option.classList.add('border-gray-200', 'dark:border-zinc-800', 'hover:border-blue-500');
       }
     });
-    button('next-btn').disabled = !examMode && selected === undefined;
+    button('next-btn').disabled = false;
   };
   const selectAnswer = (option: string) => {
     if (!running || checkExpiry()) return;
@@ -157,25 +202,24 @@ const initQuizWidget = () => {
     if (examMode) el('answer-status').textContent = t('answerSaved');
     else {
       el('answer-status').textContent = t(option === q.correctAnswer ? 'correctFeedback' : 'incorrectFeedback');
-      showExplanation(q);
+      showExplanation(q, true);
     }
     persistAttempt();
   };
-  const renderQuestion = () => {
+  const renderQuestion = (animate = true) => {
     const q = questions[currentIndex];
     el('current-question-num').textContent = String(currentIndex + 1);
     renderInlineCode(el('question-text'), q.question);
     el('question-code').textContent = q.code || '';
     el('question-code').classList.toggle('hidden', !q.code);
     el('progress-bar').style.width = `${currentIndex / questions.length * 100}%`;
-    el('explanation-box').classList.add('hidden');
     const selected = answers.get(q.id);
     el('answer-status').textContent = selected === undefined
       ? ''
       : examMode
         ? t('answerSaved')
         : t(selected === q.correctAnswer ? 'correctFeedback' : 'incorrectFeedback');
-    if (!examMode && selected !== undefined) showExplanation(q);
+    showExplanation(q, selected !== undefined);
     button('next-btn').textContent = t(currentIndex === questions.length - 1 ? (examMode ? 'submit' : 'finish') : 'next');
     button('previous-btn').classList.toggle('hidden', currentIndex === 0);
     button('previous-btn').disabled = currentIndex === 0;
@@ -190,6 +234,14 @@ const initQuizWidget = () => {
       choice.addEventListener('click', () => selectAnswer(option));
       el('options-container').append(choice);
     });
+    const questionContent = widget.querySelector<HTMLElement>('.quiz-question-content');
+    if (questionContent) {
+      questionContent.classList.remove('quiz-question-animate');
+      if (animate) {
+        void questionContent.offsetWidth;
+        questionContent.classList.add('quiz-question-animate');
+      }
+    }
     paintOptions();
     persistAttempt();
     el('active-screen').scrollIntoView({ behavior: 'instant', block: 'start' });
@@ -213,7 +265,7 @@ const initQuizWidget = () => {
     el('total-questions-num').textContent = String(questions.length);
     el('timer').textContent = t(short ? 'shortActive' : examMode ? 'exam' : 'active');
     show('active');
-    renderQuestion();
+    renderQuestion(false);
     startTimer();
   }
 
@@ -276,26 +328,79 @@ const initQuizWidget = () => {
     el('result-title').focus({ preventScroll: false });
   }
 
-  document.getElementById('start-quiz-btn')!.addEventListener('click', () => begin(quiz.questions));
+  document.getElementById('start-quiz-btn')!.addEventListener('click', () => begin(quiz.questions), { signal });
   button('next-btn').addEventListener('click', () => {
     if (!running || checkExpiry() || button('next-btn').disabled) return;
     if (currentIndex === questions.length - 1) finish();
     else { currentIndex++; renderQuestion(); }
-  });
+  }, { signal });
   button('previous-btn').addEventListener('click', () => {
     if (!running || checkExpiry() || currentIndex === 0) return;
     currentIndex--; renderQuestion();
-  });
-  button('submit-btn').addEventListener('click', () => { if (!checkExpiry()) finish(); });
-  button('restart-btn').addEventListener('click', () => begin(quiz.questions));
-  button('retry-missed-btn').addEventListener('click', () => begin(shuffle(missed).slice(0, 5), true));
+  }, { signal });
+  button('submit-btn').addEventListener('click', () => { if (!checkExpiry()) finish(); }, { signal });
+  button('restart-btn').addEventListener('click', () => begin(quiz.questions), { signal });
+  button('retry-missed-btn').addEventListener('click', () => begin(shuffle(missed).slice(0, 5), true), { signal });
   button('settings-btn').addEventListener('click', () => {
-    try { sessionStorage.removeItem(attemptKey); } catch { storageWarning(); }
+    clearStoredAttempt();
     show('setup'); document.getElementById('start-quiz-btn')!.focus();
-  });
-  document.addEventListener('visibilitychange', tick);
-  window.addEventListener('pagehide', stopTimer);
-  window.addEventListener('pageshow', () => { if (running) startTimer(); });
+  }, { signal });
+  button('continue-btn').addEventListener('click', () => {
+    if (answers.has(questions[currentIndex]?.id) && answers.size < questions.length) {
+      for (let offset = 1; offset < questions.length; offset++) {
+        const candidate = (currentIndex + offset) % questions.length;
+        if (!answers.has(questions[candidate].id)) {
+          currentIndex = candidate;
+          break;
+        }
+      }
+    }
+    running = true;
+    el('total-questions-num').textContent = String(questions.length);
+    el('timer').textContent = t(shortSession ? 'shortActive' : examMode ? 'exam' : 'active');
+    if (!checkExpiry()) {
+      show('active');
+      renderQuestion(false);
+      startTimer();
+    }
+  }, { signal });
+  button('redo-btn').addEventListener('click', () => {
+    clearStoredAttempt();
+    begin(quiz.questions);
+  }, { signal });
+  button('resume-settings-btn').addEventListener('click', () => {
+    clearStoredAttempt();
+    running = false;
+    show('setup');
+    document.getElementById('start-quiz-btn')!.focus();
+  }, { signal });
+  cleanupQuizWidget = () => {
+    stopTimer();
+    abortController.abort();
+    delete widget.dataset.quizBound;
+    document.body.classList.remove('quiz-running');
+    setFooterHidden(false);
+  };
+  document.addEventListener('astro:before-preparation', (event) => {
+    const navEvent = event as Event & { from?: URL; to?: URL };
+    const normalize = (pathname = '') => pathname.replace(/\/ar(?=\/|$)/, '') || '/';
+    const isSameQuizDifferentLang = Boolean(
+      navEvent.from && navEvent.to
+      && navEvent.from.pathname !== navEvent.to.pathname
+      && normalize(navEvent.from.pathname) === normalize(navEvent.to.pathname)
+    );
+    try {
+      if (isSameQuizDifferentLang && (running || !screens.results.classList.contains('hidden'))) {
+        sessionStorage.setItem(langSwitchKey, quizId);
+      } else {
+        sessionStorage.removeItem(langSwitchKey);
+      }
+    } catch { /* Ignore storage errors on navigation. */ }
+  }, { signal });
+  document.addEventListener('astro:before-swap', () => cleanupQuizWidget?.(), { signal });
+  document.addEventListener('visibilitychange', tick, { signal });
+  window.addEventListener('pagehide', stopTimer, { signal });
+  window.addEventListener('pageshow', () => { if (running) startTimer(); }, { signal });
   document.addEventListener('keydown', event => {
     if (!running || event.ctrlKey || event.metaKey || event.altKey || event.isComposing) return;
     const target = event.target as HTMLElement;
@@ -307,12 +412,16 @@ const initQuizWidget = () => {
     } else if (key === 'ENTER' && target.tagName !== 'BUTTON' && !button('next-btn').disabled) {
       event.preventDefault(); button('next-btn').click();
     }
-  });
+  }, { signal });
 
   const restoreAttempt = () => {
-    let attempt: QuizAttempt | null = null;
-    try { attempt = readAttempt(sessionStorage.getItem(attemptKey), quiz.questions); }
-    catch { storageWarning(); }
+    let isLangSwitch = false;
+    try {
+      isLangSwitch = sessionStorage.getItem(langSwitchKey) === quizId;
+      sessionStorage.removeItem(langSwitchKey);
+    } catch { /* Ignore storage errors. */ }
+
+    const attempt = readAttempt(readStoredAttemptRaw(), quiz.questions);
     if (!attempt) {
       running = false;
       show('setup');
@@ -325,26 +434,61 @@ const initQuizWidget = () => {
     examMode = attempt.examMode;
     shortSession = attempt.short;
     deadline = attempt.deadline;
-    running = true;
     (widget.querySelector(`input[name="quiz-mode"][value="${examMode ? 'exam' : 'practice'}"]`) as HTMLInputElement).checked = true;
     (el('use-timer') as HTMLInputElement).checked = deadline !== null;
     updateSettings();
     el('total-questions-num').textContent = String(questions.length);
     el('timer').textContent = t(shortSession ? 'shortActive' : examMode ? 'exam' : 'active');
-    if (attempt.phase === 'results') finish(attempt.expired, true);
-    else if (!checkExpiry()) {
-      show('active');
-      renderQuestion();
-      startTimer();
+    if (attempt.phase === 'results') {
+      if (isLangSwitch) {
+        running = true;
+        finish(attempt.expired, true);
+      } else {
+        clearStoredAttempt();
+        running = false;
+        show('setup');
+      }
+      return;
     }
+    if (answers.size === 0 && currentIndex === 0 && !isLangSwitch) {
+      clearStoredAttempt();
+      running = false;
+      show('setup');
+      return;
+    }
+    if (deadline !== null && secondsRemaining(deadline, Date.now()) === 0) {
+      running = true;
+      finish(true);
+      return;
+    }
+    if (isLangSwitch) {
+      running = true;
+      show('active');
+      renderQuestion(false);
+      startTimer();
+      return;
+    }
+    const progress = attemptProgress(attempt, quiz.questions);
+    el('resume-solved').textContent = String(progress.solved);
+    el('resume-left').textContent = String(progress.left);
+    el('resume-correct').textContent = String(progress.correct);
+    el('resume-wrong').textContent = String(progress.wrong);
+    el('resume-progress-bar').style.width = `${progress.solved / progress.total * 100}%`;
+    el('resume-progress-text').textContent = t('resumeProgress')
+      .replace('{solved}', String(progress.solved))
+      .replace('{total}', String(progress.total));
+    running = false;
+    show('resume');
   };
   restoreAttempt();
   // A browser Back navigation may revive an older page from the back/forward
   // cache; reconcile it with the attempt saved by the other language route.
   window.addEventListener('pageshow', event => {
     if (event.persisted) { stopTimer(); restoreAttempt(); }
-  });
+  }, { signal });
 };
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initQuizWidget);
 else initQuizWidget();
+document.addEventListener('astro:after-swap', initQuizWidget);
+document.addEventListener('astro:page-load', initQuizWidget);
