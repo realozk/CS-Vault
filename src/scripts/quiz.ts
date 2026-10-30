@@ -544,18 +544,6 @@ const initQuizWidget = () => {
   window.addEventListener('storage', event => { if (event.key === storageKey || event.key === null) loadSaved(); }, { signal });
   window.addEventListener('pagehide', stopTimer, { signal });
   window.addEventListener('pageshow', () => { if (running) startTimer(); }, { signal });
-  document.addEventListener('keydown', event => {
-    if (!running || event.ctrlKey || event.metaKey || event.altKey || event.isComposing) return;
-    const target = event.target as HTMLElement;
-    if (target.closest('input, textarea, select, a, summary, [contenteditable="true"]')) return;
-    const key = event.key.toUpperCase();
-    if (key >= 'A' && key <= 'Z') {
-      const choice = el('options-container').querySelectorAll('button')[key.charCodeAt(0) - 65];
-      if (choice && !choice.disabled) { event.preventDefault(); choice.click(); }
-    } else if (key === 'ENTER' && target.tagName !== 'BUTTON' && !button('next-btn').disabled) {
-      event.preventDefault(); button('next-btn').click();
-    }
-  }, { signal });
 
   const restoreAttempt = () => {
     let isLangSwitch = false;
