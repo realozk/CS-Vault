@@ -11,8 +11,8 @@ const arabic = getLangFromUrl(Astro.url) === 'ar';
     <span>{arabic ? 'الخلفية المتحركة والانتقالات' : 'Animated background and transitions'}</span>
   </label>
   <p id="study-motion-hint">{arabic
-    ? 'الخلفية الأصلية مفعّلة. أوقفها لمظهر أهدأ؛ تُحترم إعدادات تقليل الحركة في جهازك.'
-    : 'The original background is on. Turn it off for a quieter view; your device’s reduced-motion setting is respected.'}</p>
+? 'عشان تخفف عن جهازك اذا تشوف ان الموقع بطيء'
+: 'The original background is on. Turn it off for a quieter view; your device’s reduced-motion setting is respected.'}</p>
   <p id="study-motion-storage-status" class="hidden" role="status" data-storage-message={arabic
     ? 'تعذّر حفظ التفضيل. سيبقى مفعّلًا خلال هذه الزيارة.'
     : 'This preference could not be saved. It still works for this visit.'}></p>
