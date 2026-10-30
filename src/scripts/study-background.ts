@@ -34,11 +34,18 @@ const context = canvas?.getContext('2d');
 
 if (canvas && container && context && canvas.dataset.initialized !== 'true') {
   canvas.dataset.initialized = 'true';
-  const cell = 13;
+  const cellSize = (width: number, height: number) => {
+    // Retain the original texture on ordinary screens without multiplying work
+    // on large/high-resolution displays.
+    let size = Math.max(13, Math.ceil(Math.sqrt(width * height / 8000)));
+    while (Math.ceil(width / size) * Math.ceil(height / size) > 8000) size++;
+    return size;
+  };
   const glyphs = '.:-=+*#%@<>/\\[]{}01';
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const frameInterval = 1000 / 24;
-  const transitionInterval = 1000 / 60;
+  const motionEnabled = () => document.documentElement.dataset.studyMotion !== 'off';
+  const coarsePointer = window.matchMedia('(pointer: coarse)');
+  const mobileBudget = () => coarsePointer.matches || window.innerWidth < 768;
 
   const isQuizUrl = (pathname: string) => /\/quiz\//.test(pathname);
   const isQuizPage = () =>
@@ -47,6 +54,7 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
   const saved = window.__csVaultStudyBg;
   let width = saved?.width ?? 0;
   let height = saved?.height ?? 0;
+  let cell = cellSize(width, height);
   let columns = width > 0 ? Math.ceil(width / cell) : 0;
   let rows = height > 0 ? Math.ceil(height / cell) : 0;
   let waves: Wave[] = saved?.waves ?? [];
@@ -241,8 +249,9 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
     if (!canvas || !container || !context) return;
     const bounds = container.getBoundingClientRect();
     if (bounds.width < 10 || bounds.height < 10) return;
-    const nextWidth = Math.max(1, Math.round(bounds.width));
-    const nextHeight = Math.max(1, Math.round(bounds.height));
+    // A long document must never turn a page transition into a full-page canvas.
+    const nextWidth = Math.max(1, Math.round(Math.min(bounds.width, window.innerWidth)));
+    const nextHeight = Math.max(1, Math.round(Math.min(bounds.height, window.innerHeight)));
     if (width === nextWidth && height === nextHeight && canvas.width === nextWidth && canvas.height === nextHeight && waves.length > 0) {
       return;
     }
@@ -264,6 +273,8 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
     const prevHeight = height || nextHeight;
     width = nextWidth;
     height = nextHeight;
+    cell = cellSize(width, height);
+    container.style.setProperty('--study-grid-size', `${cell}px`);
     // One physical pixel per CSS pixel retains the reference's soft pixel texture.
     canvas.width = width;
     canvas.height = height;
@@ -289,6 +300,7 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
     } else {
       waves = [];
       for (let index = 0; index < 3; index++) waves.push(newWave(index, waves[index - 1]));
+      waves.forEach((wave, index) => { wave.radius = Math.min(wave.reach * .35, 100 + index * 60); });
       const count = clamp(Math.floor(columns * rows / 72), 56, 180);
       characters = Array.from({ length: count }, () => ({
         col: Math.floor(random(0, columns)), row: Math.floor(random(0, rows)),
@@ -298,18 +310,19 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
 
     syncSavedState();
 
-    if (reducedMotion.matches) {
-      waves.forEach((wave, index) => { wave.radius = 70 + index * 25; });
-      paint(0, true);
+    if (motionEnabled()) {
+      if (reducedMotion.matches) waves.forEach((wave, index) => { wave.radius = 70 + index * 25; });
+      // Show the pixel field immediately instead of waiting for empty rings to grow.
+      paint(elapsed, true);
     }
   }
 
   function animate(now: number) {
     frame = 0;
-    if (document.hidden || !inView || reducedMotion.matches) return;
+    if (document.hidden || !inView || reducedMotion.matches || !motionEnabled()) return;
     const isTransitioning =
       (collapsing && collapseProgress < 1) || (!collapsing && collapseProgress > 0);
-    const activeInterval = isTransitioning ? transitionInterval : frameInterval;
+    const activeInterval = 1000 / (isTransitioning ? (mobileBudget() ? 30 : 60) : (mobileBudget() ? 12 : 24));
     if (!previousTime) previousTime = now - activeInterval;
     const delta = now - previousTime;
     if (delta >= activeInterval) {
@@ -373,6 +386,7 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
     cancelAnimationFrame(frame);
     frame = 0;
     previousTime = 0;
+    if (!motionEnabled()) return;
     if (reducedMotion.matches) {
       collapseProgress = collapsing ? 1 : 0;
       waves.forEach((wave, index) => { wave.radius = 70 + index * 25; });
@@ -381,6 +395,11 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
       frame = requestAnimationFrame(animate);
     }
   }
+
+  const onMotionChange = () => {
+    resize();
+    updateMotion();
+  };
 
   const onDocumentClick = (event: MouseEvent) => {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
@@ -420,7 +439,7 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
     const nextDark = document.documentElement.classList.contains('dark');
     if (dark === nextDark) return;
     dark = nextDark;
-    if (collapseProgress < 1) {
+    if (collapseProgress < 1 && motionEnabled()) {
       context.clearRect(0, 0, width, height);
       paint(elapsed, true);
     }
@@ -433,6 +452,7 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
   document.addEventListener('astro:before-preparation', onBeforePreparation);
   document.addEventListener('visibilitychange', updateMotion);
   reducedMotion.addEventListener('change', updateMotion);
+  document.addEventListener('cs-vault:motion-change', onMotionChange);
   updateMotion();
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) {
@@ -451,6 +471,7 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
     document.removeEventListener('astro:before-preparation', onBeforePreparation);
     document.removeEventListener('visibilitychange', updateMotion);
     reducedMotion.removeEventListener('change', updateMotion);
+    document.removeEventListener('cs-vault:motion-change', onMotionChange);
     document.removeEventListener('astro:after-swap', onAfterSwap);
   };
   const onAfterSwap = () => {
@@ -462,7 +483,7 @@ if (canvas && container && context && canvas.dataset.initialized !== 'true') {
     const nextDark = document.documentElement.classList.contains('dark');
     if (dark !== nextDark) {
       dark = nextDark;
-      if (collapseProgress < 1) {
+      if (collapseProgress < 1 && motionEnabled()) {
         context.clearRect(0, 0, width, height);
         paint(elapsed, true);
       }

@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import MaterialContext from './MaterialContext.astro';
+import QuizSourceLabel from './QuizSourceLabel.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
+import { getPracticeQuestions } from '../lib/quiz-questions';
+import { questionBankFingerprint } from '../scripts/quiz-state';
+
+interface Props {
+  quiz: CollectionEntry<'quizzes'>;
+  href: string;
+}
+
+const { quiz, href } = Astro.props;
+const t = useTranslations(getLangFromUrl(Astro.url));
+const questions = getPracticeQuestions(quiz.data.questions);
+---
+
+<a href={href} class="subject-quiz-card">
+  <div class="subject-quiz-card-body" dir={quiz.data.lang === 'ar' ? 'rtl' : 'ltr'}>
+    <div class="subject-quiz-card-top">
+      <QuizSourceLabel sourceKind={quiz.data.sourceKind} />
+      <span class="subject-question-count">{questions.length} {t('quiz.questions')}</span>
+    </div>
+    <h4 lang={quiz.data.lang} dir="auto">{quiz.data.title}</h4>
+    <MaterialContext
+      compact
+      description={quiz.data.description}
+      sourceAcademicYear={quiz.data.sourceAcademicYear}
+      sourceTerm={quiz.data.sourceTerm}
+      contentLang={quiz.data.lang}
+    />
+    {questions.length > 0 && <span
+      data-best-score={quiz.id}
+      data-best-score-total={questions.length}
+      data-best-score-fingerprint={questionBankFingerprint(questions)}
+      data-best-score-template={t('dashboard.bestScore')}
+      class="subject-best-score hidden"
+    ></span>}
+  </div>
+  <span class="subject-quiz-card-action">
+    <span>{t('dashboard.practice')}</span>
+    <svg aria-hidden="true" class="rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" /></svg>
+  </span>
+</a>

@@ -62,6 +62,14 @@ test('best quiz score colors use red below 60, yellow below 80, and green from 8
   assert.throws(() => bestScoreTone(101), /integer from 0 to 100/);
 });
 
+test('best scores retain improvements when large banks round both percentages to the same value', () => {
+  const previous = updateBestScore(null, 1, 193, 'large-bank');
+  const improved = updateBestScore(previous, 2, 193, 'large-bank');
+  assert.equal(previous.percentage, improved.percentage);
+  assert.equal(improved.correct, 2);
+  assert.equal(updateBestScore(improved, 1, 193, 'large-bank').correct, 2);
+});
+
 test('wrong and unanswered answers are scheduled; correct answers are not added', () => {
   const saved = updateReview([], [q1, q2, q3], new Map([[1, 'No'], [3, 'Yes']]), now);
   assert.deepEqual(saved.map(item => item.id), [1, 2]);
@@ -150,6 +158,7 @@ test('attempts reject changed content, obsolete questions, and a different-sized
 test('corrupt attempt data cannot restore invalid answers, order, index, or timer settings', () => {
   assert.equal(readAttempt('{bad', [q1, q2]), null);
   for (const overrides of [
+    { savedAt: 'later' }, { savedAt: -1 }, { savedAt: 0.5 }, { savedAt: Number.MAX_SAFE_INTEGER + 1 },
     { currentIndex: -1 }, { currentIndex: 2 }, { currentIndex: 0.5 },
     { version: 2 }, { phase: 'unknown' }, { deadline: '60000' }, { deadline: -1 },
     { deadline: now, examMode: false }, { examMode: true, short: true },
@@ -168,6 +177,13 @@ test('practice and completed attempts restore; short review retains its subset a
   assert.deepEqual(readAttempt(JSON.stringify(short), [q1, q2, q3]), short);
   const bank = Array.from({ length: 6 }, (_, i) => question(i + 1));
   assert.equal(readAttempt(JSON.stringify({ ...short, questions: bank.map(q => ({ id: q.id, signature: questionSignature(q), options: q.options })) }), bank), null);
+});
+
+test('attempt save timestamps are optional for existing version-one records and survive restoration', () => {
+  const legacy = attempt();
+  assert.deepEqual(readAttempt(JSON.stringify(legacy), [q1, q2]), legacy);
+  const timestamped = attempt({ savedAt: now });
+  assert.deepEqual(readAttempt(JSON.stringify(timestamped), [q1, q2]), timestamped);
 });
 
 test('attemptProgress reports solved, remaining, correct, and wrong counts accurately', () => {

@@ -4,6 +4,7 @@ import { getContributionFormUrl } from '../lib/contributions';
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import StudyBackground from "../components/StudyBackground.astro";
+import AppearanceSettings from "../components/AppearanceSettings.astro";
 import fontRegularUrl from "../assets/fonts/thmanyah/thmanyahsans-Regular.woff2?url";
 import fontBoldUrl from "../assets/fonts/thmanyah/thmanyahsans-Bold.woff2?url";
 import { getLangFromUrl, useTranslations, getLocalizedPath, getLanguageSwitcherPath } from "../i18n/ui";
@@ -23,10 +24,16 @@ const contributionUrl = getContributionFormUrl(contributionConfig) || getLocaliz
 const t = useTranslations(lang);
 const dir = lang === "ar" ? "rtl" : "ltr";
 const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.png`, Astro.site).href;
+const isNotFound = /\/404(?:\.html|\/)?$/.test(Astro.url.pathname);
+const pagePath = Astro.url.pathname.endsWith('.html')
+  ? Astro.url.pathname
+  : `${Astro.url.pathname.replace(/\/+$/, '')}/`;
+const canonicalUrl = new URL(pagePath, Astro.site).href;
+const alternateUrl = new URL(getLanguageSwitcherPath(pagePath, lang), Astro.site).href;
 ---
 
 <!doctype html>
-<html lang={lang} dir={dir}>
+<html lang={lang} dir={dir} data-study-motion="on">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,12 +46,18 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
     <title>{title} | CS Vault</title>
     <meta name="title" content={`${title} | CS Vault`} />
     <meta name="description" content={description} />
+    {isNotFound ? <meta name="robots" content="noindex" /> : <>
+      <link rel="canonical" href={canonicalUrl} />
+      <link rel="alternate" hreflang={lang} href={canonicalUrl} />
+      <link rel="alternate" hreflang={lang === 'ar' ? 'en' : 'ar'} href={alternateUrl} />
+    </>}
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={`${title} | CS Vault`} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="CS Vault" />
+    {!isNotFound && <meta property="og:url" content={canonicalUrl} />}
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -58,7 +71,7 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
     <meta name="twitter:image" content={socialImage} />
     <meta name="twitter:image:alt" content="CS Vault study resources homepage" />
 
-    <ClientRouter />
+    <ClientRouter fallback="swap" />
 
     <!-- Inline Script to prevent Theme Toggling Flash -->
     <script is:inline>
@@ -78,6 +91,13 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
       } else {
         document.documentElement.classList.remove("dark");
       }
+      (() => {
+        let enabled = true;
+        try { enabled = localStorage.getItem('cs-vault-motion') !== 'off'; }
+        catch { /* Keep the original background when storage is blocked. */ }
+        document.documentElement.dataset.studyMotion = enabled
+          && !window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'on' : 'off';
+      })();
     </script>
   </head>
   <body
@@ -198,6 +218,7 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
           <a href="mailto:r3al0zk@gmail.com" class="inline-flex min-h-11 items-center font-medium text-brand-700 dark:text-brand-500 underline underline-offset-4 hover:no-underline">{t("contribute.email")}</a>
           </div>
         </details>
+        <AppearanceSettings />
         <p class="footer-copy">© {new Date().getFullYear()} {t("footer.text")}</p>
       </div>
     </footer>
@@ -456,9 +477,16 @@ const socialImage = new URL(`${import.meta.env.BASE_URL}images/social-preview.pn
       initThemeToggle();
       initSwipeBack();
       document.addEventListener("astro:before-swap", (event) => {
-        const swapEvent = event as Event & { newDocument?: Document };
+        const swapEvent = event as Event & { newDocument?: Document; viewTransition?: { skipTransition: () => void } };
         const root = swapEvent.newDocument?.documentElement;
         if (!root) return;
+        // Native page snapshots temporarily freeze their captured controls.
+        // Keep the independent pixel effect, but make mobile and exam navigation
+        // immediately interactive once the new document is available.
+        if (window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches
+          || document.getElementById('quiz-widget') || swapEvent.newDocument?.getElementById('quiz-widget')) {
+          swapEvent.viewTransition?.skipTransition();
+        }
         root.classList.toggle("dark", getSavedTheme() === "dark");
         root.setAttribute("data-swap-init", "true");
       });

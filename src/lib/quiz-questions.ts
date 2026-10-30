@@ -6,6 +6,14 @@ export function getPracticeQuestions<T extends Question>(questions: T[]): T[] {
   return questions.filter(question => question.status !== 'disputed');
 }
 
+export function selectPracticeQuestions<T extends Question>(
+  bank: T[], { topic = '', limit }: { topic?: string; limit?: 10 } = {}, shuffle: (questions: T[]) => T[],
+): T[] {
+  const eligible = getPracticeQuestions(bank).filter(question => !topic || (question.topic || 'general') === topic);
+  const selected = shuffle([...eligible]);
+  return limit === 10 ? selected.slice(0, 10) : selected;
+}
+
 export function canShuffleOptions(question: Question): boolean {
   if (question.shuffleOptions === false) return false;
   const referencesPosition = /\b(?:all|none|both|neither|either)\s+(?:of\s+)?(?:the\s+)?(?:above|below)\b|\b(?:options?|choices?)\s+[A-H]\b|\b(?:the\s+)?(?:first|second|third|fourth)\s+(?:option|choice|answer)\b|\b(?:both|either|neither)\s+[A-H]\s+(?:and|or|nor|&)\s+[A-H]\b/i;

@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import ts from 'typescript';
-import { getPracticeQuestions, prepareQuestionOptions } from '../src/lib/quiz-questions.ts';
+import { getPracticeQuestions, prepareQuestionOptions, selectPracticeQuestions } from '../src/lib/quiz-questions.ts';
 import * as quizState from '../src/scripts/quiz-state.ts';
+import { getQuestionReportHref, getQuestionReportTarget } from '../src/lib/question-report.ts';
 
 class Element {
   constructor(tagName = 'div') {
@@ -38,10 +39,11 @@ class Element {
   focus() {}
   scrollIntoView() {}
   reportValidity() { return true; }
+  closest(selector) { return selector.split(',').some(value => value.trim().toUpperCase() === this.tagName) ? this : null; }
   click() { if (!this.disabled) this.listeners.get('click')?.({ target: this }); }
 }
 
-async function mountQuiz(questions, { saved = [], lang = 'en', mode = 'practice', originUrls = {}, failWrites = false, failReads = false, localValues: storedLocalValues, sessionValues: storedSessionValues } = {}) {
+async function mountQuiz(questions, { saved = [], lang = 'en', mode = 'practice', length = 'full', topic = '', studyResources = { resources: [], questions: {} }, originUrls = {}, failWrites = false, failReads = false, now, localValues: storedLocalValues, sessionValues: storedSessionValues } = {}) {
   const nodes = new Map();
   const node = id => {
     if (!nodes.has(id)) nodes.set(id, new Element(id.includes('-btn') ? 'button' : 'div'));
@@ -68,6 +70,8 @@ async function mountQuiz(questions, { saved = [], lang = 'en', mode = 'practice'
     quiz: JSON.stringify({ title: 'Combined practice', subject: 'Programming Languages', year: 2026, lang, questions }),
     translations: JSON.stringify({ reviewCount: '{saved} saved questions · {due} due now', noSaved: 'No saved mistakes', originalQuestion: 'Original quiz · question {id}', sourcePage: 'Source page: {page}' }),
     originUrls: JSON.stringify(originUrls),
+    studyResources: JSON.stringify(studyResources),
+    questionReportBase: '/CS-Vault/contribute/',
   };
   widget.querySelectorAll = () => modes;
   widget.querySelector = selector => selector.includes(':checked')
@@ -75,14 +79,17 @@ async function mountQuiz(questions, { saved = [], lang = 'en', mode = 'practice'
     : modes.find(input => selector.includes(`value="${input.value}"`));
   node('quiz-use-timer').checked = true;
   node('quiz-minutes').value = '20';
+  node('quiz-length').value = length;
+  node('quiz-topic').value = topic;
   const context = {
-    ...quizState, getPracticeQuestions, prepareQuestionOptions, AbortController,
+    ...quizState, getPracticeQuestions, prepareQuestionOptions, selectPracticeQuestions, getQuestionReportHref, getQuestionReportTarget, AbortController,
     document: {
       readyState: 'complete', hidden: false, body: new Element('body'),
       getElementById: node, querySelector: () => null, createElement: tag => new Element(tag), createTextNode: textContent => ({ textContent }), addEventListener: listen('document'),
     },
     window: { addEventListener: listen('window') },
     localStorage: storage(localValues, failWrites, failReads), sessionStorage: storage(sessionValues),
+    ...(now === undefined ? {} : { Date: class extends Date { static now() { return now; } } }),
     setInterval: () => 1, clearInterval() {},
   };
   const source = (await readFile(new URL('../src/scripts/quiz.ts', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '');
@@ -98,6 +105,7 @@ test('saved review opens at most five earliest-due questions as practice even wh
   const saved = questions.map(q => ({ id: q.id, signature: quizState.questionSignature(q), dueAt: now - q.id * quizState.DAY_MS, streak: 0 }));
   const widget = await mountQuiz(questions, { saved, mode: 'exam' });
   assert.equal(widget.node('quiz-saved-count').textContent, '8 saved questions · 8 due now');
+  assert.equal(widget.node('quiz-saved-section').classList.contains('hidden'), false);
   widget.node('quiz-review-saved-btn').click();
   const attempt = JSON.parse(widget.sessionValues.get(widget.attemptKey));
   assert.equal(attempt.short, true);
@@ -109,6 +117,7 @@ test('saved review opens at most five earliest-due questions as practice even wh
   assert.equal(widget.node('quiz-saved-count').textContent, 'No saved mistakes');
   assert.equal(widget.node('quiz-review-saved-btn').disabled, true);
   assert.deepEqual(JSON.parse(widget.localValues.get(widget.reviewKey)), []);
+  assert.equal(widget.node('quiz-saved-section').classList.contains('hidden'), true);
 });
 
 test('quota failure retains new mistakes for the current visit after visibility refresh and reopening review', async () => {
@@ -161,7 +170,7 @@ test('source-position choices retain their original displayed order in full and 
   const widget = await mountQuiz([q]);
   widget.node('start-quiz-btn').click();
   const attempt = JSON.parse(widget.sessionValues.get(widget.attemptKey));
-  assert.deepEqual(attempt.questions[0].options, q.options);
+  assert.deepEqual(quizState.readAttempt(JSON.stringify(attempt), [q]).questions[0].options, q.options);
   assert.deepEqual(widget.node('quiz-options-container').children.map(choice => choice.dataset.option), q.options);
   assert.notEqual(quizState.readAttempt(JSON.stringify(attempt), [q]), null);
 });
@@ -199,6 +208,7 @@ test('combined explanations and mistakes retain filename, original ID, localized
   assert.equal(card.lang, 'ar');
   assert.ok(card.children.some(child => child.textContent === 'Tutorial.pdf · Source page: 4'));
   assert.ok(card.children.some(child => child.children?.[0]?.href === '/CS-Vault/ar/programming-languages/2026/quiz/tutorial/'));
+  assert.ok(card.children.some(child => child.children?.[0]?.href === '/CS-Vault/contribute/?reportQuiz=programming-languages%2F2026%2Ftutorial&reportQuestion=22#question-correction'));
 });
 
 test('unfinished quizzes resume across visits while disputed questions stay outside progress and scoring', async () => {
@@ -213,6 +223,8 @@ test('unfinished quizzes resume across visits while disputed questions stay outs
   assert.equal(resumed.node('quiz-resume-solved').textContent, '1');
   assert.equal(resumed.node('quiz-resume-left').textContent, '1');
   assert.equal(resumed.node('quiz-resume-correct').textContent, '1');
+  assert.equal(resumed.node('quiz-resume-correct-stat').classList.contains('hidden'), false);
+  assert.equal(resumed.node('quiz-resume-wrong-stat').classList.contains('hidden'), false);
   resumed.node('quiz-continue-btn').click();
   const continued = JSON.parse(resumed.sessionValues.get(resumed.attemptKey));
   assert.deepEqual(continued.questions, original.questions);
@@ -252,6 +264,96 @@ test('resume falls back to session storage when local storage reads and writes a
   assert.equal(JSON.parse(resumed.sessionValues.get(resumed.attemptKey)).answers.length, 1);
 });
 
+test('resume keeps newer session progress when quota failure leaves an older local attempt readable', async () => {
+  const questions = [question(1), question(2), question(3)];
+  const first = await mountQuiz(questions);
+  first.node('start-quiz-btn').click();
+  first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+  first.node('quiz-next-btn').click();
+  const continued = await mountQuiz(questions, { failWrites: true, localValues: first.localValues, sessionValues: first.sessionValues });
+  continued.node('quiz-continue-btn').click();
+  continued.node('quiz-options-container').children.find(choice => choice.dataset.option === 'No').click();
+  continued.node('quiz-next-btn').click();
+  const latest = JSON.parse(continued.sessionValues.get(continued.attemptKey));
+  assert.equal(JSON.parse(continued.localValues.get(continued.attemptKey)).answers.length, 1);
+  assert.equal(latest.answers.length, 2);
+
+  const reloaded = await mountQuiz(questions, { failWrites: true, localValues: continued.localValues, sessionValues: continued.sessionValues });
+  assert.equal(reloaded.node('quiz-resume-solved').textContent, '2');
+  reloaded.node('quiz-continue-btn').click();
+  const restored = JSON.parse(reloaded.sessionValues.get(reloaded.attemptKey));
+  assert.deepEqual(restored.answers, latest.answers);
+  assert.deepEqual(restored.questions, latest.questions);
+  assert.ok(restored.savedAt > latest.savedAt);
+});
+
+test('resumed fallback timestamps stay newer than the saved attempt after the wall clock moves backward', async () => {
+  const questions = [question(1), question(2), question(3)];
+  const now = 1_800_000_000_000;
+  const first = await mountQuiz(questions, { now });
+  first.node('start-quiz-btn').click();
+  first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+  first.node('quiz-next-btn').click();
+  const original = JSON.parse(first.localValues.get(first.attemptKey));
+  const rolledBack = now - 60_000;
+  const resumed = await mountQuiz(questions, { now: rolledBack, failWrites: true, localValues: first.localValues, sessionValues: first.sessionValues });
+  resumed.node('quiz-continue-btn').click();
+  resumed.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+  resumed.node('quiz-next-btn').click();
+  const latest = JSON.parse(resumed.sessionValues.get(resumed.attemptKey));
+  assert.ok(latest.savedAt > original.savedAt);
+  assert.equal(latest.answers.length, 2);
+  assert.equal(JSON.parse(resumed.localValues.get(resumed.attemptKey)).answers.length, 1);
+  const reloaded = await mountQuiz(questions, { now: rolledBack, failWrites: true, localValues: resumed.localValues, sessionValues: resumed.sessionValues });
+  assert.equal(reloaded.node('quiz-resume-solved').textContent, '2');
+});
+
+test('resume accepts a newer shared local attempt rather than an older session snapshot from this tab', async () => {
+  const questions = [question(1), question(2), question(3)];
+  const first = await mountQuiz(questions);
+  first.node('start-quiz-btn').click();
+  first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+  first.node('quiz-next-btn').click();
+  const otherTab = JSON.parse(first.localValues.get(first.attemptKey));
+  otherTab.answers.push([otherTab.questions[1].id, 0]); // Canonical choice vocabulary is ['No', 'Yes'].
+  otherTab.currentIndex = 2;
+  otherTab.savedAt += 1;
+  first.localValues.set(first.attemptKey, JSON.stringify(otherTab));
+
+  const reloaded = await mountQuiz(questions, { localValues: first.localValues, sessionValues: first.sessionValues });
+  assert.equal(reloaded.node('quiz-resume-solved').textContent, '2');
+  assert.equal(reloaded.node('quiz-resume-wrong').textContent, '1');
+});
+
+test('a malformed local attempt does not hide a valid session fallback', async () => {
+  const questions = [question(1), question(2)];
+  const first = await mountQuiz(questions);
+  first.node('start-quiz-btn').click();
+  first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+  first.localValues.set(first.attemptKey, '{broken');
+  const reloaded = await mountQuiz(questions, { localValues: first.localValues, sessionValues: first.sessionValues });
+  assert.equal(reloaded.node('quiz-resume-solved').textContent, '1');
+});
+
+test('unfinished exam resumes without revealing answer correctness until submission', async () => {
+  const questions = [question(1), question(2), question(3)];
+  const first = await mountQuiz(questions, { mode: 'exam' });
+  first.node('start-quiz-btn').click();
+  first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+  first.node('quiz-next-btn').click();
+  first.node('quiz-options-container').children.find(choice => choice.dataset.option === 'No').click();
+  const reloaded = await mountQuiz(questions, { localValues: first.localValues, sessionValues: first.sessionValues });
+  assert.equal(reloaded.node('quiz-resume-solved').textContent, '2');
+  assert.equal(reloaded.node('quiz-resume-left').textContent, '1');
+  assert.equal(reloaded.node('quiz-resume-correct-stat').classList.contains('hidden'), true);
+  assert.equal(reloaded.node('quiz-resume-wrong-stat').classList.contains('hidden'), true);
+  assert.equal(reloaded.node('quiz-resume-correct').textContent, '');
+  assert.equal(reloaded.node('quiz-resume-wrong').textContent, '');
+  reloaded.node('quiz-continue-btn').click();
+  reloaded.node('quiz-next-btn').click();
+  assert.equal(reloaded.node('quiz-score-ratio').textContent, '1/3');
+});
+
 test('page swaps release quiz handlers and allow the widget to initialize again once', async () => {
   const mounted = await mountQuiz([question(1)]);
   mounted.fire('document', 'astro:before-swap');
@@ -279,6 +381,70 @@ test('active quizzes survive language switches when equivalent routes differ by 
     assert.equal(switched.node('quiz-active-screen').classList.contains('hidden'), false);
     assert.equal(switched.node('quiz-resume-screen').classList.contains('hidden'), true);
     assert.equal(switched.node('quiz-current-question-num').textContent, '2');
-    assert.deepEqual(JSON.parse(switched.sessionValues.get(switched.attemptKey)), before);
+    const after = JSON.parse(switched.sessionValues.get(switched.attemptKey));
+    assert.ok(after.savedAt > before.savedAt);
+    assert.deepEqual({ ...after, savedAt: before.savedAt }, before);
   }
+});
+
+test('quick and topic sessions resume correctly and never replace a full-bank best score', async () => {
+  const questions = Array.from({ length: 16 }, (_, i) => ({ ...question(i + 1), topic: i < 12 ? 'memory' : 'scheduling' }));
+  for (const settings of [{ length: 'quick', count: 10, kind: 'quick' }, { topic: 'scheduling', count: 4, kind: 'topic' }]) {
+    const mounted = await mountQuiz(questions, settings);
+    mounted.node('start-quiz-btn').click();
+    const encoded = JSON.parse(mounted.sessionValues.get(mounted.attemptKey));
+    assert.equal(encoded.sessionKind, settings.kind);
+    assert.equal(encoded.questions.length, settings.count);
+    if (settings.topic) assert.ok(encoded.questions.every(q => questions.find(item => item.id === q.id).topic === settings.topic));
+    mounted.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+    const resumed = await mountQuiz(questions, { localValues: mounted.localValues });
+    assert.equal(resumed.node('quiz-resume-screen').classList.contains('hidden'), false);
+    resumed.node('quiz-continue-btn').click();
+    for (let i = 1; i < settings.count; i++) {
+      resumed.node('quiz-options-container').children.find(choice => choice.dataset.option === 'Yes').click();
+      resumed.node('quiz-next-btn').click();
+    }
+    assert.equal(resumed.node('quiz-score-ratio').textContent, `${settings.count}/${settings.count}`);
+    assert.equal(resumed.node('quiz-custom-score-notice').classList.contains('hidden'), false);
+    assert.equal(resumed.localValues.has(quizState.bestScoreStorageKey('programming-languages/2026/all-questions')), false);
+  }
+});
+
+test('reading suggestions appear after practice answers and for missed topics, with duplicate links removed', async () => {
+  const questions = [question(1), question(2)];
+  const resource = { title: 'Memory notes', href: '/CS-Vault/operating-systems/2026/#summary-content-chapter-01--memory' };
+  const mounted = await mountQuiz(questions, { studyResources: { resources: [resource], questions: { 1: 0, 2: 0 } } });
+  mounted.node('start-quiz-btn').click();
+  assert.equal(mounted.node('quiz-explanation-box').classList.contains('hidden'), true);
+  for (let i = 0; i < 2; i++) {
+    mounted.node('quiz-options-container').children.find(choice => choice.dataset.option === 'No').click();
+    assert.equal(mounted.node('quiz-study-resource').children[0].href, resource.href);
+    mounted.node('quiz-next-btn').click();
+  }
+  assert.equal(mounted.node('quiz-study-next-links').children.length, 1);
+  assert.equal(mounted.node('quiz-study-next').classList.contains('hidden'), false);
+});
+
+test('existing version-one attempts migrate on continue without losing answers or displayed choice order', async () => {
+  const questions = [question(1), question(2)];
+  const key = 'cs-vault-attempt-v1:programming-languages/2026/all-questions';
+  const legacy = { version: 1, savedAt: 1800000000000, phase: 'active', examMode: false, short: false, currentIndex: 1, deadline: null, expired: false,
+    questions: questions.map(q => ({ id: q.id, signature: quizState.questionSignature(q), options: ['No', 'Yes'] })), answers: [[1, 'Yes']] };
+  const mounted = await mountQuiz(questions, { localValues: new Map([[key, JSON.stringify(legacy)]]) });
+  assert.equal(mounted.node('quiz-resume-solved').textContent, '1');
+  mounted.node('quiz-continue-btn').click();
+  const encoded = JSON.parse(mounted.localValues.get(key));
+  assert.equal(encoded.version, 2);
+  const restored = quizState.readAttempt(JSON.stringify(encoded), questions);
+  assert.deepEqual(restored.answers, legacy.answers);
+  assert.deepEqual(restored.questions.map(q => q.options), legacy.questions.map(q => q.options));
+});
+
+test('Enter on a report or reading link preserves native navigation without advancing the quiz', async () => {
+  const mounted = await mountQuiz([question(1), question(2)]);
+  mounted.node('start-quiz-btn').click();
+  let prevented = false;
+  mounted.fire('document', 'keydown', { key: 'Enter', target: new Element('a'), preventDefault() { prevented = true; } });
+  assert.equal(prevented, false);
+  assert.equal(mounted.node('quiz-current-question-num').textContent, '1');
 });

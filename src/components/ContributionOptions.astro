@@ -1,6 +1,7 @@
 ---
 import { getLangFromUrl, useTranslations } from '../i18n/ui';
 import { preparationExampleCourse } from '../lib/contribution-kit';
+import QuestionCorrection from './QuestionCorrection.astro';
 import '../styles/contribute.css';
 interface Props { formUrl: string | null }
 const { formUrl } = Astro.props;
@@ -16,6 +17,7 @@ const downloadBase = `${import.meta.env.BASE_URL}contribution-kit/`;
       <p>{t('contribute.intro')}</p>
     </header>
     {!formUrl && <p id="contribute-closed" class="contribute-notice" role="status">{t('contribute.openingSoon')}</p>}
+    <QuestionCorrection formUrl={formUrl} />
     <div class="contribute-cards">
       <section class="contribute-card" aria-labelledby="material-heading">
         <h2 id="material-heading">{t('contribute.materialTitle')}</h2>
@@ -64,10 +66,12 @@ const downloadBase = `${import.meta.env.BASE_URL}contribution-kit/`;
     </details>
   </div>
 <script>
-  const copyButton = document.getElementById('contribute-copy') as HTMLButtonElement | null;
-  const prompt = document.getElementById('contribute-prompt') as HTMLTextAreaElement | null;
-  const status = document.getElementById('contribute-copy-status');
-  if (copyButton && prompt && status) {
+  const initContributionCopy = () => {
+    const copyButton = document.getElementById('contribute-copy') as HTMLButtonElement | null;
+    const prompt = document.getElementById('contribute-prompt') as HTMLTextAreaElement | null;
+    const status = document.getElementById('contribute-copy-status');
+    if (!copyButton || !prompt || !status || copyButton.dataset.copyBound === 'true') return;
+    copyButton.dataset.copyBound = 'true';
     copyButton.hidden = false;
     copyButton.addEventListener('click', async () => {
       try {
@@ -78,5 +82,7 @@ const downloadBase = `${import.meta.env.BASE_URL}contribution-kit/`;
         status.textContent = copyButton.dataset.fallback || '';
       }
     });
-  }
+  };
+  initContributionCopy();
+  document.addEventListener('astro:page-load', initContributionCopy);
 </script>

@@ -4,11 +4,9 @@ let cleanupDashboardListeners: (() => void) | undefined;
 
 const initDashboard = () => {
   const page = document.getElementById('subject-page');
-  if (page) {
-    if (page.dataset.dashboardBound === 'true') return;
-    page.dataset.dashboardBound = 'true';
-  }
+  if (page?.dataset.dashboardBound === 'true') return;
   cleanupDashboardListeners?.();
+  if (page) page.dataset.dashboardBound = 'true';
   const activeListeners: Array<() => void> = [];
   const listen = (target: EventTarget, type: string, listener: EventListener) => {
     if (typeof target?.addEventListener !== 'function') return;
@@ -20,7 +18,9 @@ const initDashboard = () => {
   cleanupDashboardListeners = () => {
     for (const remove of activeListeners) remove();
     activeListeners.length = 0;
+    if (page) delete page.dataset.dashboardBound;
   };
+  listen(document, 'astro:before-swap', () => cleanupDashboardListeners?.());
 
   const tabs = document.querySelectorAll<HTMLAnchorElement>('.summary-tab-btn');
   const contents = document.querySelectorAll<HTMLElement>('.summary-content-block');
@@ -162,10 +162,10 @@ const initDashboard = () => {
     reconcileProgress();
     renderProgress();
   };
-  window.addEventListener('pageshow', reloadProgress);
-  window.addEventListener('storage', (event) => {
+  listen(window, 'pageshow', reloadProgress);
+  listen(window, 'storage', ((event: StorageEvent) => {
     if (event.key === null || event.key === storageKey) reloadProgress();
-  });
+  }) as EventListener);
 
   checkboxes.forEach((cb) => {
     const slug = cb.getAttribute('data-summary-check');

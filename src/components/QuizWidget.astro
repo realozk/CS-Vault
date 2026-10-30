@@ -1,6 +1,8 @@
 ---
 import QuizSourceLabel from './QuizSourceLabel.astro';
 import MaterialContext from './MaterialContext.astro';
+import QuestionIssue from './QuestionIssue.astro';
+import { packStudyResources, type StudyResource } from '../lib/study-resources';
 import '../styles/quiz.css';
 import { getSubjectName } from '../lib/modules';
 import { getPracticeQuestions, getQuizQuestionPath } from '../lib/quiz-questions';
@@ -11,14 +13,16 @@ interface Props {
   quiz: QuizData;
   quizId?: string;
   backUrl?: string;
+  studyResources?: Record<number, StudyResource>;
 }
 
-const { quiz, quizId = `${quiz.subject}/${quiz.year}/${quiz.title}`, backUrl = "../.." } = Astro.props;
+const { quiz, quizId = `${quiz.subject}/${quiz.year}/${quiz.title}`, backUrl = "../..", studyResources = {} } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const combined = quiz.sourceKind === 'combined' || quizId.endsWith('/all-questions');
 const practiceQuestions = getPracticeQuestions(quiz.questions);
 const disputedQuestions = quiz.questions.filter(question => question.status === 'disputed');
+const topics = [...new Set(practiceQuestions.map(question => question.topic || 'general'))];
 const originUrls = Object.fromEntries(quiz.questions.flatMap(question => question.origin
   ? [[question.origin.quizId, getLocalizedPath(getQuizQuestionPath(question.origin.quizId), lang)]]
   : []));
@@ -36,7 +40,17 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
   data-quiz-id={quizId}
   data-translations={serializedTranslations}
   data-origin-urls={JSON.stringify(originUrls)}
+  data-study-resources={JSON.stringify(packStudyResources(studyResources))}
+  data-question-report-base={getLocalizedPath('/contribute/', lang)}
 >
+  <noscript>
+    <p class="quiz-help p-6" role="status">{t('quiz.requiresJavaScript')}</p>
+    <style>
+      #quiz-widget .quiz-setup,
+      #quiz-widget .quiz-start-actions,
+      #quiz-widget .quiz-result-section { display: none !important; }
+    </style>
+  </noscript>
   <div id="quiz-start-screen" class="quiz-screen">
     <div class="quiz-intro">
       <p class="quiz-eyebrow">{getSubjectName(quiz.subject, lang, quiz.year)} <span aria-hidden="true">/</span> {lang === 'ar' ? 'سنة المجموعة' : 'Collection year'} {quiz.year}</p>
@@ -71,6 +85,22 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
         </label>
       </div>
       <p id="quiz-mode-help" class="quiz-help">{t('quiz.practiceHelp')}</p>
+      <div class="quiz-session-options">
+        <label for="quiz-length">{t('quiz.sessionLength')}</label>
+        <select id="quiz-length">
+          <option value="full">{t('quiz.fullQuiz')}</option>
+          <option value="quick">{t('quiz.quickTen')}</option>
+        </select>
+      </div>
+      <details class="quiz-more-options" hidden={topics.length < 2}>
+        <summary>{t('quiz.moreOptions')}</summary>
+        <label for="quiz-topic">{t('quiz.practiceTopic')}</label>
+        <select id="quiz-topic">
+          <option value="">{t('quiz.allTopics')}</option>
+          {topics.map(topic => <option value={topic}>{t(`quiz.topic.${topic}` as keyof typeof ui.en) || (topic === 'general' ? t('quiz.noTopics') : topic.replaceAll('-', ' '))}</option>)}
+        </select>
+      </details>
+      <p id="quiz-session-size" class="quiz-help" role="status"></p>
       <div id="quiz-timer-settings" class="hidden quiz-timer-settings">
         <label class="quiz-timer-toggle"><input id="quiz-use-timer" type="checkbox" checked />{t('quiz.useTimer')}</label>
         <label class="quiz-minutes-label" for="quiz-minutes">
@@ -85,10 +115,9 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
         {t('quiz.start')}
         <svg aria-hidden="true" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" class="rtl:rotate-180"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" /></svg>
       </button>
-      <span id="quiz-mode-subtext" class="quiz-help">{t('quiz.subtext')}</span>
     </div>
 
-    <section class="quiz-result-section" aria-labelledby="quiz-saved-title">
+    <section id="quiz-saved-section" class="quiz-result-section hidden" aria-labelledby="quiz-saved-title">
       <h2 id="quiz-saved-title" class="text-base font-semibold">{t('quiz.savedReview')}</h2>
       <p id="quiz-saved-count" class="quiz-help" role="status">{t('quiz.noSaved')}</p>
       <p class="quiz-help">{t('quiz.reviewHelp')}</p>
@@ -113,7 +142,7 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
     </details>}
 
     <details class="quiz-source-details">
-      <summary><QuizSourceLabel sourceKind={quiz.sourceKind} combined={combined} /><svg aria-hidden="true" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg></summary>
+      <summary>{t('quiz.source')}<svg aria-hidden="true" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" /></svg></summary>
       <div class="quiz-source-content">
         {quiz.source && <p>{t('quiz.source')}: <bdi dir="ltr">{quiz.source}</bdi></p>}
         {quiz.sourceKind === 'instructor' && <p>{t('quiz.instructorNotice')}</p>}
@@ -134,14 +163,13 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
 
     <div class="quiz-resume-card">
       <div class="quiz-resume-progress-header">
-        <span class="quiz-resume-badge">{t('quiz.unfinishedBadge')}</span>
         <span id="quiz-resume-progress-text" class="quiz-resume-progress-text"></span>
       </div>
       <div class="quiz-progress-track quiz-resume-track">
         <div id="quiz-resume-progress-bar" class="h-full w-0"></div>
       </div>
 
-      <div class="quiz-resume-stats" role="group" aria-label={t('quiz.progressSummary')}>
+      <div id="quiz-resume-stats" class="quiz-resume-stats" role="group" aria-label={t('quiz.progressSummary')}>
         <div class="quiz-resume-stat">
           <span class="quiz-resume-stat-label">{t('quiz.solvedCount')}</span>
           <strong id="quiz-resume-solved" class="quiz-resume-stat-value">0</strong>
@@ -150,11 +178,11 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
           <span class="quiz-resume-stat-label">{t('quiz.leftCount')}</span>
           <strong id="quiz-resume-left" class="quiz-resume-stat-value">0</strong>
         </div>
-        <div class="quiz-resume-stat quiz-resume-stat-correct">
+        <div id="quiz-resume-correct-stat" class="quiz-resume-stat quiz-resume-stat-correct">
           <span class="quiz-resume-stat-label">{t('quiz.correctSoFar')}</span>
           <strong id="quiz-resume-correct" class="quiz-resume-stat-value">0</strong>
         </div>
-        <div class="quiz-resume-stat quiz-resume-stat-wrong">
+        <div id="quiz-resume-wrong-stat" class="quiz-resume-stat quiz-resume-stat-wrong">
           <span class="quiz-resume-stat-label">{t('quiz.wrongSoFar')}</span>
           <strong id="quiz-resume-wrong" class="quiz-resume-stat-value">0</strong>
         </div>
@@ -176,7 +204,7 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
   <div id="quiz-active-screen" class="hidden quiz-screen">
     <div class="quiz-session-header">
       <span class="quiz-counter"><span id="quiz-counter-wrapper" set:html={t('quiz.currentQuestion').replace('{current}', '<span id="quiz-current-question-num">1</span>').replace('{total}', `<span id="quiz-total-questions-num">${practiceQuestions.length}</span>`)} /></span>
-      <span id="quiz-timer" role="timer" aria-label={t('quiz.timeRemaining')}>{t('quiz.active')}</span>
+      <span id="quiz-timer" class="hidden" role="timer" aria-label={t('quiz.timeRemaining')}></span>
     </div>
     <div class="quiz-progress-track"><div id="quiz-progress-bar" class="h-full w-0"></div></div>
 
@@ -195,6 +223,7 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
         <p id="quiz-source-slide" />
         <p id="quiz-origin" />
         <p id="quiz-answer-warning" />
+        <p id="quiz-study-resource" class="hidden" />
       </div>
     </div>
 
@@ -205,6 +234,7 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
         <button id="quiz-next-btn" class="quiz-primary">{t('quiz.next')}</button>
       </div>
     </div>
+    <QuestionIssue />
   </div>
 
   <div id="quiz-result-screen" class="hidden quiz-screen">
@@ -212,6 +242,7 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
       <div class="quiz-result-icon" aria-hidden="true"><svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg></div>
       <h2 id="quiz-result-title" tabindex="-1" class="quiz-title">{t('quiz.completed')}</h2>
       <p id="quiz-performance-desc">{t('quiz.breakdown')}</p>
+      <p id="quiz-custom-score-notice" class="quiz-help hidden">{t('quiz.customScoreNotice')}</p>
       <p id="quiz-expired-message" class="hidden" role="status">{t('quiz.expired')}</p>
     </div>
 
@@ -227,6 +258,10 @@ const serializedTranslations = JSON.stringify(Object.fromEntries(
         <thead><tr><th scope="col">{t('quiz.topicLabel')}</th><th scope="col">{t('quiz.topicScore')}</th></tr></thead>
         <tbody id="quiz-topic-results" />
       </table></div>
+    </section>
+    <section id="quiz-study-next" class="quiz-result-section hidden" aria-labelledby="quiz-study-next-title">
+      <h3 id="quiz-study-next-title">{t('quiz.studyNext')}</h3>
+      <div id="quiz-study-next-links"></div>
     </section>
     <section class="quiz-result-section" aria-labelledby="quiz-review-title">
       <h3 id="quiz-review-title">{t('quiz.mistakes')}</h3>

@@ -107,6 +107,13 @@ export function createTutorialsQuiz(entries: QuizEntry[]): QuizEntry | null {
       ...(question.sourceLecture === undefined && inferredLecture !== undefined ? { sourceLecture: inferredLecture } : {}),
       id: nextId++,
       explanation: [entry.data.source, question.explanation].filter(Boolean).join(' — '),
+      origin: {
+        quizId: entry.id,
+        questionId: question.id,
+        title: entry.data.title,
+        source: entry.data.source,
+        lang: entry.data.lang,
+      },
     }));
   });
 

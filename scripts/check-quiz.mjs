@@ -8,7 +8,9 @@ try {
   const value = name => args[args.indexOf(name) + 1];
   const course = args.includes('--course') && findCourse(value('--course'));
   if (!file || !course) throw new Error('Usage: npm run check:quiz -- file.json --course subject/2026 [--original existing-file.json]');
-  safeQuizFilename(basename(file));
+  const filename = basename(file);
+  const canonicalFilename = safeQuizFilename(filename);
+  if (filename !== canonicalFilename) throw new Error(`Use the lowercase .json filename ${canonicalFilename} so the site can load it.`);
   let target;
   if (args.includes('--original')) {
     const originalPath = value('--original');

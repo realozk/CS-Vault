@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import ts from 'typescript';
-import { courseKey, courseLabel, courseSearchNames, hasMultipleCollections, resolveCourse } from '../src/lib/course-catalog.ts';
-import { createSupplementaryQuizzes } from '../src/lib/quiz-routes.ts';
+import { courseKey, courseLabel, courseSearchNames, findCourse, hasMultipleCollections, resolveCourse } from '../src/lib/course-catalog.ts';
+import { createSupplementaryQuizzes, getQuizStaticPaths } from '../src/lib/quiz-routes.ts';
 
 const oldCourse = { slug: 'operating-systems', name: 'Operating Systems', name_ar: 'نظم التشغيل', subject_code: 'CS3608', year: 2026, year_level: 3, semester: 1 };
 const nextCourse = { ...oldCourse, name: 'Operating Systems II', name_ar: 'نظم التشغيل ٢', subject_code: 'CS4608', year: 2027 };
@@ -65,15 +65,15 @@ const node = (attrs = {}) => {
   return element;
 };
 
-async function homeHarness(url) {
+async function homeHarness(url, extraIndex = []) {
   let location = new URL(url);
   const tabs = [1, 2, 3, 4].map(year => node({ 'data-year-tab': String(year), 'aria-pressed': String(year === 3) }));
   const blocks = [1, 2, 3, 4].map(year => node({ 'data-year-content': String(year) }));
-  const searchIndex = ['subject', 'summary', 'quiz'].map(type => ({
+  const searchIndex = [...['subject', 'summary', 'quiz'].map(type => ({
     type, title: type === 'subject' ? 'Operating Systems' : 'Chapter 1', description: 'Study material', author: '',
     subjectCode: oldCourse.subject_code, subjectNames: courseSearchNames(oldCourse), year: '2026', yearLevel: 3, semester: 1,
     url: `/CS-Vault/operating-systems/2026/${type === 'quiz' ? 'quiz/chapter-01' : ''}`,
-  }));
+  })), ...extraIndex];
   const nodes = Object.fromEntries(['directory-container', 'global-search-input', 'search-results-pane', 'core-tab-view', 'search-results-grid', 'search-results-count', 'search-no-results'].map(id => [id, node()]));
   nodes['directory-container'].attrs['data-search-index'] = JSON.stringify(searchIndex);
   const windowListeners = new Map();
@@ -108,6 +108,50 @@ test('home search finds course, summaries and quizzes by code or either course l
   nodes['global-search-input'].listeners.get('input')();
   assert.equal(nodes['search-results-grid'].children.length, 0);
   assert.equal(nodes['search-no-results'].classes.has('hidden'), false);
+});
+
+test('combined practice is discoverable by Arabic names as well as its content title', async () => {
+  const { nodes } = await homeHarness('https://example.test/CS-Vault/ar/', [{
+    type: 'quiz', title: 'All Questions', description: 'Combined practice', subjectNames: ['Operating Systems'],
+    keywords: ['كل الأسئلة', 'جميع الأسئلة'], subjectCode: 'CS3608', year: '2026', yearLevel: 3, semester: 1,
+    url: '/CS-Vault/ar/operating-systems/2026/quiz/all-questions/',
+  }]);
+  for (const query of ['All Questions', 'كل الأسئلة', 'جميع الأسئلة']) {
+    nodes['global-search-input'].value = query;
+    nodes['global-search-input'].listeners.get('input')();
+    assert.equal(nodes['search-results-grid'].children.length, 1, query);
+    assert.equal(nodes['search-results-grid'].children[0].href, '/CS-Vault/ar/operating-systems/2026/quiz/all-questions/');
+  }
+});
+
+test('homepage indexes every real and supplementary quiz once with localized valid routes', async () => {
+  const entry = (subject, slug, sourceKind) => ({
+    id: `${subject}/2026/${slug}`, collection: 'quizzes',
+    data: { title: 'Lecture 1', description: 'Study material', lang: 'en', year: 2026, year_level: 3, semester: 1,
+      sourceKind, questions: [{ id: 1, question: `${subject}?`, options: ['A', 'B'], correctAnswer: 'A' }] },
+  });
+  const quizzes = [entry('algorithm-analysis', 'lecture-01-instructor-tutorial', 'instructor'),
+    entry('programming-languages', 'lecture-01-practice.json', 'generated')];
+  const page = await readFile(new URL('../src/components/pages/HomePage.astro', import.meta.url), 'utf8');
+  const frontmatter = withoutImports(page.split('---')[1]);
+  for (const lang of ['en', 'ar']) {
+    const getLocalizedPath = path => `/CS-Vault/${lang === 'ar' ? 'ar/' : ''}${path.replace(/^\/+|\/+$/g, '')}/`;
+    const index = await vm.runInNewContext(transpile(`(async () => { ${frontmatter}\nreturn searchIndex; })()`), {
+      Astro: { url: new URL(`https://example.test${getLocalizedPath('/')}`) },
+      contributionConfig: {}, getContributionFormUrl: () => '', getLangFromUrl: () => lang,
+      useTranslations: () => key => key, getLocalizedPath, getDefaultStudyYear: () => 3,
+      getCollection: async name => name === 'quizzes' ? quizzes : [], getModules: async () => [],
+      getSubjectName: subject => subject, courseSearchNames, findCourse, getQuizStaticPaths,
+    });
+    const urls = [...index.map(item => item.url)];
+    const expected = getQuizStaticPaths(quizzes).map(({ params: { subject, year, slug } }) =>
+      getLocalizedPath(`/${subject}/${year}/quiz/${slug}`));
+    assert.deepEqual(urls.sort(), expected.sort());
+    assert.equal(new Set(urls).size, urls.length);
+    assert.equal(index.filter(item => item.url.includes('/all-questions/')).length, 2);
+    assert.equal(index.filter(item => item.url.includes('/all-tutorials/')).length, 1);
+    assert.ok(index.find(item => item.url.includes('/all-questions/')).keywords.includes('كل الأسئلة'));
+  }
 });
 
 test('home restores shareable study-year selection and persists clicks without dropping other URL state', async () => {

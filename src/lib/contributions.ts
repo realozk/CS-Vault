@@ -9,8 +9,8 @@ export interface CheckResult { quiz?: ValidatedQuiz; errors: string[]; warnings:
 
 export function safeQuizFilename(name: string): string {
   const filename = name.replace(/\.json$/i, '');
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(filename) || filename === 'all-questions') {
-    throw new Error('Use a filename such as chapter-01-practice.json; paths and all-questions are not allowed.');
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(filename) || ['all-questions', 'all-tutorials'].includes(filename)) {
+    throw new Error('Use a filename such as chapter-01-practice.json; paths and generated aggregate names are not allowed.');
   }
   return `${filename}.json`;
 }
@@ -44,7 +44,7 @@ export function validateContribution(text: string, course: Course, target?: Corr
   try { validateContentMetadata(`${courseKey(course)}/submission`, quiz, course); }
   catch { errors.push(`Course mismatch: the selected course is ${course.name} (${courseKey(course)}). Check subject, year, year_level and semester.`); }
   if (target) {
-    if (!target.id.startsWith(`${courseKey(course)}/`) || target.id.endsWith('/all-questions')) errors.push('Select an existing quiz in this course.');
+    if (!target.id.startsWith(`${courseKey(course)}/`) || /\/(?:all-questions|all-tutorials)$/.test(target.id)) errors.push('Select an existing quiz in this course.');
     if (quiz.date.getTime() !== new Date(target.date).getTime()) errors.push('Corrections must preserve the original publication date.');
     for (const q of quiz.questions) {
       const original = target.questions.find(old => old.signature === JSON.stringify([q.question, q.code || '']));

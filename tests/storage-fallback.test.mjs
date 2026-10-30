@@ -39,14 +39,18 @@ test('blocked progress storage still updates the checkbox and progress bar', asy
   }
 });
 
-test('theme initialization falls back to system theme when storage access throws', async () => {
+test('blocked storage keeps the system theme and background default while honoring reduced motion', async () => {
   const layout = await readFile(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
   const source = layout.match(/<script is:inline>([\s\S]*?)<\/script>/)[1];
-  let dark = false;
-  const context = { window: { matchMedia: () => ({ matches: true }) }, document: { documentElement: { classList: { add: () => { dark = true; }, remove: () => { dark = false; } } } } };
-  Object.defineProperty(context, 'localStorage', { get() { throw new Error('Blocked'); } });
-  assert.doesNotThrow(() => vm.runInNewContext(source, context));
-  assert.equal(dark, true);
+  for (const reduced of [false, true]) {
+    let dark = false;
+    const root = { dataset: {}, classList: { add: () => { dark = true; }, remove: () => { dark = false; } } };
+    const context = { window: { matchMedia: query => ({ matches: query.includes('prefers-color-scheme') || reduced }) }, document: { documentElement: root } };
+    Object.defineProperty(context, 'localStorage', { get() { throw new Error('Blocked'); } });
+    assert.doesNotThrow(() => vm.runInNewContext(source, context));
+    assert.equal(dark, true);
+    assert.equal(root.dataset.studyMotion, reduced ? 'off' : 'on');
+  }
 });
 
 test('course dashboard hides a stale best score after an answer correction with unchanged count', async () => {

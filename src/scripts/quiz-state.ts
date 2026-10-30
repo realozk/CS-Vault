@@ -46,14 +46,17 @@ export function updateBestScore(previous: BestScore | null, correct: number, tot
     throw new Error('Best quiz score must contain a valid correct and total question count.');
   }
   const next: BestScore = { version: 2, fingerprint, correct, total, percentage: Math.round(correct / total * 100) };
-  return previous && previous.fingerprint === fingerprint && previous.total === total && previous.percentage >= next.percentage ? previous : next;
+  return previous && previous.fingerprint === fingerprint && previous.total === total && previous.correct >= next.correct ? previous : next;
 }
 
+export type SessionKind = 'full' | 'quick' | 'topic' | 'review';
 export interface QuizAttempt {
-  version: 1;
+  version: 1 | 2;
+  savedAt?: number;
   phase: 'active' | 'results';
   examMode: boolean;
   short: boolean;
+  sessionKind?: SessionKind;
   currentIndex: number;
   deadline: number | null;
   expired: boolean;
@@ -61,21 +64,98 @@ export interface QuizAttempt {
   answers: [number, string][];
 }
 
+export interface AttemptPlan {
+  fingerprint: string;
+  questions: { id: number; options: number[] }[];
+  optionIndices: Map<number, Map<string, number>>;
+}
+
+// Compute immutable option order once per session. Stored attempts contain only
+// identifiers/indices, never a repeated copy of the question and choice text.
+export function createAttemptPlan(bank: Question[], prepared: Question[], fingerprint = questionBankFingerprint(bank)): AttemptPlan {
+  const byId = new Map(bank.map(q => [q.id, q]));
+  const optionIndices = new Map<number, Map<string, number>>();
+  const seen = new Set<number>();
+  const questions = prepared.map(question => {
+    const original = byId.get(question.id);
+    if (!original || seen.has(question.id)) throw new Error('Session questions must belong to the current bank.');
+    seen.add(question.id);
+    const vocabulary = canShuffleOptions(original) ? [...original.options].sort() : original.options;
+    const indices = new Map(vocabulary.map((text, index) => [text, index]));
+    const options = question.options.map(text => indices.get(text) ?? -1);
+    if (options.length !== original.options.length || new Set(options).size !== options.length || options.includes(-1)
+      || (!canShuffleOptions(original) && options.some((value, index) => value !== index))) {
+      throw new Error('Session option order must preserve the original choices.');
+    }
+    optionIndices.set(question.id, indices);
+    return { id: question.id, options };
+  });
+  return { fingerprint, questions, optionIndices };
+}
+
+export function compactAttempt(plan: AttemptPlan, state: {
+  savedAt: number; phase: QuizAttempt['phase']; examMode: boolean; sessionKind: SessionKind;
+  currentIndex: number; deadline: number | null; expired: boolean; answers: ReadonlyMap<number, string>;
+}) {
+  return {
+    version: 2 as const, fingerprint: plan.fingerprint,
+    savedAt: state.savedAt, phase: state.phase, examMode: state.examMode,
+    short: state.sessionKind === 'review', sessionKind: state.sessionKind,
+    currentIndex: state.currentIndex, deadline: state.deadline, expired: state.expired,
+    questions: plan.questions,
+    answers: [...state.answers].map(([id, text]) => {
+      const index = plan.optionIndices.get(id)?.get(text);
+      if (index === undefined) throw new Error('Saved answers must belong to the session.');
+      return [id, index];
+    }),
+  };
+}
+
 // Both language routes use the same quiz ID. Reject stale content or malformed
 // storage rather than restoring answers into a different question bank.
-export function readAttempt(raw: string | null, bank: Question[]): QuizAttempt | null {
+export function readAttempt(raw: string | null, bank: Question[], fingerprint?: string): QuizAttempt | null {
   if (!raw) return null;
   try {
-    const value = JSON.parse(raw);
-    if (!value || value.version !== 1 || !['active', 'results'].includes(value.phase)
+    let value = JSON.parse(raw);
+    if (!value || ![1, 2].includes(value.version)) return null;
+    if (value.version === 1 && value.sessionKind !== undefined) return null;
+    const byId = new Map(bank.map(q => [q.id, q]));
+    if (value.version === 2) {
+      if (value.fingerprint !== (fingerprint ?? questionBankFingerprint(bank))
+        || !['full', 'quick', 'topic', 'review'].includes(value.sessionKind)
+        || value.short !== (value.sessionKind === 'review')
+        || !Array.isArray(value.questions) || !Array.isArray(value.answers)) return null;
+      const questions = [];
+      for (const item of value.questions) {
+        const original = byId.get(item?.id);
+        if (!original || !Array.isArray(item.options)
+          || item.options.some((index: unknown) => !Number.isInteger(index) || (index as number) < 0 || (index as number) >= original.options.length)) return null;
+        const vocabulary = canShuffleOptions(original) ? [...original.options].sort() : original.options;
+        questions.push({ id: item.id, signature: questionSignature(original), options: item.options.map((index: number) => vocabulary[index]) });
+      }
+      const answers = [];
+      for (const answer of value.answers) {
+        if (!Array.isArray(answer) || answer.length !== 2) return null;
+        const original = byId.get(answer[0]);
+        if (!original || !Number.isInteger(answer[1]) || answer[1] < 0 || answer[1] >= original.options.length) return null;
+        const vocabulary = canShuffleOptions(original) ? [...original.options].sort() : original.options;
+        answers.push([answer[0], vocabulary[answer[1]]]);
+      }
+      value = { ...value, questions, answers };
+    }
+    const kind = value.version === 1 ? (value.short ? 'review' : 'full') : value.sessionKind;
+    if (!['active', 'results'].includes(value.phase)
+      || (value.savedAt !== undefined && (!Number.isSafeInteger(value.savedAt) || value.savedAt < 0))
       || typeof value.examMode !== 'boolean' || typeof value.short !== 'boolean'
       || typeof value.expired !== 'boolean' || (value.short && value.examMode)
       || (value.deadline !== null && (!value.examMode || !Number.isFinite(value.deadline) || value.deadline < 0))
       || !Array.isArray(value.questions) || !value.questions.length
-      || (value.short ? value.questions.length > 5 : value.questions.length !== bank.length)
+      || value.questions.length > bank.length
+      || (kind === 'review' && value.questions.length > 5)
+      || (kind === 'quick' && value.questions.length > 10)
+      || (kind === 'full' && value.questions.length !== bank.length)
       || !Number.isInteger(value.currentIndex) || value.currentIndex < 0 || value.currentIndex >= value.questions.length
       || !Array.isArray(value.answers)) return null;
-    const byId = new Map(bank.map(q => [q.id, q]));
     const ids = new Set<number>();
     for (const item of value.questions) {
       if (!item || ids.has(item.id)) return null;

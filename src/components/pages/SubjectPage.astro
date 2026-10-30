@@ -2,16 +2,14 @@
 import { contributionConfig } from '../../data/contribution-config';
 import { getContributionFormUrl } from '../../lib/contributions';
 import { getCollection, render } from 'astro:content';
-import QuizSourceLabel from '../../components/QuizSourceLabel.astro';
+import QuizListItem from '../../components/QuizListItem.astro';
 import MaterialContext from '../../components/MaterialContext.astro';
 import { getCourseMeta } from '../../lib/modules';
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
-import { questionBankFingerprint } from '../../scripts/quiz-state';
 import { createSupplementaryQuizzes } from '../../lib/quiz-routes';
 import { compareStudyEntries, getStudySection } from '../../lib/content-order';
-import { getPracticeQuestions } from '../../lib/quiz-questions';
 import '../../styles/subject.css';
 
 const lang = getLangFromUrl(Astro.url);
@@ -94,13 +92,9 @@ const trackerTranslations = JSON.stringify({
 
 const labels = lang === 'ar' ? {
   studyTools: 'أدوات المذاكرة',
-  intro: 'اختر كويزًا للتدريب أو ملخصًا للمراجعة.',
-  quizIntro: 'اختر ما تريد التدرب عليه.',
   contents: 'المحتويات',
 } : {
   studyTools: 'Study tools',
-  intro: 'Choose a quiz to practice or a summary to review.',
-  quizIntro: 'Choose what you want to practice.',
   contents: 'Contents',
 };
 const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : 'summaries';
@@ -120,7 +114,6 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
       </div>
       <h1 lang={lang} dir={lang === 'ar' ? 'rtl' : 'ltr'}>{subjectName}</h1>
       <div class="subject-heading-summary">
-        <p>{labels.intro}</p>
         <a href={contributionUrl} class="subject-contribute">{lang === 'ar' ? 'ساهم بمصادرك' : 'Contribute material'}</a>
       </div>
     </header>
@@ -153,9 +146,7 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
       <div class="subject-section-heading">
         <div>
           <h2 id="subject-quizzes-heading">{t('dashboard.quizzes')}</h2>
-          <p>{labels.quizIntro}</p>
         </div>
-        <span class="subject-section-count">{quizzes.length}</span>
       </div>
       {quizzes.length === 0 ? (
         <div class="subject-empty"><p>{t('dashboard.emptyQuizzes')}</p></div>
@@ -168,40 +159,13 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
                   ? t(group.sectionType === 'lecture' ? 'quiz.lectureGroup' : 'quiz.chapterGroup').replace('{number}', group.sectionNumber)
                   : t('quiz.mixedGroup')}
               </h3>
-              <div class:list={['subject-quiz-grid', { 'subject-quiz-grid-single': group.quizzes.length === 1, 'subject-quiz-grid-pair': group.quizzes.length === 2 }]}>
+              <ul class="subject-quiz-list" role="list">
                 {group.quizzes.map((q) => (
-                  <a
-                    href={getLocalizedPath(`/${subject}/${year}/quiz/${q.slug}`, lang)}
-                    class:list={['subject-quiz-card', { 'subject-quiz-instructor': q.entry.data.sourceKind === 'instructor', 'subject-quiz-provided': q.entry.data.sourceKind === 'provided' }]}
-                  >
-                    <div class="subject-quiz-card-body">
-                      <div class="subject-quiz-card-top">
-                        <QuizSourceLabel sourceKind={q.entry.data.sourceKind} combined={q.slug === 'all-questions'} />
-                        <span class="subject-question-count">{getPracticeQuestions(q.entry.data.questions).length} {t('quiz.questions')}</span>
-                      </div>
-                      <h4 lang={q.entry.data.lang} dir="auto">{q.entry.data.title}</h4>
-                      <MaterialContext
-                        compact
-                        description={q.entry.data.description}
-                        sourceAcademicYear={q.entry.data.sourceAcademicYear}
-                        sourceTerm={q.entry.data.sourceTerm}
-                        contentLang={q.entry.data.lang}
-                      />
-                      {getPracticeQuestions(q.entry.data.questions).length > 0 && <span
-                        data-best-score={q.entry.id}
-                        data-best-score-total={getPracticeQuestions(q.entry.data.questions).length}
-                        data-best-score-fingerprint={questionBankFingerprint(getPracticeQuestions(q.entry.data.questions))}
-                        data-best-score-template={t('dashboard.bestScore')}
-                        class="subject-best-score hidden"
-                      ></span>}
-                    </div>
-                    <span class="subject-quiz-card-action">
-                      <span>{t('dashboard.practice')}</span>
-                      <svg aria-hidden="true" class="rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" /></svg>
-                    </span>
-                  </a>
+                  <li>
+                    <QuizListItem quiz={q.entry} href={getLocalizedPath(`/${subject}/${year}/quiz/${q.slug}`, lang)} />
+                  </li>
                 ))}
-              </div>
+              </ul>
             </section>
           ))}
         </div>
@@ -213,7 +177,6 @@ const defaultMode = quizzes.length > 0 || summaries.length === 0 ? 'quizzes' : '
       <aside class="subject-contents">
         <div class="subject-contents-heading">
           <h2>{labels.contents}</h2>
-          <span class="subject-section-count">{summaries.length}</span>
         </div>
         {summaries.length > 0 ? (
           <>

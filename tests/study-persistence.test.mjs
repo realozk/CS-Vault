@@ -21,6 +21,10 @@ function eventTarget(extra = {}) {
       callbacks.push(callback);
       listeners.set(type, callbacks);
     },
+    removeEventListener(type, callback) {
+      listeners.set(type, (listeners.get(type) || []).filter(listener => listener !== callback));
+    },
+    listenerCount: type => (listeners.get(type) || []).length,
     dispatchEvent(event) {
       for (const callback of listeners.get(event.type) || []) callback(event);
       return true;
@@ -106,7 +110,7 @@ function dashboard(saved, enhanced = false) {
   });
   vm.runInNewContext(dashboardSource, { document, window, localStorage: saved, console, setTimeout, Event, requestAnimationFrame: callback => callback() });
   return {
-    window, nodes, checkboxes, tabs, modeButtons,
+    document, window, nodes, checkboxes, tabs, modeButtons,
     check(index, checked) {
       checkboxes[index].checked = checked;
       checkboxes[index].dispatchEvent({ type: 'change' });
@@ -152,6 +156,21 @@ test('summary mode retains the selected deep link and notifies language links af
   assert.equal(page.window.location.hash, '#summary-content-chapter-02');
   assert.equal(page.tabs[1].getAttribute('aria-current'), 'true');
   assert.equal(locationChanges, 3);
+});
+
+test('dashboard releases progress and score listeners before a client swap and binds one set after returning', () => {
+  const page = dashboard(storage(), true);
+  for (const event of ['pageshow', 'storage']) assert.equal(page.window.listenerCount(event), 2);
+  page.document.dispatchEvent({ type: 'astro:page-load' });
+  for (const event of ['pageshow', 'storage']) assert.equal(page.window.listenerCount(event), 2);
+  for (let visit = 0; visit < 3; visit++) {
+    page.document.dispatchEvent({ type: 'astro:before-swap' });
+    for (const event of ['pageshow', 'storage', 'hashchange', 'popstate']) assert.equal(page.window.listenerCount(event), 0);
+    page.document.dispatchEvent({ type: 'astro:after-swap' });
+    assert.equal(page.nodes['subject-page'].dataset.dashboardBound, 'true');
+    page.document.dispatchEvent({ type: 'astro:page-load' });
+    for (const event of ['pageshow', 'storage']) assert.equal(page.window.listenerCount(event), 2);
+  }
 });
 
 test('summary fallback keeps multiple unsaved edits and unchecks across refreshes, then saves after recovery', () => {

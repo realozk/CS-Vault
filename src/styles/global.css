@@ -61,6 +61,18 @@
 
 /* Shared study surfaces keep text stable while the homepage carries the atmosphere. */
 :root {
+  --study-radius: 1rem;
+  --study-radius-sm: .625rem;
+  --study-control-height: 44px;
+  --study-control-font-size: .8125rem;
+  --study-text-body: 1rem;
+  --study-title-size: clamp(2rem, 4vw, 3rem);
+  --study-space-1: .25rem;
+  --study-space-2: .5rem;
+  --study-space-3: .75rem;
+  --study-space-4: 1rem;
+  --study-space-6: 1.5rem;
+  --study-space-8: 2rem;
   color-scheme: light;
   --study-bg: #f6f6f7;
   --study-surface: #ffffff;
@@ -88,6 +100,9 @@
 }
 
 /* Global Transitions & Reset */
+/* Decorative snapshots must not intercept taps on the newly loaded page. */
+::view-transition { pointer-events: none; }
+
 html[data-swap-init] :not(.study-background):not(.study-background *),
 html[data-swap-init] :not(.study-background):not(.study-background *)::before,
 html[data-swap-init] :not(.study-background):not(.study-background *)::after {
@@ -264,7 +279,7 @@ input {
 }
 #nav-brand { gap: 0; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 1.1rem; font-weight: 600; letter-spacing: -.04em; white-space: nowrap; color: var(--study-text); }
 #nav-brand .nav-brand-path { color: var(--study-accent); }
-#main-nav a, #theme-toggle { border-radius: .7rem; border-color: var(--study-border); color: var(--study-muted); }
+#main-nav a, #theme-toggle { border-radius: var(--study-radius-sm); border-color: var(--study-border); color: var(--study-muted); }
 #main-nav a:hover, #theme-toggle:hover { color: var(--study-text); background: var(--study-surface-soft); }
 #main-nav a[aria-current="page"] { color: var(--study-accent); }
 .site-footer { position: relative; z-index: 1; border-color: var(--study-border); background: transparent; }
@@ -272,7 +287,7 @@ body.quiz-running .site-footer,
 body:has(#quiz-active-screen:not(.hidden)) .site-footer {
   display: none !important;
 }
-.site-footer-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1.5rem 4rem; }
+.site-footer-inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: var(--study-space-6) var(--study-space-8); }
 .site-footer details { max-width: 52rem; }
 .site-footer summary { cursor: pointer; min-height: 44px; width: fit-content; display: flex; align-items: center; gap: .75rem; color: var(--study-text); font-weight: 600; }
 .site-footer summary::after { content: '+'; color: var(--study-muted); font-size: 1.25rem; font-weight: 400; }
@@ -544,10 +559,9 @@ body:has(#quiz-active-screen:not(.hidden)) .site-footer {
 .site-width { max-width: 1280px; }
 .home-layout, .subject-page { position: relative; z-index: 1; }
 .study-background {
-  position: absolute;
-  inset-inline: calc(50% - 50vw);
-  top: -2.5rem;
-  bottom: -1rem;
+  /* Keep decorative raster work independent of the length of course notes. */
+  position: fixed;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
@@ -559,7 +573,7 @@ body:has(#quiz-active-screen:not(.hidden)) .site-footer {
   position: absolute;
   inset: 0;
   background-image: linear-gradient(rgba(138, 140, 170, .09) 1px, transparent 1px), linear-gradient(90deg, rgba(138, 140, 170, .09) 1px, transparent 1px);
-  background-size: 13px 13px;
+  background-size: var(--study-grid-size, 13px) var(--study-grid-size, 13px);
   will-change: opacity;
 }
 .dark .study-background-grid {
@@ -581,6 +595,26 @@ body:has(#quiz-active-screen:not(.hidden)) .site-footer {
     scroll-behavior: auto !important;
   }
 }
+
+/* Visitors can turn off the decorative background and transitions. */
+html[data-study-motion="off"],
+html[data-study-motion="off"] *,
+html[data-study-motion="off"] *::before,
+html[data-study-motion="off"] *::after {
+  animation: none !important;
+  transition-duration: 0s !important;
+  scroll-behavior: auto !important;
+}
+html[data-study-motion="off"]::view-transition-group(*),
+html[data-study-motion="off"]::view-transition-old(*),
+html[data-study-motion="off"]::view-transition-new(*) { animation: none !important; }
+html[data-study-motion="off"] .study-background { display: none; }
+html[data-study-motion="off"] :is(.course-card, .subject-quiz-card):is(:hover, :focus-visible) { transform: none; }
+html[data-study-motion="off"] :is(.course-open svg, .subject-quiz-card-action svg) { translate: none !important; }
+.appearance-settings { min-width: 0; }
+.appearance-motion-control { display: flex; align-items: center; gap: var(--study-space-3); min-height: var(--study-control-height); margin-top: var(--study-space-2); color: var(--study-text); cursor: pointer; }
+.appearance-motion-control input { flex: 0 0 auto; width: 18px; height: 18px; accent-color: var(--study-accent); }
+.appearance-settings p { max-width: 45ch; margin-top: var(--study-space-2); color: var(--study-muted); font-size: .75rem; }
 
 /* Both languages share the typeface while material retains its own direction. */
 html[dir="rtl"] [lang="en"] {

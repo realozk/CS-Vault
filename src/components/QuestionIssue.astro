@@ -1,0 +1,40 @@
+---
+import { getLangFromUrl, getLocalizedPath } from '../i18n/ui';
+const lang = getLangFromUrl(Astro.url);
+---
+<a class="question-issue-link" href={getLocalizedPath('/contribute/', lang)} data-question-report-link>
+  {lang === 'ar' ? 'الإبلاغ عن مشكلة في هذا السؤال' : 'Report a problem with this question'}
+</a>
+<style>
+  .question-issue-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: .75rem; color: var(--study-muted); font-size: .8rem; text-decoration: underline; text-underline-offset: 4px; }
+  .question-issue-link:hover { color: var(--study-text); }
+  .question-issue-link:focus-visible { outline: 2px solid var(--study-accent); outline-offset: 4px; }
+</style>
+<script>
+  import { getQuestionReportHref, getQuestionReportTarget } from '../lib/question-report';
+  import type { QuizData } from '../types';
+
+  function initQuestionReports() {
+    document.querySelectorAll<HTMLAnchorElement>('[data-question-report-link]').forEach(link => {
+      if (link.dataset.reportBound === 'true') return;
+      const widget = link.closest<HTMLElement>('#quiz-widget');
+      if (!widget) return;
+      link.dataset.reportBound = 'true';
+      const contributePath = link.getAttribute('href')!;
+      let quiz: QuizData | null = null;
+      const updateTarget = () => {
+        try {
+          quiz ??= JSON.parse(widget.dataset.quiz || 'null') as QuizData | null;
+          const currentId = widget.dataset.currentQuestionId;
+          const target = quiz && currentId !== undefined ? getQuestionReportTarget(widget.dataset.quizId || '', quiz, Number(currentId)) : null;
+          link.href = target ? getQuestionReportHref(contributePath, target) : contributePath;
+        } catch { link.href = contributePath; }
+      };
+      link.addEventListener('click', updateTarget);
+      link.addEventListener('focus', updateTarget);
+      link.addEventListener('contextmenu', updateTarget);
+    });
+  }
+  initQuestionReports();
+  document.addEventListener('astro:page-load', initQuestionReports);
+</script>

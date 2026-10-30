@@ -14,6 +14,7 @@ interface SearchItem {
   url: string;
   yearLevel: number;
   semester: number;
+  keywords?: string[];
 }
 
 let cleanupHome: (() => void) | undefined;
@@ -132,7 +133,7 @@ const initTabsAndSearch = () => {
 
     // Filter index
     const matched = searchIndex.filter(item => {
-      const text = [item.title, item.description, ...item.subjectNames].join('\n').normalize('NFKC').toLowerCase();
+      const text = [item.title, item.description, ...item.subjectNames, ...item.keywords ?? []].join('\n').normalize('NFKC').toLowerCase();
       const compactCode = item.subjectCode.toLowerCase().replace(/[\s-]+/g, '');
       const compactQuery = query.replace(/[\s-]+/g, '');
       return text.includes(query) || (compactQuery !== '' && compactCode.includes(compactQuery));

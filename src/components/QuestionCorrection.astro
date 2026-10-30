@@ -1,0 +1,102 @@
+---
+import { getLangFromUrl } from '../i18n/ui';
+interface Props { formUrl: string | null }
+const { formUrl } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const labels = lang === 'ar' ? {
+  title: 'تصحيح سؤال', loading: 'جارٍ تجهيز بيانات السؤال الأصلي…',
+  unavailable: 'تعذّر العثور على هذا السؤال. ارجع إلى الاختبار واختر الإبلاغ عن السؤال مرة أخرى.',
+  ready: 'أضف وصف المشكلة والدليل إلى المسودة، ثم انسخها لمشاركتها مع فريق المادة.',
+  draft: 'مسودة التصحيح', copy: 'نسخ مسودة التصحيح', copied: 'تم نسخ المسودة.',
+  fallback: 'حدّد النص وانسخه يدوياً.', openQuiz: 'فتح الاختبار الأصلي',
+  comingSoon: 'إرسال البلاغات قريباً. يمكنك تجهيز المسودة ونسخها الآن؛ لا يُرسل شيء من هذه الصفحة.',
+  submit: 'فتح نموذج التصحيح',
+} : {
+  title: 'Correct a question', loading: 'Preparing the original question details…',
+  unavailable: 'This question could not be found. Return to the quiz and choose the question report link again.',
+  ready: 'Add the issue and evidence to the draft, then copy it to share with your course team.',
+  draft: 'Correction draft', copy: 'Copy correction draft', copied: 'Draft copied.',
+  fallback: 'Select and copy the text manually.', openQuiz: 'Open original quiz',
+  comingSoon: 'Report submission is coming soon. You can prepare and copy a draft now; nothing is sent from this page.',
+  submit: 'Open correction form',
+};
+---
+<section id="question-correction" class="question-correction" hidden aria-labelledby="question-correction-heading" data-report-lang={lang} data-report-base={import.meta.env.BASE_URL} data-report-loading={labels.loading} data-report-unavailable={labels.unavailable} data-report-ready={labels.ready}>
+  <h2 id="question-correction-heading" tabindex="-1">{labels.title}</h2>
+  <p id="question-correction-status" role="status" aria-live="polite"></p>
+  <div id="question-correction-draft-fields" hidden>
+    <p><a id="question-correction-original" class="contribute-text-link">{labels.openQuiz}</a></p>
+    <label for="question-correction-draft">{labels.draft}</label>
+    <textarea id="question-correction-draft" rows="14" dir="auto" spellcheck="false"></textarea>
+    <div class="question-correction-actions">
+      <button id="question-correction-copy" class="contribute-button contribute-button-secondary" type="button" data-report-copied={labels.copied} data-report-copy-fallback={labels.fallback}>{labels.copy}</button>
+      {formUrl && <a class="contribute-button" href={formUrl} data-submission="correction">{labels.submit} <span aria-hidden="true">↗</span></a>}
+    </div>
+    {!formUrl && <p class="contribute-help">{labels.comingSoon}</p>}
+    <p id="question-correction-copy-status" class="contribute-help" role="status" aria-live="polite"></p>
+  </div>
+</section>
+<style>
+  .question-correction { min-width: 0; margin-block: .5rem 2rem; padding: clamp(1.1rem, 3vw, 1.75rem); border: 1px solid var(--study-border); border-radius: 12px; background: var(--study-surface); scroll-margin-top: 6rem; }
+  .question-correction h2 { margin-bottom: .6rem; font-size: 1.35rem; font-weight: 700; }
+  .question-correction label { display: block; margin-top: .75rem; font-size: .85rem; font-weight: 650; }
+  .question-correction textarea { display: block; width: 100%; min-height: 16rem; margin-block: .6rem .85rem; padding: .85rem; border: 1px solid var(--study-border); border-radius: 8px; background: var(--study-surface-soft); color: var(--study-text); font: inherit; font-size: .85rem; line-height: 1.8; resize: vertical; }
+  .question-correction-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
+  @media (max-width: 767px) {
+    .question-correction textarea { font-size: 1rem; }
+  }
+</style>
+<script>
+  import { createQuestionReportText, getQuestionReportDataPath, getQuestionReportQuizPath, parseQuestionReportTarget } from '../lib/question-report';
+  import type { QuestionReportPayload } from '../lib/question-report';
+
+  let reportRequest: AbortController | null = null;
+  async function initQuestionCorrection() {
+    const section = document.getElementById('question-correction');
+    if (!section || section.dataset.reportBound === 'true') return;
+    section.dataset.reportBound = 'true';
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has('reportQuiz') && !params.has('reportQuestion')) return;
+    section.hidden = false;
+    const status = document.getElementById('question-correction-status')!;
+    const target = parseQuestionReportTarget(params);
+    if (!target) { status.textContent = section.dataset.reportUnavailable || ''; return; }
+    const fields = document.getElementById('question-correction-draft-fields')!;
+    const draft = document.getElementById('question-correction-draft') as HTMLTextAreaElement;
+    const original = document.getElementById('question-correction-original') as HTMLAnchorElement;
+    const copy = document.getElementById('question-correction-copy') as HTMLButtonElement;
+    const copyStatus = document.getElementById('question-correction-copy-status')!;
+    status.textContent = section.dataset.reportLoading || '';
+    const controller = new AbortController();
+    reportRequest?.abort();
+    reportRequest = controller;
+    try {
+      const response = await fetch(getQuestionReportDataPath(section.dataset.reportBase || '/', target), { signal: controller.signal });
+      if (!response.ok) throw new Error('Question not found');
+      const payload = await response.json() as QuestionReportPayload;
+      const lang = section.dataset.reportLang === 'ar' ? 'ar' : 'en';
+      const quizPath = getQuestionReportQuizPath(target, section.dataset.reportBase || '/', lang);
+      const text = createQuestionReportText(payload, target, new URL(quizPath, window.location.origin).href, lang);
+      if (!text) throw new Error('Question not found');
+      if (controller.signal.aborted || !section.isConnected) return;
+      draft.value = text;
+      original.href = quizPath;
+      fields.hidden = false;
+      status.textContent = section.dataset.reportReady || '';
+      copy.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(draft.value);
+          copyStatus.textContent = copy.dataset.reportCopied || '';
+        } catch {
+          draft.focus(); draft.select();
+          copyStatus.textContent = copy.dataset.reportCopyFallback || '';
+        }
+      });
+    } catch {
+      if (!controller.signal.aborted && section.isConnected) status.textContent = section.dataset.reportUnavailable || '';
+    }
+  }
+  initQuestionCorrection();
+  document.addEventListener('astro:page-load', initQuestionCorrection);
+  document.addEventListener('astro:before-swap', () => { reportRequest?.abort(); reportRequest = null; });
+</script>

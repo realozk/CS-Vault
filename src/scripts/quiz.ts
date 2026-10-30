@@ -1,6 +1,8 @@
 import type { Question, QuizData } from '../types';
-import { getPracticeQuestions, prepareQuestionOptions } from '../lib/quiz-questions';
-import { attemptProgress, bestScoreStorageKey, questionBankFingerprint, readBestScore, readReview, updateBestScore, updateReview, shortReview, topicResults, secondsRemaining, questionSignature, readAttempt, type ReviewItem, type QuizAttempt } from './quiz-state';
+import { getPracticeQuestions, prepareQuestionOptions, selectPracticeQuestions } from '../lib/quiz-questions';
+import type { PackedStudyResources } from '../lib/study-resources';
+import { getQuestionReportHref, getQuestionReportTarget } from '../lib/question-report';
+import { attemptProgress, bestScoreStorageKey, questionBankFingerprint, readBestScore, readReview, updateBestScore, updateReview, shortReview, topicResults, secondsRemaining, readAttempt, createAttemptPlan, compactAttempt, type ReviewItem, type QuizAttempt, type AttemptPlan, type SessionKind } from './quiz-state';
 
 const shuffle = <T>(values: T[]): T[] => {
   const result = [...values];
@@ -38,8 +40,12 @@ const initQuizWidget = () => {
   const questionBank = getPracticeQuestions(quiz.questions);
   const quizId = widget.dataset.quizId;
   if (!quizId) throw new Error('Quiz widget is missing its quiz ID.');
+  const questionReporting = { base: widget.dataset.questionReportBase || '', quizId };
   const translations: Record<string, string> = JSON.parse(widget.dataset.translations || '{}');
   const originUrls: Record<string, string> = JSON.parse(widget.dataset.originUrls || '{}');
+  const packedResources: PackedStudyResources = JSON.parse(widget.dataset.studyResources || '{"resources":[],"questions":{}}');
+  type StudyLink = PackedStudyResources['resources'][number];
+  const studyResources: Record<number, StudyLink> = Object.fromEntries(Object.entries(packedResources.questions).map(([id, index]) => [id, packedResources.resources[index]]));
   const t = (key: string) => translations[key] || key;
   const el = (id: string) => document.getElementById(`quiz-${id}`)!;
   const button = (id: string) => el(id) as HTMLButtonElement;
@@ -71,13 +77,18 @@ const initQuizWidget = () => {
   let pendingReview = new Map<number, ReviewItem | null>();
   let pendingClear = false;
   const storageWarning = () => { el('storage-status').textContent = t('storageUnavailable'); };
-  const readStoredAttemptRaw = (): string | null => {
+  const readStoredAttempt = (): QuizAttempt | null => {
+    let local: QuizAttempt | null = null;
+    let session: QuizAttempt | null = null;
     try {
-      const stored = localStorage.getItem(attemptKey);
-      if (stored !== null) return stored;
+      local = readAttempt(localStorage.getItem(attemptKey), questionBank, bankFingerprint);
     } catch { storageWarning(); }
-    try { return sessionStorage.getItem(attemptKey); }
-    catch { storageWarning(); return null; }
+    try { session = readAttempt(sessionStorage.getItem(attemptKey), questionBank, bankFingerprint); }
+    catch { storageWarning(); }
+    // A quota failure may leave an older local value behind after the session
+    // fallback succeeds. Other tabs can also publish a newer local attempt.
+    if (!local) return session;
+    return session && (session.savedAt ?? 0) > (local.savedAt ?? 0) ? session : local;
   };
   const clearStoredAttempt = () => {
     try { localStorage.removeItem(attemptKey); } catch { storageWarning(); }
@@ -126,6 +137,7 @@ const initQuizWidget = () => {
       : t('noSaved');
     button('review-saved-btn').disabled = !saved.length;
     button('clear-saved-btn').disabled = !saved.length;
+    el('saved-section').classList.toggle('hidden', !saved.length);
   }
   loadSaved();
 
@@ -135,11 +147,24 @@ const initQuizWidget = () => {
     el('timer-settings').classList.toggle('hidden', !exam);
     el('mode-help').textContent = t(exam ? 'examHelp' : 'practiceHelp');
     (el('minutes') as HTMLInputElement).disabled = !(el('use-timer') as HTMLInputElement).checked;
-    el('mode-subtext').textContent = t(exam ? 'examSubtext' : 'subtext');
   };
   widget.querySelectorAll('input[name="quiz-mode"]').forEach(input => input.addEventListener('change', updateSettings, { signal }));
   el('use-timer').addEventListener('change', updateSettings, { signal });
   updateSettings();
+  const sessionSelection = () => {
+    const topic = (el('topic') as HTMLSelectElement).value || '';
+    const quick = (el('length') as HTMLSelectElement).value === 'quick';
+    const eligible = questionBank.filter(question => !topic || (question.topic || 'general') === topic);
+    return { topic, quick, count: quick ? Math.min(10, eligible.length) : eligible.length };
+  };
+  const updateSessionSize = () => {
+    const { count } = sessionSelection();
+    el('session-size').textContent = t('sessionSize').replace('{count}', String(count));
+    (document.getElementById('start-quiz-btn') as HTMLButtonElement).disabled = count === 0;
+  };
+  el('topic').addEventListener('change', updateSessionSize, { signal });
+  el('length').addEventListener('change', updateSessionSize, { signal });
+  updateSessionSize();
 
   let questions: Question[] = [];
   let answers = new Map<number, string>();
@@ -149,13 +174,13 @@ const initQuizWidget = () => {
   let deadline: number | null = null;
   let timer: ReturnType<typeof setInterval> | undefined;
   let missed: Question[] = [];
-  let shortSession = false;
+  let sessionKind: SessionKind = 'full';
+  let attemptPlan: AttemptPlan | undefined;
+  let lastSavedAt = 0;
   const persistAttempt = (phase: QuizAttempt['phase'] = 'active', expired = false) => {
-    const attempt: QuizAttempt = {
-      version: 1, phase, examMode, short: shortSession, currentIndex, deadline, expired,
-      questions: questions.map(q => ({ id: q.id, signature: questionSignature(q), options: q.options })),
-      answers: [...answers],
-    };
+    lastSavedAt = Math.max(Date.now(), lastSavedAt + 1);
+    if (!attemptPlan) return;
+    const attempt = compactAttempt(attemptPlan, { savedAt: lastSavedAt, phase, examMode, sessionKind, currentIndex, deadline, expired, answers });
     const serialized = JSON.stringify(attempt);
     try {
       if (phase === 'active') localStorage.setItem(attemptKey, serialized);
@@ -211,8 +236,9 @@ const initQuizWidget = () => {
   const answerNotice = (q: Question) => [q.answerSource === 'inferred' ? t('inferred') : '', q.optionsSource === 'generated' ? t('generatedOptions') : ''].filter(Boolean).join(' ');
   const showExplanation = (q: Question, revealed: boolean) => {
     const explanationBox = el('explanation-box');
-    const hasContent = Boolean(q.explanation || sourceReference(q) || answerNotice(q));
-    if (examMode || !hasContent) {
+    const resource = studyResources[q.id];
+    const hasContent = Boolean(q.explanation || sourceReference(q) || answerNotice(q) || resource);
+    if (examMode || !revealed || !hasContent) {
       explanationBox.classList.add('hidden');
       explanationBox.classList.remove('is-blurred');
       explanationBox.removeAttribute('aria-hidden');
@@ -224,6 +250,10 @@ const initQuizWidget = () => {
     el('origin').replaceChildren(...(link ? [link] : []));
     el('origin').className = 'mt-2 text-xs';
     el('answer-warning').textContent = answerNotice(q);
+    const studyLink = resource ? document.createElement('a') : null;
+    if (studyLink && resource) { studyLink.href = resource.href; studyLink.textContent = `${t('readRelevantNotes')} — ${resource.title}`; }
+    el('study-resource').replaceChildren(...(studyLink ? [studyLink] : []));
+    el('study-resource').classList.toggle('hidden', !studyLink);
     explanationBox.classList.remove('hidden');
     explanationBox.classList.toggle('is-blurred', !revealed);
     if (revealed) explanationBox.removeAttribute('aria-hidden');
@@ -265,6 +295,7 @@ const initQuizWidget = () => {
   };
   const renderQuestion = (animate = true) => {
     const q = questions[currentIndex];
+    widget.dataset.currentQuestionId = String(q.id);
     const contentLang = q.origin?.lang || quiz.lang || 'en';
     el('question-content').dir = contentLang === 'ar' ? 'rtl' : 'ltr';
     el('question-content').lang = contentLang;
@@ -299,7 +330,7 @@ const initQuizWidget = () => {
     const questionContent = widget.querySelector<HTMLElement>('.quiz-question-content');
     if (questionContent) {
       questionContent.classList.remove('quiz-question-animate');
-      if (animate) {
+      if (animate && document.documentElement?.dataset.studyMotion !== 'off') {
         void questionContent.offsetWidth;
         questionContent.classList.add('quiz-question-animate');
       }
@@ -310,14 +341,15 @@ const initQuizWidget = () => {
     el('question-text').focus({ preventScroll: true });
   };
 
-  function begin(source: Question[], short = false) {
+  function begin(source: Question[], kind: SessionKind = 'full') {
     stopTimer();
     questions = shuffle(getPracticeQuestions(source)).map(q => ({ ...q, options: prepareQuestionOptions(q, shuffle) }));
     if (!questions.length) return;
     answers = new Map();
     currentIndex = 0;
-    examMode = !short && selectedMode() === 'exam';
-    shortSession = short;
+    examMode = kind !== 'review' && selectedMode() === 'exam';
+    sessionKind = kind;
+    attemptPlan = createAttemptPlan(questionBank, questions, bankFingerprint);
     const minutes = el('minutes') as HTMLInputElement;
     const timed = examMode && (el('use-timer') as HTMLInputElement).checked;
     if (timed && !minutes.reportValidity()) { show('setup'); return; }
@@ -325,7 +357,8 @@ const initQuizWidget = () => {
     running = true;
     missed = [];
     el('total-questions-num').textContent = String(questions.length);
-    el('timer').textContent = t(short ? 'shortActive' : examMode ? 'exam' : 'active');
+    el('timer').classList.toggle('hidden', deadline === null);
+    el('timer').textContent = '';
     show('active');
     renderQuestion(false);
     startTimer();
@@ -345,9 +378,21 @@ const initQuizWidget = () => {
     el('score-percentage').textContent = `${percentage}%`;
     el('performance-desc').textContent = t(`score.${percentage === 100 ? 100 : percentage >= 80 ? 80 : percentage >= 50 ? 50 : 0}`);
     el('expired-message').classList.toggle('hidden', !expired);
+    el('custom-score-notice').classList.toggle('hidden', sessionKind === 'full' || sessionKind === 'review');
     el('progress-bar').style.width = '100%';
     el('topic-results').replaceChildren();
     const resultsByTopic = topicResults(questions, answers);
+    const linkedResources = new Map<string, StudyLink>();
+    for (const question of missed) {
+      const resource = studyResources[question.id];
+      if (resource) linkedResources.set(resource.href, resource);
+    }
+    el('study-next-links').replaceChildren();
+    for (const resource of linkedResources.values()) {
+      const link = document.createElement('a'); link.href = resource.href; link.textContent = resource.title;
+      el('study-next-links').append(link);
+    }
+    el('study-next').classList.toggle('hidden', linkedResources.size === 0);
     for (const result of resultsByTopic) {
       const row = document.createElement('tr'); row.className = 'border-b border-gray-200 dark:border-zinc-800';
       const topic = document.createElement('th'); topic.scope = 'row'; topic.className = 'text-start py-3 font-medium';
@@ -372,6 +417,18 @@ const initQuizWidget = () => {
       const link = originLink(q);
       if (link) { const source = document.createElement('p'); source.className = 'text-xs'; source.append(link); card.append(source); }
       if (answerNotice(q)) card.append(paragraph(answerNotice(q), 'text-xs text-amber-800 dark:text-amber-300'));
+      const resource = studyResources[q.id];
+      if (resource) {
+        const link = document.createElement('a'); link.href = resource.href; link.textContent = `${t('readRelevantNotes')} — ${resource.title}`;
+        const reading = document.createElement('p'); reading.append(link); reading.className = 'quiz-reading-link'; card.append(reading);
+      }
+      const reportTarget = questionReporting.base && getQuestionReportTarget(questionReporting.quizId, quiz, q.id);
+      if (reportTarget) {
+        const report = document.createElement('a');
+        report.href = getQuestionReportHref(questionReporting.base, reportTarget);
+        report.textContent = t('reportQuestion');
+        const reporting = document.createElement('p'); reporting.className = 'quiz-reading-link'; reporting.append(report); card.append(reporting);
+      }
       el('mistake-list').append(card);
     }
     button('retry-missed-btn').classList.toggle('hidden', !missed.length);
@@ -380,7 +437,7 @@ const initQuizWidget = () => {
       saved = updateReview(saved, questions, answers, Date.now());
       save();
       updateSavedReview();
-      if (!shortSession) {
+      if (sessionKind === 'full') {
         try {
           const previous = readBestScore(localStorage.getItem(bestScoreKey), questions.length, bankFingerprint);
           const best = updateBestScore(previous, score, questions.length, bankFingerprint);
@@ -395,7 +452,11 @@ const initQuizWidget = () => {
     el('result-title').focus({ preventScroll: false });
   }
 
-  document.getElementById('start-quiz-btn')!.addEventListener('click', () => begin(questionBank), { signal });
+  document.getElementById('start-quiz-btn')!.addEventListener('click', () => {
+    const { topic, quick } = sessionSelection();
+    const selected = selectPracticeQuestions(questionBank, { topic, ...(quick ? { limit: 10 } : {}) }, shuffle);
+    begin(selected, quick ? 'quick' : topic ? 'topic' : 'full');
+  }, { signal });
   button('next-btn').addEventListener('click', () => {
     if (!running || checkExpiry() || button('next-btn').disabled) return;
     if (currentIndex === questions.length - 1) finish();
@@ -407,11 +468,11 @@ const initQuizWidget = () => {
   }, { signal });
   button('submit-btn').addEventListener('click', () => { if (!checkExpiry()) finish(); }, { signal });
   button('restart-btn').addEventListener('click', () => begin(questionBank), { signal });
-  button('retry-missed-btn').addEventListener('click', () => begin(shuffle(missed).slice(0, 5), true), { signal });
+  button('retry-missed-btn').addEventListener('click', () => begin(shuffle(missed).slice(0, 5), 'review'), { signal });
   button('review-saved-btn').addEventListener('click', () => {
     loadSaved();
     const review = shortReview(questionBank, saved);
-    if (review.length) begin(review, true);
+    if (review.length) begin(review, 'review');
   }, { signal });
   button('clear-saved-btn').addEventListener('click', () => {
     saved = [];
@@ -434,7 +495,8 @@ const initQuizWidget = () => {
     }
     running = true;
     el('total-questions-num').textContent = String(questions.length);
-    el('timer').textContent = t(shortSession ? 'shortActive' : examMode ? 'exam' : 'active');
+    el('timer').classList.toggle('hidden', deadline === null);
+    el('timer').textContent = '';
     if (!checkExpiry()) {
       show('active');
       renderQuestion(false);
@@ -443,7 +505,7 @@ const initQuizWidget = () => {
   }, { signal });
   button('redo-btn').addEventListener('click', () => {
     clearStoredAttempt();
-    begin(questionBank);
+    begin(questions, sessionKind);
   }, { signal });
   button('resume-settings-btn').addEventListener('click', () => {
     clearStoredAttempt();
@@ -485,7 +547,7 @@ const initQuizWidget = () => {
   document.addEventListener('keydown', event => {
     if (!running || event.ctrlKey || event.metaKey || event.altKey || event.isComposing) return;
     const target = event.target as HTMLElement;
-    if (target.matches('input, textarea, select, [contenteditable="true"]')) return;
+    if (target.closest('input, textarea, select, a, summary, [contenteditable="true"]')) return;
     const key = event.key.toUpperCase();
     if (key >= 'A' && key <= 'Z') {
       const choice = el('options-container').querySelectorAll('button')[key.charCodeAt(0) - 65];
@@ -502,24 +564,31 @@ const initQuizWidget = () => {
       sessionStorage.removeItem(langSwitchKey);
     } catch { /* Ignore storage errors. */ }
 
-    const attempt = readAttempt(readStoredAttemptRaw(), questionBank);
+    const attempt = readStoredAttempt();
     if (!attempt) {
       running = false;
       show('setup');
       return;
     }
     const byId = new Map(questionBank.map(q => [q.id, q]));
+    lastSavedAt = Math.max(lastSavedAt, attempt.savedAt ?? 0);
     questions = attempt.questions.map(item => ({ ...byId.get(item.id)!, options: item.options }));
     answers = new Map(attempt.answers);
     currentIndex = attempt.currentIndex;
     examMode = attempt.examMode;
-    shortSession = attempt.short;
+    sessionKind = attempt.sessionKind ?? (attempt.short ? 'review' : 'full');
+    attemptPlan = createAttemptPlan(questionBank, questions, bankFingerprint);
+    (el('length') as HTMLSelectElement).value = sessionKind === 'quick' ? 'quick' : 'full';
+    const sessionTopics = [...new Set(questions.map(question => question.topic || 'general'))];
+    (el('topic') as HTMLSelectElement).value = sessionKind !== 'full' && sessionTopics.length === 1 ? sessionTopics[0] : '';
+    updateSessionSize();
     deadline = attempt.deadline;
     (widget.querySelector(`input[name="quiz-mode"][value="${examMode ? 'exam' : 'practice'}"]`) as HTMLInputElement).checked = true;
     (el('use-timer') as HTMLInputElement).checked = deadline !== null;
     updateSettings();
     el('total-questions-num').textContent = String(questions.length);
-    el('timer').textContent = t(shortSession ? 'shortActive' : examMode ? 'exam' : 'active');
+    el('timer').classList.toggle('hidden', deadline === null);
+    el('timer').textContent = '';
     if (attempt.phase === 'results') {
       if (isLangSwitch) {
         running = true;
@@ -552,8 +621,11 @@ const initQuizWidget = () => {
     const progress = attemptProgress(attempt, questionBank);
     el('resume-solved').textContent = String(progress.solved);
     el('resume-left').textContent = String(progress.left);
-    el('resume-correct').textContent = String(progress.correct);
-    el('resume-wrong').textContent = String(progress.wrong);
+    el('resume-correct-stat').classList.toggle('hidden', examMode);
+    el('resume-wrong-stat').classList.toggle('hidden', examMode);
+    el('resume-stats').style.gridTemplateColumns = examMode ? 'repeat(2, minmax(0, 1fr))' : '';
+    el('resume-correct').textContent = examMode ? '' : String(progress.correct);
+    el('resume-wrong').textContent = examMode ? '' : String(progress.wrong);
     el('resume-progress-bar').style.width = `${progress.solved / progress.total * 100}%`;
     el('resume-progress-text').textContent = t('resumeProgress')
       .replace('{solved}', String(progress.solved))

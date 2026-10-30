@@ -32,3 +32,6 @@ __pycache__/
 *.py[cod]
 pipeline/.venv/
 !pipeline/data/.gitkeep
+
+# Local review docs (not published)
+/docs/

@@ -62,7 +62,7 @@ const hasMetadata = contextSource || sourceYear || term || validUpdatedDate;
   .material-details > div { display: flex; flex-wrap: wrap; gap: .3em; min-width: 0; }
   .material-details dt::after { content: ':'; }
   .material-details dd { min-width: 0; font-weight: 550; overflow-wrap: anywhere; }
-  .material-context-compact { gap: .5rem; margin-block: -.5rem 1rem; }
-  .material-context-compact .material-description { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; font-size: .75rem; line-height: 1.7; }
+  .material-context-compact { gap: .5rem; margin-block: var(--material-compact-margin, -.5rem 1rem); }
+  .material-context-compact .material-description { display: -webkit-box; max-width: var(--material-description-width, 65ch); overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: var(--material-description-lines, 3); line-clamp: var(--material-description-lines, 3); font-size: .75rem; line-height: 1.7; }
   .material-context-compact .material-details { gap: .3rem .8rem; font-size: .75rem; }
 </style>

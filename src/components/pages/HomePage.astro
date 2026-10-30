@@ -8,6 +8,7 @@ import Icon from '../Icon.astro';
 import '../../styles/home.css';
 import { getModules, getSubjectName, getDefaultStudyYear } from '../../lib/modules';
 import { findCourse, courseSearchNames } from '../../lib/course-catalog';
+import { getQuizStaticPaths } from '../../lib/quiz-routes';
 import { getLangFromUrl, useTranslations, getLocalizedPath } from '../../i18n/ui';
 
 const lang = getLangFromUrl(Astro.url);
@@ -16,7 +17,6 @@ const t = useTranslations(lang);
 const copy = lang === 'ar' ? {
   description: 'ملخصات واختبارات لطلاب علوم الحاسب.',
   directory: 'اختر مادتك',
-  directoryNote: 'كل ما تحتاجه للمراجعة، في مكان واحد.',
   yearLabel: 'السنة الدراسية',
   searchHint: 'ابحث باسم المادة أو المحاضرة أو الموضوع',
   searchShortcut: 'اضغط Command K أو Control K للبحث، و Escape لمسح البحث.',
@@ -25,7 +25,6 @@ const copy = lang === 'ar' ? {
 } : {
   description: 'Summaries and quizzes for CS students.',
   directory: 'Choose your subject',
-  directoryNote: 'Everything for your next study session, in one place.',
   yearLabel: 'STUDY YEAR',
   searchHint: 'Search by subject, lecture, or topic',
   searchShortcut: 'Press Command K or Control K to search and Escape to clear.',
@@ -73,17 +72,18 @@ const searchIndex = [
       semester: s.data.semester
     };
   }),
-  ...quizzes.map(q => {
-    const parts = q.id.split('/');
-    const slug = parts.slice(2).join('-').replace(/\.(md|json)$/, '');
+  // Use the route inventory so combined practice is searchable too.
+  ...getQuizStaticPaths(quizzes).map(({ props: { quiz: q }, params: { subject, year, slug } }) => {
     return {
       type: 'quiz',
       title: q.data.title,
-      description: `${t("quiz.practice")} — ${getSubjectName(parts[0], lang, parts[1])}`,
+      keywords: slug === 'all-questions' ? ['All Questions', 'كل الأسئلة', 'جميع الأسئلة']
+        : slug === 'all-tutorials' ? ['All Tutorials', 'كل التمارين', 'جميع التمارين'] : [],
+      description: `${t("quiz.practice")} — ${getSubjectName(subject, lang, year)}`,
       author: 'System',
-      ...courseSearch(parts[0], parts[1]),
-      year: parts[1],
-      url: getLocalizedPath(`/${parts[0]}/${parts[1]}/quiz/${slug}`, lang),
+      ...courseSearch(subject, year),
+      year,
+      url: getLocalizedPath(`/${subject}/${year}/quiz/${slug}`, lang),
       yearLevel: q.data.year_level,
       semester: q.data.semester
     };
@@ -126,13 +126,19 @@ const searchIndexTranslations = JSON.stringify({
       </div>
     </div>
 
+    <noscript>
+      <style>
+        .home-search, .year-selector { display: none !important; }
+        #core-tab-view { display: block; }
+        #core-tab-view .year-material.hidden:not([data-year-empty]) { display: block !important; }
+        #core-tab-view .year-material { margin-bottom: 2rem; }
+      </style>
+    </noscript>
     <section class="home-directory" aria-labelledby="directory-title">
       <div class="directory-heading">
         <div>
           <h2 id="directory-title">{copy.directory}</h2>
-          <p>{copy.directoryNote}</p>
         </div>
-        <span class="directory-subject-count">{modules.length.toString().padStart(2, '0')} <span>{t('dashboard.breadcrumbs')}</span></span>
       </div>
       <div id="directory-container" data-search-index={JSON.stringify(searchIndex)} data-translations={searchIndexTranslations}>
         <div id="search-results-pane" class="hidden">
@@ -162,7 +168,8 @@ const searchIndexTranslations = JSON.stringify({
           {[1, 2, 3, 4].map((yearNum) => {
             const yearModules = modules.filter(m => m.yearLevel === yearNum);
             return (
-              <div id={`year-content-${yearNum}`} data-year-content={yearNum} class={`year-material ${yearNum === defaultYear ? '' : 'hidden'}`}>
+              <div id={`year-content-${yearNum}`} data-year-content={yearNum} data-year-empty={yearModules.length === 0 ? 'true' : undefined} class={`year-material ${yearNum === defaultYear ? '' : 'hidden'}`}>
+                <noscript><h3 class="semester-heading">{t('year.tab').replace('{year}', yearNum.toString())}</h3></noscript>
                 {yearModules.length === 0 ? (
                   <div class="directory-empty">
                     <Icon name="book" class="w-8 h-8" />

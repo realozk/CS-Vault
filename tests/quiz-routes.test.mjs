@@ -159,6 +159,13 @@ test('combined tutorials preserve all 68 questions, marked answers, and PDF refe
       sourceLecture: lectureNumber,
       id: index + 1,
       explanation: `${original.entry.data.source} — ${original.question.explanation}`,
+      origin: {
+        quizId: original.entry.id,
+        questionId: original.question.id,
+        title: original.entry.data.title,
+        source: original.entry.data.source,
+        lang: original.entry.data.lang,
+      },
     });
     assert.equal(question.answerSource, 'marked');
     assert.ok(question.options.includes(question.correctAnswer));

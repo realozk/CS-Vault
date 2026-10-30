@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
+import vm from 'node:vm';
+import ts from 'typescript';
 import { courses, courseKey } from '../src/lib/course-catalog.ts';
 import { createInstructions, createStarterQuiz, createPreparationExample, createPreparationInstructions, preparationExampleCourse } from '../src/lib/contribution-kit.ts';
 import { getContributionFormUrl, MAX_QUIZ_BYTES, safeQuizFilename, validateContribution } from '../src/lib/contributions.ts';
@@ -80,7 +82,7 @@ test('site links share one public form without course or correction parameters',
 
 test('filenames reject contributor paths and reserve the generated aggregate', () => {
   assert.equal(safeQuizFilename('chapter-01.json'), 'chapter-01.json');
-  for (const name of ['../file.json', 'folder/file.json', 'all-questions.json', 'all-questions', 'file name.json', '.json', 'FILE.JSON']) assert.throws(() => safeQuizFilename(name));
+  for (const name of ['../file.json', 'folder/file.json', 'all-questions.json', 'all-questions', 'all-tutorials.json', 'all-tutorials', 'file name.json', '.json', 'FILE.JSON']) assert.throws(() => safeQuizFilename(name));
 });
 
 test('corrections target an existing quiz, preserve dates/IDs and accept new IDs', () => {
@@ -93,6 +95,7 @@ test('corrections target an existing quiz, preserve dates/IDs and accept new IDs
   assert.match(validate({ ...quiz, questions: [{ ...quiz.questions[0], id: 8 }] }).errors.join(' '), /Preserve question ID|removed question ID/);
   assert.ok(validate({ ...quiz, questions: [...quiz.questions, { ...quiz.questions[0], id: 2, question: 'New question' }] }).quiz);
   assert.ok(validateContribution(JSON.stringify(quiz), course, { ...target, id: 'other/2026/quiz' }).errors.length);
+  assert.match(validateContribution(JSON.stringify(quiz), course, { ...target, id: `${courseKey(course)}/all-tutorials` }).errors.join(' '), /existing quiz/);
 });
 
 test('shareable volunteer files match the catalog and validate without a website tool', async () => {
@@ -126,4 +129,45 @@ test('contribution documentation includes required course code and a schema-vali
   assert.ok(examples[0].subject_code);
   assert.ok(examples[1].date);
   assert.ok(quizSchema.safeParse(examples[1]).success);
+});
+
+test('contribution prompt copy works on repeated client visits and falls back when clipboard access fails', async () => {
+  const component = await readFile(new URL('../src/components/ContributionOptions.astro', import.meta.url), 'utf8');
+  const source = component.match(/<script>([\s\S]*?)<\/script>/)[1];
+  const events = new Map();
+  const copied = [];
+  let rejectClipboard = false;
+  const createPage = value => {
+    const clicks = [];
+    const button = { hidden: true, dataset: { success: 'Copied', fallback: 'Copy manually' }, addEventListener: (type, callback) => { if (type === 'click') clicks.push(callback); } };
+    const prompt = { value, focused: false, selected: false, focus() { this.focused = true; }, select() { this.selected = true; } };
+    const status = { textContent: '' };
+    return { nodes: { 'contribute-copy': button, 'contribute-prompt': prompt, 'contribute-copy-status': status }, button, prompt, status, clicks };
+  };
+  let page = createPage('First prompt');
+  vm.runInNewContext(ts.transpile(source, { target: ts.ScriptTarget.ES2022 }), {
+    document: { getElementById: id => page?.nodes[id] ?? null, addEventListener: (type, callback) => events.set(type, callback) },
+    navigator: { clipboard: { async writeText(value) { if (rejectClipboard) throw new Error('Clipboard denied'); copied.push(value); } } },
+  });
+  assert.equal(page.button.hidden, false);
+  events.get('astro:page-load')();
+  assert.equal(page.clicks.length, 1, 'initial page-load must not bind twice');
+  await page.clicks[0]();
+  assert.deepEqual(copied, ['First prompt']);
+  assert.equal(page.status.textContent, 'Copied');
+
+  page = null;
+  assert.doesNotThrow(() => events.get('astro:page-load')());
+  page = createPage('Second visit prompt');
+  events.get('astro:page-load')();
+  events.get('astro:page-load')();
+  assert.equal(page.button.hidden, false);
+  assert.equal(page.clicks.length, 1);
+  await page.clicks[0]();
+  assert.deepEqual(copied, ['First prompt', 'Second visit prompt']);
+  rejectClipboard = true;
+  await page.clicks[0]();
+  assert.equal(page.prompt.focused, true);
+  assert.equal(page.prompt.selected, true);
+  assert.equal(page.status.textContent, 'Copy manually');
 });
