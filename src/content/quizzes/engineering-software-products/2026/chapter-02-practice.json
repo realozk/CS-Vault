@@ -1,0 +1,316 @@
+{
+  "title": "Chapter 2 — Agile Software Engineering",
+  "date": "2026-11-04",
+  "subject": "Engineering Software Products",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter 2 Slides",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the primary focus of Agile software engineering?",
+      "options": [
+        "Comprehensive documentation",
+        "Delivering functionality quickly and responding to changing specifications",
+        "Detailed long-term project planning",
+        "Strict contract negotiations"
+      ],
+      "correctAnswer": "Delivering functionality quickly and responding to changing specifications",
+      "explanation": "Agile software engineering focuses on rapid iterative delivery of working functionality and adapting quickly to changing product specifications.",
+      "sourceSlide": 2,
+      "answerSource": "inferred",
+      "topic": "agile-vs-plan-driven"
+    },
+    {
+      "id": 2,
+      "question": "Plan-driven development is best suited for what type of systems?",
+      "options": [
+        "Small mobile apps",
+        "Quick-to-market consumer web products",
+        "Large, long-lifetime systems like aircraft control systems",
+        "Student projects"
+      ],
+      "correctAnswer": "Large, long-lifetime systems like aircraft control systems",
+      "explanation": "Plan-driven approaches are designed for large, complex, long-lived, or safety-critical systems (such as aerospace and defense systems) that require thorough upfront analysis and documentation.",
+      "sourceSlide": 4,
+      "answerSource": "inferred",
+      "topic": "agile-vs-plan-driven"
+    },
+    {
+      "id": 3,
+      "question": "According to the Agile Manifesto, what is valued over comprehensive documentation?",
+      "options": [
+        "Processes and tools",
+        "Contract negotiation",
+        "Following a plan",
+        "Working software"
+      ],
+      "correctAnswer": "Working software",
+      "explanation": "The Agile Manifesto explicitly values working software over comprehensive documentation.",
+      "sourceSlide": 6,
+      "answerSource": "inferred",
+      "topic": "agile-vs-plan-driven"
+    },
+    {
+      "id": 4,
+      "question": "What is the core process around which all agile methods are based?",
+      "options": [
+        "Waterfall planning",
+        "Incremental development and delivery",
+        "Upfront architectural design",
+        "Formal mathematical modeling"
+      ],
+      "correctAnswer": "Incremental development and delivery",
+      "explanation": "All agile methods are built around incremental development and delivery—defining, building, and delivering features in small iterations to gather feedback.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "incremental-xp"
+    },
+    {
+      "id": 5,
+      "question": "Which Agile principle involves trusting the development team to work without prescriptive software processes?",
+      "options": [
+        "Embrace change",
+        "Maintain simplicity",
+        "Focus on people, not the development process",
+        "Involve the customer"
+      ],
+      "correctAnswer": "Focus on people, not the development process",
+      "explanation": "Focusing on people rather than rigid processes means trusting the skills of the development team and allowing them to work in their own way without prescriptive overhead.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "incremental-xp"
+    },
+    {
+      "id": 6,
+      "question": "Who coined the name \"Extreme Programming\" in 1998?",
+      "options": [
+        "Ian Sommerville",
+        "Kent Beck",
+        "Ken Schwaber",
+        "Jeff Sutherland"
+      ],
+      "correctAnswer": "Kent Beck",
+      "explanation": "Kent Beck introduced Extreme Programming (XP) in 1998 by pushing recognized good development practices to \"extreme\" levels.",
+      "sourceSlide": 13,
+      "answerSource": "inferred",
+      "topic": "incremental-xp"
+    },
+    {
+      "id": 7,
+      "question": "In Extreme Programming, writing tests before writing the actual code is called:",
+      "options": [
+        "Refactoring",
+        "Continuous integration",
+        "Test-driven development",
+        "Acceptance testing"
+      ],
+      "correctAnswer": "Test-driven development",
+      "explanation": "Test-driven development (TDD) is the practice of writing automated executable tests for a feature before writing the code that implements it.",
+      "sourceSlide": 16,
+      "answerSource": "inferred",
+      "topic": "incremental-xp"
+    },
+    {
+      "id": 8,
+      "question": "What XP practice involves improving the structure, readability, efficiency, and security of code without changing its external behavior?",
+      "options": [
+        "Small releases",
+        "Pair programming",
+        "Continuous integration",
+        "Refactoring"
+      ],
+      "correctAnswer": "Refactoring",
+      "explanation": "Refactoring continuously improves internal code structure, readability, efficiency, and security while preserving external functionality.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "incremental-xp"
+    },
+    {
+      "id": 9,
+      "question": "Unlike XP, what does Scrum provide a framework for?",
+      "options": [
+        "Specific coding standards",
+        "Agile project organization and planning",
+        "Database design",
+        "User interface creation"
+      ],
+      "correctAnswer": "Agile project organization and planning",
+      "explanation": "Scrum focuses on agile project organization and planning rather than prescribing specific technical programming practices.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "scrum-framework"
+    },
+    {
+      "id": 10,
+      "question": "In product development, who should normally take on the \"Product Owner\" role in Scrum?",
+      "options": [
+        "The ScrumMaster",
+        "The lead developer",
+        "The product manager",
+        "The CEO"
+      ],
+      "correctAnswer": "The product manager",
+      "explanation": "In software product companies, the product manager normally serves as the Scrum Product Owner, identifying features and prioritizing the backlog.",
+      "sourceSlide": 21,
+      "answerSource": "inferred",
+      "topic": "scrum-framework"
+    },
+    {
+      "id": 11,
+      "question": "Which Scrum role is described as a \"team coach\" rather than a conventional project manager?",
+      "options": [
+        "Product Owner",
+        "ScrumMaster",
+        "Development Team Lead",
+        "Technical Architect"
+      ],
+      "correctAnswer": "ScrumMaster",
+      "explanation": "The ScrumMaster acts as a team coach who facilitates Scrum practices and removes roadblocks rather than managing the team hierarchically.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "scrum-framework"
+    },
+    {
+      "id": 12,
+      "question": "How long does a Sprint typically last in Scrum?",
+      "options": [
+        "1 to 2 days",
+        "2 to 4 weeks",
+        "3 to 6 months",
+        "Exactly 1 year"
+      ],
+      "correctAnswer": "2 to 4 weeks",
+      "explanation": "A Sprint is a fixed-length iteration that typically lasts between 2 and 4 weeks.",
+      "sourceSlide": 23,
+      "answerSource": "inferred",
+      "topic": "scrum-framework"
+    },
+    {
+      "id": 13,
+      "question": "What is the \"Product Backlog\" in Scrum?",
+      "options": [
+        "A list of completed features",
+        "A prioritized to-do list of items to be implemented",
+        "A document detailing the system architecture",
+        "A log of failed automated tests"
+      ],
+      "correctAnswer": "A prioritized to-do list of items to be implemented",
+      "explanation": "The Product Backlog is a prioritized list of Product Backlog Items (PBIs) such as features, user stories, bug fixes, and engineering improvements remaining to be built.",
+      "sourceSlide": 27,
+      "answerSource": "inferred",
+      "topic": "scrum-framework"
+    },
+    {
+      "id": 14,
+      "question": "A Product Backlog Item (PBI) that has enough detail for the team to estimate effort and begin work is in which state?",
+      "options": [
+        "Ready for consideration",
+        "Ready for refinement",
+        "Ready for implementation",
+        "Ready for deployment"
+      ],
+      "correctAnswer": "Ready for implementation",
+      "explanation": "PBIs progress through states (Ready for consideration -> Ready for refinement -> Ready for implementation); once in Ready for implementation, they have sufficient detail to be estimated and selected for a sprint.",
+      "sourceSlide": 29,
+      "answerSource": "inferred",
+      "topic": "scrum-framework"
+    },
+    {
+      "id": 15,
+      "question": "What are \"Story Points\"?",
+      "options": [
+        "Exact hours a task will take",
+        "The number of developers needed for a task",
+        "An arbitrary estimate of effort evaluated relatively against a baseline task",
+        "The priority rank of a feature"
+      ],
+      "correctAnswer": "An arbitrary estimate of effort evaluated relatively against a baseline task",
+      "explanation": "Story points represent relative effort estimates comparing the size and complexity of a task against a known baseline task.",
+      "sourceSlide": 33,
+      "answerSource": "inferred",
+      "topic": "sprint-planning-activities"
+    },
+    {
+      "id": 16,
+      "question": "Sprints are \"timeboxed\". What does this mean?",
+      "options": [
+        "Developers track their hours in a timebox application.",
+        "Development stops at the end of the sprint whether work is completed or not.",
+        "Sprints are extended indefinitely until all backlog items are finished.",
+        "Scrums are limited to 5 minutes."
+      ],
+      "correctAnswer": "Development stops at the end of the sprint whether work is completed or not.",
+      "explanation": "Timeboxing means the sprint has a strict fixed end date; work stops when the time expires regardless of whether all planned items are finished.",
+      "sourceSlide": 35,
+      "answerSource": "inferred",
+      "topic": "sprint-planning-activities"
+    },
+    {
+      "id": 17,
+      "question": "If it is impossible to complete all sprint backlog items during a sprint, what happens?",
+      "options": [
+        "The sprint is extended by one week.",
+        "Developers must work overtime.",
+        "The unfinished items are returned to the product backlog and queued for a future sprint.",
+        "The unfinished items are deleted."
+      ],
+      "correctAnswer": "The unfinished items are returned to the product backlog and queued for a future sprint.",
+      "explanation": "Because sprints are never extended, any incomplete items are returned to the product backlog to be reprioritized for a future sprint.",
+      "sourceSlide": 37,
+      "answerSource": "inferred",
+      "topic": "sprint-planning-activities"
+    },
+    {
+      "id": 18,
+      "question": "A short, daily meeting where team members share progress and problems is called a:",
+      "options": [
+        "Sprint Planning Meeting",
+        "Sprint Retrospective",
+        "Scrum",
+        "Backlog Refinement"
+      ],
+      "correctAnswer": "Scrum",
+      "explanation": "A Scrum (or daily standup) is a short daily meeting where the team reviews progress since the last meeting, plans the day's work, and surfaces blockers.",
+      "sourceSlide": 43,
+      "answerSource": "inferred",
+      "topic": "sprint-planning-activities"
+    },
+    {
+      "id": 19,
+      "question": "What is the ideal size for a Scrum Development Team?",
+      "options": [
+        "1 to 3 people",
+        "5 to 8 people",
+        "10 to 15 people",
+        "20+ people"
+      ],
+      "correctAnswer": "5 to 8 people",
+      "explanation": "A self-organizing Scrum development team ideally consists of 5 to 8 people—large enough to cover diverse skills and small enough to communicate effectively.",
+      "sourceSlide": 49,
+      "answerSource": "inferred",
+      "topic": "sprint-planning-activities"
+    },
+    {
+      "id": 20,
+      "question": "In Scrum, who is intended to handle team-focused external interactions to shield developers from distractions?",
+      "options": [
+        "Product Owner",
+        "Developers",
+        "ScrumMaster",
+        "Stakeholders"
+      ],
+      "correctAnswer": "ScrumMaster",
+      "explanation": "To protect the team from external distractions, the ScrumMaster handles team-focused external interactions while the Product Owner handles product-focused interactions.",
+      "sourceSlides": [
+        53,
+        54
+      ],
+      "answerSource": "inferred",
+      "topic": "sprint-planning-activities"
+    }
+  ]
+}

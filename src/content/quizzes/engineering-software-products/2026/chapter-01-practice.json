@@ -1,0 +1,313 @@
+{
+  "title": "Chapter 1 — Software Products",
+  "date": "2026-11-04",
+  "subject": "Engineering Software Products",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter 1 Slides",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What defines a software product as opposed to custom software?",
+      "options": [
+        "It is developed for a single client project.",
+        "It is a generic system providing functionality useful to a range of customers.",
+        "It cannot be sold commercially.",
+        "It is only developed by government bodies."
+      ],
+      "correctAnswer": "It is a generic system providing functionality useful to a range of customers.",
+      "explanation": "Software products are generic systems designed to provide functionality for a broad customer base, unlike custom software built for a single client.",
+      "sourceSlide": 2,
+      "answerSource": "inferred",
+      "topic": "products-vs-custom"
+    },
+    {
+      "id": 2,
+      "question": "In project-based software engineering, who owns the \"software requirements\"?",
+      "options": [
+        "The external client",
+        "The development team",
+        "The product manager",
+        "The end-users"
+      ],
+      "correctAnswer": "The external client",
+      "explanation": "In custom, project-based software engineering, the external client defines and owns the requirements and can change them during the project.",
+      "sourceSlide": 4,
+      "answerSource": "inferred",
+      "topic": "products-vs-custom"
+    },
+    {
+      "id": 3,
+      "question": "What is the starting point for product software engineering?",
+      "options": [
+        "A set of client requirements",
+        "A business opportunity",
+        "A legacy codebase",
+        "A government grant"
+      ],
+      "correctAnswer": "A business opportunity",
+      "explanation": "Product software engineering begins with identifying a business opportunity rather than responding to a client's requirements specification.",
+      "sourceSlide": 7,
+      "answerSource": "inferred",
+      "topic": "products-vs-custom"
+    },
+    {
+      "id": 4,
+      "question": "A set of software products that share a common core but include customer-specific adaptations is called a:",
+      "options": [
+        "Software Platform",
+        "Software Service",
+        "Software Product Line",
+        "Stand-alone System"
+      ],
+      "correctAnswer": "Software Product Line",
+      "explanation": "A Software Product Line is a family of products that share a common core architecture and features while adapting specific parts for different customers.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "execution-models"
+    },
+    {
+      "id": 5,
+      "question": "Facebook is provided as an example of what type of technology?",
+      "options": [
+        "A software product line",
+        "A platform",
+        "A custom software system",
+        "A stand-alone execution model"
+      ],
+      "correctAnswer": "A platform",
+      "explanation": "A platform provides core functionality and APIs upon which new applications and services can be built, such as Facebook.",
+      "sourceSlide": 10,
+      "answerSource": "inferred",
+      "topic": "execution-models"
+    },
+    {
+      "id": 6,
+      "question": "Which software execution model implements all features on the developer's servers?",
+      "options": [
+        "Stand-alone",
+        "Hybrid",
+        "Cloud-native",
+        "Software Service (SaaS)"
+      ],
+      "correctAnswer": "Software Service (SaaS)",
+      "explanation": "In a Software as a Service (SaaS) execution model, all product features run on the developer's servers and are accessed via a web browser or thin client app.",
+      "sourceSlide": 11,
+      "answerSource": "inferred",
+      "topic": "execution-models"
+    },
+    {
+      "id": 7,
+      "question": "If part of a software's functionality is on the user's computer and part is on the developer's server, it is a:",
+      "options": [
+        "Hybrid system",
+        "Platform",
+        "Stand-alone system",
+        "Custom system"
+      ],
+      "correctAnswer": "Hybrid system",
+      "explanation": "A hybrid execution model splits functionality between local software on the user's device and remote services on the developer's servers.",
+      "sourceSlide": 11,
+      "answerSource": "inferred",
+      "topic": "execution-models"
+    },
+    {
+      "id": 8,
+      "question": "Which of the following shares the key feature of product development (no external customer generating requirements)?",
+      "options": [
+        "Government tax software",
+        "Bank internal payroll systems",
+        "Student projects and research software",
+        "Outsourced enterprise contracts"
+      ],
+      "correctAnswer": "Student projects and research software",
+      "explanation": "Student projects, research software, and internal tools share the core characteristic of product development: the development team decides on the features without an external client specifying requirements.",
+      "sourceSlide": 13,
+      "answerSource": "inferred",
+      "topic": "execution-models"
+    },
+    {
+      "id": 9,
+      "question": "Which of the following is NOT one of the three fundamental questions a product vision should answer?",
+      "options": [
+        "What is the product to be developed?",
+        "Who are the target customers and users?",
+        "What programming language will be used?",
+        "Why should customers buy this product?"
+      ],
+      "correctAnswer": "What programming language will be used?",
+      "explanation": "A product vision answers what the product is, who the target customers/users are, and why they should buy it; implementation details like programming languages are not part of the vision.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "product-vision"
+    },
+    {
+      "id": 10,
+      "question": "In Moore's Vision Template, what follows the word \"UNLIKE\"?",
+      "options": [
+        "Target customer",
+        "Primary competitive alternative",
+        "Statement of primary differentiation",
+        "Product category"
+      ],
+      "correctAnswer": "Primary competitive alternative",
+      "explanation": "Moore's Vision Template ends with \"UNLIKE (primary competitive alternative) OUR PRODUCT (statement of primary differentiation).\"",
+      "sourceSlide": 15,
+      "answerSource": "inferred",
+      "topic": "product-vision"
+    },
+    {
+      "id": 11,
+      "question": "In the CRM-Innovator vision template example, who is the target customer?",
+      "options": [
+        "Large corporate enterprises",
+        "Individual freelance workers",
+        "A mid-sized company's marketing and sales departments",
+        "IT administrators"
+      ],
+      "correctAnswer": "A mid-sized company's marketing and sales departments",
+      "explanation": "In the lecture's CRM-Innovator vision statement example, the target customer following \"FOR\" is a mid-sized company's marketing and sales departments.",
+      "sourceSlide": 16,
+      "answerSource": "inferred",
+      "topic": "product-vision"
+    },
+    {
+      "id": 12,
+      "question": "Recognizing opportunities for an improved system because of frustration with current software falls under which information source?",
+      "options": [
+        "Domain experience",
+        "Customer experience",
+        "Prototyping",
+        "Formal requirements engineering"
+      ],
+      "correctAnswer": "Domain experience",
+      "explanation": "Domain experience comes from working in an application area and recognizing opportunities for a better system due to limitations or frustrations with existing software.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "product-vision"
+    },
+    {
+      "id": 13,
+      "question": "Developing an experimental system to \"play around\" with ideas is known as:",
+      "options": [
+        "Customer experience",
+        "Prototyping",
+        "Domain experience",
+        "Product backlog creation"
+      ],
+      "correctAnswer": "Prototyping",
+      "explanation": "Prototyping involves building an experimental version of a software product to explore and test ideas early in the vision process.",
+      "sourceSlide": 18,
+      "answerSource": "inferred",
+      "topic": "product-vision"
+    },
+    {
+      "id": 14,
+      "question": "Product managers primarily act as the interface between the software development team, the customers, and:",
+      "options": [
+        "The investors",
+        "The organization/business",
+        "The competitors",
+        "The hardware vendors"
+      ],
+      "correctAnswer": "The organization/business",
+      "explanation": "Product managers bridge the gap between the business/organization, the software development team, and the customers.",
+      "sourceSlide": 20,
+      "answerSource": "inferred",
+      "topic": "product-management-prototyping"
+    },
+    {
+      "id": 15,
+      "question": "Ensuring developers are aware of technology issues that are important to customers falls under which PM concern?",
+      "options": [
+        "Business needs",
+        "Customer experience",
+        "Technology constraints",
+        "Financial modeling"
+      ],
+      "correctAnswer": "Technology constraints",
+      "explanation": "Technology constraints involve ensuring the development team accounts for customer-relevant technology constraints and environments.",
+      "sourceSlide": 22,
+      "answerSource": "inferred",
+      "topic": "product-management-prototyping"
+    },
+    {
+      "id": 16,
+      "question": "What is a \"product roadmap\"?",
+      "options": [
+        "A list of all bugs in the system",
+        "A plan for the development, release, and marketing of the software",
+        "The source code directory structure",
+        "A network diagram of the servers"
+      ],
+      "correctAnswer": "A plan for the development, release, and marketing of the software",
+      "explanation": "A product roadmap is a high-level plan setting out the schedule and goals for developing, releasing, and marketing the product.",
+      "sourceSlide": 24,
+      "answerSource": "inferred",
+      "topic": "product-management-prototyping"
+    },
+    {
+      "id": 17,
+      "question": "A prioritized \"to-do\" list of what has to be developed is called the:",
+      "options": [
+        "Product roadmap",
+        "Product vision",
+        "User scenario",
+        "Product backlog"
+      ],
+      "correctAnswer": "Product backlog",
+      "explanation": "The product backlog is the prioritized \"to-do\" list of features, fixes, and tasks to be built by the development team.",
+      "sourceSlide": 25,
+      "answerSource": "inferred",
+      "topic": "product-management-prototyping"
+    },
+    {
+      "id": 18,
+      "question": "The process of verifying that a software release meets the goals set out in the roadmap is called:",
+      "options": [
+        "Unit testing",
+        "Customer testing",
+        "Acceptance testing",
+        "Integration testing"
+      ],
+      "correctAnswer": "Acceptance testing",
+      "explanation": "Acceptance testing verifies that a software release satisfies the product roadmap goals and is ready for customers.",
+      "sourceSlide": 26,
+      "answerSource": "inferred",
+      "topic": "product-management-prototyping"
+    },
+    {
+      "id": 19,
+      "question": "What is the primary purpose of product prototyping?",
+      "options": [
+        "To finalize the production code",
+        "To test ideas and convince funders of market potential",
+        "To generate the product backlog",
+        "To test database scalability"
+      ],
+      "correctAnswer": "To test ideas and convince funders of market potential",
+      "explanation": "Prototyping is used early on to test whether ideas are practical and to demonstrate the product's market potential to management or external funders.",
+      "sourceSlide": 28,
+      "answerSource": "inferred",
+      "topic": "product-management-prototyping"
+    },
+    {
+      "id": 20,
+      "question": "A prototype created to see if ideas actually work and to show original features to company management is a:",
+      "options": [
+        "Customer demonstration prototype",
+        "Production-ready system",
+        "Feasibility demonstration prototype",
+        "Wireframe model"
+      ],
+      "correctAnswer": "Feasibility demonstration prototype",
+      "explanation": "A feasibility demonstration prototype is built as a first stage to test if the core ideas work and to demonstrate original features to management or investors.",
+      "sourceSlide": 30,
+      "answerSource": "inferred",
+      "topic": "product-management-prototyping"
+    }
+  ]
+}

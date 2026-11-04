@@ -1,0 +1,325 @@
+{
+  "title": "Chapter 4 — Software Architecture",
+  "date": "2026-11-04",
+  "subject": "Engineering Software Products",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter 4 Slides",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "According to the IEEE definition, software architecture embodies the fundamental organization of a system through:",
+      "options": [
+        "Its source code files and directories",
+        "Its components, their relationships, and guiding principles",
+        "Its user personas and scenarios",
+        "Its marketing and business plans"
+      ],
+      "correctAnswer": "Its components, their relationships, and guiding principles",
+      "explanation": "The IEEE defines software architecture as the fundamental organization of a system embodied in its components, their relationships to each other and the environment, and the principles guiding its design and evolution.",
+      "sourceSlide": 4,
+      "answerSource": "inferred",
+      "topic": "architecture-importance"
+    },
+    {
+      "id": 2,
+      "question": "In architectural design, a component is an element that:",
+      "options": [
+        "Implements a coherent set of functionality or features.",
+        "Always maps to a single database table.",
+        "Represents a single user role.",
+        "Can only be written in Javascript."
+      ],
+      "correctAnswer": "Implements a coherent set of functionality or features.",
+      "explanation": "An architectural component is a modular element that implements a coherent set of functionality or features and exposes an interface.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "architecture-importance"
+    },
+    {
+      "id": 3,
+      "question": "Why should architectural designers aim to minimize complexity?",
+      "options": [
+        "Complex systems are cheaper to build.",
+        "Complex systems use less battery power.",
+        "Complex systems are more difficult and expensive to understand and change.",
+        "Complex systems limit open-source licenses."
+      ],
+      "correctAnswer": "Complex systems are more difficult and expensive to understand and change.",
+      "explanation": "Minimizing complexity is essential in product architecture because higher complexity makes the software harder and more expensive to understand, maintain, and evolve.",
+      "sourceSlide": 8,
+      "answerSource": "inferred",
+      "topic": "architecture-importance"
+    },
+    {
+      "id": 4,
+      "question": "Which non-functional attribute asks: \"Can the system be readily updated and new features added without undue costs?\"",
+      "options": [
+        "Responsiveness",
+        "Usability",
+        "Resilience",
+        "Maintainability"
+      ],
+      "correctAnswer": "Maintainability",
+      "explanation": "Maintainability measures how easily and cost-effectively a system can be updated, repaired, and extended with new features.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "architecture-importance"
+    },
+    {
+      "id": 5,
+      "question": "What is a primary disadvantage of a centralized security architecture?",
+      "options": [
+        "It is much harder to build than a distributed one.",
+        "Data access is incredibly slow.",
+        "If security is breached, the attacker gains access to everything.",
+        "It cannot be used with relational databases."
+      ],
+      "correctAnswer": "If security is breached, the attacker gains access to everything.",
+      "explanation": "While a centralized security architecture is easier to design and fast to access, a single breach compromises all protected data in the system.",
+      "sourceSlides": [
+        10,
+        11
+      ],
+      "answerSource": "inferred",
+      "topic": "architecture-importance"
+    },
+    {
+      "id": 6,
+      "question": "If two components share a single common database, how does this affect maintainability?",
+      "options": [
+        "It increases maintainability because data is in one place.",
+        "It decreases maintainability because changing the database structure for one component may break the other.",
+        "It has no effect on maintainability.",
+        "It eliminates the need for security layers."
+      ],
+      "correctAnswer": "It decreases maintainability because changing the database structure for one component may break the other.",
+      "explanation": "Sharing a single database creates a shared dependency between components; schema changes needed by one component can break others, reducing maintainability.",
+      "sourceSlide": 12,
+      "answerSource": "inferred",
+      "topic": "architecture-importance"
+    },
+    {
+      "id": 7,
+      "question": "If you anticipate a long product lifetime, you need an architecture that supports:",
+      "options": [
+        "Rapid abandonment",
+        "Evolution to accommodate new features and technology",
+        "Only stand-alone execution",
+        "Hard-coded user interfaces"
+      ],
+      "correctAnswer": "Evolution to accommodate new features and technology",
+      "explanation": "Products with a long anticipated lifetime require a maintainable architecture that can evolve and be refactored to support new features and changing technologies.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "architecture-tradeoffs"
+    },
+    {
+      "id": 8,
+      "question": "Decomposing a system into fine-grain, single-purpose components improves maintainability. How does this affect performance?",
+      "options": [
+        "It drastically improves performance.",
+        "It slows performance down because components take time to communicate with each other.",
+        "It has zero impact on performance.",
+        "It reduces server costs."
+      ],
+      "correctAnswer": "It slows performance down because components take time to communicate with each other.",
+      "explanation": "Fine-grain components improve maintainability, but the extra inter-component communication overhead slows down overall system performance.",
+      "sourceSlides": [
+        19,
+        20
+      ],
+      "answerSource": "inferred",
+      "topic": "architecture-tradeoffs"
+    },
+    {
+      "id": 9,
+      "question": "Implementing system protection as a series of multiple layers is an architectural design to improve:",
+      "options": [
+        "Usability",
+        "Time-to-market",
+        "Security",
+        "Availability"
+      ],
+      "correctAnswer": "Security",
+      "explanation": "Defense-in-depth (multiple protection layers such as system, application, and record-level security) is an architectural approach to improve security.",
+      "sourceSlide": 21,
+      "answerSource": "inferred",
+      "topic": "architecture-tradeoffs"
+    },
+    {
+      "id": 10,
+      "question": "Adding multiple security layers directly and negatively impacts which system attribute?",
+      "options": [
+        "Usability",
+        "Maintenance cost",
+        "Resilience",
+        "Consistency"
+      ],
+      "correctAnswer": "Usability",
+      "explanation": "Layered security often requires repeated authentication and slower interactions, which directly reduces usability.",
+      "sourceSlide": 23,
+      "answerSource": "inferred",
+      "topic": "architecture-tradeoffs"
+    },
+    {
+      "id": 11,
+      "question": "To achieve high system availability (e.g., 24/7 uptime), architectures use:",
+      "options": [
+        "Stand-alone execution models",
+        "Redundant components and failure sensors",
+        "Fewer overall components",
+        "Only NoSQL databases"
+      ],
+      "correctAnswer": "Redundant components and failure sensors",
+      "explanation": "High-availability architectures rely on redundant components, failure sensors, and automatic switching so service continues if a component fails.",
+      "sourceSlides": [
+        25,
+        26
+      ],
+      "answerSource": "inferred",
+      "topic": "architecture-tradeoffs"
+    },
+    {
+      "id": 12,
+      "question": "What term describes focusing on the essential elements of a system while ignoring the implementation details?",
+      "options": [
+        "Integration",
+        "Decomposition",
+        "Abstraction",
+        "Prototyping"
+      ],
+      "correctAnswer": "Abstraction",
+      "explanation": "Abstraction is the process of focusing on the essential high-level characteristics of a component or system while hiding low-level implementation details.",
+      "sourceSlide": 28,
+      "answerSource": "inferred",
+      "topic": "architectural-patterns"
+    },
+    {
+      "id": 13,
+      "question": "To reduce architectural complexity, it is always preferable to use local data wherever possible and avoid:",
+      "options": [
+        "Code refactoring",
+        "Shared dependencies",
+        "Cloud servers",
+        "User stories"
+      ],
+      "correctAnswer": "Shared dependencies",
+      "explanation": "Avoiding shared dependencies and keeping data localized reduces coupling and architectural complexity.",
+      "sourceSlide": 31,
+      "answerSource": "inferred",
+      "topic": "architectural-patterns"
+    },
+    {
+      "id": 14,
+      "question": "In a layered architecture, components at level X should ideally only interact with the APIs of components at:",
+      "options": [
+        "Level X+2",
+        "All other layers simultaneously",
+        "Level X-1 (the layer directly below)",
+        "Level X+1 (the layer directly above)"
+      ],
+      "correctAnswer": "Level X-1 (the layer directly below)",
+      "explanation": "In a strict layered architecture, a layer at level X only calls the interfaces provided by the layer immediately below it (level X-1).",
+      "sourceSlides": [
+        34,
+        35
+      ],
+      "answerSource": "inferred",
+      "topic": "architectural-patterns"
+    },
+    {
+      "id": 15,
+      "question": "Security, performance, and reliability are systemic issues that affect all layers. These are known as:",
+      "options": [
+        "Cross-cutting concerns",
+        "Core components",
+        "Independent services",
+        "Localized behaviors"
+      ],
+      "correctAnswer": "Cross-cutting concerns",
+      "explanation": "Cross-cutting concerns are whole-system properties—such as security, performance, and reliability—that cut across all architectural layers and cannot be confined to a single layer.",
+      "sourceSlide": 36,
+      "answerSource": "inferred",
+      "topic": "architectural-patterns"
+    },
+    {
+      "id": 16,
+      "question": "In a service-oriented architecture, services that share databases but cannot communicate directly with each other are termed:",
+      "options": [
+        "Fully integrated",
+        "Partially integrated",
+        "Independent",
+        "Stand-alone"
+      ],
+      "correctAnswer": "Partially integrated",
+      "explanation": "Services that share a common database without direct service-to-service communication are described as partially integrated.",
+      "sourceSlide": 45,
+      "answerSource": "inferred",
+      "topic": "architectural-patterns"
+    },
+    {
+      "id": 17,
+      "question": "In a client-server architecture, where is the user interface typically implemented?",
+      "options": [
+        "On the database server",
+        "On the web server",
+        "On the user's own computer or mobile device",
+        "On a proxy load balancer"
+      ],
+      "correctAnswer": "On the user's own computer or mobile device",
+      "explanation": "In a client-server architecture, the user interface runs on the client (the user's computer or mobile device), while application logic and data storage run on the server.",
+      "sourceSlide": 47,
+      "answerSource": "inferred",
+      "topic": "architectural-patterns"
+    },
+    {
+      "id": 18,
+      "question": "Client-server communication often uses the HTTP protocol. Which formats are widely used to structure data as text over HTTP?",
+      "options": [
+        "Python and Java",
+        "SQL and NoSQL",
+        "HTML and CSS",
+        "XML and JSON"
+      ],
+      "correctAnswer": "XML and JSON",
+      "explanation": "XML and JSON are the standard text-based data serialization formats used to exchange structured data between clients and servers over HTTP.",
+      "sourceSlide": 51,
+      "answerSource": "inferred",
+      "topic": "architectural-patterns"
+    },
+    {
+      "id": 19,
+      "question": "Services in a Service-Oriented Architecture (SOA) are \"stateless\". What does this allow them to do?",
+      "options": [
+        "Run without an operating system.",
+        "Be easily replicated and migrate from one computer to another.",
+        "Bypass all security layers.",
+        "Operate without a network connection."
+      ],
+      "correctAnswer": "Be easily replicated and migrate from one computer to another.",
+      "explanation": "Because stateless services do not hold internal session state between requests, they can be easily scaled, replicated, and migrated across servers.",
+      "sourceSlide": 53,
+      "answerSource": "inferred",
+      "topic": "architectural-patterns"
+    },
+    {
+      "id": 20,
+      "question": "Which type of database is highly structured into tables and provides strong transaction management?",
+      "options": [
+        "NoSQL Database (e.g., MongoDB)",
+        "JSON Object Store",
+        "Relational Database (e.g., MySQL)",
+        "Flat-file log system"
+      ],
+      "correctAnswer": "Relational Database (e.g., MySQL)",
+      "explanation": "Relational SQL databases (such as MySQL and PostgreSQL) organize data into structured tables and provide strong ACID transaction management.",
+      "sourceSlide": 58,
+      "answerSource": "inferred",
+      "topic": "technology-choices"
+    }
+  ]
+}

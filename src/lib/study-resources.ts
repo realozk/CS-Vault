@@ -62,6 +62,7 @@ const definitions = (subject: string, kind: 'lecture' | 'chapter', slugs: string
 const summaryDefinitions: readonly SummaryDefinition[] = [
   ...definitions('algorithm-analysis', 'lecture', ['lecture-01-complexity-basics', 'lecture-02-asymptotic-proofs', 'lecture-03-summations-and-recurrences', 'lecture-04-master-theorem', 'lecture-05-randomized-algorithms']),
   ...definitions('computer-networks', 'chapter', ['chapter-01-introduction', 'chapter-02-application-layer', 'chapter-03-transport-layer']),
+  ...definitions('engineering-software-products', 'chapter', ['chapter-01-software-products', 'chapter-02-agile-software-engineering', 'chapter-03-features-scenarios-and-stories', 'chapter-04-software-architecture']),
   ...definitions('operating-systems', 'chapter', ['chapter-01', 'chapter-02', 'chapter-03', 'chapter-04', 'chapter-05']),
   ...definitions('programming-languages', 'lecture', ['lecture-01']),
   { course: courseYear('web-development'), slug: 'lecture-01-introduction', kind: 'lecture', number: 1, quizPrefix: 'lecture-01' },
@@ -77,6 +78,8 @@ const algorithm = (lecture: number, heading: string, topics: string[], section?:
   map('algorithm-analysis', summaryDefinitions.find(item => item.course === courseYear('algorithm-analysis') && item.number === lecture)!.slug, heading, topics, section);
 const networks = (chapter: number, heading: string, topics: string[]) =>
   map('computer-networks', summaryDefinitions.find(item => item.course === courseYear('computer-networks') && item.number === chapter)!.slug, heading, topics);
+const softwareProducts = (chapter: number, heading: string, topics: string[]) =>
+  map('engineering-software-products', summaryDefinitions.find(item => item.course === courseYear('engineering-software-products') && item.number === chapter)!.slug, heading, topics);
 const os = (chapter: number, heading: string, topics: string[]) => map('operating-systems', `chapter-${String(chapter).padStart(2, '0')}`, heading, topics);
 const languages = (heading: string, topics: string[]) => map('programming-languages', 'lecture-01', heading, topics);
 const web = (slug: string, heading: string, topics: string[]) => map('web-development', slug, heading, topics);
@@ -129,6 +132,24 @@ export const STUDY_RESOURCE_MAPPINGS: readonly ResourceMapping[] = [
   networks(3, '3. Principles of Reliable Data Transfer (RDT) [Slides 31-69]', ['reliable-data-transfer']),
   networks(3, '4. Connection-Oriented Transport: TCP [Slides 70-95]', ['tcp']),
   networks(3, '6. TCP Congestion Control [Slides 110-125]', ['congestion-control']),
+
+  softwareProducts(1, 'Software Products vs. Custom Software (Slides 2-8)', ['products-vs-custom']),
+  softwareProducts(1, 'Technologies and Execution Models (Slides 9-12)', ['execution-models']),
+  softwareProducts(1, 'Product Vision and Information Sources (Slides 14-18)', ['product-vision']),
+  softwareProducts(1, 'Software Product Management & Prototyping (Slides 19-30)', ['product-management-prototyping']),
+  softwareProducts(2, 'Agile vs. Plan-Driven Development (Slides 2-6)', ['agile-vs-plan-driven']),
+  softwareProducts(2, 'Incremental Development & XP (Slides 7-17)', ['incremental-xp']),
+  softwareProducts(2, 'The Scrum Framework (Slides 18-29)', ['scrum-framework']),
+  softwareProducts(2, 'Planning, Estimating, and Sprint Activities (Slides 30-57)', ['sprint-planning-activities']),
+  softwareProducts(3, 'Software Features (Slides 2-8)', ['software-features']),
+  softwareProducts(3, 'Personas (Slides 9-20)', ['personas']),
+  softwareProducts(3, 'Scenarios (Slides 21-36)', ['scenarios']),
+  softwareProducts(3, 'User Stories (Slides 37-45)', ['user-stories']),
+  softwareProducts(3, 'Feature Identification and Design (Slides 46-56)', ['feature-design-creep']),
+  softwareProducts(4, 'Importance of Software Architecture (Slides 2-13)', ['architecture-importance']),
+  softwareProducts(4, 'Design Guidelines & Trade-offs (Slides 16-26)', ['architecture-tradeoffs']),
+  softwareProducts(4, 'Architectural Patterns (Slides 28-54)', ['architectural-patterns']),
+  softwareProducts(4, 'Technology Choices (Slides 55-68)', ['technology-choices']),
 
   os(1, 'Chapter 1 scope', ['os-foundations', 'interrupts-io', 'storage-caching', 'scheduling-modes']),
   os(2, 'Chapter 2 scope', ['os-services', 'system-calls', 'os-structures']),

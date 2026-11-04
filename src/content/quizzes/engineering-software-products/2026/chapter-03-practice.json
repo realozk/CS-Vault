@@ -1,0 +1,316 @@
+{
+  "title": "Chapter 3 — Features, Scenarios, and Stories",
+  "date": "2026-11-04",
+  "subject": "Engineering Software Products",
+  "year": 2026,
+  "year_level": 3,
+  "semester": 1,
+  "lang": "en",
+  "source": "Chapter 3 Slides",
+  "sourceKind": "generated",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Which of the following is NOT a main factor that drives the design of software products?",
+      "options": [
+        "Needs not met by current products",
+        "Dissatisfaction with existing software",
+        "The desire to use a specific programming language",
+        "Changes in technology making new products possible"
+      ],
+      "correctAnswer": "The desire to use a specific programming language",
+      "explanation": "Product design is driven by unmet consumer needs, dissatisfaction with existing software, and technological changes—not a developer's desire to use a particular programming language.",
+      "sourceSlide": 2,
+      "answerSource": "inferred",
+      "topic": "software-features"
+    },
+    {
+      "id": 2,
+      "question": "A fragment of functionality in a system, such as a 'print' option, is called a:",
+      "options": [
+        "Persona",
+        "Feature",
+        "Scenario",
+        "Epic"
+      ],
+      "correctAnswer": "Feature",
+      "explanation": "A feature is a coherent fragment of functionality offered by a software system, such as a 'print' or 'change background' capability.",
+      "sourceSlide": 3,
+      "answerSource": "inferred",
+      "topic": "software-features"
+    },
+    {
+      "id": 3,
+      "question": "Which user understanding technique is described as inexpensive and highly valuable for small companies?",
+      "options": [
+        "Extensive ethnography",
+        "Large-scale paid surveys",
+        "Formal task analysis",
+        "Informal user analysis and discussions"
+      ],
+      "correctAnswer": "Informal user analysis and discussions",
+      "explanation": "Informal user analysis and discussions with potential users are inexpensive and practical ways for small companies to understand user needs.",
+      "sourceSlide": 5,
+      "answerSource": "inferred",
+      "topic": "software-features"
+    },
+    {
+      "id": 4,
+      "question": "'Imagined users' created as character portraits to help understand product needs are known as:",
+      "options": [
+        "Stakeholders",
+        "Product Owners",
+        "Personas",
+        "Avatars"
+      ],
+      "correctAnswer": "Personas",
+      "explanation": "Personas are imagined character portraits representing typical target users of a product.",
+      "sourceSlide": 9,
+      "answerSource": "inferred",
+      "topic": "personas"
+    },
+    {
+      "id": 5,
+      "question": "Which aspect of a persona description details the individual's level of technical skills?",
+      "options": [
+        "Personalization",
+        "Job-related",
+        "Education",
+        "Relevance"
+      ],
+      "correctAnswer": "Education",
+      "explanation": "The education element of a persona covers both educational background and level of technical skill and competence.",
+      "sourceSlide": 14,
+      "answerSource": "inferred",
+      "topic": "personas"
+    },
+    {
+      "id": 6,
+      "question": "What is the main benefit of using personas?",
+      "options": [
+        "They provide exact statistical data on market size.",
+        "They help developers empathize with potential users.",
+        "They automatically generate user stories.",
+        "They dictate the underlying database architecture."
+      ],
+      "correctAnswer": "They help developers empathize with potential users.",
+      "explanation": "Personas help developers step into the shoes of target users and empathize with their goals and skills rather than designing for themselves.",
+      "sourceSlide": 17,
+      "answerSource": "inferred",
+      "topic": "personas"
+    },
+    {
+      "id": 7,
+      "question": "A persona developed quickly on the basis of limited user information is called a:",
+      "options": [
+        "Pseudo-persona",
+        "Draft-persona",
+        "Proto-persona",
+        "Mini-persona"
+      ],
+      "correctAnswer": "Proto-persona",
+      "explanation": "A proto-persona is a lightweight persona created rapidly from existing team knowledge when time or budget does not allow extensive user research.",
+      "sourceSlide": 20,
+      "answerSource": "inferred",
+      "topic": "personas"
+    },
+    {
+      "id": 8,
+      "question": "A narrative that describes how a user or group might use a system to achieve an objective is a:",
+      "options": [
+        "Feature",
+        "Epic",
+        "Code comment",
+        "Scenario"
+      ],
+      "correctAnswer": "Scenario",
+      "explanation": "A scenario is a structured narrative describing a realistic situation in which a user or group interacts with the product to accomplish a goal.",
+      "sourceSlide": 21,
+      "answerSource": "inferred",
+      "topic": "scenarios"
+    },
+    {
+      "id": 9,
+      "question": "Which of the following is an essential element of a scenario description?",
+      "options": [
+        "The database schema",
+        "An explanation of problems that can't be addressed by the existing system",
+        "The specific programming language to be used",
+        "The exact cost of implementation"
+      ],
+      "correctAnswer": "An explanation of problems that can't be addressed by the existing system",
+      "explanation": "A scenario description includes the scenario name, overall objective, personas involved, activities, problems that cannot be addressed by the existing system, and proposed solutions.",
+      "sourceSlides": [
+        25,
+        26
+      ],
+      "answerSource": "inferred",
+      "topic": "scenarios"
+    },
+    {
+      "id": 10,
+      "question": "Scenarios should always be written from whose perspective?",
+      "options": [
+        "The database administrator",
+        "The developer",
+        "The product manager",
+        "The user"
+      ],
+      "correctAnswer": "The user",
+      "explanation": "Scenarios must always be written from the user's perspective, describing their goals and actions rather than internal system mechanics.",
+      "sourceSlide": 31,
+      "answerSource": "inferred",
+      "topic": "scenarios"
+    },
+    {
+      "id": 11,
+      "question": "According to the slides, what is a common problem when real users try to write scenarios?",
+      "options": [
+        "They write too little detail.",
+        "They invent too many new features.",
+        "They focus too much on how they work currently and write too much detail.",
+        "They only write user stories instead."
+      ],
+      "correctAnswer": "They focus too much on how they work currently and write too much detail.",
+      "explanation": "Real users often focus heavily on their current workflows and include excessive operational detail instead of envisioning new ways of working.",
+      "sourceSlide": 36,
+      "answerSource": "inferred",
+      "topic": "scenarios"
+    },
+    {
+      "id": 12,
+      "question": "What is the standard format for a user story?",
+      "options": [
+        "I want to <do something> as a <role>.",
+        "As a <role>, I <want | need> to <do something> so that <reason>.",
+        "If <action>, then <result> because <reason>.",
+        "Given <context>, When <action>, Then <outcome>."
+      ],
+      "correctAnswer": "As a <role>, I <want | need> to <do something> so that <reason>.",
+      "explanation": "The standard user story template is \"As a <role>, I <want | need> to <do something> [so that <reason>].\"",
+      "sourceSlide": 38,
+      "answerSource": "inferred",
+      "topic": "user-stories"
+    },
+    {
+      "id": 13,
+      "question": "A complex feature that will take several sprints to implement and must be broken down is called an:",
+      "options": [
+        "Epic",
+        "Saga",
+        "Master Story",
+        "Iteration"
+      ],
+      "correctAnswer": "Epic",
+      "explanation": "An epic is a large, coarse-grained user story or complex feature that spans multiple sprints and is decomposed into smaller stories.",
+      "sourceSlide": 40,
+      "answerSource": "inferred",
+      "topic": "user-stories"
+    },
+    {
+      "id": 14,
+      "question": "Why are scenarios often considered more natural than user stories for interacting with real users?",
+      "options": [
+        "They are shorter.",
+        "They read naturally and provide context about normal ways of working.",
+        "They translate directly into Python code.",
+        "They exclude all technical details."
+      ],
+      "correctAnswer": "They read naturally and provide context about normal ways of working.",
+      "explanation": "Scenarios read like natural narratives and provide rich context about how users normally work, making them easier for users to relate to than isolated user stories.",
+      "sourceSlide": 44,
+      "answerSource": "inferred",
+      "topic": "user-stories"
+    },
+    {
+      "id": 15,
+      "question": "If a feature is linked to a single item of functionality and has no side-effects, it possesses which characteristic?",
+      "options": [
+        "Independence",
+        "Relevance",
+        "Coherence",
+        "Simplicity"
+      ],
+      "correctAnswer": "Coherence",
+      "explanation": "A coherent feature does one clear thing and avoids unexpected side effects.",
+      "sourceSlide": 47,
+      "answerSource": "inferred",
+      "topic": "feature-design-creep"
+    },
+    {
+      "id": 16,
+      "question": "Which type of knowledge helps you think of new, innovative ways of helping users by understanding the work area (e.g., finance)?",
+      "options": [
+        "Technology knowledge",
+        "Domain knowledge",
+        "Product knowledge",
+        "User knowledge"
+      ],
+      "correctAnswer": "Domain knowledge",
+      "explanation": "Domain knowledge is understanding the specific application or business area (such as finance or healthcare), enabling innovative ways to support work in that area.",
+      "sourceSlide": 49,
+      "answerSource": "inferred",
+      "topic": "feature-design-creep"
+    },
+    {
+      "id": 17,
+      "question": "To encourage users to adopt your system, you must find a balance between novel features and:",
+      "options": [
+        "Automation",
+        "Control",
+        "Familiarity",
+        "Complexity"
+      ],
+      "correctAnswer": "Familiarity",
+      "explanation": "Feature design involves balancing familiarity (so users feel comfortable adopting the product) with novelty (so the product offers new value).",
+      "sourceSlide": 51,
+      "answerSource": "inferred",
+      "topic": "feature-design-creep"
+    },
+    {
+      "id": 18,
+      "question": "The trade-off between having the software do things for the user versus allowing the user to configure the system is called:",
+      "options": [
+        "Simplicity vs Functionality",
+        "Automation vs Control",
+        "Familiarity vs Novelty",
+        "Independence vs Coherence"
+      ],
+      "correctAnswer": "Automation vs Control",
+      "explanation": "Automation vs Control is the trade-off between automating actions on the user's behalf and giving users explicit control and configuration options.",
+      "sourceSlide": 52,
+      "answerSource": "inferred",
+      "topic": "feature-design-creep"
+    },
+    {
+      "id": 19,
+      "question": "What term describes the negative consequence of adding too many new features in response to user requests?",
+      "options": [
+        "Feature coherence",
+        "Feature creep",
+        "Feature parity",
+        "Feature scaling"
+      ],
+      "correctAnswer": "Feature creep",
+      "explanation": "Feature creep (or feature bloat) occurs when excessive features are continuously added, making the product complex, harder to use, and harder to maintain.",
+      "sourceSlide": 53,
+      "answerSource": "inferred",
+      "topic": "feature-design-creep"
+    },
+    {
+      "id": 20,
+      "question": "Which of the following is a common reason why feature creep occurs?",
+      "options": [
+        "Developers refuse to write new code.",
+        "Product managers say 'no' too often.",
+        "Developers try to match all features found in competing products.",
+        "The system relies on open-source libraries."
+      ],
+      "correctAnswer": "Developers try to match all features found in competing products.",
+      "explanation": "Feature creep commonly happens when product teams reluctance to say 'no' to user requests or try to match every feature offered by competing products.",
+      "sourceSlide": 54,
+      "answerSource": "inferred",
+      "topic": "feature-design-creep"
+    }
+  ]
+}

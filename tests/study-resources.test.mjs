@@ -43,7 +43,7 @@ test('every authored resource mapping targets an existing compiled heading in it
     assert.ok(heading, `Missing heading: ${mapping.summaryId}: ${mapping.heading}`);
     assert.ok(heading.slug.startsWith(`summary-content-${mapping.summaryId.split('/').at(-1)}--`));
   }
-  assert.deepEqual([...courses].sort(), ['algorithm-analysis', 'computer-networks', 'operating-systems', 'programming-languages', 'web-development']);
+  assert.deepEqual([...courses].sort(), ['algorithm-analysis', 'computer-networks', 'engineering-software-products', 'operating-systems', 'programming-languages', 'web-development']);
 });
 
 test('authored question topics resolve to real notes, except the documented topic with no matching notes', async () => {
