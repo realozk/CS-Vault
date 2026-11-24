@@ -265,6 +265,7 @@ export const ui = {
     'semester.1': 'First Semester',
     'semester.2': 'Second Semester',
     'semester.title': 'Semester {sem}',
+    'semester.week': 'Week {n}',
     'semester.empty': 'No subjects uploaded for this semester yet.',
 
     // Subject Dashboard
@@ -577,6 +578,7 @@ export const ui = {
     'semester.1': 'الفصل الدراسي الأول',
     'semester.2': 'الفصل الدراسي الثاني',
     'semester.title': 'الفصل الدراسي {sem}',
+    'semester.week': 'الأسبوع {n}',
     'semester.empty': 'لم يتم رفع أي مواد لهذا الفصل الدراسي بعد.',
 
     // Subject Dashboard
